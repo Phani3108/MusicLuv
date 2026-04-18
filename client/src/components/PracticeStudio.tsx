@@ -19,6 +19,8 @@ import { GhostHand } from "./GhostHand";
 import { mockGrade, startMockPitchStream } from "@/mocks/api";
 import { startMicCapture, type MicHandle } from "@/audio/mic";
 import { isRealBackend, realGrade } from "@/lib/api";
+import { enqueueAttempt } from "@/lib/offlineQueue";
+import { getRubric } from "@catalogs/gradingRubricCatalog";
 
 export function PracticeStudio() {
   const instrumentId = useAtomValue(currentInstrumentAtom);
@@ -50,6 +52,8 @@ export function PracticeStudio() {
   const micHandleRef = useRef<MicHandle | null>(null);
   const [attemptCount, setAttemptCount] = useState(0);
   const [micError, setMicError] = useState<string | null>(null);
+  const [offlineMode, setOfflineMode] = useState(false);
+  const [offlineSaved, setOfflineSaved] = useState<string | null>(null);
 
   const usingRealBackend = isRealBackend();
 
@@ -105,7 +109,38 @@ export function PracticeStudio() {
           micHandleRef.current = null;
           if (lastAudioUrl) URL.revokeObjectURL(lastAudioUrl);
           setLastAudioUrl(URL.createObjectURL(wav));
-          grade = await realGrade(exercise, wav, `a_${Date.now()}`);
+
+          if (offlineMode || !navigator.onLine) {
+            // Enqueue for later grading; optimistic mock in the UI for now.
+            const rubric = getRubric(exercise.gradingRubricId);
+            const meta = JSON.stringify({
+              exerciseId: exercise.id,
+              userId: "local",
+              attemptId: `a_${Date.now()}`,
+              target: (exercise.targetPattern.notes ?? []).map((n) => ({
+                pitch: n.pitch, startMs: n.startMs, durationMs: n.durationMs,
+              })),
+              rubric: {
+                id: rubric.id, weights: rubric.weights,
+                passThreshold: rubric.passThreshold,
+                pitchToleranceCents: rubric.pitchToleranceCents,
+                rhythmToleranceMs: rubric.rhythmToleranceMs,
+                feedbackBank: rubric.feedbackBank,
+              },
+              offlineMode: true,
+            });
+            const id = await enqueueAttempt({
+              lessonId: lesson?.id ?? "",
+              exerciseId: exercise.id,
+              audio: wav,
+              meta,
+            });
+            setOfflineSaved(id);
+            // Return an optimistic mock so the user gets some feedback instantly.
+            grade = await mockGrade(exercise, { attemptNumber: attemptCount + 1 });
+          } else {
+            grade = await realGrade(exercise, wav, `a_${Date.now()}`);
+          }
         } else {
           if (lastAudioUrl) { URL.revokeObjectURL(lastAudioUrl); setLastAudioUrl(null); }
           grade = await mockGrade(exercise, { attemptNumber: attemptCount + 1 });
@@ -234,6 +269,26 @@ export function PracticeStudio() {
         {micError && (
           <div className="mt-3 panel p-3 text-xs text-amber-200 bg-amber-400/5 border-amber-400/30">
             ⚠️  {micError}
+          </div>
+        )}
+
+        {offlineSaved && (
+          <div className="mt-3 panel p-3 text-xs text-indigo-200 bg-indigo-400/5 border-indigo-400/30 flex items-center gap-2">
+            📥 Saved offline — will grade when back online. Attempt id: <span className="font-mono">{offlineSaved}</span>
+          </div>
+        )}
+
+        {usingRealBackend && (
+          <div className="mt-3 flex items-center justify-center">
+            <label className="flex items-center gap-2 text-[11px] text-white/50 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={offlineMode}
+                onChange={(e) => setOfflineMode(e.target.checked)}
+                className="accent-indigo-400"
+              />
+              <span>Offline mode — save WAV locally, grade later (useful on trains/planes)</span>
+            </label>
           </div>
         )}
 

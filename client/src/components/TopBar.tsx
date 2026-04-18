@@ -6,6 +6,7 @@ import {
 } from "@/atoms/panels";
 import { getInstrument } from "@catalogs/instrumentCatalog";
 import { tierForXp } from "@catalogs/tierCatalog";
+import { OfflineQueueChip } from "./OfflineQueueChip";
 
 export function TopBar() {
   const user = useAtomValue(userAtom);
@@ -52,6 +53,8 @@ export function TopBar() {
         <PanelToggle label="Library"  active={libraryOpen}  onClick={() => setLibraryOpen((v) => !v)} glyph="🎵" />
         <PanelToggle label="Artists"  active={artistOpen}   onClick={() => setArtistOpen((v) => !v)} glyph="⭐" />
         <PanelToggle label="Upload"   active={songOpen}     onClick={() => setSongOpen((v) => !v)} glyph="⬆️" />
+
+        <OfflineQueueChip />
 
         <div className="w-px h-6 bg-white/10 mx-1 hidden md:block" />
 

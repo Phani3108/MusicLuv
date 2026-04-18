@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useAtomValue } from "jotai";
 import { lastGradeAtom } from "@/atoms/practice";
 import { OverlayPlayback } from "../OverlayPlayback";
+import { CorrectiveDrillCard } from "../CorrectiveDrillCard";
 
 const DIM_LABELS: Record<string, string> = {
   pitch: "Pitch", rhythm: "Rhythm", tone: "Tone", dynamics: "Dynamics", consistency: "Consistency",
@@ -30,10 +31,12 @@ export function PhaseFeedback({ onEngage }: { onEngage: () => void }) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto space-y-4">
       <OverlayPlayback />
 
-      <div className="grid md:grid-cols-2 gap-4 mt-4">
+      <CorrectiveDrillCard />
+
+      <div className="grid md:grid-cols-2 gap-4">
         <div className="panel p-5 bg-white/[0.02]">
           <div className="flex items-center justify-between mb-4">
             <div>
