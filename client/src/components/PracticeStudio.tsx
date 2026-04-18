@@ -13,6 +13,7 @@ import { getExercise } from "@catalogs/exerciseCatalog";
 import { PianoHero } from "./PianoHero";
 import { SitarHero } from "./SitarHero";
 import { GenericHero } from "./GenericHero";
+import { VirtualGuitar } from "./VirtualGuitar";
 import { PitchMeter } from "./PitchMeter";
 import { TimelineRibbon } from "./TimelineRibbon";
 import { GhostHand } from "./GhostHand";
@@ -246,7 +247,8 @@ export function PracticeStudio() {
             />
           )}
           {instrument.id === "sitar" && <SitarHero highlight={null} />}
-          {instrument.id !== "piano" && instrument.id !== "sitar" && <GenericHero instrument={instrument} />}
+          {instrument.id === "guitar" && <VirtualGuitar />}
+          {instrument.id !== "piano" && instrument.id !== "sitar" && instrument.id !== "guitar" && <GenericHero instrument={instrument} />}
         </div>
 
         <div className="flex items-center gap-2 mb-4 flex-wrap">

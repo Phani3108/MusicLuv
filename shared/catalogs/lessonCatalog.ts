@@ -126,6 +126,60 @@ export const LESSONS: Record<string, Lesson> = {
     estimatedMinutes: 12,
   },
 
+  guitar_l1_01_hold: {
+    id: "guitar_l1_01_hold",
+    instrumentId: "guitar",
+    level: 1, tier: "standard",
+    title: "Holding the guitar & your first string",
+    objectives: [
+      "Sit or stand with the guitar's body flat against you, neck angled up slightly",
+      "Identify the 6 strings by letter (low to high: E A D G B E)",
+      "Pluck each open string cleanly and hear its pitch",
+    ],
+    writtenContent:
+      "## The guitar is an armful\n\nBody flat against your ribs. Neck tilted up at about 10–15° — not pointing at the floor, not pointing at the ceiling. If your wrist hurts after 5 minutes, your posture is wrong; adjust before you continue.\n\n## Six strings, two Es\n\nFrom the thickest string (closest to your face) to the thinnest: **E - A - D - G - B - E**. The two Es are two octaves apart — low E2 and high E4. The rest run: A2, D3, G3, B3.\n\n## Just pluck\n\nWith your thumb or a pick, sound each open string one by one. Listen. A clean open string rings — if it buzzes, your finger is accidentally touching a fret.",
+    audioRefs: [{ id: "demo", label: "Six open strings, low to high" }],
+    exercisePlanId: "guitar_l1_01_open_strings",
+    prerequisites: [],
+    passCriteria: { minGradeOverall: 0.65 },
+    estimatedMinutes: 8,
+  },
+  guitar_l1_02_first_fret: {
+    id: "guitar_l1_02_first_fret",
+    instrumentId: "guitar",
+    level: 1, tier: "standard",
+    title: "Your first fretted notes — the low E string",
+    objectives: [
+      "Press down just behind each fret (not on it, not in the middle)",
+      "Play E (open) → F (1st fret) → G (3rd fret) → A (5th fret)",
+      "Keep each note clean and ringing",
+    ],
+    writtenContent:
+      "## Where to press\n\nThe fret itself is the metal bar. Press the string **just behind** the fret (on the headstock side) — not on the metal, not way back. Close to the fret = clean note with minimal pressure.\n\n## Four notes on one string\n\nLow E string: open = E · 1st fret = F · 3rd fret = G · 5th fret = A. That's the bottom half of an A-minor scale without moving to another string.",
+    audioRefs: [{ id: "demo", label: "E · F · G · A on low E string" }],
+    exercisePlanId: "guitar_l1_02_e_string_walk",
+    prerequisites: ["guitar_l1_01_hold"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.75 } },
+    estimatedMinutes: 10,
+  },
+  guitar_l1_03_first_chord: {
+    id: "guitar_l1_03_first_chord",
+    instrumentId: "guitar",
+    level: 1, tier: "standard",
+    title: "First chord — Em",
+    objectives: [
+      "Fret E minor: 2nd fret of the A and D strings, fingers 2 and 3",
+      "Strum all six strings cleanly",
+      "Release and re-fret 5 times in a row without buzzing",
+    ],
+    writtenContent:
+      "## E minor, the welcoming chord\n\nEm uses just two fretted notes: **finger 2 on the 2nd fret of A**, **finger 3 on the 2nd fret of D**. Every other string rings open.\n\n## The strum\n\nRelax your pick hand. Let the pick fall through all 6 strings — don't stab, don't scrape. A full Em should sound lush; if it buzzes, check your finger tips aren't touching neighboring strings.",
+    audioRefs: [{ id: "demo", label: "Em chord — strum x4" }],
+    exercisePlanId: "guitar_l1_03_em_strum",
+    prerequisites: ["guitar_l1_02_first_fret"],
+    passCriteria: { minGradeOverall: 0.7 },
+    estimatedMinutes: 10,
+  },
   sitar_l1_01_sa: {
     id: "sitar_l1_01_sa",
     instrumentId: "sitar",

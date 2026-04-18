@@ -166,6 +166,61 @@ export const EXERCISES: Record<string, Exercise> = {
     gradingRubricId: "rubric_early_level",
   },
 
+  guitar_l1_01_open_strings: {
+    id: "guitar_l1_01_open_strings",
+    type: "play_note",
+    instrumentId: "guitar",
+    title: "Six open strings, low to high",
+    targetPattern: {
+      notes: [
+        { pitch: "E2", startMs: 0,    durationMs: 700 },
+        { pitch: "A2", startMs: 700,  durationMs: 700 },
+        { pitch: "D3", startMs: 1400, durationMs: 700 },
+        { pitch: "G3", startMs: 2100, durationMs: 700 },
+        { pitch: "B3", startMs: 2800, durationMs: 700 },
+        { pitch: "E4", startMs: 3500, durationMs: 700 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  guitar_l1_02_e_string_walk: {
+    id: "guitar_l1_02_e_string_walk",
+    type: "play_scale",
+    instrumentId: "guitar",
+    title: "E · F · G · A on the low E string",
+    targetPattern: {
+      notes: [
+        { pitch: "E2", startMs: 0,    durationMs: 500 },
+        { pitch: "F2", startMs: 500,  durationMs: 500 },
+        { pitch: "G2", startMs: 1000, durationMs: 500 },
+        { pitch: "A2", startMs: 1500, durationMs: 500 },
+        { pitch: "G2", startMs: 2000, durationMs: 500 },
+        { pitch: "F2", startMs: 2500, durationMs: 500 },
+        { pitch: "E2", startMs: 3000, durationMs: 1000 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  guitar_l1_03_em_strum: {
+    id: "guitar_l1_03_em_strum",
+    type: "play_chord",
+    instrumentId: "guitar",
+    title: "Em chord, four slow strums",
+    targetPattern: {
+      onsets: [0, 1000, 2000, 3000],
+      notes: [
+        { pitch: "E2", startMs: 0,    durationMs: 900 },
+        { pitch: "E2", startMs: 1000, durationMs: 900 },
+        { pitch: "E2", startMs: 2000, durationMs: 900 },
+        { pitch: "E2", startMs: 3000, durationMs: 900 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_rhythm_only",
+  },
+
   sitar_l1_01_sustain_sa: {
     id: "sitar_l1_01_sustain_sa",
     type: "play_note",

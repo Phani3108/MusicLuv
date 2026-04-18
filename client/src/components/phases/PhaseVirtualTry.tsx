@@ -3,6 +3,7 @@ import type { Instrument, Exercise } from "@catalogs/types";
 import { PianoHero } from "../PianoHero";
 import { SitarHero } from "../SitarHero";
 import { GenericHero } from "../GenericHero";
+import { VirtualGuitar } from "../VirtualGuitar";
 
 export function PhaseVirtualTry({ instrument, exercise, onEngage }: { instrument: Instrument; exercise: Exercise; onEngage: () => void }) {
   const [keysPressed, setKeysPressed] = useState(0);
@@ -21,11 +22,10 @@ export function PhaseVirtualTry({ instrument, exercise, onEngage }: { instrument
         Play freely — tap or click any key. The on-screen piano sounds just like a real one. No need for the instrument yet.
       </div>
 
-      {instrument.id === "piano" && (
-        <PianoHero onKeyClick={handleKeyClick} />
-      )}
+      {instrument.id === "piano" && <PianoHero onKeyClick={handleKeyClick} />}
+      {instrument.id === "guitar" && <VirtualGuitar />}
       {instrument.id === "sitar" && <SitarHero />}
-      {instrument.id !== "piano" && instrument.id !== "sitar" && (
+      {instrument.id !== "piano" && instrument.id !== "sitar" && instrument.id !== "guitar" && (
         <GenericHero instrument={instrument} />
       )}
 
