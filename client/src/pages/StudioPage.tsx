@@ -1,7 +1,7 @@
 import { useAtomValue } from "jotai";
 import { currentInstrumentAtom } from "@/atoms/session";
 import { TopBar } from "@/components/TopBar";
-import { PracticeStudio } from "@/components/PracticeStudio";
+import { LessonPhaseRunner } from "@/components/LessonPhaseRunner";
 import { LessonPanel } from "@/components/LessonPanel";
 import { MentorChatPanel } from "@/components/MentorChatPanel";
 import { ProgressPanel } from "@/components/ProgressPanel";
@@ -19,8 +19,10 @@ export function StudioPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <TopBar />
-      <main className="flex-1 relative">
-        <PracticeStudio />
+      <main className="flex-1 relative px-4 md:px-8 py-6 md:py-10 grid-dots">
+        <div className="max-w-5xl mx-auto">
+          <LessonPhaseRunner />
+        </div>
         <LessonPanel />
         <MentorChatPanel />
         <ProgressPanel />
