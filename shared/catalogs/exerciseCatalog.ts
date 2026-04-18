@@ -245,6 +245,242 @@ export const EXERCISES: Record<string, Exercise> = {
     tempo: { bpm: 80, meter: [4, 4] },
     gradingRubricId: "rubric_early_level",
   },
+  piano_l5_01_triads_on_c: {
+    id: "piano_l5_01_triads_on_c",
+    type: "play_chord",
+    instrumentId: "piano",
+    title: "Four triad qualities rooted on C",
+    targetPattern: {
+      // Bass roots only; the student plays the full 3-note chords
+      notes: [
+        { pitch: "C4", startMs: 0,    durationMs: 1500 }, // major
+        { pitch: "C4", startMs: 1500, durationMs: 1500 }, // minor
+        { pitch: "C4", startMs: 3000, durationMs: 1500 }, // dim
+        { pitch: "C4", startMs: 4500, durationMs: 1500 }, // aug
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l5_02_c_inversions: {
+    id: "piano_l5_02_c_inversions",
+    type: "play_chord",
+    instrumentId: "piano",
+    title: "C major in three inversions",
+    targetPattern: {
+      notes: [
+        { pitch: "C4", startMs: 0,    durationMs: 1200 }, // root
+        { pitch: "E4", startMs: 1200, durationMs: 1200 }, // 1st inv (bottom = E)
+        { pitch: "G4", startMs: 2400, durationMs: 1200 }, // 2nd inv (bottom = G)
+        { pitch: "C5", startMs: 3600, durationMs: 1500 }, // root octave up
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l5_03_pop_prog: {
+    id: "piano_l5_03_pop_prog",
+    type: "play_chord",
+    instrumentId: "piano",
+    title: "I-V-vi-IV in C major — 4 bars",
+    targetPattern: {
+      notes: [
+        { pitch: "C4", startMs: 0,    durationMs: 2000 }, // C
+        { pitch: "G3", startMs: 2000, durationMs: 2000 }, // G
+        { pitch: "A3", startMs: 4000, durationMs: 2000 }, // Am
+        { pitch: "F3", startMs: 6000, durationMs: 2000 }, // F
+      ],
+    },
+    tempo: { bpm: 90, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l5_04_alberti: {
+    id: "piano_l5_04_alberti",
+    type: "play_along",
+    instrumentId: "piano",
+    title: "Alberti bass on C — bottom-top-middle-top",
+    targetPattern: {
+      notes: [
+        { pitch: "C3", startMs: 0,    durationMs: 300 },
+        { pitch: "G3", startMs: 300,  durationMs: 300 },
+        { pitch: "E3", startMs: 600,  durationMs: 300 },
+        { pitch: "G3", startMs: 900,  durationMs: 300 },
+        { pitch: "C3", startMs: 1200, durationMs: 300 },
+        { pitch: "G3", startMs: 1500, durationMs: 300 },
+        { pitch: "E3", startMs: 1800, durationMs: 300 },
+        { pitch: "G3", startMs: 2100, durationMs: 300 },
+      ],
+    },
+    tempo: { bpm: 100, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l5_05_chord_melody: {
+    id: "piano_l5_05_chord_melody",
+    type: "play_along",
+    instrumentId: "piano",
+    title: "Twinkle melody with chord-tone fill",
+    targetPattern: {
+      // Only top melody line graded; chord tones below are the student's interpretation
+      notes: [
+        { pitch: "C4", startMs: 0,    durationMs: 500 },
+        { pitch: "C4", startMs: 500,  durationMs: 500 },
+        { pitch: "G4", startMs: 1000, durationMs: 500 },
+        { pitch: "G4", startMs: 1500, durationMs: 500 },
+        { pitch: "A4", startMs: 2000, durationMs: 500 },
+        { pitch: "A4", startMs: 2500, durationMs: 500 },
+        { pitch: "G4", startMs: 3000, durationMs: 1000 },
+      ],
+    },
+    tempo: { bpm: 75, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l5_06_seventh_chords: {
+    id: "piano_l5_06_seventh_chords",
+    type: "play_chord",
+    instrumentId: "piano",
+    title: "Cmaj7 → Cm7 → C7",
+    targetPattern: {
+      notes: [
+        { pitch: "C3", startMs: 0,    durationMs: 2000 }, // Cmaj7
+        { pitch: "C3", startMs: 2000, durationMs: 2000 }, // Cm7
+        { pitch: "C3", startMs: 4000, durationMs: 2000 }, // C7
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+
+  piano_l6_01_clementi_opening: {
+    id: "piano_l6_01_clementi_opening",
+    type: "play_along",
+    instrumentId: "piano",
+    title: "Clementi Op. 36 No. 1, mvt 1 — opening melody",
+    targetPattern: {
+      notes: [
+        { pitch: "C4", startMs: 0,    durationMs: 400 },
+        { pitch: "E4", startMs: 400,  durationMs: 400 },
+        { pitch: "G4", startMs: 800,  durationMs: 400 },
+        { pitch: "C5", startMs: 1200, durationMs: 400 },
+        { pitch: "E5", startMs: 1600, durationMs: 400 },
+        { pitch: "G4", startMs: 2000, durationMs: 400 },
+        { pitch: "C5", startMs: 2400, durationMs: 400 },
+        { pitch: "E5", startMs: 2800, durationMs: 800 },
+        { pitch: "F5", startMs: 3600, durationMs: 400 },
+        { pitch: "D5", startMs: 4000, durationMs: 400 },
+        { pitch: "B4", startMs: 4400, durationMs: 400 },
+        { pitch: "G4", startMs: 4800, durationMs: 800 },
+      ],
+    },
+    tempo: { bpm: 110, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l6_02_chopin_em: {
+    id: "piano_l6_02_chopin_em",
+    type: "play_along",
+    instrumentId: "piano",
+    title: "Chopin Prelude Op. 28 No. 4 — melody (simplified)",
+    targetPattern: {
+      notes: [
+        { pitch: "B4", startMs: 0,    durationMs: 1600, velocity: 0.5 },
+        { pitch: "B4", startMs: 1600, durationMs: 800,  velocity: 0.6 },
+        { pitch: "A4", startMs: 2400, durationMs: 1600, velocity: 0.55 },
+        { pitch: "G4", startMs: 4000, durationMs: 1600, velocity: 0.45 },
+        { pitch: "F#4",startMs: 5600, durationMs: 2400, velocity: 0.4 },
+      ],
+    },
+    tempo: { bpm: 50, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l6_03_rootless_iivi: {
+    id: "piano_l6_03_rootless_iivi",
+    type: "play_chord",
+    instrumentId: "piano",
+    title: "Rootless ii-V-I in C major",
+    targetPattern: {
+      // Bass roots for the grader (bassist's part); student plays the rootless upper voicing
+      notes: [
+        { pitch: "D3", startMs: 0,    durationMs: 2000 }, // Dm7
+        { pitch: "G3", startMs: 2000, durationMs: 2000 }, // G7
+        { pitch: "C3", startMs: 4000, durationMs: 2500 }, // Cmaj7 resolution
+      ],
+    },
+    tempo: { bpm: 80, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l6_04_yaman_phrase: {
+    id: "piano_l6_04_yaman_phrase",
+    type: "improvise",
+    instrumentId: "piano",
+    title: "Raga Yaman — ascending characteristic phrase",
+    targetPattern: {
+      notes: [
+        { pitch: "C4",  startMs: 0,    durationMs: 800 },   // Sa
+        { pitch: "E4",  startMs: 800,  durationMs: 600 },   // Ga
+        { pitch: "F#4", startMs: 1400, durationMs: 1000 },  // Ma♯
+        { pitch: "A4",  startMs: 2400, durationMs: 800 },   // Dha
+        { pitch: "B4",  startMs: 3200, durationMs: 600 },   // Ni
+        { pitch: "C5",  startMs: 3800, durationMs: 2000 },  // Sa' (rest here)
+      ],
+    },
+    tempo: { bpm: 50, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l6_05_hanon_20: {
+    id: "piano_l6_05_hanon_20",
+    type: "play_scale",
+    instrumentId: "piano",
+    title: "Hanon #20 — stretched pattern",
+    targetPattern: {
+      notes: [
+        { pitch: "C4", startMs: 0,    durationMs: 200 },
+        { pitch: "F4", startMs: 200,  durationMs: 200 },
+        { pitch: "E4", startMs: 400,  durationMs: 200 },
+        { pitch: "D4", startMs: 600,  durationMs: 200 },
+        { pitch: "C4", startMs: 800,  durationMs: 200 },
+        { pitch: "F4", startMs: 1000, durationMs: 200 },
+        { pitch: "E4", startMs: 1200, durationMs: 200 },
+        { pitch: "D4", startMs: 1400, durationMs: 200 },
+        { pitch: "E4", startMs: 1600, durationMs: 200 },
+        { pitch: "A4", startMs: 1800, durationMs: 200 },
+        { pitch: "G4", startMs: 2000, durationMs: 200 },
+        { pitch: "F4", startMs: 2200, durationMs: 200 },
+        { pitch: "E4", startMs: 2400, durationMs: 200 },
+        { pitch: "A4", startMs: 2600, durationMs: 200 },
+        { pitch: "G4", startMs: 2800, durationMs: 200 },
+        { pitch: "F4", startMs: 3000, durationMs: 400 },
+      ],
+    },
+    tempo: { bpm: 100, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l6_06_unseen_piece: {
+    id: "piano_l6_06_unseen_piece",
+    type: "sight_read",
+    instrumentId: "piano",
+    title: "Sight-read a grade-5 level unseen piece (16 bars)",
+    targetPattern: {
+      // A short unseen melody the student sees for the first time
+      notes: [
+        { pitch: "D4", startMs: 0,    durationMs: 500 },
+        { pitch: "F#4",startMs: 500,  durationMs: 500 },
+        { pitch: "A4", startMs: 1000, durationMs: 500 },
+        { pitch: "D5", startMs: 1500, durationMs: 1000 },
+        { pitch: "C5", startMs: 2500, durationMs: 500 },
+        { pitch: "A4", startMs: 3000, durationMs: 500 },
+        { pitch: "F#4",startMs: 3500, durationMs: 500 },
+        { pitch: "D4", startMs: 4000, durationMs: 1500 },
+        { pitch: "E4", startMs: 5500, durationMs: 500 },
+        { pitch: "G4", startMs: 6000, durationMs: 500 },
+        { pitch: "B4", startMs: 6500, durationMs: 500 },
+        { pitch: "D5", startMs: 7000, durationMs: 500 },
+        { pitch: "A4", startMs: 7500, durationMs: 500 },
+        { pitch: "D5", startMs: 8000, durationMs: 2000 },
+      ],
+    },
+    tempo: { bpm: 70, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+
   piano_l4_01_g_major_2oct: {
     id: "piano_l4_01_g_major_2oct",
     type: "play_scale",
