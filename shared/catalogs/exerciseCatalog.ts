@@ -245,6 +245,96 @@ export const EXERCISES: Record<string, Exercise> = {
     tempo: { bpm: 80, meter: [4, 4] },
     gradingRubricId: "rubric_early_level",
   },
+  piano_l4_01_g_major_2oct: {
+    id: "piano_l4_01_g_major_2oct",
+    type: "play_scale",
+    instrumentId: "piano",
+    title: "G major, two octaves, ascending + descending",
+    targetPattern: {
+      notes: [
+        ...["G3","A3","B3","C4","D4","E4","F#4","G4","A4","B4","C5","D5","E5","F#5","G5"]
+          .map((p, i) => ({ pitch: p, startMs: i * 300, durationMs: 300 })),
+        ...["F#5","E5","D5","C5","B4","A4","G4","F#4","E4","D4","C4","B3","A3","G3"]
+          .map((p, i) => ({ pitch: p, startMs: 4500 + i * 300, durationMs: 300 })),
+      ],
+    },
+    tempo: { bpm: 100, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l4_02_d_major_2oct: {
+    id: "piano_l4_02_d_major_2oct",
+    type: "play_scale",
+    instrumentId: "piano",
+    title: "D major, two octaves",
+    targetPattern: {
+      notes: ["D3","E3","F#3","G3","A3","B3","C#4","D4","E4","F#4","G4","A4","B4","C#5","D5"]
+        .map((p, i) => ({ pitch: p, startMs: i * 280, durationMs: 280 })),
+    },
+    tempo: { bpm: 110, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l4_03_f_major_2oct: {
+    id: "piano_l4_03_f_major_2oct",
+    type: "play_scale",
+    instrumentId: "piano",
+    title: "F major, two octaves",
+    targetPattern: {
+      notes: ["F3","G3","A3","Bb3","C4","D4","E4","F4","G4","A4","Bb4","C5","D5","E5","F5"]
+        .map((p, i) => ({ pitch: p, startMs: i * 300, durationMs: 300 })),
+    },
+    tempo: { bpm: 100, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l4_04_a_minor_2oct: {
+    id: "piano_l4_04_a_minor_2oct",
+    type: "play_scale",
+    instrumentId: "piano",
+    title: "A natural minor, two octaves",
+    targetPattern: {
+      notes: ["A3","B3","C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5"]
+        .map((p, i) => ({ pitch: p, startMs: i * 333, durationMs: 333 })),
+    },
+    tempo: { bpm: 90, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l4_05_c_arpeggio: {
+    id: "piano_l4_05_c_arpeggio",
+    type: "play_scale",
+    instrumentId: "piano",
+    title: "C major arpeggio, two octaves (I chord)",
+    targetPattern: {
+      notes: ["C3","E3","G3","C4","E4","G4","C5","G4","E4","C4","G3","E3","C3"]
+        .map((p, i) => ({ pitch: p, startMs: i * 340, durationMs: 340 })),
+    },
+    tempo: { bpm: 90, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l4_06_circle_progression: {
+    id: "piano_l4_06_circle_progression",
+    type: "play_scale",
+    instrumentId: "piano",
+    title: "Circle of fifths — first four keys (C → G → D → A scales)",
+    targetPattern: {
+      // Two-octave fragments, one from each key in circle-of-fifths order
+      notes: [
+        { pitch: "C4", startMs: 0, durationMs: 500 },
+        { pitch: "D4", startMs: 500, durationMs: 500 },
+        { pitch: "E4", startMs: 1000, durationMs: 1000 },
+        { pitch: "G4", startMs: 2000, durationMs: 500 },
+        { pitch: "A4", startMs: 2500, durationMs: 500 },
+        { pitch: "B4", startMs: 3000, durationMs: 1000 },
+        { pitch: "D5", startMs: 4000, durationMs: 500 },
+        { pitch: "E5", startMs: 4500, durationMs: 500 },
+        { pitch: "F#5",startMs: 5000, durationMs: 1000 },
+        { pitch: "A5", startMs: 6000, durationMs: 500 },
+        { pitch: "B5", startMs: 6500, durationMs: 500 },
+        { pitch: "C#6",startMs: 7000, durationMs: 1500 },
+      ],
+    },
+    tempo: { bpm: 90, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+
   piano_l3_01_ode_melody: {
     id: "piano_l3_01_ode_melody",
     type: "play_along",
