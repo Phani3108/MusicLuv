@@ -1,0 +1,37 @@
+# dependencies
+node_modules/
+**/node_modules/
+.venv/
+**/.venv/
+*.egg-info/
+__pycache__/
+**/__pycache__/
+.pytest_cache/
+**/.pytest_cache/
+
+# build output
+dist/
+**/dist/
+.vite/
+**/.vite/
+
+# env + secrets
+.env
+.env.local
+.env.*.local
+
+# native shells (generated)
+ios/
+android/
+
+# ml weights (downloaded at runtime)
+audio-engine/models/
+
+# IDE + OS
+.DS_Store
+*.log
+.idea/
+.vscode/
+
+# package locks — keep these
+# (do NOT ignore package-lock.json / uv.lock)

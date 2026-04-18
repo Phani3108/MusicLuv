@@ -1,0 +1,38 @@
+[project]
+name = "musicluv-audio-engine"
+version = "0.1.0"
+description = "MusicLuv audio grading + song transcription microservice"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.29",
+  "pydantic>=2.6",
+  "python-multipart>=0.0.9",
+  "numpy>=1.26,<2",
+  "scipy>=1.12",
+  "librosa>=0.10",
+  "soundfile>=0.12",
+]
+
+[project.optional-dependencies]
+# Heavy ML backends — install only when you need the real models.
+# Each integration in pipelines/*.py lazy-imports its library so a base
+# install stays small (<300MB) and tests run fast.
+ml-basic-pitch = ["basic-pitch>=0.4"]     # Spotify polyphonic transcription
+ml-crepe = ["crepe>=0.0.16", "tensorflow>=2.15"]
+ml-demucs = ["demucs>=4.0.1"]             # Facebook stem separation (torch)
+test = ["pytest>=8", "pytest-asyncio>=0.23", "httpx>=0.27"]
+
+[tool.setuptools]
+py-modules = ["main"]
+packages = ["pipelines"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
