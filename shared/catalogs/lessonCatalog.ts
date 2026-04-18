@@ -641,6 +641,189 @@ export const LESSONS: Record<string, Lesson> = {
     estimatedMinutes: 20,
   },
 
+  piano_l7_01_chopin_etude: {
+    id: "piano_l7_01_chopin_etude", instrumentId: "piano", level: 7, tier: "genius",
+    title: "Chopin Étude Op.10 No.1 — fluency foundation (excerpt)",
+    objectives: ["Play the opening 4 bars of Op.10 No.1 with clean voicing", "Execute wide arpeggiated patterns across 2 octaves per hand", "Maintain evenness even at reduced tempo"],
+    writtenContent:
+      "## Welcome to Genius tier\n\nYou passed the Pro Certificate. The air thins here. Chopin's Op.10 No.1 — 'Waterfall' — is where pianistic fluency gets tested at the hardest standard.\n\n## What the etude demands\n\nWide RH arpeggios covering 2 octaves in rapid succession. Your fingers must cover large gaps smoothly. We start at 60 bpm on the opening 4 bars; pro tempo is 176.\n\n## Why it's Genius\n\nEveryone plays the notes. 'Genius' means evenness at speed — no bump, no gap, no hesitation. That takes years.",
+    audioRefs: [{ id: "demo", label: "Op.10 No.1 first 4 bars, 60 bpm" }],
+    exercisePlanId: "piano_l7_01_chopin_fragment", prerequisites: ["piano_l6_05_hanon_stretched"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { pitch: 0.82, consistency: 0.8 } }, estimatedMinutes: 30,
+  },
+  piano_l7_02_bach_invention: {
+    id: "piano_l7_02_bach_invention", instrumentId: "piano", level: 7, tier: "genius",
+    title: "Bach Invention No. 1 in C major — two-voice counterpoint",
+    objectives: ["Play both voices of Bach Invention No. 1 independently", "Bring out each voice as it enters (RH then LH)", "Keep both lines audible — neither dominates"],
+    writtenContent:
+      "## The pianist's counterpoint gate\n\nBach's Two-Part Inventions teach the hardest skill on piano: playing TWO melodies at the same time, each audibly independent. Invention No. 1 in C is where most Genius-tier students start.\n\n## Listen for both voices\n\nRH plays the subject (melody). When LH enters a few bars later with the same material, YOUR EAR must follow the LH voice even though RH is still singing. Two parallel minds, two parallel hands.\n\n## Approach\n\nHands separately for 2 weeks. Then hands together VERY slow. Fluency comes at months, not weeks.",
+    audioRefs: [{ id: "demo", label: "Bach Invention 1, first 8 bars, 80 bpm" }],
+    exercisePlanId: "piano_l7_02_invention_subject", prerequisites: ["piano_l6_03_evans_voicing"],
+    passCriteria: { minGradeOverall: 0.76, minPerDimension: { consistency: 0.78 } }, estimatedMinutes: 30,
+  },
+  piano_l7_03_evans_extended: {
+    id: "piano_l7_03_evans_extended", instrumentId: "piano", level: 7, tier: "genius",
+    title: "Bill Evans extended voicings — altered dominants",
+    objectives: ["Build rootless voicings with altered tones: ♭9, ♯9, ♯11, ♭13", "Voice a G7♭9♭13 → Cmaj7 in one pair of hands", "Feel how altered tones heighten tension → resolution"],
+    writtenContent:
+      "## Beyond the 7th\n\nIn L6 we learned rootless ii-V-I with 7ths and 9ths. At Genius level, we add the altered colors: ♭9, ♯9, ♯11, ♭13. These are the jazz flavor notes.\n\n## G7♭9♭13 → Cmaj7\n\nG7♭9♭13 rootless voicing: B (3) + F (7) + A♭ (♭13) + D (9) — except we flat the 9 too → B + F + A♭ + D♭. Resolves beautifully to Cmaj7 = E + G + B + D.\n\n## The magic\n\nEach altered tone a half-step away from a tonic chord tone. Massive tension; beautiful release. The jazz pianist's color palette.",
+    audioRefs: [{ id: "demo", label: "G7♭9♭13 → Cmaj7, slow" }],
+    exercisePlanId: "piano_l7_03_altered_v", prerequisites: ["piano_l6_03_evans_voicing"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 25,
+  },
+  piano_l7_04_bhairav: {
+    id: "piano_l7_04_bhairav", instrumentId: "piano", level: 7, tier: "genius",
+    title: "Raga Bhairav on piano — dawn raga + gamaka simulation",
+    objectives: ["Play the Bhairav aaroha: Sa Re♭ Ga Ma Pa Dha♭ Ni Sa'", "On piano in C: C D♭ E F G A♭ B C'", "Approximate gamaka with chromatic grace notes before komal Re and komal Dha"],
+    writtenContent:
+      "## The dawn raga\n\nBhairav is morning raga music. Austere, contemplative. Its defining notes: **Re komal (flat)** and **Dha komal (flat)**. Both reduce the raga's major-feel with dark lower neighbors.\n\n## Characteristic phrase\n\nSa → Re♭ → Sa → Ga → Ma → Pa → Dha♭ → Pa (the phrase emphasizes the two komal notes with micro-delays)\n\n## Gamaka on piano\n\nReal Bhairav would oscillate approaches. On piano we approximate: before Re♭, touch Sa then quickly Re♭. Before Dha♭, touch Pa then Dha♭. Gives the feeling of approaching from below.",
+    audioRefs: [{ id: "demo", label: "Bhairav aaroha + characteristic phrase" }],
+    exercisePlanId: "piano_l7_04_bhairav", prerequisites: ["piano_l6_04_yaman_on_piano"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { pitch: 0.78 } }, estimatedMinutes: 25,
+  },
+  piano_l7_05_rubato_pedaling: {
+    id: "piano_l7_05_rubato_pedaling", instrumentId: "piano", level: 7, tier: "genius",
+    title: "Rubato + pedaling — expressive freedom with control",
+    objectives: ["Apply 'tempo rubato': borrow time from some notes to give to others within a phrase", "Use the sustain pedal to connect notes without blurring harmony (half-pedaling)", "Keep the overall pulse even while individual notes breathe"],
+    writtenContent:
+      "## Rubato ≠ sloppy timing\n\n'Rubato' literally means 'stolen time'. You borrow time from less-important notes to give to more-important ones WITHIN a phrase. Start of the phrase: slightly slow. End: the time is paid back. Overall pulse: unchanged.\n\n## Pedaling subtly\n\nAt Genius level, the sustain pedal is a precise tool. **Half-pedal** (50% depressed) = partial sustain. **Release + reapply** at each harmony change to avoid mud.\n\n## The art\n\nRubato + pedaling turn a 'correct' performance into a moving one. This is where pianism becomes music.",
+    audioRefs: [{ id: "demo", label: "Chopin Prelude with rubato + half-pedaling" }],
+    exercisePlanId: "piano_l7_05_rubato", prerequisites: ["piano_l6_02_chopin_emin"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { consistency: 0.76, dynamics: 0.76 } }, estimatedMinutes: 25,
+  },
+  piano_l7_06_genius_entry: {
+    id: "piano_l7_06_genius_entry", instrumentId: "piano", level: 7, tier: "genius",
+    title: "L7 exam — Chopin Prelude with dynamic shaping",
+    objectives: ["Perform a full Chopin prelude (your choice of Op.28 No.4 or Op.28 No.7)", "Apply rubato, half-pedaling, dynamic shaping", "Composite score ≥0.80"],
+    writtenContent:
+      "## The Genius tier entry gate\n\nThis isn't a technique drill — it's a real piece played at a professional standard. Everything you've learned so far converges: finger independence, voice leading, rubato, pedal control, dynamic shaping.\n\n## Composite ≥0.80\n\nThat's high. It means not just 'correct notes' — it means MUSICAL. Every dimension (pitch, rhythm, tone, dynamics, consistency) must meet Pro-plus standard.\n\n## Pass → unlock L8\n\nPassing L7 means you've entered the conversation of Genius-tier pianism. Onto improvisation + style in L8.",
+    audioRefs: [{ id: "demo", label: "Reference performance of Chopin Op.28 No.7" }],
+    exercisePlanId: "piano_l7_06_chopin_exam", prerequisites: ["piano_l7_01_chopin_etude", "piano_l7_05_rubato_pedaling"],
+    passCriteria: { minGradeOverall: 0.80, minPerDimension: { pitch: 0.82, rhythm: 0.82, dynamics: 0.8, consistency: 0.8 } }, estimatedMinutes: 40,
+  },
+
+  piano_l8_01_blues_improv: {
+    id: "piano_l8_01_blues_improv", instrumentId: "piano", level: 8, tier: "genius",
+    title: "12-bar blues — melodic improvisation, LH walks",
+    objectives: ["Walk the bass line through a 12-bar blues in F", "Improvise a 32-bar RH solo using F blues scale + chord tones", "Leave space — one idea every 2 bars"],
+    writtenContent:
+      "## Improv is conversation\n\nThe LH walks a 4-note pattern per bar (bass line). The RH improvises melody. Two hands, two jobs. Start by running chord tones in the RH; add the blue notes (♭3, ♭5, ♭7) as you get comfortable.\n\n## The rule of space\n\nAn idea per 2 bars is plenty. Silence between phrases is MUSIC. The moment your RH feels crowded, wait a bar. Play less.\n\n## Shape\n\nA good blues chorus has a 'chorus arc': start simple, develop the idea, build to a peak, resolve. 32 bars of development.",
+    audioRefs: [{ id: "demo", label: "F blues improv with LH walking bass" }],
+    exercisePlanId: "piano_l8_01_blues_walk", prerequisites: ["piano_l7_03_evans_extended"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 30,
+  },
+  piano_l8_02_ii_v_i_vocabulary: {
+    id: "piano_l8_02_ii_v_i_vocabulary", instrumentId: "piano", level: 8, tier: "genius",
+    title: "ii-V-I vocabulary — the bebop phrasing library",
+    objectives: ["Memorize 10 classic ii-V-I licks (Parker, Evans, Peterson)", "Transpose each lick through 12 keys", "Deploy them spontaneously in improvisation"],
+    writtenContent:
+      "## Bebop = vocabulary\n\nJazz improvisation is not 'making it up.' It's deploying a vocabulary of phrases — LICKS — you've absorbed from the masters. Parker, Evans, Peterson, Hancock all drew from the same shared library.\n\n## 10 ii-V-I licks\n\nEach licks a 2-bar phrase over Dm7 G7 Cmaj7. Learn all 10 in C. Then transpose each to 11 other keys. That's 120 phrase transpositions — a year's work.\n\n## Why memorize?\n\nIn real-time, you can't invent. Your brain reaches for what's in the vocabulary. More vocabulary = more creative-feeling improvisation.",
+    audioRefs: [{ id: "demo", label: "10 ii-V-I licks through C" }],
+    exercisePlanId: "piano_l8_02_licks", prerequisites: ["piano_l7_03_evans_extended"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 40,
+  },
+  piano_l8_03_modal_evans: {
+    id: "piano_l8_03_modal_evans", instrumentId: "piano", level: 8, tier: "genius",
+    title: "Modal jazz improv — Bill Evans 'Peace Piece' style",
+    objectives: ["Improvise over a 2-chord vamp (C + F/C, stationary for 8+ bars)", "Use the C major scale's modes (Lydian, Dorian) to color the vamp", "Develop one idea slowly — DON'T move the harmony"],
+    writtenContent:
+      "## Modal = stationary harmony\n\nIn modal jazz, chord changes stop. You sit on one chord (or one drone) and develop melody over it. Evans's 'Peace Piece' sits on 2 chords for over 6 minutes.\n\n## What changes instead\n\nSince harmony is still, everything else moves: register, rhythm, dynamic, motif development. Modal improv is about PATIENCE — letting a small idea grow slowly.\n\n## The Evans path\n\nBill Evans used modal improv to introduce nuance jazz hadn't seen. You're learning from the master.",
+    audioRefs: [{ id: "demo", label: "Modal improv on C vamp, 2 minutes" }],
+    exercisePlanId: "piano_l8_03_modal", prerequisites: ["piano_l8_02_ii_v_i_vocabulary"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 30,
+  },
+  piano_l8_04_carnatic_fusion: {
+    id: "piano_l8_04_carnatic_fusion", instrumentId: "piano", level: 8, tier: "genius",
+    title: "Carnatic-jazz fusion — A.R. Rahman style piano",
+    objectives: ["Improvise over a Carnatic raga-based chord loop (Rahman style)", "Mix Western voice leading with raga-specific note choices", "Feel adi tala (8-beat cycle) in a 'swung 16' modern feel"],
+    writtenContent:
+      "## The A.R. Rahman path\n\nRahman's signature: Carnatic melody + Western harmony. The piano sits at the crossroads. Example progression: Cmaj7 → Am7 → Fmaj7 → G7 — Western chords — but melody improv stays in raga Kalyani (C D E F♯ G A B).\n\n## Adi tala in 4/4\n\nAdi tala = 8-beat cycle (4 + 2 + 2). Fits 4/4 beautifully. Accent beats 1, 5, 7 to get the Carnatic feel.\n\n## Practice\n\nLoop the Cmaj7 → Am7 → Fmaj7 → G7 with LH comping. Improvise RH melody using ONLY notes from raga Kalyani. Feel for the exotic-but-familiar sweet spot.",
+    audioRefs: [{ id: "demo", label: "Carnatic fusion improv over C-Am-F-G" }],
+    exercisePlanId: "piano_l8_04_rahman", prerequisites: ["piano_l7_04_bhairav"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { pitch: 0.76 } }, estimatedMinutes: 30,
+  },
+  piano_l8_05_film_score: {
+    id: "piano_l8_05_film_score", instrumentId: "piano", level: 8, tier: "genius",
+    title: "Film-score modulation — Rahman/Sakamoto crossover",
+    objectives: ["Modulate from C major to A♭ major via a common-tone pivot", "Use chromatic voice-leading during the modulation", "Arrive in the new key as if inevitable"],
+    writtenContent:
+      "## The cinematic key change\n\nFilm scores modulate constantly. Rahman and Sakamoto both modulate via COMMON TONES — find a note present in both keys, hold it while the harmony shifts underneath.\n\n## C → A♭\n\nC major: C E G. A♭ major: A♭ C E♭. The common tone is **C**. Hold C in the RH melody. LH moves: from C-E-G (C major) → A♭-C-E♭ (A♭ major). The C stays. Everything else shifts under it. The ear hears a revelation.\n\n## This is composition\n\nYou're not just playing anymore. You're making harmonic DECISIONS. L8 into L9 is about composing under your fingers.",
+    audioRefs: [{ id: "demo", label: "C → A♭ modulation via common tone" }],
+    exercisePlanId: "piano_l8_05_modulation", prerequisites: ["piano_l7_03_evans_extended"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 25,
+  },
+  piano_l8_06_style_exam: {
+    id: "piano_l8_06_style_exam", instrumentId: "piano", level: 8, tier: "genius",
+    title: "L8 exam — 32-bar improv + 3-min raga alap",
+    objectives: ["Improvise 32 bars over a ii-V-I-vi jazz progression", "Perform a 3-minute raga Yaman alap with proper grammar", "Grade cross-style: jazz and raga both judged"],
+    writtenContent:
+      "## The two-worlds test\n\n32 bars of jazz improv + 3 minutes of raga alap. Both must be musical. Both must show style mastery.\n\n## Jazz: 32 bars over Dm7-G7-Cmaj7-Am7\n\nDeploy your vocabulary. Land well-placed altered tones. Leave space. Build + release tension.\n\n## Raga Yaman alap: 3 minutes\n\nStay in the raga. Use the pakad. Approach the Ma♯ with care. Let phrases breathe. The alap should sound patient, unhurried, inevitable.",
+    audioRefs: [{ id: "demo", label: "Reference L8 exam performance" }],
+    exercisePlanId: "piano_l8_06_dual_exam", prerequisites: ["piano_l8_01_blues_improv", "piano_l8_04_carnatic_fusion"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { pitch: 0.8 } }, estimatedMinutes: 45,
+  },
+
+  piano_l9_01_melody_composition: {
+    id: "piano_l9_01_melody_composition", instrumentId: "piano", level: 9, tier: "genius",
+    title: "Composing melody — shape, contour, motivic development",
+    objectives: ["Compose an 8-bar melodic theme with clear arc (high point at bar 5-6)", "Develop the theme by rhythm/pitch variation", "Write it down (you'll need to remember it)"],
+    writtenContent:
+      "## A melody is architecture\n\nA good melody has: a clear shape (rising toward a peak, returning), a memorable rhythmic fingerprint (3-4 distinct rhythmic patterns), and motivic reuse (a tiny 3-note cell recurring in new guises).\n\n## The 8-bar theme\n\nBars 1-2: state the idea (3-note motif). Bars 3-4: develop (invert, rhythm-change). Bars 5-6: peak (highest note, biggest rhythm). Bars 7-8: resolve.\n\n## Write it down\n\nFirst time you compose, pick up a pencil. Trust nothing to memory. Playing it once is easy; playing it again the same way requires notation.",
+    audioRefs: [{ id: "demo", label: "Example 8-bar theme + development" }],
+    exercisePlanId: "piano_l9_01_melody", prerequisites: ["piano_l8_03_modal_evans"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 45,
+  },
+  piano_l9_02_harmony_progression: {
+    id: "piano_l9_02_harmony_progression", instrumentId: "piano", level: 9, tier: "genius",
+    title: "Harmonic progression design — intentional cadences + chord substitution",
+    objectives: ["Compose a 16-bar progression with 4 cadences of varying strength", "Use at least one tritone substitution (D♭7 for G7)", "Plan resolution points before inventing melody"],
+    writtenContent:
+      "## Harmony is the skeleton\n\nBefore writing melody, sketch the harmonic journey. Every 4 bars = a mini-cadence. Every 16 bars = one full phrase.\n\n## Tritone substitution\n\nAny dominant 7 chord can be replaced by the one a tritone away (i.e. 3 whole steps). G7 → D♭7. Both contain the same tritone (F + B / F + C♭). D♭7 → C sounds surprising but elegantly resolves.\n\n## The craft\n\nComposer's real work: decide WHICH chord at each cadence, THEN write melody that voices the chord colors naturally.",
+    audioRefs: [{ id: "demo", label: "16-bar progression with tritone sub" }],
+    exercisePlanId: "piano_l9_02_progression", prerequisites: ["piano_l8_05_film_score"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 35,
+  },
+  piano_l9_03_formal_structure: {
+    id: "piano_l9_03_formal_structure", instrumentId: "piano", level: 9, tier: "genius",
+    title: "Formal structure — ABA, sonata, bhajan form",
+    objectives: ["Outline an ABA form (theme, contrast, return) for a 3-minute piece", "Alternatively: sketch a bhajan structure (sthayi + antara)", "Translate the outline into piano material"],
+    writtenContent:
+      "## Big-picture shape\n\nMost great pieces have a clear form. **ABA** (ternary): theme, contrasting middle, return. **Sonata**: exposition → development → recapitulation. **Bhajan**: sthayi (refrain) → antara (verse) → sthayi (return).\n\n## A template for you\n\nABA in 3 minutes: 1 minute A theme, 1 minute B contrast (new key), 1 minute A return (maybe varied).\n\n## Why form matters\n\nWithout form, a piece feels rambling. With form, listeners KNOW where they are in the journey, which builds anticipation and delivers payoff.",
+    audioRefs: [{ id: "demo", label: "ABA form example with piano" }],
+    exercisePlanId: "piano_l9_03_form", prerequisites: ["piano_l9_01_melody_composition"],
+    passCriteria: { minGradeOverall: 0.73 }, estimatedMinutes: 30,
+  },
+  piano_l9_04_orchestration: {
+    id: "piano_l9_04_orchestration", instrumentId: "piano", level: 9, tier: "genius",
+    title: "Arranging for other instruments — orchestration-lite",
+    objectives: ["Take your piano composition and reassign parts to violin / flute / bass", "Understand each instrument's range and idiomatic strengths", "Voice the ensemble so each instrument sings without clashing"],
+    writtenContent:
+      "## Your composition as an ensemble piece\n\nYou've written a piano piece. Now imagine it with a string quartet, or a folk ensemble, or a full orchestra. Which lines go where?\n\n## Ranges matter\n\n- **Violin**: G3 - E7 (best up high)\n- **Flute**: C4 - D7\n- **Cello**: C2 - C6 (best low-mid)\n- **Bass (double bass)**: E1 - C4 (bottom only)\n\nYour piano-middle melody transposed into each instrument's sweet spot will sing. Into the wrong spot it'll fight.\n\n## Try it\n\nRearrange your L9.1 melody for violin + cello + flute. Let violin take the high voice, cello the bass, flute doubles the melody in a new register.",
+    audioRefs: [{ id: "demo", label: "Your melody rearranged for string trio" }],
+    exercisePlanId: "piano_l9_04_orchestrate", prerequisites: ["piano_l9_01_melody_composition"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 30,
+  },
+  piano_l9_05_composition_workshop: {
+    id: "piano_l9_05_composition_workshop", instrumentId: "piano", level: 9, tier: "genius",
+    title: "Final composition workshop — your 2-minute original piece",
+    objectives: ["Compose a complete 2-minute original work for solo piano", "Demonstrate: melody + harmony + form + expressive performance", "Write the score and perform it from memory"],
+    writtenContent:
+      "## The capstone composition\n\nYou've learned everything. Now prove it. Write a 2-minute original piece. Not a cover. Not a variation. Your own composition.\n\n## What we're looking for\n\n1. **Clear melodic shape** (peak, resolution)\n2. **Intentional harmony** (at least one modulation or surprising chord)\n3. **Formal structure** (ABA or similar — listener should hear 'themes')\n4. **Expressive performance** (dynamics, rubato, voice-leading clearly audible)\n5. **Memorization** (you play it from memory, not from the score)\n\n## This is the Genius Certificate composition\n\nAlongside the recital (L9.6), this composition is required for the Genius Certificate. Take it seriously.",
+    audioRefs: [{ id: "demo", label: "Example Genius-tier student composition" }],
+    exercisePlanId: "piano_l9_05_composition", prerequisites: ["piano_l9_02_harmony_progression", "piano_l9_03_formal_structure"],
+    passCriteria: { minGradeOverall: 0.78 }, estimatedMinutes: 120,
+  },
+  piano_l9_06_recital_cert: {
+    id: "piano_l9_06_recital_cert", instrumentId: "piano", level: 9, tier: "genius",
+    title: "Genius Certificate — 15-minute recital with peer review",
+    objectives: ["Perform a 15-minute recital program", "Include: 1 Baroque (Bach), 1 Romantic (Chopin), 1 jazz standard, 1 raga-based, 1 original (L9.5)", "Submit to human reviewer panel + peer feedback"],
+    writtenContent:
+      "## The recital is the final gate\n\n15 minutes. 5 pieces. Baroque. Romantic. Jazz. Raga-based. Your original composition.\n\n## Across styles\n\nThe breadth matters. A real Genius pianist can play counterpoint AND play the blues AND play raga AND compose. You've trained across traditions — now show all of them in one sitting.\n\n## The review panel\n\nHuman reviewers listen to the recital. Peer feedback adds community perspective. Both must approve → you earn the Genius Certificate.\n\n## What the Certificate means\n\nYou've taken a piano from first touch to mastery across multiple traditions. That's real. Welcome to the small club.",
+    audioRefs: [{ id: "demo", label: "Sample Genius Certificate recital program" }],
+    exercisePlanId: "piano_l9_06_recital", prerequisites: ["piano_l9_05_composition_workshop"],
+    passCriteria: { minGradeOverall: 0.80, minPerDimension: { pitch: 0.82, rhythm: 0.82, tone: 0.8, dynamics: 0.8, consistency: 0.8 } }, estimatedMinutes: 60,
+  },
+
   guitar_l1_01_hold: {
     id: "guitar_l1_01_hold",
     instrumentId: "guitar",

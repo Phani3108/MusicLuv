@@ -459,7 +459,6 @@ export const EXERCISES: Record<string, Exercise> = {
     instrumentId: "piano",
     title: "Sight-read a grade-5 level unseen piece (16 bars)",
     targetPattern: {
-      // A short unseen melody the student sees for the first time
       notes: [
         { pitch: "D4", startMs: 0,    durationMs: 500 },
         { pitch: "F#4",startMs: 500,  durationMs: 500 },
@@ -479,6 +478,144 @@ export const EXERCISES: Record<string, Exercise> = {
     },
     tempo: { bpm: 70, meter: [4, 4] },
     gradingRubricId: "rubric_early_level",
+  },
+  piano_l7_01_chopin_fragment: {
+    id: "piano_l7_01_chopin_fragment", type: "play_along", instrumentId: "piano",
+    title: "Chopin Op.10 No.1 — opening arpeggio fragment",
+    targetPattern: { notes: ["C3","E3","G3","C4","E4","G4","C5","G4","E4","C4","G3","E3"]
+      .map((p,i)=>({pitch:p, startMs:i*250, durationMs:250})) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l7_02_invention_subject: {
+    id: "piano_l7_02_invention_subject", type: "play_along", instrumentId: "piano",
+    title: "Bach Invention 1 — RH subject, 2 bars",
+    targetPattern: { notes: ["C4","D4","E4","F4","D4","E4","C4","G4","C5","B4","C5","D5","G4","C5","E5"]
+      .map((p,i)=>({pitch:p, startMs:i*300, durationMs:300})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l7_03_altered_v: {
+    id: "piano_l7_03_altered_v", type: "play_chord", instrumentId: "piano",
+    title: "G7♭9♭13 → Cmaj7",
+    targetPattern: { notes: [
+      { pitch: "G3", startMs: 0, durationMs: 2000 },
+      { pitch: "C3", startMs: 2000, durationMs: 3000 },
+    ]}, tempo: { bpm: 70, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l7_04_bhairav: {
+    id: "piano_l7_04_bhairav", type: "improvise", instrumentId: "piano",
+    title: "Raga Bhairav — aaroha + characteristic phrase",
+    targetPattern: { notes: ["C4","Db4","E4","F4","G4","Ab4","B4","C5","Ab4","G4","F4","E4","Db4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  piano_l7_05_rubato: {
+    id: "piano_l7_05_rubato", type: "play_along", instrumentId: "piano",
+    title: "Chopin phrase with rubato + half-pedaling",
+    targetPattern: { notes: [
+      { pitch: "E4", startMs: 0,    durationMs: 900,  velocity: 0.5 },
+      { pitch: "G4", startMs: 900,  durationMs: 700,  velocity: 0.55 },
+      { pitch: "B4", startMs: 1600, durationMs: 1600, velocity: 0.65 },
+      { pitch: "A4", startMs: 3200, durationMs: 900,  velocity: 0.6 },
+      { pitch: "G4", startMs: 4100, durationMs: 700,  velocity: 0.5 },
+      { pitch: "E4", startMs: 4800, durationMs: 2200, velocity: 0.35 },
+    ]}, tempo: { bpm: 50, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l7_06_chopin_exam: {
+    id: "piano_l7_06_chopin_exam", type: "play_along", instrumentId: "piano",
+    title: "Chopin Prelude Op.28 No.7 — full piece",
+    targetPattern: { notes: ["A4","G4","A4","B4","C#5","D5","B4","A4","G4","F#4","E4","D4","A4"]
+      .map((p,i)=>({pitch:p, startMs:i*800, durationMs:800, velocity: 0.4 + 0.05*i})) },
+    tempo: { bpm: 60, meter: [3, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l8_01_blues_walk: {
+    id: "piano_l8_01_blues_walk", type: "improvise", instrumentId: "piano",
+    title: "F blues — LH walk + RH improv, 12 bars",
+    targetPattern: { notes: ["F2","A2","C3","Eb3","F3","A3","C4","Eb4","F4","Eb4","C4","A3","F3"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l8_02_licks: {
+    id: "piano_l8_02_licks", type: "play_along", instrumentId: "piano",
+    title: "Classic ii-V-I lick — Parker-style in C",
+    targetPattern: { notes: ["D4","F4","A4","C5","B4","A4","G4","F4","E4","G4","E4","C4","B3","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*250, durationMs:250})) },
+    tempo: { bpm: 120, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l8_03_modal: {
+    id: "piano_l8_03_modal", type: "improvise", instrumentId: "piano",
+    title: "Modal improv — C Lydian over C/F/C vamp",
+    targetPattern: { notes: ["C5","D5","E5","F#5","G5","E5","D5","C5","G4","C5","E5","D5","C5"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l8_04_rahman: {
+    id: "piano_l8_04_rahman", type: "improvise", instrumentId: "piano",
+    title: "Carnatic fusion — Kalyani over C-Am-F-G",
+    targetPattern: { notes: ["C4","E4","F#4","G4","A4","F#4","E4","D4","C4","B3","D4","E4","G4","F#4","E4"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 95, meter: [4, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  piano_l8_05_modulation: {
+    id: "piano_l8_05_modulation", type: "play_chord", instrumentId: "piano",
+    title: "C → A♭ modulation via common tone C",
+    targetPattern: { notes: [
+      { pitch: "C4", startMs: 0, durationMs: 2000 },
+      { pitch: "C4", startMs: 2000, durationMs: 2000 },
+      { pitch: "Ab3", startMs: 4000, durationMs: 2000 },
+    ]}, tempo: { bpm: 70, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l8_06_dual_exam: {
+    id: "piano_l8_06_dual_exam", type: "improvise", instrumentId: "piano",
+    title: "L8 exam — 32-bar improv (jazz portion)",
+    targetPattern: { notes: ["D4","F4","A4","C5","B4","E4","G4","B4","D5","C5","G4","C5","E5","D5","C5","B4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 110, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l9_01_melody: {
+    id: "piano_l9_01_melody", type: "compose", instrumentId: "piano",
+    title: "Compose 8-bar theme (reference target: characteristic shape)",
+    targetPattern: { notes: ["C4","E4","G4","C5","D5","E5","D5","C5","B4","G4","E4","C4","D4","E4","G4","C5"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l9_02_progression: {
+    id: "piano_l9_02_progression", type: "compose", instrumentId: "piano",
+    title: "16-bar progression with tritone sub (bass roots)",
+    targetPattern: { notes: [
+      { pitch: "C3", startMs: 0, durationMs: 1500 },
+      { pitch: "A2", startMs: 1500, durationMs: 1500 },
+      { pitch: "D3", startMs: 3000, durationMs: 1500 },
+      { pitch: "Db3", startMs: 4500, durationMs: 1500 },
+      { pitch: "C3", startMs: 6000, durationMs: 3000 },
+    ]}, tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l9_03_form: {
+    id: "piano_l9_03_form", type: "compose", instrumentId: "piano",
+    title: "ABA form outline — 3-minute piece",
+    targetPattern: { notes: ["C4","E4","G4","E4","C4","D4","F4","A4","F4","D4","C4","E4","G4","E4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*1000, durationMs:1000})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l9_04_orchestrate: {
+    id: "piano_l9_04_orchestrate", type: "compose", instrumentId: "piano",
+    title: "Arrange piano melody for string trio (reference)",
+    targetPattern: { notes: ["G4","B4","D5","E5","D5","B4","G4","E4","A4","C5","E5","A5","G5","E5","C5","A4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l9_05_composition: {
+    id: "piano_l9_05_composition", type: "compose", instrumentId: "piano",
+    title: "Genius Certificate composition — 2-minute original (reference shape)",
+    targetPattern: { notes: ["C4","E4","G4","C5","B4","G4","A4","F4","D4","F4","A4","D5","C5","A4","E4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*600, durationMs:600})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  piano_l9_06_recital: {
+    id: "piano_l9_06_recital", type: "play_along", instrumentId: "piano",
+    title: "Genius Certificate recital — 15-minute program (first piece, short excerpt)",
+    targetPattern: { notes: ["C4","E4","G4","C5","B4","A4","G4","F4","E4","D4","C4","D4","E4","F4","G4","A4","B4","C5"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500, velocity: 0.3 + i*0.03})) },
+    tempo: { bpm: 70, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
   },
 
   piano_l4_01_g_major_2oct: {
