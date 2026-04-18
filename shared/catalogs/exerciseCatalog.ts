@@ -1229,10 +1229,10 @@ export const EXERCISES: Record<string, Exercise> = {
     title: "Mary Had a Little Lamb — A-string version",
     targetPattern: {
       notes: [
-        { pitch: "B4", startMs: 0,    durationMs: 500 }, // B
-        { pitch: "A4", startMs: 500,  durationMs: 500 }, // A (open)
-        { pitch: "A4", startMs: 1000, durationMs: 500 }, // A
-        { pitch: "B4", startMs: 1500, durationMs: 500 }, // B
+        { pitch: "B4", startMs: 0,    durationMs: 500 },
+        { pitch: "A4", startMs: 500,  durationMs: 500 },
+        { pitch: "A4", startMs: 1000, durationMs: 500 },
+        { pitch: "B4", startMs: 1500, durationMs: 500 },
         { pitch: "B4", startMs: 2000, durationMs: 500 },
         { pitch: "B4", startMs: 2500, durationMs: 500 },
         { pitch: "B4", startMs: 3000, durationMs: 1000 },
@@ -1246,6 +1246,252 @@ export const EXERCISES: Record<string, Exercise> = {
     },
     tempo: { bpm: 90, meter: [4, 4] },
     gradingRubricId: "rubric_early_level",
+  },
+  violin_l2_01_bow_div: {
+    id: "violin_l2_01_bow_div", type: "play_note", instrumentId: "violin",
+    title: "Bow division — whole, halves, shorts on open A",
+    targetPattern: { notes: [
+      { pitch: "A4", startMs: 0, durationMs: 3000 },
+      { pitch: "A4", startMs: 3000, durationMs: 1500 },
+      { pitch: "A4", startMs: 4500, durationMs: 1500 },
+      { pitch: "A4", startMs: 6000, durationMs: 500 },
+      { pitch: "A4", startMs: 6500, durationMs: 500 },
+      { pitch: "A4", startMs: 7000, durationMs: 500 },
+      { pitch: "A4", startMs: 7500, durationMs: 500 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l2_02_d_major: {
+    id: "violin_l2_02_d_major", type: "play_scale", instrumentId: "violin",
+    title: "D major, one octave",
+    targetPattern: { notes: ["D4","E4","F#4","G4","A4","B4","C#5","D5"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l2_03_three_strings: {
+    id: "violin_l2_03_three_strings", type: "play_note", instrumentId: "violin",
+    title: "G-D-A-D-G cross-string roll",
+    targetPattern: { notes: [
+      { pitch: "G3", startMs: 0, durationMs: 800 },
+      { pitch: "D4", startMs: 800, durationMs: 800 },
+      { pitch: "A4", startMs: 1600, durationMs: 800 },
+      { pitch: "D4", startMs: 2400, durationMs: 800 },
+      { pitch: "G3", startMs: 3200, durationMs: 800 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l2_04_sightread: {
+    id: "violin_l2_04_sightread", type: "sight_read", instrumentId: "violin",
+    title: "Short written melody from treble staff",
+    targetPattern: { notes: ["A4","B4","C#5","B4","A4","G4","F#4","E4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l2_05_slurred: {
+    id: "violin_l2_05_slurred", type: "play_scale", instrumentId: "violin",
+    title: "D-E-F♯-G slurred under one bow",
+    targetPattern: { notes: [
+      { pitch: "D4", startMs: 0, durationMs: 500 },
+      { pitch: "E4", startMs: 500, durationMs: 500 },
+      { pitch: "F#4", startMs: 1000, durationMs: 500 },
+      { pitch: "G4", startMs: 1500, durationMs: 1500 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l2_06_ode_to_joy: {
+    id: "violin_l2_06_ode_to_joy", type: "play_along", instrumentId: "violin",
+    title: "Ode to Joy in D major",
+    targetPattern: { notes: ["F#4","F#4","G4","A4","A4","G4","F#4","E4","D4","D4","E4","F#4","F#4","E4","E4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l3_01_a_major: {
+    id: "violin_l3_01_a_major", type: "play_scale", instrumentId: "violin",
+    title: "A major, one octave",
+    targetPattern: { notes: ["A4","B4","C#5","D5","E5","F#5","G#5","A5"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l3_02_d_minor: {
+    id: "violin_l3_02_d_minor", type: "play_scale", instrumentId: "violin",
+    title: "D natural minor",
+    targetPattern: { notes: ["D4","E4","F4","G4","A4","Bb4","C5","D5"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l3_03_martele: {
+    id: "violin_l3_03_martele", type: "rhythm_clap", instrumentId: "violin",
+    title: "Martelé strokes on open A, 8 hits",
+    targetPattern: { onsets: Array.from({length:8},(_,i)=>i*750) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  violin_l3_04_spiccato: {
+    id: "violin_l3_04_spiccato", type: "rhythm_clap", instrumentId: "violin",
+    title: "Spiccato, 8 bounces",
+    targetPattern: { onsets: Array.from({length:8},(_,i)=>i*1000) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  violin_l3_05_twinkle: {
+    id: "violin_l3_05_twinkle", type: "play_along", instrumentId: "violin",
+    title: "Twinkle Twinkle in A major",
+    targetPattern: { notes: ["A4","A4","E5","E5","F#5","F#5","E5","D5","D5","C#5","C#5","B4","B4","A4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l3_06_birthday: {
+    id: "violin_l3_06_birthday", type: "play_along", instrumentId: "violin",
+    title: "Happy Birthday in D major",
+    targetPattern: { notes: ["D4","D4","E4","D4","G4","F#4","D4","D4","E4","D4","A4","G4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [3, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l4_01_g_major_2oct: {
+    id: "violin_l4_01_g_major_2oct", type: "play_scale", instrumentId: "violin",
+    title: "G major, 2 octaves",
+    targetPattern: { notes: ["G3","A3","B3","C4","D4","E4","F#4","G4","A4","B4","C5","D5","E5","F#5","G5"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l4_02_double_stop: {
+    id: "violin_l4_02_double_stop", type: "play_chord", instrumentId: "violin",
+    title: "D+A and D+B double-stops",
+    targetPattern: { notes: [
+      { pitch: "D4", startMs: 0, durationMs: 2000 },
+      { pitch: "A4", startMs: 0, durationMs: 2000 },
+      { pitch: "D4", startMs: 2000, durationMs: 2000 },
+      { pitch: "B4", startMs: 2000, durationMs: 2000 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l4_03_vibrato: {
+    id: "violin_l4_03_vibrato", type: "play_note", instrumentId: "violin",
+    title: "Held note with vibrato on B (A-string finger 2)",
+    targetPattern: { notes: [{ pitch: "B4", startMs: 0, durationMs: 6000 }] },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l4_04_shift: {
+    id: "violin_l4_04_shift", type: "play_scale", instrumentId: "violin",
+    title: "Shift to 2nd position on A string",
+    targetPattern: { notes: ["A4","B4","C#5","D5","E5","D5","C#5","B4","A4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l4_05_g_3oct: {
+    id: "violin_l4_05_g_3oct", type: "play_scale", instrumentId: "violin",
+    title: "G major, 3 octaves (sample — first octave shown)",
+    targetPattern: { notes: ["G3","A3","B3","C4","D4","E4","F#4","G4"]
+      .map((p,i)=>({pitch:p, startMs:i*300, durationMs:300})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l4_06_arpeggios: {
+    id: "violin_l4_06_arpeggios", type: "play_chord", instrumentId: "violin",
+    title: "D / A / E major arpeggios",
+    targetPattern: { notes: [
+      { pitch: "D4", startMs: 0, durationMs: 400 },
+      { pitch: "F#4", startMs: 400, durationMs: 400 },
+      { pitch: "A4", startMs: 800, durationMs: 400 },
+      { pitch: "D5", startMs: 1200, durationMs: 800 },
+      { pitch: "A4", startMs: 2000, durationMs: 400 },
+      { pitch: "C#5", startMs: 2400, durationMs: 400 },
+      { pitch: "E5", startMs: 2800, durationMs: 400 },
+      { pitch: "A5", startMs: 3200, durationMs: 800 },
+      { pitch: "E5", startMs: 4000, durationMs: 400 },
+      { pitch: "G#5", startMs: 4400, durationMs: 400 },
+      { pitch: "B5", startMs: 4800, durationMs: 400 },
+      { pitch: "E6", startMs: 5200, durationMs: 800 },
+    ]}, tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l5_01_vibrato_ctrl: {
+    id: "violin_l5_01_vibrato_ctrl", type: "play_note", instrumentId: "violin",
+    title: "Vibrato control — slow then fast",
+    targetPattern: { notes: [
+      { pitch: "A4", startMs: 0, durationMs: 4000 },
+      { pitch: "A4", startMs: 4000, durationMs: 4000 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l5_02_third_pos: {
+    id: "violin_l5_02_third_pos", type: "play_scale", instrumentId: "violin",
+    title: "E major in 3rd position",
+    targetPattern: { notes: ["E5","F#5","G#5","A5","B5","A5","G#5","F#5","E5"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l5_03_crescendo: {
+    id: "violin_l5_03_crescendo", type: "play_along", instrumentId: "violin",
+    title: "pp → ff crescendo, 8 whole-bows on A",
+    targetPattern: { notes: Array.from({length:8},(_,i)=>({
+      pitch: "A4", startMs: i*3000, durationMs: 3000, velocity: 0.2 + i*0.1,
+    })) }, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l5_04_trill: {
+    id: "violin_l5_04_trill", type: "play_note", instrumentId: "violin",
+    title: "Trill on C♯ (A-string)",
+    targetPattern: { notes: [
+      { pitch: "C#5", startMs: 0, durationMs: 2000 },
+      { pitch: "D5", startMs: 0, durationMs: 2000 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l5_05_harmonics: {
+    id: "violin_l5_05_harmonics", type: "play_note", instrumentId: "violin",
+    title: "Natural harmonics, midpoint each string",
+    targetPattern: { notes: [
+      { pitch: "G4", startMs: 0, durationMs: 1500 },
+      { pitch: "D5", startMs: 1500, durationMs: 1500 },
+      { pitch: "A5", startMs: 3000, durationMs: 1500 },
+      { pitch: "E6", startMs: 4500, durationMs: 1500 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l5_06_thirds_sixths: {
+    id: "violin_l5_06_thirds_sixths", type: "play_chord", instrumentId: "violin",
+    title: "Thirds and sixths — D/A string double-stops",
+    targetPattern: { notes: [
+      { pitch: "D4", startMs: 0, durationMs: 1500 },
+      { pitch: "F#4", startMs: 0, durationMs: 1500 },
+      { pitch: "D4", startMs: 1500, durationMs: 1500 },
+      { pitch: "B4", startMs: 1500, durationMs: 1500 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l6_01_minuet_g: {
+    id: "violin_l6_01_minuet_g", type: "play_along", instrumentId: "violin",
+    title: "Bach Minuet in G — opening",
+    targetPattern: { notes: ["D5","G4","A4","B4","C5","D5","D5","B4","C5","D5","C5","B4","A4","D5","G4","A4","B4","C5","A4","D5","B4","A4","G4","F#4","G4"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 90, meter: [3, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l6_02_meditation: {
+    id: "violin_l6_02_meditation", type: "play_along", instrumentId: "violin",
+    title: "Meditation from Thaïs — opening",
+    targetPattern: { notes: [
+      { pitch: "D5", startMs: 0, durationMs: 2000, velocity: 0.4 },
+      { pitch: "G5", startMs: 2000, durationMs: 3000, velocity: 0.7 },
+      { pitch: "F#5", startMs: 5000, durationMs: 2000, velocity: 0.6 },
+      { pitch: "E5", startMs: 7000, durationMs: 2000, velocity: 0.4 },
+      { pitch: "D5", startMs: 9000, durationMs: 3000, velocity: 0.3 },
+    ]}, tempo: { bpm: 50, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l6_03_gavotte: {
+    id: "violin_l6_03_gavotte", type: "play_along", instrumentId: "violin",
+    title: "Gossec Gavotte opening",
+    targetPattern: { notes: ["D5","D5","G4","G4","B4","B4","D5","D5","G4","F#4","E4","D4","C4","D4","B3","A3","G3","F#3"]
+      .map((p,i)=>({pitch:p, startMs:i*350, durationMs:350})) },
+    tempo: { bpm: 110, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l6_04_jig: {
+    id: "violin_l6_04_jig", type: "play_along", instrumentId: "violin",
+    title: "Celtic jig — Swallowtail, 8 bars",
+    targetPattern: { notes: ["E5","D5","B4","E5","D5","B4","D5","B4","A4","D5","B4","A4"]
+      .map((p,i)=>({pitch:p, startMs:i*250, durationMs:250})) },
+    tempo: { bpm: 110, meter: [6, 8] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l6_05_wohlfahrt: {
+    id: "violin_l6_05_wohlfahrt", type: "play_scale", instrumentId: "violin",
+    title: "Wohlfahrt Op.45 #1 opening",
+    targetPattern: { notes: ["C4","E4","G4","C5","E5","G5","E5","C5","G4","E4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*300, durationMs:300})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l6_06_unseen: {
+    id: "violin_l6_06_unseen", type: "sight_read", instrumentId: "violin",
+    title: "Unseen intermediate piece (Pro Cert gate)",
+    targetPattern: { notes: ["G4","B4","D5","G5","D5","B4","G4","A4","C5","E5","G5","E5","C5","A4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
   },
 
   drums_l1_01_snare_4: {

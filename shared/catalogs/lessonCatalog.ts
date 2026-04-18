@@ -1176,6 +1176,311 @@ export const LESSONS: Record<string, Lesson> = {
     estimatedMinutes: 15,
   },
 
+  violin_l2_01_bow_division: {
+    id: "violin_l2_01_bow_division", instrumentId: "violin", level: 2, tier: "standard",
+    title: "Bow division — whole, half, and short bows",
+    objectives: ["Draw a full whole-bow on open A for 4 beats", "Play 2 half-bows on open A (upper half, lower half)", "Play 4 short detaché bows in the middle third"],
+    writtenContent:
+      "## One bow, many lengths\n\n- **Whole bow**: frog to tip — used for long notes\n- **Upper half**: tip to middle — lighter, brighter\n- **Lower half**: middle to frog — heavier, darker\n- **Middle third**: the 'detaché' zone — fast, articulated notes\n\nLearn where each lives on the bow. The lengths give you control.",
+    audioRefs: [{ id: "demo", label: "Bow-division exercise on open A" }],
+    exercisePlanId: "violin_l2_01_bow_div", prerequisites: ["violin_l1_06_first_tune"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { tone: 0.72, rhythm: 0.72 } }, estimatedMinutes: 12,
+  },
+  violin_l2_02_d_major_full: {
+    id: "violin_l2_02_d_major_full", instrumentId: "violin", level: 2, tier: "standard",
+    title: "D major scale, one octave — across D and A strings",
+    objectives: ["Play D major: D E F♯ G (D string) + A B C♯ D (A string)", "Bow each note separately, clean cross-string at G→A", "Maintain intonation — especially F♯ (whole step above E)"],
+    writtenContent:
+      "## Your first full scale\n\nD major spans two strings: D → G on the D string, A → D on the A string. You already know both tetrachords from L1.\n\n## Intonation checkpoints\n\nF♯ (D string, finger 2) and C♯ (A string, finger 2) MUST be in tune. These are the notes a Western ear flags if slightly off.",
+    audioRefs: [{ id: "demo", label: "D major one octave, 80 bpm" }],
+    exercisePlanId: "violin_l2_02_d_major", prerequisites: ["violin_l1_04_d_string"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.75 } }, estimatedMinutes: 15,
+  },
+  violin_l2_03_string_crossings: {
+    id: "violin_l2_03_string_crossings", instrumentId: "violin", level: 2, tier: "standard",
+    title: "Three-string crossings — G to D to A",
+    objectives: ["Play open G → open D → open A → open D → open G as a rolling bow pattern", "Keep each string clean; no accidental double-stops", "Lift the bow arm FROM the elbow — no wrist rotation"],
+    writtenContent:
+      "## Three strings in one breath\n\nBowing across G D A without stopping requires the bow ARM to rise and fall from the elbow. Your wrist stays soft but doesn't do the work.\n\n## Watch for double-stops\n\nIf two strings ring together, your bow is tilted wrong. Adjust the angle; use the ARM, not the hand.",
+    audioRefs: [{ id: "demo", label: "G-D-A-D-G cross-string pattern" }],
+    exercisePlanId: "violin_l2_03_three_strings", prerequisites: ["violin_l1_05_cross_string"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { tone: 0.72 } }, estimatedMinutes: 12,
+  },
+  violin_l2_04_staff_reading: {
+    id: "violin_l2_04_staff_reading", instrumentId: "violin", level: 2, tier: "standard",
+    title: "Reading treble-clef notation on violin",
+    objectives: ["Read the treble staff lines/spaces (EGBDF / FACE)", "Find each of those notes on the fingerboard", "Play a short written melody from the staff"],
+    writtenContent:
+      "## Violin lives in treble clef\n\nThe violin's range is treble clef only. Learn the staff like a map:\n- Middle line (B) = B4 = finger 2 on A string\n- Top line (F) = F5 = finger 3 on E string\n- Bottom line (E) = E4 = open E (or finger 4 on A)",
+    audioRefs: [{ id: "demo", label: "4-bar written melody from staff" }],
+    exercisePlanId: "violin_l2_04_sightread", prerequisites: ["violin_l2_02_d_major_full"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 15,
+  },
+  violin_l2_05_legato_slur: {
+    id: "violin_l2_05_legato_slur", instrumentId: "violin", level: 2, tier: "standard",
+    title: "Slurring — multiple notes under one bow",
+    objectives: ["Play D E F♯ G under a single down-bow (no bow change between notes)", "Keep the bow moving smoothly; don't stop on each note", "Change bow direction only at the slur marking"],
+    writtenContent:
+      "## Slurs connect notes\n\nA curved line above notes = 'play these all on one bow.' No bow change until the slur ends. Legato on violin is exactly this.\n\n## Budget your bow\n\nFour notes in one bow = each gets 1/4 of the bow length. Plan ahead or you'll run out of bow.",
+    audioRefs: [{ id: "demo", label: "D-E-F♯-G slurred, 60 bpm" }],
+    exercisePlanId: "violin_l2_05_slurred", prerequisites: ["violin_l2_01_bow_division"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { tone: 0.75 } }, estimatedMinutes: 12,
+  },
+  violin_l2_06_simple_tune: {
+    id: "violin_l2_06_simple_tune", instrumentId: "violin", level: 2, tier: "standard",
+    title: "'Ode to Joy' on violin (D major)",
+    objectives: ["Play Beethoven's Ode to Joy in D major across D and A strings", "Apply bow division + string crossings + legato slurs", "Phrase the two-bar groups naturally"],
+    writtenContent:
+      "## Everything you've learned, one song\n\nOde to Joy in D major: **F♯ F♯ G A · A G F♯ E · D D E F♯ · F♯ E E**\n\nYou have bow division, string crossings, legato, and reading. Put them together into one of the most famous melodies ever written.",
+    audioRefs: [{ id: "demo", label: "Ode to Joy in D major on violin" }],
+    exercisePlanId: "violin_l2_06_ode_to_joy", prerequisites: ["violin_l2_02_d_major_full", "violin_l2_05_legato_slur"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 18,
+  },
+
+  violin_l3_01_a_major: {
+    id: "violin_l3_01_a_major", instrumentId: "violin", level: 3, tier: "standard",
+    title: "A major scale, one octave (3 sharps: F♯ C♯ G♯)",
+    objectives: ["Play A major across A and E strings", "Place finger 3 correctly for G♯ on the A string", "Hold intonation across a faster scale (90 bpm)"],
+    writtenContent:
+      "## A major = 3 sharps\n\nA B C♯ D E F♯ G♯ A. On violin: A B C♯ D on the A string, then E F♯ G♯ A on the E string.\n\n## The G♯\n\nFinger 3 on the A string, high (close to finger 4). This is a stretch — feel the distance.",
+    audioRefs: [{ id: "demo", label: "A major, one octave, 90 bpm" }],
+    exercisePlanId: "violin_l3_01_a_major", prerequisites: ["violin_l2_02_d_major_full"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.75 } }, estimatedMinutes: 12,
+  },
+  violin_l3_02_minor_scale: {
+    id: "violin_l3_02_minor_scale", instrumentId: "violin", level: 3, tier: "standard",
+    title: "D minor scale — your first minor",
+    objectives: ["Play D natural minor: D E F G A B♭ C D", "Feel the difference from D major (flat 3, flat 6, flat 7)", "Place the low B♭ on the A string (finger 1 lower)"],
+    writtenContent:
+      "## Minor violin = finger repositioning\n\nD natural minor has **F** (not F♯) and **B♭** (not B). Your finger 2 on D and A strings moves LOW (half-step instead of whole from finger 1).\n\n## Mood\n\nMinor feels weighted. Slow it down; let the minor intervals breathe.",
+    audioRefs: [{ id: "demo", label: "D natural minor, 80 bpm" }],
+    exercisePlanId: "violin_l3_02_d_minor", prerequisites: ["violin_l3_01_a_major"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.75 } }, estimatedMinutes: 12,
+  },
+  violin_l3_03_martele: {
+    id: "violin_l3_03_martele", instrumentId: "violin", level: 3, tier: "standard",
+    title: "Martelé — articulated stroke with a stop",
+    objectives: ["Press + release + stop: each note has attack, body, and silent gap", "Play 8 martelé strokes on open A at 80 bpm", "Maintain consistent tone through the attack phase"],
+    writtenContent:
+      "## 'Martelé' = hammered\n\nEach bow stroke starts with a clear attack, releases into tone, then STOPS. The stop is the defining feature — audible silence between notes.\n\n## Why\n\nClear articulation. Used in classical repertoire for punchy, precise passages. Feel like you're 'launching' each note.",
+    audioRefs: [{ id: "demo", label: "Martelé strokes on open A" }],
+    exercisePlanId: "violin_l3_03_martele", prerequisites: ["violin_l2_01_bow_division"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.75 } }, estimatedMinutes: 12,
+  },
+  violin_l3_04_spiccato: {
+    id: "violin_l3_04_spiccato", instrumentId: "violin", level: 3, tier: "standard",
+    title: "Spiccato — bouncing bow",
+    objectives: ["Let the bow bounce naturally on the string", "Use the middle third; let gravity + wrist do the work", "Play 8 spiccato notes on open A"],
+    writtenContent:
+      "## Bow as pendulum\n\nSpiccato = the bow LEAVES the string between notes. Not thrown — DROPPED. Gravity does 80% of the work. Your wrist guides.\n\n## Don't force\n\nForcing spiccato = scratchy, dead tone. Relax. Let the bow bounce; you just aim.",
+    audioRefs: [{ id: "demo", label: "Spiccato, 60 bpm" }],
+    exercisePlanId: "violin_l3_04_spiccato", prerequisites: ["violin_l3_03_martele"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { tone: 0.72 } }, estimatedMinutes: 15,
+  },
+  violin_l3_05_twinkle: {
+    id: "violin_l3_05_twinkle", instrumentId: "violin", level: 3, tier: "standard",
+    title: "Twinkle, Twinkle — Suzuki's first piece",
+    objectives: ["Play Twinkle in A major — across A and E strings", "Apply the 'Twinkle rhythm': Ti-Ti-Ti-Ti Ta Ta (4 sixteenths + 2 quarters)", "Use clean bow changes between every note"],
+    writtenContent:
+      "## The first Suzuki piece\n\nEvery Suzuki-method violinist learns Twinkle first, in A major. The 'Twinkle rhythm' — four 16ths, two quarters — teaches bow control at a friendly tempo.\n\n## The melody (A major)\n\n`A A E E F♯ F♯ E · D D C♯ C♯ B B A · E E D D C♯ C♯ B · E E D D C♯ C♯ B · A A E E F♯ F♯ E · D D C♯ C♯ B B A`",
+    audioRefs: [{ id: "demo", label: "Twinkle A major violin" }],
+    exercisePlanId: "violin_l3_05_twinkle", prerequisites: ["violin_l3_01_a_major"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 18,
+  },
+  violin_l3_06_happy_birthday: {
+    id: "violin_l3_06_happy_birthday", instrumentId: "violin", level: 3, tier: "standard",
+    title: "Happy Birthday — familiar tune, D major",
+    objectives: ["Play Happy Birthday melody across D and A strings", "Use pickup note timing correctly", "Phrase each line as one musical gesture"],
+    writtenContent:
+      "## The most recognized melody in English\n\nHappy Birthday in D major fits neatly across D and A strings. The pickup note (unstressed) leads to beat 1 of the next bar.\n\n`D D E D G F♯ - | D D E D A G - | D D D' B G F♯ E - | C C B G A G`",
+    audioRefs: [{ id: "demo", label: "Happy Birthday, D major" }],
+    exercisePlanId: "violin_l3_06_birthday", prerequisites: ["violin_l3_05_twinkle"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 15,
+  },
+
+  violin_l4_01_g_string: {
+    id: "violin_l4_01_g_string", instrumentId: "violin", level: 4, tier: "pro",
+    title: "The G string — deep tone, new fingerings",
+    objectives: ["Bow open G cleanly — heavier, darker tone than A or E", "Add G-string fingers: G A B C (open + 1 + 2 + 3)", "Play G major scale two octaves spanning all 4 strings"],
+    writtenContent:
+      "## Welcome to the G string\n\nThickest string, lowest pitch. Heavier bow pressure; more deliberate contact. Feel the difference from the brighter upper strings.\n\n## G major, 2 octaves\n\nG A B C on G string → D E F♯ G on D string → A B C♯ D on A string. That's G major across 3 strings, range G3 to D5.",
+    audioRefs: [{ id: "demo", label: "G major, 2 octaves, 90 bpm" }],
+    exercisePlanId: "violin_l4_01_g_major_2oct", prerequisites: ["violin_l3_02_minor_scale"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { pitch: 0.76 } }, estimatedMinutes: 15,
+  },
+  violin_l4_02_double_stops: {
+    id: "violin_l4_02_double_stops", instrumentId: "violin", level: 4, tier: "pro",
+    title: "Double-stops — two strings at once",
+    objectives: ["Bow two adjacent strings simultaneously (D + A open)", "Add finger 1 on A for B — now playing D + B", "Hold even tone on BOTH strings"],
+    writtenContent:
+      "## Two notes, one bow\n\nDouble-stops = bowing 2 adjacent strings together. Start with open strings (D + A). Then add fingers. Two notes = harmony.\n\n## The tilt\n\nFlatten the bow slightly — bow hair contacts both strings equally. If one dominates, adjust tilt.",
+    audioRefs: [{ id: "demo", label: "Open D+A and D+B double-stops" }],
+    exercisePlanId: "violin_l4_02_double_stop", prerequisites: ["violin_l2_03_string_crossings"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { tone: 0.75 } }, estimatedMinutes: 15,
+  },
+  violin_l4_03_vibrato_intro: {
+    id: "violin_l4_03_vibrato_intro", instrumentId: "violin", level: 4, tier: "pro",
+    title: "Vibrato — intro exercise on finger 2",
+    objectives: ["Rock the fingertip back and forth on the string (pitch oscillates slightly)", "Start at ~5 Hz, depth ~20 cents", "Use arm vibrato from the forearm, not wrist-only"],
+    writtenContent:
+      "## The violinist's voice\n\nVibrato = fast, controlled pitch oscillation. Rock the fingertip. Pitch rises above target, falls below, averaging to the correct pitch.\n\n## Slow first\n\nNever fast. 5 Hz = 5 oscillations per second. Metronome pulse every quarter at 60 bpm, 5 oscillations per beat. Build from there.",
+    audioRefs: [{ id: "demo", label: "Slow vibrato on B (A string, finger 2)" }],
+    exercisePlanId: "violin_l4_03_vibrato", prerequisites: ["violin_l3_05_twinkle"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { tone: 0.72 } }, estimatedMinutes: 20,
+  },
+  violin_l4_04_shifting: {
+    id: "violin_l4_04_shifting", instrumentId: "violin", level: 4, tier: "pro",
+    title: "Shifting to 2nd position",
+    objectives: ["Slide the left hand up one position on the A string", "In 2nd position, finger 1 plays C♯ (instead of B)", "Return to 1st position cleanly"],
+    writtenContent:
+      "## 2nd position opens new ranges\n\nThe hand shifts up by one whole step. Now finger 1 plays what finger 2 used to — you gain higher notes without awkward stretches.\n\n## The shift motion\n\nSlide finger + thumb together in one motion. Don't lift. The whole hand moves as a unit.",
+    audioRefs: [{ id: "demo", label: "Shift to 2nd position on A string" }],
+    exercisePlanId: "violin_l4_04_shift", prerequisites: ["violin_l3_01_a_major"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 18,
+  },
+  violin_l4_05_g_maj_two_oct: {
+    id: "violin_l4_05_g_maj_two_oct", instrumentId: "violin", level: 4, tier: "pro",
+    title: "G major, 3 octaves — the pro scale gate",
+    objectives: ["Play G major from G3 to G6 across all 4 strings", "Use shifting to 3rd position on the E string", "Maintain 100 bpm tempo throughout"],
+    writtenContent:
+      "## The 3-octave scale\n\nG3 → G6 means ascending 3 full octaves. You'll cross all 4 strings AND shift twice. This is the pro violinist's daily warmup.\n\n## Tempo\n\nStart at 60 bpm. Build to 100 by adding 2 bpm per day over 3 weeks. Intonation first; speed second.",
+    audioRefs: [{ id: "demo", label: "G major 3 octaves, 100 bpm" }],
+    exercisePlanId: "violin_l4_05_g_3oct", prerequisites: ["violin_l4_04_shifting"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { pitch: 0.78 } }, estimatedMinutes: 20,
+  },
+  violin_l4_06_arpeggio_practice: {
+    id: "violin_l4_06_arpeggio_practice", instrumentId: "violin", level: 4, tier: "pro",
+    title: "Arpeggios — D major, A major, E major",
+    objectives: ["Play D major arpeggio (D F♯ A D') across 2 strings", "Connect to A major arpeggio (A C♯ E A')", "Execute E major arpeggio on E string (E G♯ B E')"],
+    writtenContent:
+      "## Arpeggios tell you the chord\n\nAny major arpeggio = root, 3rd, 5th, octave. Hearing these four notes lets you hear the chord without playing it all.\n\n## Shape\n\nD: open D → finger 2 on D → open A → finger 3 on A. Memorize the shape; the same pattern works in every key.",
+    audioRefs: [{ id: "demo", label: "D / A / E major arpeggios" }],
+    exercisePlanId: "violin_l4_06_arpeggios", prerequisites: ["violin_l4_01_g_string"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 15,
+  },
+
+  violin_l5_01_vibrato_control: {
+    id: "violin_l5_01_vibrato_control", instrumentId: "violin", level: 5, tier: "pro",
+    title: "Vibrato — control speed + depth",
+    objectives: ["Produce 4 Hz slow vibrato and 7 Hz fast vibrato distinctly", "Vary depth from ~10 cents to ~40 cents smoothly", "Apply vibrato to a held note in a phrase"],
+    writtenContent:
+      "## Vibrato is expression\n\nSlow + shallow = calm. Fast + wide = intense. Match the vibrato to the music's emotion.\n\n## Practice mechanics\n\nWith a metronome: 4 oscillations per beat at 60 bpm = 4 Hz. 7 per beat = 7 Hz. Train at each speed until either is on-demand.",
+    audioRefs: [{ id: "demo", label: "Slow vs fast vibrato comparison" }],
+    exercisePlanId: "violin_l5_01_vibrato_ctrl", prerequisites: ["violin_l4_03_vibrato_intro"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { tone: 0.75 } }, estimatedMinutes: 18,
+  },
+  violin_l5_02_third_position: {
+    id: "violin_l5_02_third_position", instrumentId: "violin", level: 5, tier: "pro",
+    title: "3rd position — higher range",
+    objectives: ["Shift to 3rd position on E string (finger 1 = A)", "Play E major scale starting from 3rd position", "Shift back to 1st position without a gap"],
+    writtenContent:
+      "## 3rd position gets you higher\n\nFinger 1 on E string, 3rd position = A5. You can now reach pitches otherwise impossible in 1st position.\n\n## The thumb travels too\n\nThumb moves with the hand. Don't leave it behind. Hand + thumb = one unit.",
+    audioRefs: [{ id: "demo", label: "Shift to 3rd, play E major, shift back" }],
+    exercisePlanId: "violin_l5_02_third_pos", prerequisites: ["violin_l4_04_shifting"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 20,
+  },
+  violin_l5_03_bow_pressure_ctrl: {
+    id: "violin_l5_03_bow_pressure_ctrl", instrumentId: "violin", level: 5, tier: "pro",
+    title: "Bow pressure — pp, mf, ff dynamics",
+    objectives: ["Play pp (very soft) by lifting weight off the bow", "Play ff (very loud) by sinking the arm's weight into the string", "Crescendo pp → ff over 8 bows on open A"],
+    writtenContent:
+      "## The entire bow's weight\n\nLoud = arm weight falls into the string. Soft = weight lifted slightly off. Never 'squeeze' the bow — use gravity.\n\n## The crescendo\n\n8 whole-bows on open A, starting pp, ending ff. Each stroke a touch louder than the last. Control, not effort.",
+    audioRefs: [{ id: "demo", label: "pp → ff crescendo on open A" }],
+    exercisePlanId: "violin_l5_03_crescendo", prerequisites: ["violin_l2_01_bow_division"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { dynamics: 0.75 } }, estimatedMinutes: 15,
+  },
+  violin_l5_04_trills: {
+    id: "violin_l5_04_trills", instrumentId: "violin", level: 5, tier: "pro",
+    title: "Trills — rapid finger alternation",
+    objectives: ["Alternate finger 2 and finger 3 rapidly on A string (C♯ and D)", "Trill on a single beat — ~8 oscillations", "Keep the primary pitch clear, the trill decorative"],
+    writtenContent:
+      "## The classical ornament\n\nA trill = fast alternation between primary note and one step above. Finger 2 (C♯) + finger 3 (D) on A string. Fast, light.\n\n## Not a shaking\n\nLift + press both fingers cleanly. It's 2 independent motions, fast — not a shake.",
+    audioRefs: [{ id: "demo", label: "Trill on C♯ (A string)" }],
+    exercisePlanId: "violin_l5_04_trill", prerequisites: ["violin_l3_02_minor_scale"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 15,
+  },
+  violin_l5_05_harmonic: {
+    id: "violin_l5_05_harmonic", instrumentId: "violin", level: 5, tier: "pro",
+    title: "Natural harmonics — bell-like tones",
+    objectives: ["Lightly touch finger 4 at the midpoint of the A string", "Bow with moderate speed; hear the octave harmonic (A5)", "Find natural harmonics at 1/3 and 2/3 of each string"],
+    writtenContent:
+      "## Touch, don't press\n\nHarmonics are produced by a LIGHT touch at specific nodes (1/2, 1/3, 2/3 along the string). The string still vibrates; the touch just enforces a node.\n\n## Magic sound\n\nThe resulting tone is two octaves above your typical pressed pitch — bell-like, ethereal. Listen for it.",
+    audioRefs: [{ id: "demo", label: "Natural harmonics at midpoint on each string" }],
+    exercisePlanId: "violin_l5_05_harmonics", prerequisites: ["violin_l4_01_g_string"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 15,
+  },
+  violin_l5_06_double_stop_int: {
+    id: "violin_l5_06_double_stop_int", instrumentId: "violin", level: 5, tier: "pro",
+    title: "Double-stop intervals — thirds and sixths",
+    objectives: ["Play a third on adjacent strings (D + F♯)", "Play a sixth (D + B)", "Connect double-stops smoothly in a short phrase"],
+    writtenContent:
+      "## Harmony on one violin\n\nDouble-stop thirds sound sweet (like a duet). Sixths sound even sweeter. Practice common classical double-stop patterns.\n\n## Fingering\n\nThirds: fingers on adjacent strings in same 'row' (same fret-number). Sixths: fingers one row apart. Intonation on BOTH strings matters.",
+    audioRefs: [{ id: "demo", label: "Double-stop thirds + sixths on D/A strings" }],
+    exercisePlanId: "violin_l5_06_thirds_sixths", prerequisites: ["violin_l4_02_double_stops"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.76, tone: 0.75 } }, estimatedMinutes: 18,
+  },
+
+  violin_l6_01_bach_minuet: {
+    id: "violin_l6_01_bach_minuet", instrumentId: "violin", level: 6, tier: "pro",
+    title: "Bach Minuet in G — opening",
+    objectives: ["Play the opening 8 bars of Bach's Minuet in G (Suzuki book 1 classic)", "Phrase each 2-bar group as a musical question + answer", "Apply vibrato sparingly on long notes"],
+    writtenContent:
+      "## The violinist's rite of passage\n\nBach's Minuet in G is THE first 'real' piece for violinists. Pre-shipped in every Suzuki book.\n\n## The melody\n\n`D G A B | C D · D | · B C D | C B A | D G A B | C A D B | A G F♯ G | ·`\n\n3/4 time, minuet feel (graceful, triple meter). Play with precision, not bombast.",
+    audioRefs: [{ id: "demo", label: "Bach Minuet G, opening" }],
+    exercisePlanId: "violin_l6_01_minuet_g", prerequisites: ["violin_l4_05_g_maj_two_oct"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 25,
+  },
+  violin_l6_02_meditation_thais: {
+    id: "violin_l6_02_meditation_thais", instrumentId: "violin", level: 6, tier: "pro",
+    title: "Massenet 'Meditation from Thaïs' — opening theme",
+    objectives: ["Play Massenet's singing melody with deep vibrato", "Use full-bow sustained tones on every note", "Shape the phrase with dynamic arc (pp → f → pp)"],
+    writtenContent:
+      "## Crying violin\n\nMassenet's Meditation is one of the most emotionally charged violin melodies ever written. Full whole-bows, slow vibrato, infinite patience.\n\n## Every note is an event\n\nThere are only a few notes in the opening. Make each one count — tone, dynamics, vibrato all in service of expression.",
+    audioRefs: [{ id: "demo", label: "Meditation from Thaïs, opening 8 bars" }],
+    exercisePlanId: "violin_l6_02_meditation", prerequisites: ["violin_l5_01_vibrato_control"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { tone: 0.78, dynamics: 0.75 } }, estimatedMinutes: 30,
+  },
+  violin_l6_03_gavotte: {
+    id: "violin_l6_03_gavotte", instrumentId: "violin", level: 6, tier: "pro",
+    title: "Gossec Gavotte — staccato dance",
+    objectives: ["Play the Gavotte melody with strict staccato articulation", "Use short, lifted bows (near tip, middle third)", "Dance feel — light and precise"],
+    writtenContent:
+      "## Gavotte = French court dance\n\nGossec's Gavotte is all about articulation: each note short, lifted, precise. Practice staccato bow strokes until each note is clean.\n\n## The opening phrase\n\n`D D | G G B B | D D G F♯ | E D C D | B A G F♯ | G E D -`\n\nShort bows, lifted between notes. Keep it light.",
+    audioRefs: [{ id: "demo", label: "Gossec Gavotte opening" }],
+    exercisePlanId: "violin_l6_03_gavotte", prerequisites: ["violin_l3_03_martele"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 20,
+  },
+  violin_l6_04_celtic_jig: {
+    id: "violin_l6_04_celtic_jig", instrumentId: "violin", level: 6, tier: "pro",
+    title: "Celtic jig — 6/8 folk tune",
+    objectives: ["Play a 16-bar Irish jig in 6/8 meter", "Feel the 'skipping' feel — 123 456", "Use slurred double-pairs (1-2 under one bow, 3 alone)"],
+    writtenContent:
+      "## Fiddle vs. violin\n\nSame instrument. Different approach. Fiddle playing is rhythmic, rolling, ornamented.\n\n## 6/8 jig feel\n\nTwo strong beats per bar (1 and 4), each subdivided into 3. **DA-de-de DA-de-de**. The dance is in your bow arm.",
+    audioRefs: [{ id: "demo", label: "Celtic jig 'Swallowtail' 16 bars" }],
+    exercisePlanId: "violin_l6_04_jig", prerequisites: ["violin_l3_05_twinkle"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.76 } }, estimatedMinutes: 20,
+  },
+  violin_l6_05_etude: {
+    id: "violin_l6_05_etude", instrumentId: "violin", level: 6, tier: "pro",
+    title: "Wohlfahrt Op. 45 No. 1 — opening etude",
+    objectives: ["Play Wohlfahrt's first etude at 100 bpm", "Use strict detaché bowing — one note per bow, no slurs", "Maintain clean intonation across all string changes"],
+    writtenContent:
+      "## The classic etude series\n\nFranz Wohlfahrt's 60 etudes Op. 45 are on every violinist's stand. They're technical exercises disguised as melodies.\n\n## Goals\n\nFaster than scales, exposed intonation, real string crossings. Work up to 120 bpm over weeks.",
+    audioRefs: [{ id: "demo", label: "Wohlfahrt #1 opening, 100 bpm" }],
+    exercisePlanId: "violin_l6_05_wohlfahrt", prerequisites: ["violin_l4_05_g_maj_two_oct"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { pitch: 0.78, rhythm: 0.78 } }, estimatedMinutes: 20,
+  },
+  violin_l6_06_sightread_pro: {
+    id: "violin_l6_06_sightread_pro", instrumentId: "violin", level: 6, tier: "pro",
+    title: "Sight-read intermediate piece (Pro Certificate practical)",
+    objectives: ["Read an unseen 16-bar piece in treble clef", "Play at 80 bpm with clean intonation + bowing", "Don't stop for mistakes"],
+    writtenContent:
+      "## The Pro Cert gate\n\nPass this practical + your L6 exam → unlock L7 Genius tier.\n\n## Strategy\n\n30-second scan first: key, meter, tempo, shape. Then slow play-through. Then target tempo 80 bpm. Never stop; pulse is everything.",
+    audioRefs: [{ id: "demo", label: "Sight-read target" }],
+    exercisePlanId: "violin_l6_06_unseen", prerequisites: ["violin_l6_01_bach_minuet", "violin_l6_05_etude"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { pitch: 0.8, rhythm: 0.78 } }, estimatedMinutes: 25,
+  },
+
   drums_l1_01_grip: {
     id: "drums_l1_01_grip",
     instrumentId: "drums",
