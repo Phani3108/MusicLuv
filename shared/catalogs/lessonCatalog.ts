@@ -750,6 +750,140 @@ export const LESSONS: Record<string, Lesson> = {
     estimatedMinutes: 15,
   },
 
+  guitar_l2_01_tab: {
+    id: "guitar_l2_01_tab",
+    instrumentId: "guitar", level: 2, tier: "standard",
+    title: "Reading guitar tablature (TAB)",
+    objectives: ["Read TAB lines bottom-to-top as strings 6-to-1", "Execute a 4-bar TAB exercise cleanly", "Switch between TAB and standard notation in the same piece"],
+    writtenContent:
+      "## TAB is guitar-specific shorthand\n\n6 horizontal lines = 6 strings (bottom = low E, top = high E). Numbers on the lines tell you which fret to press on that string. `0` = open string.\n\n## The trade-off\n\nTAB tells you **where** to play but not **how long**. You'll see TAB paired with standard rhythm notation for exactly this reason.",
+    audioRefs: [{ id: "demo", label: "4-bar single-string TAB line" }],
+    exercisePlanId: "guitar_l2_01_tab_line", prerequisites: ["guitar_l1_06_first_song"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 10,
+  },
+  guitar_l2_02_c_chord: {
+    id: "guitar_l2_02_c_chord",
+    instrumentId: "guitar", level: 2, tier: "standard",
+    title: "C major chord + Em-G-C switching drill",
+    objectives: ["Fret C: F3(3rd A), F2(2nd D), F1(1st B)", "Strum only strings 5-4-3-2-1 (skip low E)", "Switch Em → G → C → G smoothly at 60 bpm"],
+    writtenContent:
+      "## C is slightly trickier\n\nThree fingers, three frets, three strings. The low E string is usually muted or skipped on a basic C — that's why C is sometimes called the 'open C' chord.\n\n## The switching drill\n\nEm → G → C → G. Loop it. Clean transitions at 60 bpm first, then speed up. You now know 3 chords — enough for thousands of songs.",
+    audioRefs: [{ id: "demo", label: "Em → G → C → G progression" }],
+    exercisePlanId: "guitar_l2_02_emgcg", prerequisites: ["guitar_l1_04_g_chord"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 12,
+  },
+  guitar_l2_03_d_chord: {
+    id: "guitar_l2_03_d_chord",
+    instrumentId: "guitar", level: 2, tier: "standard",
+    title: "D major + the G-D progression",
+    objectives: ["Fret D: F1(2nd G), F2(2nd high E), F3(3rd B)", "Strum only strings 4-3-2-1 (skip low E and A)", "Loop G → D at 80 bpm"],
+    writtenContent:
+      "## D is 4 strings only\n\nDon't strum the bottom two. Your pick starts on the D string (string 4). D is a 'top-four-strings' chord.\n\n## G → D is half of country music\n\nLoop G to D, 2 beats each. That's the spine of thousands of country songs. Same strum pattern as before.",
+    audioRefs: [{ id: "demo", label: "G → D switch, 8 bars" }],
+    exercisePlanId: "guitar_l2_03_gd_switch", prerequisites: ["guitar_l1_04_g_chord"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 10,
+  },
+  guitar_l2_04_a_chord: {
+    id: "guitar_l2_04_a_chord",
+    instrumentId: "guitar", level: 2, tier: "standard",
+    title: "A major — three fingers, one fret",
+    objectives: ["Fret A: three fingers crammed onto the 2nd fret of strings 4-3-2", "Strum from the A string (skip low E)", "Add A to the open-chord vocabulary: Em / G / C / D / A"],
+    writtenContent:
+      "## Three fingers on one fret\n\nThat tight cluster is A major. Fingers 1-2-3 on the 2nd fret of strings 4 (D), 3 (G), 2 (B). Strum from the A string.\n\n## Chord budget: 5 chords\n\nEm, G, C, D, A. With these five open chords you can play most folk, rock, country, and pop songs ever written.",
+    audioRefs: [{ id: "demo", label: "A major, 4 strums + A-D-A-D switch" }],
+    exercisePlanId: "guitar_l2_04_a_chord", prerequisites: ["guitar_l2_02_c_chord"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 10,
+  },
+  guitar_l2_05_rhythm_reading: {
+    id: "guitar_l2_05_rhythm_reading",
+    instrumentId: "guitar", level: 2, tier: "standard",
+    title: "Reading rhythm — quarter, eighth, sixteenth notes",
+    objectives: ["Count '1-and-2-and' on eighth-note strums", "Execute a rhythm with mixed quarter + eighth notes", "Feel the difference between shuffle and straight eighths"],
+    writtenContent:
+      "## Subdivide\n\nEvery beat divides in half (8ths), then in half again (16ths). When you count '1-e-and-a', you're naming the 4 16ths inside each beat.\n\n## Count before you play\n\nGrab the written rhythm first — say it out loud without the guitar. Once your mouth knows it, your hand follows.",
+    audioRefs: [{ id: "demo", label: "Mixed rhythm on open E chord" }],
+    exercisePlanId: "guitar_l2_05_mixed_rhythm", prerequisites: ["guitar_l1_05_strum_pattern"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.75 } }, estimatedMinutes: 12,
+  },
+  guitar_l2_06_first_song_5chords: {
+    id: "guitar_l2_06_first_song_5chords",
+    instrumentId: "guitar", level: 2, tier: "standard",
+    title: "'Knocking on Heaven's Door' — G-D-Am-C",
+    objectives: ["Play the G-D-Am-C verse of Dylan's song", "Switch every 2 beats without breaking the strum", "Sing or hum the melody while playing"],
+    writtenContent:
+      "## A real Dylan song\n\n*Knocking on Heaven's Door* loops four chords: G → D → Am → C. The progression repeats for the entire song. Strum pattern: steady 8th notes, one downstroke per eighth.\n\nYou know all four chords. This is your second real song.",
+    audioRefs: [{ id: "demo", label: "Knocking verse, 4 bars" }],
+    exercisePlanId: "guitar_l2_06_knocking", prerequisites: ["guitar_l2_02_c_chord", "guitar_l2_03_d_chord"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 15,
+  },
+
+  guitar_l3_01_blues_shuffle: {
+    id: "guitar_l3_01_blues_shuffle",
+    instrumentId: "guitar", level: 3, tier: "standard",
+    title: "12-bar blues in E — shuffle rhythm",
+    objectives: ["Play E7 / A7 / B7 power-chord-style two-note voicings", "Execute the shuffle (long-short, long-short) 8th-note feel", "Get through a full 12-bar blues loop"],
+    writtenContent:
+      "## The blueprint\n\n12-bar blues follows a specific chord order: **E · E · E · E · A · A · E · E · B · A · E · B** (one bar each). Use E7/A7/B7 shapes — two fingers on two strings.\n\n## The shuffle\n\nNot straight 8ths — **long-short**. 'Da-dit, da-dit, da-dit, da-dit'. That's the blues feel.",
+    audioRefs: [{ id: "demo", label: "12-bar blues in E, shuffle" }],
+    exercisePlanId: "guitar_l3_01_12bar_blues", prerequisites: ["guitar_l2_06_first_song_5chords"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.75 } }, estimatedMinutes: 15,
+  },
+  guitar_l3_02_fingerpicking: {
+    id: "guitar_l3_02_fingerpicking",
+    instrumentId: "guitar", level: 3, tier: "standard",
+    title: "Fingerpicking basics — the travis pattern",
+    objectives: ["Assign fingers: thumb on bass, index/middle/ring on treble strings", "Play a thumb-index-middle-index pattern on an Em chord", "Keep the thumb steady on the bass (quarters) while fingers play 8ths"],
+    writtenContent:
+      "## Each finger has a job\n\n- Thumb (p): strings 6-5-4 (bass)\n- Index (i): string 3\n- Middle (m): string 2\n- Ring (a): string 1\n\n## The Travis pattern\n\nThumb on beat 1 and 3. Between the thumb strokes, fingers play the treble strings. Merle Travis made this famous; every fingerstyle player uses it.",
+    audioRefs: [{ id: "demo", label: "Travis picking on Em, 4 bars" }],
+    exercisePlanId: "guitar_l3_02_travis_em", prerequisites: ["guitar_l1_03_first_chord"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 15,
+  },
+  guitar_l3_03_house_of_rising: {
+    id: "guitar_l3_03_house_of_rising",
+    instrumentId: "guitar", level: 3, tier: "standard",
+    title: "'House of the Rising Sun' — arpeggiated chords in 6/8",
+    objectives: ["Arpeggiate Am → C → D → F → Am → E in 6/8 time", "Play notes one at a time, letting each ring", "Keep the 6/8 pulse: 1-2-3-4-5-6"],
+    writtenContent:
+      "## 6/8 is a swinging compound meter\n\nSix 8th notes per bar, accented on 1 and 4. Count **ONE-two-three-FOUR-five-six**. Feels like a rocking waltz.\n\n## Arpeggiate, don't strum\n\nFor each chord, pick the notes one at a time from lowest to highest and back. Let them ring into each other — that's the song's haunting sound.",
+    audioRefs: [{ id: "demo", label: "House of the Rising Sun, verse" }],
+    exercisePlanId: "guitar_l3_03_rising_sun", prerequisites: ["guitar_l3_02_fingerpicking"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 20,
+  },
+  guitar_l3_04_pentatonic: {
+    id: "guitar_l3_04_pentatonic",
+    instrumentId: "guitar", level: 3, tier: "standard",
+    title: "Minor pentatonic scale — E minor, position 1",
+    objectives: ["Play the E minor pentatonic scale in position 1 (open to 3rd fret)", "Memorize the 5-note pattern: E G A B D (+ octave E)", "Improvise a simple melody using only these 5 notes over an Em chord"],
+    writtenContent:
+      "## Five notes, infinite music\n\nE minor pentatonic = **E G A B D** (+ octave). Skip the 2nd (F♯) and the 6th (C). The gaps are what make it sound 'bluesy' — every note fits over anything.\n\n## Your first improv\n\nPlay the 5 notes in any order over an Em chord. Whatever you play will sound good. Welcome to the best-kept secret of rock guitar.",
+    audioRefs: [{ id: "demo", label: "Em pentatonic + improv over Em" }],
+    exercisePlanId: "guitar_l3_04_em_pent", prerequisites: ["guitar_l2_05_rhythm_reading"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.75 } }, estimatedMinutes: 15,
+  },
+  guitar_l3_05_power_chords: {
+    id: "guitar_l3_05_power_chords",
+    instrumentId: "guitar", level: 3, tier: "standard",
+    title: "Power chords — the rock 'n' roll staple",
+    objectives: ["Fret a two-note power chord: root + 5th", "Move the shape up the neck — A5, D5, E5", "Play a simple punk progression: E5 → A5 → D5 → A5"],
+    writtenContent:
+      "## Two notes, all the attitude\n\nA 'power chord' = root + perfect 5th. Just 2 notes. Neither major nor minor — **ambiguous** — which is why they work for everything.\n\n## Movable shape\n\nFret 5 on string 6 + fret 7 on string 5 = A5. Slide the whole thing up 2 frets = B5. Down 2 = G5. One shape, 12 chords.",
+    audioRefs: [{ id: "demo", label: "E5-A5-D5-A5 punk progression" }],
+    exercisePlanId: "guitar_l3_05_power_chords", prerequisites: ["guitar_l1_02_first_fret"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 12,
+  },
+  guitar_l3_06_tune_wonderwall: {
+    id: "guitar_l3_06_tune_wonderwall",
+    instrumentId: "guitar", level: 3, tier: "standard",
+    title: "'Wonderwall' intro — Em7 / G / Dsus4 / A7sus4",
+    objectives: ["Fret the 4 sus-style chord shapes", "Switch between them every 2 beats", "Apply the signature Oasis strum pattern"],
+    writtenContent:
+      "## Four variations on open chords\n\nThe four chords in Wonderwall's intro are variations of open chords you already know. Sus / 7 / add9 colorations = a fuller sound than plain Em, G, D, A.\n\n## The cultural test\n\nEvery guitarist eventually plays Wonderwall at a party. This is your passage rite. **Standard Certificate practical awaits in L3.**",
+    audioRefs: [{ id: "demo", label: "Wonderwall intro, 4 bars" }],
+    exercisePlanId: "guitar_l3_06_wonderwall", prerequisites: ["guitar_l2_06_first_song_5chords"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 20,
+  },
+
   violin_l1_01_hold: {
     id: "violin_l1_01_hold",
     instrumentId: "violin",

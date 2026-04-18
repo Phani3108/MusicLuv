@@ -831,8 +831,8 @@ export const EXERCISES: Record<string, Exercise> = {
     targetPattern: {
       onsets: [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000],
       notes: [
-        { pitch: "E2", startMs: 0,    durationMs: 900 },  // Em
-        { pitch: "D2", startMs: 1000, durationMs: 900 },  // D6add9
+        { pitch: "E2", startMs: 0,    durationMs: 900 },
+        { pitch: "D2", startMs: 1000, durationMs: 900 },
         { pitch: "E2", startMs: 2000, durationMs: 900 },
         { pitch: "D2", startMs: 3000, durationMs: 900 },
         { pitch: "E2", startMs: 4000, durationMs: 900 },
@@ -843,6 +843,136 @@ export const EXERCISES: Record<string, Exercise> = {
     },
     tempo: { bpm: 80, meter: [4, 4] },
     gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l2_01_tab_line: {
+    id: "guitar_l2_01_tab_line", type: "sight_read", instrumentId: "guitar",
+    title: "Single-string TAB line — low E string walk",
+    targetPattern: { notes: [
+      { pitch: "E2", startMs: 0,    durationMs: 500 },
+      { pitch: "G2", startMs: 500,  durationMs: 500 },
+      { pitch: "A2", startMs: 1000, durationMs: 500 },
+      { pitch: "G2", startMs: 1500, durationMs: 500 },
+      { pitch: "E2", startMs: 2000, durationMs: 1000 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l2_02_emgcg: {
+    id: "guitar_l2_02_emgcg", type: "play_chord", instrumentId: "guitar",
+    title: "Em → G → C → G progression",
+    targetPattern: { onsets: [0, 2000, 4000, 6000], notes: [
+      { pitch: "E2", startMs: 0,    durationMs: 1800 },
+      { pitch: "G2", startMs: 2000, durationMs: 1800 },
+      { pitch: "C3", startMs: 4000, durationMs: 1800 },
+      { pitch: "G2", startMs: 6000, durationMs: 1800 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l2_03_gd_switch: {
+    id: "guitar_l2_03_gd_switch", type: "play_chord", instrumentId: "guitar",
+    title: "G → D, 4 bars",
+    targetPattern: { onsets: [0, 1500, 3000, 4500, 6000, 7500], notes: [
+      { pitch: "G2", startMs: 0,    durationMs: 1400 },
+      { pitch: "D3", startMs: 1500, durationMs: 1400 },
+      { pitch: "G2", startMs: 3000, durationMs: 1400 },
+      { pitch: "D3", startMs: 4500, durationMs: 1400 },
+      { pitch: "G2", startMs: 6000, durationMs: 1400 },
+      { pitch: "D3", startMs: 7500, durationMs: 1400 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l2_04_a_chord: {
+    id: "guitar_l2_04_a_chord", type: "play_chord", instrumentId: "guitar",
+    title: "A → D → A → D, 4 bars",
+    targetPattern: { onsets: [0, 2000, 4000, 6000], notes: [
+      { pitch: "A2", startMs: 0,    durationMs: 1800 },
+      { pitch: "D3", startMs: 2000, durationMs: 1800 },
+      { pitch: "A2", startMs: 4000, durationMs: 1800 },
+      { pitch: "D3", startMs: 6000, durationMs: 1800 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l2_05_mixed_rhythm: {
+    id: "guitar_l2_05_mixed_rhythm", type: "rhythm_clap", instrumentId: "guitar",
+    title: "Mixed quarter + 8th rhythm on open E",
+    targetPattern: { onsets: [0, 750, 1125, 1500, 2250, 2625, 3000, 3375, 3750] },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l2_06_knocking: {
+    id: "guitar_l2_06_knocking", type: "play_chord", instrumentId: "guitar",
+    title: "Knocking on Heaven's Door — G D Am C verse",
+    targetPattern: { onsets: [0, 2000, 4000, 6000], notes: [
+      { pitch: "G2", startMs: 0,    durationMs: 1800 },
+      { pitch: "D3", startMs: 2000, durationMs: 1800 },
+      { pitch: "A2", startMs: 4000, durationMs: 1800 },
+      { pitch: "C3", startMs: 6000, durationMs: 1800 },
+    ]}, tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l3_01_12bar_blues: {
+    id: "guitar_l3_01_12bar_blues", type: "play_chord", instrumentId: "guitar",
+    title: "12-bar blues in E (compressed to 6 bars)",
+    targetPattern: { onsets: [0, 2000, 4000, 6000, 8000, 10000], notes: [
+      { pitch: "E2", startMs: 0,    durationMs: 1800 },
+      { pitch: "A2", startMs: 2000, durationMs: 1800 },
+      { pitch: "E2", startMs: 4000, durationMs: 1800 },
+      { pitch: "B2", startMs: 6000, durationMs: 1800 },
+      { pitch: "A2", startMs: 8000, durationMs: 1800 },
+      { pitch: "E2", startMs: 10000, durationMs: 1800 },
+    ]}, tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l3_02_travis_em: {
+    id: "guitar_l3_02_travis_em", type: "play_along", instrumentId: "guitar",
+    title: "Travis picking on Em, 2 bars",
+    targetPattern: { notes: [
+      { pitch: "E2", startMs: 0,    durationMs: 500 },
+      { pitch: "G3", startMs: 500,  durationMs: 500 },
+      { pitch: "E3", startMs: 1000, durationMs: 500 },
+      { pitch: "G3", startMs: 1500, durationMs: 500 },
+      { pitch: "E2", startMs: 2000, durationMs: 500 },
+      { pitch: "B3", startMs: 2500, durationMs: 500 },
+      { pitch: "E3", startMs: 3000, durationMs: 500 },
+      { pitch: "B3", startMs: 3500, durationMs: 500 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l3_03_rising_sun: {
+    id: "guitar_l3_03_rising_sun", type: "play_along", instrumentId: "guitar",
+    title: "House of the Rising Sun — arpeggiated Am → C → D → F",
+    targetPattern: { notes: [
+      { pitch: "A2", startMs: 0, durationMs: 400 },
+      { pitch: "E3", startMs: 400, durationMs: 400 },
+      { pitch: "A3", startMs: 800, durationMs: 400 },
+      { pitch: "C4", startMs: 1200, durationMs: 400 },
+      { pitch: "E4", startMs: 1600, durationMs: 400 },
+      { pitch: "C4", startMs: 2000, durationMs: 400 },
+      { pitch: "C3", startMs: 2400, durationMs: 400 },
+      { pitch: "E3", startMs: 2800, durationMs: 400 },
+      { pitch: "G3", startMs: 3200, durationMs: 400 },
+      { pitch: "C4", startMs: 3600, durationMs: 400 },
+      { pitch: "E4", startMs: 4000, durationMs: 400 },
+      { pitch: "G3", startMs: 4400, durationMs: 400 },
+    ]}, tempo: { bpm: 80, meter: [6, 8] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l3_04_em_pent: {
+    id: "guitar_l3_04_em_pent", type: "play_scale", instrumentId: "guitar",
+    title: "E minor pentatonic, position 1",
+    targetPattern: { notes: ["E2","G2","A2","B2","D3","E3","G3","A3","B3","D4","E4"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l3_05_power_chords: {
+    id: "guitar_l3_05_power_chords", type: "play_chord", instrumentId: "guitar",
+    title: "E5 → A5 → D5 → A5",
+    targetPattern: { onsets: [0, 1500, 3000, 4500], notes: [
+      { pitch: "E2", startMs: 0,    durationMs: 1400 },
+      { pitch: "A2", startMs: 1500, durationMs: 1400 },
+      { pitch: "D3", startMs: 3000, durationMs: 1400 },
+      { pitch: "A2", startMs: 4500, durationMs: 1400 },
+    ]}, tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l3_06_wonderwall: {
+    id: "guitar_l3_06_wonderwall", type: "play_chord", instrumentId: "guitar",
+    title: "Wonderwall intro — Em7 → G → Dsus4 → A7sus4",
+    targetPattern: { onsets: [0, 2000, 4000, 6000], notes: [
+      { pitch: "E2", startMs: 0,    durationMs: 1800 },
+      { pitch: "G2", startMs: 2000, durationMs: 1800 },
+      { pitch: "D3", startMs: 4000, durationMs: 1800 },
+      { pitch: "A2", startMs: 6000, durationMs: 1800 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
   },
 
   violin_l1_01_open_a: {
