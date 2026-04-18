@@ -66,6 +66,91 @@ export const EXERCISES: Record<string, Exercise> = {
     tempo: { bpm: 60, meter: [4, 4] },
     gradingRubricId: "rubric_early_level",
   },
+  piano_l1_04_twinkle_lh: {
+    id: "piano_l1_04_twinkle_lh",
+    type: "play_along",
+    instrumentId: "piano",
+    title: "Twinkle, Twinkle — left hand bass, bars 1–4",
+    targetPattern: {
+      notes: [
+        { pitch: "C3", startMs: 0, durationMs: 500, finger: 5 },
+        { pitch: "C3", startMs: 500, durationMs: 500, finger: 5 },
+        { pitch: "G3", startMs: 1000, durationMs: 500, finger: 1 },
+        { pitch: "G3", startMs: 1500, durationMs: 500, finger: 1 },
+        { pitch: "A3", startMs: 2000, durationMs: 500, finger: 1 },
+        { pitch: "A3", startMs: 2500, durationMs: 500, finger: 1 },
+        { pitch: "G3", startMs: 3000, durationMs: 1000, finger: 1 },
+        { pitch: "F3", startMs: 4000, durationMs: 500, finger: 2 },
+        { pitch: "F3", startMs: 4500, durationMs: 500, finger: 2 },
+        { pitch: "E3", startMs: 5000, durationMs: 500, finger: 3 },
+        { pitch: "E3", startMs: 5500, durationMs: 500, finger: 3 },
+        { pitch: "D3", startMs: 6000, durationMs: 500, finger: 4 },
+        { pitch: "D3", startMs: 6500, durationMs: 500, finger: 4 },
+        { pitch: "C3", startMs: 7000, durationMs: 1000, finger: 5 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l1_05_twinkle_both: {
+    id: "piano_l1_05_twinkle_both",
+    type: "play_along",
+    instrumentId: "piano",
+    title: "Twinkle, Twinkle — both hands, bars 1–4",
+    targetPattern: {
+      // Simplified to melody-only for grading (the polyphonic hands-together
+      // grader lands with Basic Pitch in Wave 3b). L1 students demonstrate
+      // both hands at practice time; the grader scores the top line.
+      notes: [
+        { pitch: "C4", startMs: 0, durationMs: 500, finger: 1 },
+        { pitch: "C4", startMs: 500, durationMs: 500, finger: 1 },
+        { pitch: "G4", startMs: 1000, durationMs: 500, finger: 5 },
+        { pitch: "G4", startMs: 1500, durationMs: 500, finger: 5 },
+        { pitch: "A4", startMs: 2000, durationMs: 500, finger: 5 },
+        { pitch: "A4", startMs: 2500, durationMs: 500, finger: 5 },
+        { pitch: "G4", startMs: 3000, durationMs: 1000, finger: 5 },
+        { pitch: "F4", startMs: 4000, durationMs: 500, finger: 4 },
+        { pitch: "F4", startMs: 4500, durationMs: 500, finger: 4 },
+        { pitch: "E4", startMs: 5000, durationMs: 500, finger: 3 },
+        { pitch: "E4", startMs: 5500, durationMs: 500, finger: 3 },
+        { pitch: "D4", startMs: 6000, durationMs: 500, finger: 2 },
+        { pitch: "D4", startMs: 6500, durationMs: 500, finger: 2 },
+        { pitch: "C4", startMs: 7000, durationMs: 1000, finger: 1 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l1_06_cmaj_scale: {
+    id: "piano_l1_06_cmaj_scale",
+    type: "play_scale",
+    instrumentId: "piano",
+    title: "C major scale, one octave — thumb-under, ascending + descending",
+    targetPattern: {
+      notes: [
+        // Ascending
+        { pitch: "C4", startMs: 0, durationMs: 375, finger: 1 },
+        { pitch: "D4", startMs: 375, durationMs: 375, finger: 2 },
+        { pitch: "E4", startMs: 750, durationMs: 375, finger: 3 },
+        { pitch: "F4", startMs: 1125, durationMs: 375, finger: 1 },  // thumb-under
+        { pitch: "G4", startMs: 1500, durationMs: 375, finger: 2 },
+        { pitch: "A4", startMs: 1875, durationMs: 375, finger: 3 },
+        { pitch: "B4", startMs: 2250, durationMs: 375, finger: 4 },
+        { pitch: "C5", startMs: 2625, durationMs: 750, finger: 5 },
+        // Descending
+        { pitch: "B4", startMs: 3375, durationMs: 375, finger: 4 },
+        { pitch: "A4", startMs: 3750, durationMs: 375, finger: 3 },
+        { pitch: "G4", startMs: 4125, durationMs: 375, finger: 2 },
+        { pitch: "F4", startMs: 4500, durationMs: 375, finger: 1 },
+        { pitch: "E4", startMs: 4875, durationMs: 375, finger: 3 },  // finger-over
+        { pitch: "D4", startMs: 5250, durationMs: 375, finger: 2 },
+        { pitch: "C4", startMs: 5625, durationMs: 750, finger: 1 },
+      ],
+    },
+    tempo: { bpm: 80, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+
   piano_l2_01_sightread: {
     id: "piano_l2_01_sightread",
     type: "sight_read",
