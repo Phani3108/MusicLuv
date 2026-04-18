@@ -695,6 +695,60 @@ export const LESSONS: Record<string, Lesson> = {
     passCriteria: { minGradeOverall: 0.7 },
     estimatedMinutes: 10,
   },
+  guitar_l1_04_g_chord: {
+    id: "guitar_l1_04_g_chord",
+    instrumentId: "guitar",
+    level: 1, tier: "standard",
+    title: "Second chord — G major",
+    objectives: [
+      "Fret G major: finger 2 on 3rd fret of E (low), finger 3 on 3rd fret of B, finger 4 on 3rd fret of high E",
+      "Play all six strings; D and G ring open",
+      "Switch cleanly between Em and G without losing the beat",
+    ],
+    writtenContent:
+      "## Your second chord\n\nG major is the companion to Em — they share many strings and live next to each other on the fretboard. Three fingers, three frets:\n\n- **Finger 2** — 3rd fret of the low E string\n- **Finger 3** — 2nd fret of the A string\n- **Finger 4** — 3rd fret of the high E string\n\nThe D, G, and B strings ring open.\n\n## The switch is everything\n\nHold Em. Without looking, reshape to G in one motion. Strum. Switch back to Em. Goal: **4 switches per 10 seconds** without buzz.",
+    audioRefs: [{ id: "demo", label: "Em → G → Em → G, each strum 2 beats" }],
+    exercisePlanId: "guitar_l1_04_em_g_switch",
+    prerequisites: ["guitar_l1_03_first_chord"],
+    passCriteria: { minGradeOverall: 0.7 },
+    estimatedMinutes: 12,
+  },
+  guitar_l1_05_strum_pattern: {
+    id: "guitar_l1_05_strum_pattern",
+    instrumentId: "guitar",
+    level: 1, tier: "standard",
+    title: "Your first strum pattern — Down-Down-Up-Up-Down",
+    objectives: [
+      "Keep the strum hand moving in a steady pendulum — downstrokes on the beat, upstrokes between",
+      "Execute the D-D-U-U-D pattern cleanly on Em for 8 bars",
+      "Feel the groove: the missing strum on '3' (an 'air stroke' — hand moves, doesn't hit strings)",
+    ],
+    writtenContent:
+      "## The hand never stops\n\nThe secret of every guitarist's strum is that the hand **keeps moving** whether or not it's hitting strings. Downstrokes happen on the beat; upstrokes between. Your hand is a metronome with a pick in it.\n\n## The pattern\n\n**1** (D) — **2** (D) — **&** (U) — **3** (air) — **&** (U) — **4** (D)\n\nThat's the D-D-U-U-D pattern you've heard in thousands of songs. The trick is the 'air stroke' on beat 3 — your hand does a downward motion but doesn't touch the strings, then comes back up for the 'U'.\n\n## Practice on Em\n\nJust Em for now. Loop the pattern until your strum hand moves without conscious thought.",
+    audioRefs: [{ id: "demo", label: "D-D-U-U-D on Em, 80 bpm" }],
+    exercisePlanId: "guitar_l1_05_strum_em",
+    prerequisites: ["guitar_l1_03_first_chord"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.75 } },
+    estimatedMinutes: 15,
+  },
+  guitar_l1_06_first_song: {
+    id: "guitar_l1_06_first_song",
+    instrumentId: "guitar",
+    level: 1, tier: "standard",
+    title: "Your first song — 'Horse With No Name' (Em / D6add9)",
+    objectives: [
+      "Play a full song using just Em and D6add9 (a movable shape — like Em but finger 2 on 3rd string)",
+      "Switch between the two chords every 2 beats",
+      "Apply the D-D-U-U-D strum pattern from L1.5",
+    ],
+    writtenContent:
+      "## Two chords, one song\n\nAmerica's 'A Horse With No Name' (1971) uses only two chords for the entire song. They're both Em shapes:\n\n- **Em** (as you know it)\n- **D6add9** — Em shape but move finger 2 from 3rd fret of G to 3rd fret of D\n\nFor 4-minutes-plus, you alternate those two every 2 beats. That's the whole song.\n\n## Why this is the perfect first song\n\nYou already know Em. The second chord is a tiny finger movement. Apply your strum pattern — and you're playing a famous song in L1. That's the win.",
+    audioRefs: [{ id: "demo", label: "Horse With No Name verse, 4 bars" }],
+    exercisePlanId: "guitar_l1_06_horse_chords",
+    prerequisites: ["guitar_l1_04_g_chord", "guitar_l1_05_strum_pattern"],
+    passCriteria: { minGradeOverall: 0.7 },
+    estimatedMinutes: 15,
+  },
 
   violin_l1_01_hold: {
     id: "violin_l1_01_hold",
@@ -750,6 +804,60 @@ export const LESSONS: Record<string, Lesson> = {
     passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.72 } },
     estimatedMinutes: 12,
   },
+  violin_l1_04_d_string: {
+    id: "violin_l1_04_d_string",
+    instrumentId: "violin",
+    level: 1, tier: "standard",
+    title: "Adding the D string — fingers 1, 2, 3 on D",
+    objectives: [
+      "Bow open D cleanly",
+      "Add finger 1 (E), finger 2 (F♯), finger 3 (G) on the D string",
+      "Play the four notes as a rising phrase: D E F♯ G",
+    ],
+    writtenContent:
+      "## D is a new world\n\nEverything you learned on the A string transfers to D — same finger positions, same whole/half step patterns, just a lower-pitched starting note.\n\n## D major tetrachord on the D string\n\n**D (open) → E (finger 1) → F♯ (finger 2) → G (finger 3)**. That's the lower tetrachord of D major — same intervals as A B C♯ D on the A string.\n\n## What you can do now\n\nYou have D E F♯ G on the D string AND A B C♯ D on the A string. That's **a full D major scale across two strings**. Put them together and you've played your first scale on violin.",
+    audioRefs: [{ id: "demo", label: "D E F♯ G rising, 60 bpm" }],
+    exercisePlanId: "violin_l1_04_d_tetrachord",
+    prerequisites: ["violin_l1_03_first_phrase"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.72 } },
+    estimatedMinutes: 12,
+  },
+  violin_l1_05_cross_string: {
+    id: "violin_l1_05_cross_string",
+    instrumentId: "violin",
+    level: 1, tier: "standard",
+    title: "Cross-string bowing — D and A strings",
+    objectives: [
+      "Play D open → A open → D open → A open with smooth bow direction changes",
+      "Tilt the bow slightly (not rotate) to cross between strings",
+      "Keep the tone even on both strings",
+    ],
+    writtenContent:
+      "## Not a wrist, an elbow\n\nTo cross from D to A, lift your bow ARM (from the elbow) — don't rotate your wrist. Your wrist stays relaxed; the elbow does the work.\n\n## Alternating open strings\n\n`D A D A` — eight counts, four down-bows, four up-bows. If you can hear a 'click' when you cross, you're moving too fast; smooth out the transition.\n\n## Why this matters\n\nEvery scale that spans more than one string, every arpeggio, every chord on violin needs cross-string control. Master it at 60 bpm and it'll serve you for years.",
+    audioRefs: [{ id: "demo", label: "Cross-string D-A-D-A, 60 bpm" }],
+    exercisePlanId: "violin_l1_05_cross_strings",
+    prerequisites: ["violin_l1_04_d_string"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { tone: 0.7 } },
+    estimatedMinutes: 12,
+  },
+  violin_l1_06_first_tune: {
+    id: "violin_l1_06_first_tune",
+    instrumentId: "violin",
+    level: 1, tier: "standard",
+    title: "Your first tune — 'Mary Had a Little Lamb' on the A string",
+    objectives: [
+      "Play the melody of Mary Had a Little Lamb using only fingers on the A string",
+      "Keep the bow steady — one note per bow stroke",
+      "Phrase the two halves: question (bars 1-2) and answer (bars 3-4)",
+    ],
+    writtenContent:
+      "## A tune you already know\n\n*Mary had a little lamb* uses just three notes on the A string:\n\n- **B** (finger 1)\n- **A** (open)\n- **C♯** (finger 2)\n\n## The melody\n\n`B A G A | B B B - | A A A - | B B B -`\nWait — for violin L1 let's simplify to the A-string-only version: `B A A B | B B B - | A A A - | B B B -`\n\nOne finger moves at a time. No cross-string. Just fingers 0/1/2 on A and a steady bow. You're playing your first recognisable melody on the violin.",
+    audioRefs: [{ id: "demo", label: "Mary Had a Little Lamb, A-string version" }],
+    exercisePlanId: "violin_l1_06_mary_lamb",
+    prerequisites: ["violin_l1_03_first_phrase"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.72 } },
+    estimatedMinutes: 15,
+  },
 
   drums_l1_01_grip: {
     id: "drums_l1_01_grip",
@@ -804,6 +912,60 @@ export const LESSONS: Record<string, Lesson> = {
     prerequisites: ["drums_l1_02_kick_snare"],
     passCriteria: { minGradeOverall: 0.7, minPerDimension: { rhythm: 0.75 } },
     estimatedMinutes: 12,
+  },
+  drums_l1_04_8th_hihat: {
+    id: "drums_l1_04_8th_hihat",
+    instrumentId: "drums",
+    level: 1, tier: "standard",
+    title: "Hi-hat on 8th notes — doubling the density",
+    objectives: [
+      "Play hi-hat on every 8th note (1 & 2 & 3 & 4 &) instead of quarters",
+      "Keep kick on 1&3, snare on 2&4 exactly as before",
+      "Hold the groove for 8 bars at 70 bpm without losing the feel",
+    ],
+    writtenContent:
+      "## More hi-hat, same everything else\n\nThe backbeat you learned (kick 1&3, snare 2&4) stays exactly the same. What changes: instead of hi-hat on quarters, play 8th notes — twice as many hits.\n\n## Count with '&'\n\n`1 & 2 & 3 & 4 &` — eight hi-hat hits per bar. Kick on 1 and 3. Snare on 2 and 4.\n\n## Why go slower\n\nCounter-intuitively, start slower (70 bpm, not 80). More hi-hat hits means more opportunities for timing to drift. Tight at 70 first, then speed up.",
+    audioRefs: [{ id: "demo", label: "8th-note hi-hat groove, 70 bpm" }],
+    exercisePlanId: "drums_l1_04_8th_groove",
+    prerequisites: ["drums_l1_03_hihat"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } },
+    estimatedMinutes: 12,
+  },
+  drums_l1_05_crash_accent: {
+    id: "drums_l1_05_crash_accent",
+    instrumentId: "drums",
+    level: 1, tier: "standard",
+    title: "Crash on 1 — announcing a new phrase",
+    objectives: [
+      "Replace the hi-hat on beat 1 of a new 4-bar phrase with a crash cymbal hit",
+      "Let the crash ring — don't choke it",
+      "Keep the kick and snare exactly as before",
+    ],
+    writtenContent:
+      "## The crash is punctuation\n\nWhen a new section of a song starts, drummers hit the crash on beat 1 to mark the arrival. It says: 'something new is happening now.'\n\n## How to do it\n\nWherever you're about to start a new 4-bar phrase, replace the hi-hat on beat 1 with a crash on the same beat. The kick still hits on 1 underneath. Everything else continues.\n\n## Don't choke it\n\nAmateur drummers crash then grab the cymbal to stop it ringing. Don't. Let it ring — the decay is part of the sound.",
+    audioRefs: [{ id: "demo", label: "Crash on 1 every 4 bars, full groove" }],
+    exercisePlanId: "drums_l1_05_crash_on_one",
+    prerequisites: ["drums_l1_04_8th_hihat"],
+    passCriteria: { minGradeOverall: 0.7 },
+    estimatedMinutes: 10,
+  },
+  drums_l1_06_first_fill: {
+    id: "drums_l1_06_first_fill",
+    instrumentId: "drums",
+    level: 1, tier: "standard",
+    title: "Your first fill — a 1-bar tom fill into a phrase change",
+    objectives: [
+      "Play 3 bars of the regular groove, then a 1-bar fill, then start again with a crash on 1",
+      "Fill with tom-tom 16th notes: T1 T1 T2 T2 T3 T3 — build down the kit",
+      "Land back on beat 1 with the crash — don't rush into it",
+    ],
+    writtenContent:
+      "## The fill is a breath\n\nA drum fill is a short break in the groove — usually the last bar of a 4-bar phrase — that announces the next section. It's like a singer taking a breath before a new verse.\n\n## The simplest fill\n\nLast bar of a 4-bar phrase: stop the groove. Play 16th notes across the toms: `T1 T1 T2 T2 T3 T3` — build DOWN the kit (high tom to floor tom). On beat 1 of the next bar, CRASH + kick to start the new phrase.\n\n## Don't overplay\n\nAt L1, keep fills to 1 bar. Shorter is almost always better. A great fill builds anticipation; a bad fill just fills space.",
+    audioRefs: [{ id: "demo", label: "3 bars groove + 1 bar tom fill + crash on 1" }],
+    exercisePlanId: "drums_l1_06_tom_fill",
+    prerequisites: ["drums_l1_05_crash_accent"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.75 } },
+    estimatedMinutes: 15,
   },
 
   sitar_l1_01_sa: {

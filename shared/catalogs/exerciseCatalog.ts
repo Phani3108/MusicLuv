@@ -787,6 +787,63 @@ export const EXERCISES: Record<string, Exercise> = {
     tempo: { bpm: 60, meter: [4, 4] },
     gradingRubricId: "rubric_rhythm_only",
   },
+  guitar_l1_04_em_g_switch: {
+    id: "guitar_l1_04_em_g_switch",
+    type: "play_chord",
+    instrumentId: "guitar",
+    title: "Em → G → Em → G, each chord 2 beats",
+    targetPattern: {
+      onsets: [0, 1000, 2000, 3000],
+      notes: [
+        { pitch: "E2", startMs: 0,    durationMs: 900 },
+        { pitch: "G2", startMs: 1000, durationMs: 900 },
+        { pitch: "E2", startMs: 2000, durationMs: 900 },
+        { pitch: "G2", startMs: 3000, durationMs: 900 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l1_05_strum_em: {
+    id: "guitar_l1_05_strum_em",
+    type: "rhythm_clap",
+    instrumentId: "guitar",
+    title: "D-D-U-U-D strum pattern on Em, 4 bars",
+    targetPattern: {
+      // At 80 bpm: 1 beat = 750ms, 8th = 375ms
+      // Pattern per bar (beats): 1 D, 2 D, 2& U, 3 (air), 3& U, 4 D
+      // That's 5 hits per bar (4, but with 2 up strokes inside the bar). 4 bars = 20 onsets.
+      onsets: [
+        0, 750, 1125, 1875, 2250,
+        3000, 3750, 4125, 4875, 5250,
+        6000, 6750, 7125, 7875, 8250,
+        9000, 9750, 10125, 10875, 11250,
+      ],
+    },
+    tempo: { bpm: 80, meter: [4, 4] },
+    gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l1_06_horse_chords: {
+    id: "guitar_l1_06_horse_chords",
+    type: "play_chord",
+    instrumentId: "guitar",
+    title: "Horse With No Name — Em / D6add9 switch, 4 bars",
+    targetPattern: {
+      onsets: [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000],
+      notes: [
+        { pitch: "E2", startMs: 0,    durationMs: 900 },  // Em
+        { pitch: "D2", startMs: 1000, durationMs: 900 },  // D6add9
+        { pitch: "E2", startMs: 2000, durationMs: 900 },
+        { pitch: "D2", startMs: 3000, durationMs: 900 },
+        { pitch: "E2", startMs: 4000, durationMs: 900 },
+        { pitch: "D2", startMs: 5000, durationMs: 900 },
+        { pitch: "E2", startMs: 6000, durationMs: 900 },
+        { pitch: "D2", startMs: 7000, durationMs: 900 },
+      ],
+    },
+    tempo: { bpm: 80, meter: [4, 4] },
+    gradingRubricId: "rubric_rhythm_only",
+  },
 
   violin_l1_01_open_a: {
     id: "violin_l1_01_open_a",
@@ -834,6 +891,67 @@ export const EXERCISES: Record<string, Exercise> = {
     tempo: { bpm: 60, meter: [4, 4] },
     gradingRubricId: "rubric_early_level",
   },
+  violin_l1_04_d_tetrachord: {
+    id: "violin_l1_04_d_tetrachord",
+    type: "play_scale",
+    instrumentId: "violin",
+    title: "D · E · F♯ · G — D-string tetrachord",
+    targetPattern: {
+      notes: [
+        { pitch: "D4", startMs: 0,    durationMs: 1000 },
+        { pitch: "E4", startMs: 1000, durationMs: 1000 },
+        { pitch: "F#4",startMs: 2000, durationMs: 1000 },
+        { pitch: "G4", startMs: 3000, durationMs: 2000 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  violin_l1_05_cross_strings: {
+    id: "violin_l1_05_cross_strings",
+    type: "play_note",
+    instrumentId: "violin",
+    title: "Cross-string bowing: D → A → D → A",
+    targetPattern: {
+      notes: [
+        { pitch: "D4", startMs: 0,    durationMs: 1000 },
+        { pitch: "A4", startMs: 1000, durationMs: 1000 },
+        { pitch: "D4", startMs: 2000, durationMs: 1000 },
+        { pitch: "A4", startMs: 3000, durationMs: 1000 },
+        { pitch: "D4", startMs: 4000, durationMs: 1000 },
+        { pitch: "A4", startMs: 5000, durationMs: 1000 },
+        { pitch: "D4", startMs: 6000, durationMs: 1000 },
+        { pitch: "A4", startMs: 7000, durationMs: 1000 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  violin_l1_06_mary_lamb: {
+    id: "violin_l1_06_mary_lamb",
+    type: "play_along",
+    instrumentId: "violin",
+    title: "Mary Had a Little Lamb — A-string version",
+    targetPattern: {
+      notes: [
+        { pitch: "B4", startMs: 0,    durationMs: 500 }, // B
+        { pitch: "A4", startMs: 500,  durationMs: 500 }, // A (open)
+        { pitch: "A4", startMs: 1000, durationMs: 500 }, // A
+        { pitch: "B4", startMs: 1500, durationMs: 500 }, // B
+        { pitch: "B4", startMs: 2000, durationMs: 500 },
+        { pitch: "B4", startMs: 2500, durationMs: 500 },
+        { pitch: "B4", startMs: 3000, durationMs: 1000 },
+        { pitch: "A4", startMs: 4000, durationMs: 500 },
+        { pitch: "A4", startMs: 4500, durationMs: 500 },
+        { pitch: "A4", startMs: 5000, durationMs: 1000 },
+        { pitch: "B4", startMs: 6000, durationMs: 500 },
+        { pitch: "B4", startMs: 6500, durationMs: 500 },
+        { pitch: "B4", startMs: 7000, durationMs: 1000 },
+      ],
+    },
+    tempo: { bpm: 90, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
 
   drums_l1_01_snare_4: {
     id: "drums_l1_01_snare_4",
@@ -864,6 +982,44 @@ export const EXERCISES: Record<string, Exercise> = {
     targetPattern: {
       // Hi-hat plays every 8th note — 32 onsets across 4 bars at 80 bpm
       onsets: Array.from({ length: 32 }, (_, i) => i * 375),
+    },
+    tempo: { bpm: 80, meter: [4, 4] },
+    gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l1_04_8th_groove: {
+    id: "drums_l1_04_8th_groove",
+    type: "rhythm_clap",
+    instrumentId: "drums",
+    title: "8th-note hi-hat groove, 4 bars @ 70 bpm",
+    targetPattern: {
+      // 70 bpm: beat = ~857ms; 8th = ~429ms. 4 bars × 8 eighths = 32 onsets.
+      onsets: Array.from({ length: 32 }, (_, i) => Math.round(i * 429)),
+    },
+    tempo: { bpm: 70, meter: [4, 4] },
+    gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l1_05_crash_on_one: {
+    id: "drums_l1_05_crash_on_one",
+    type: "rhythm_clap",
+    instrumentId: "drums",
+    title: "Crash on beat 1 of each new 4-bar phrase",
+    targetPattern: {
+      // At 80 bpm, 1 bar = 3000ms. Crash ONLY on beat 1 of each new phrase
+      // (bars 1, 5, 9 of an 8-bar example — for grading, we just mark the crash hits)
+      onsets: [0, 12000, 24000],
+    },
+    tempo: { bpm: 80, meter: [4, 4] },
+    gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l1_06_tom_fill: {
+    id: "drums_l1_06_tom_fill",
+    type: "rhythm_clap",
+    instrumentId: "drums",
+    title: "1-bar tom fill at the end of a 4-bar phrase",
+    targetPattern: {
+      // At 80 bpm: beat = 750ms, 16th = 187.5ms
+      // Bar 4 fill: 6 16th notes (T1 T1 T2 T2 T3 T3) starting at 9000ms
+      onsets: [9000, 9187, 9375, 9562, 9750, 9937, 12000], // 6 fill hits + crash on next beat 1
     },
     tempo: { bpm: 80, meter: [4, 4] },
     gradingRubricId: "rubric_rhythm_only",
