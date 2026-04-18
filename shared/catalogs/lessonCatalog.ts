@@ -1590,6 +1590,311 @@ export const LESSONS: Record<string, Lesson> = {
     estimatedMinutes: 15,
   },
 
+  drums_l2_01_16th_notes: {
+    id: "drums_l2_01_16th_notes", instrumentId: "drums", level: 2, tier: "standard",
+    title: "16th-note hi-hat — doubling the density again",
+    objectives: ["Play hi-hat on all 16 16ths per bar (1-e-&-a 2-e-&-a 3-e-&-a 4-e-&-a)", "Keep kick on 1&3, snare on 2&4", "Loop at 60 bpm without losing the groove"],
+    writtenContent:
+      "## 4x the hi-hat hits\n\n8ths → 16ths means double the density. Count '1-e-&-a, 2-e-&-a, 3-e-&-a, 4-e-&-a' — that's 16 hi-hat hits per bar.\n\n## Slow, always\n\nStart at 60 bpm. Any faster and your timing drifts.",
+    audioRefs: [{ id: "demo", label: "16th-note hi-hat groove, 60 bpm" }],
+    exercisePlanId: "drums_l2_01_16ths", prerequisites: ["drums_l1_04_8th_hihat"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 15,
+  },
+  drums_l2_02_swing: {
+    id: "drums_l2_02_swing", instrumentId: "drums", level: 2, tier: "standard",
+    title: "Swing feel — triplets on the ride",
+    objectives: ["Play 'ding ding-a-ding' on the ride cymbal (quarter + 2 triplet 8ths)", "Feel the triplet — not even 8ths", "Add kick on 1&3, snare on 2&4 underneath"],
+    writtenContent:
+      "## The jazz pulse\n\nSwing = 8th notes played as triplets with the middle 8th missing. Count: 'one-trip-let, two-trip-let' — emphasize 1 and 3, skip 'trip' of each, land on 'let'.\n\n## The ride pattern\n\n'ding · ding-a-ding · ding-a-ding · ding-a-ding' — that's the classic swing ride pattern. Kick + snare stay basic underneath.",
+    audioRefs: [{ id: "demo", label: "Swing ride pattern, 100 bpm" }],
+    exercisePlanId: "drums_l2_02_swing_ride", prerequisites: ["drums_l1_03_hihat"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 15,
+  },
+  drums_l2_03_funk_kick: {
+    id: "drums_l2_03_funk_kick", instrumentId: "drums", level: 2, tier: "standard",
+    title: "Funk kick patterns — syncopation",
+    objectives: ["Play kick on '1 & 3-&' (syncopated)", "Keep snare on 2 and 4", "Feel the funk 'in the pocket'"],
+    writtenContent:
+      "## The offbeat kick\n\nFunk kicks are SYNCOPATED — they land on offbeats (&s) not just downbeats. Common pattern: '1, &, 3-&'. The kick on the '&' creates pull and forward motion.\n\n## Keep the snare simple\n\n2 and 4, always. The kick's syncopation works BECAUSE the snare stays predictable.",
+    audioRefs: [{ id: "demo", label: "Funk kick pattern, 90 bpm" }],
+    exercisePlanId: "drums_l2_03_funk", prerequisites: ["drums_l1_06_first_fill"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.76 } }, estimatedMinutes: 15,
+  },
+  drums_l2_04_paradiddle: {
+    id: "drums_l2_04_paradiddle", instrumentId: "drums", level: 2, tier: "standard",
+    title: "The paradiddle — RLRR LRLL",
+    objectives: ["Play R-L-R-R, L-R-L-L on the snare (8-note pattern)", "Keep consistent volume across both hands", "Loop the pattern continuously at 60 bpm"],
+    writtenContent:
+      "## The foundation rudiment\n\nRLRR LRLL — the paradiddle. Sticking alternates but doubles on the RR and LL. It's the essential rudiment for a reason.\n\n## Why it matters\n\nUsed in fills, grooves, solos. The 'double' gives you rhythmic options that pure alternating can't. Master this and you unlock 100 other patterns.",
+    audioRefs: [{ id: "demo", label: "Paradiddle on snare, 60 bpm" }],
+    exercisePlanId: "drums_l2_04_paradiddle", prerequisites: ["drums_l1_01_grip"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 15,
+  },
+  drums_l2_05_ghost_notes: {
+    id: "drums_l2_05_ghost_notes", instrumentId: "drums", level: 2, tier: "standard",
+    title: "Ghost notes — the whispers between",
+    objectives: ["Play soft 'ghost' snare hits on '&' between the normal backbeats", "Ghost notes are barely audible — ~10% volume of the main snare", "Add ghosts to the kick-snare backbeat"],
+    writtenContent:
+      "## The texture layer\n\nGhost notes are SOFT snare hits between your main hits. They add groove, depth, and that 'in the pocket' feel.\n\n## Control, not volume\n\nThe ghost note is ~10% of the backbeat volume. You should feel it more than hear it. If ghosts are loud = not ghosts.",
+    audioRefs: [{ id: "demo", label: "Groove with ghost notes, 85 bpm" }],
+    exercisePlanId: "drums_l2_05_ghosts", prerequisites: ["drums_l1_06_first_fill"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { dynamics: 0.75, rhythm: 0.76 } }, estimatedMinutes: 18,
+  },
+  drums_l2_06_four_bar_fills: {
+    id: "drums_l2_06_four_bar_fills", instrumentId: "drums", level: 2, tier: "standard",
+    title: "3-bar groove + 1-bar fill — the 4-bar phrase",
+    objectives: ["Play 3 bars of rock groove, fill the 4th bar", "Use 16th-note toms building down the kit (T1→T2→T3)", "Land back on crash+kick on beat 1"],
+    writtenContent:
+      "## The architecture of songs\n\nMost pop songs are built in 4-bar phrases. 3 bars of steady groove, 1 bar of fill to launch the next phrase. This is the macro-rhythm of music.\n\n## The fill's job\n\nFill builds anticipation. Always land cleanly on beat 1 with a crash — that's the 'arrival' of the new section.",
+    audioRefs: [{ id: "demo", label: "4-bar phrase with tom fill, 85 bpm" }],
+    exercisePlanId: "drums_l2_06_four_bar", prerequisites: ["drums_l1_06_first_fill"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 18,
+  },
+
+  drums_l3_01_bossa: {
+    id: "drums_l3_01_bossa", instrumentId: "drums", level: 3, tier: "standard",
+    title: "Bossa nova — Brazilian groove",
+    objectives: ["Play the bossa clave on the rim of the snare", "Add a soft kick pattern (1 & 3-&)", "Feel the syncopated samba-derived pulse"],
+    writtenContent:
+      "## The quietest groove\n\nBossa nova = Brazilian jazz. Played softly, intimately, with a clave rim-click instead of heavy snare. The bass drum carries the pulse.\n\n## The clave\n\nClick 3-3-2: first click at beat 1.5, second at 2.5, third at 4. Rim-click on each. Kick plays 1 & 3-&. Hi-hat plays steady quarters closed.",
+    audioRefs: [{ id: "demo", label: "Bossa nova groove, 90 bpm" }],
+    exercisePlanId: "drums_l3_01_bossa", prerequisites: ["drums_l2_05_ghost_notes"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.76, dynamics: 0.72 } }, estimatedMinutes: 18,
+  },
+  drums_l3_02_shuffle: {
+    id: "drums_l3_02_shuffle", instrumentId: "drums", level: 3, tier: "standard",
+    title: "Blues shuffle — the boom-chick-a boom-chick-a",
+    objectives: ["Play shuffled 8ths on the ride cymbal", "Kick on 1 and 3; snare on 2 and 4", "Feel the long-short swing that defines blues"],
+    writtenContent:
+      "## Long-short feel\n\nShuffle = triplet feel with only the 1st and 3rd 8th of each triplet. 'BOOM-chick-a, BOOM-chick-a'. That's the shuffle.\n\n## Use this for blues\n\nLayer your blues-shuffle drum pattern under guitar or piano blues in E (L3.1 of guitar, L6 piano blues). They lock together.",
+    audioRefs: [{ id: "demo", label: "Blues shuffle groove, 100 bpm" }],
+    exercisePlanId: "drums_l3_02_shuffle", prerequisites: ["drums_l2_02_swing"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 15,
+  },
+  drums_l3_03_reggae: {
+    id: "drums_l3_03_reggae", instrumentId: "drums", level: 3, tier: "standard",
+    title: "Reggae — one drop and rockers",
+    objectives: ["Play 'one drop': kick + snare simultaneously on beat 3 only", "Play 'rockers': kick on all 4 beats", "Hi-hat on all 8ths, open hi-hat on the '&' of 2 and 4"],
+    writtenContent:
+      "## Upside-down backbeat\n\nReggae inverts the rock groove. The accented hit is beat **3**, not 2 and 4. The 'one drop' style puts kick AND snare together on 3.\n\n## The open hi-hat\n\nLift the hi-hat pedal on the '&' of each backbeat for the signature 'bop' sound. Close it immediately on the next downbeat.",
+    audioRefs: [{ id: "demo", label: "Reggae one drop, 75 bpm" }],
+    exercisePlanId: "drums_l3_03_reggae", prerequisites: ["drums_l2_03_funk_kick"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 18,
+  },
+  drums_l3_04_samba: {
+    id: "drums_l3_04_samba", instrumentId: "drums", level: 3, tier: "standard",
+    title: "Samba — Brazilian 16th-note groove",
+    objectives: ["Play surdo pattern on the floor tom (kick simulates surdo)", "Play continuous 16th notes on the hi-hat", "Feel the 2-bar samba phrase: bar 1 setup, bar 2 resolution"],
+    writtenContent:
+      "## Fast Brazilian energy\n\nSamba is 16th-note territory. Hi-hat plays every 16th. The 'surdo' pattern (played with the kick on a drum kit) gives the heavy downbeat feel.\n\n## 2-bar phrase\n\nSamba phrases are almost always 2 bars long. Bar 1 sets up; bar 2 resolves. Count to 2 bars, then feel the return.",
+    audioRefs: [{ id: "demo", label: "Samba groove, 100 bpm" }],
+    exercisePlanId: "drums_l3_04_samba", prerequisites: ["drums_l2_01_16th_notes"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 18,
+  },
+  drums_l3_05_odd_time: {
+    id: "drums_l3_05_odd_time", instrumentId: "drums", level: 3, tier: "standard",
+    title: "Odd time — 7/8 groove",
+    objectives: ["Count 7/8 as (3 + 2 + 2): ONE-two-three-ONE-two-ONE-two", "Play kick + snare pattern fitting 7 8th notes per bar", "Maintain tempo through the odd feel"],
+    writtenContent:
+      "## 7/8 = 7 eighth notes per bar\n\nOne bar: 7 eighths. Group them (3 + 2 + 2) = ONE-2-3 | ONE-2 | ONE-2. Three accents per bar.\n\n## Why try odd time?\n\nPink Floyd, Radiohead, modern jazz, Indian classical all use odd meters. Learning 7/8 opens up huge swaths of music.",
+    audioRefs: [{ id: "demo", label: "7/8 groove, 100 bpm" }],
+    exercisePlanId: "drums_l3_05_seven_eight", prerequisites: ["drums_l2_06_four_bar_fills"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 20,
+  },
+  drums_l3_06_rockgroove_tempo: {
+    id: "drums_l3_06_rockgroove_tempo", instrumentId: "drums", level: 3, tier: "standard",
+    title: "Tempo endurance — rock groove at 140 bpm for 32 bars",
+    objectives: ["Play the full rock groove (kick + snare + 8th hi-hat) at 140 bpm", "Sustain for 32 bars without drifting", "End with a clean 2-bar fill + crash"],
+    writtenContent:
+      "## Endurance = control\n\nKeeping tempo rock-solid for 32 bars at 140 bpm is surprisingly hard. Drummers live or die by consistency over minutes, not bars.\n\n## The Standard Certificate gate\n\nPass this + 2 theory quizzes → you earn the drums Standard Certificate and unlock L4 Pro tier.",
+    audioRefs: [{ id: "demo", label: "140 bpm rock groove, 32 bars" }],
+    exercisePlanId: "drums_l3_06_endurance", prerequisites: ["drums_l2_06_four_bar_fills"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { rhythm: 0.82, consistency: 0.8 } }, estimatedMinutes: 15,
+  },
+
+  drums_l4_01_double_bass: {
+    id: "drums_l4_01_double_bass", instrumentId: "drums", level: 4, tier: "pro",
+    title: "Double-bass pedal — rapid kick on 1&a beats",
+    objectives: ["Play kick on both downbeats and the 'a' of each beat", "Use heel-toe technique for fast successive kicks", "Keep snare on 2 and 4 underneath"],
+    writtenContent:
+      "## Two hits per beat from one foot\n\nThe 'a' of a beat = the last 16th before the next downbeat. Playing kick on both the downbeat AND the 'a' gives you '1 a, 2, 3 a, 4' patterns.\n\n## Without a double pedal\n\nThe 'heel-toe' technique: heel down for first kick, rotate to toe for second. Practice slowly.",
+    audioRefs: [{ id: "demo", label: "Double-bass groove, 100 bpm" }],
+    exercisePlanId: "drums_l4_01_double_bass", prerequisites: ["drums_l3_06_rockgroove_tempo"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 20,
+  },
+  drums_l4_02_linear: {
+    id: "drums_l4_02_linear", instrumentId: "drums", level: 4, tier: "pro",
+    title: "Linear drumming — no two voices at once",
+    objectives: ["Play patterns where only ONE drum/cymbal sounds at any moment", "No overlapping kick + snare or hi-hat + snare", "Creates a 'flowing' continuous texture"],
+    writtenContent:
+      "## The flowing style\n\nUnlike rock drumming (hi-hat + snare + kick simultaneously), LINEAR drumming has no overlap. Every note occupies its own time slot.\n\n## Why\n\nLinear drumming sounds different — more fluid, less dense. Used in gospel, fusion, and modern pop. Opens up the kit's colors.",
+    audioRefs: [{ id: "demo", label: "Linear pattern, 90 bpm" }],
+    exercisePlanId: "drums_l4_02_linear", prerequisites: ["drums_l3_06_rockgroove_tempo"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 18,
+  },
+  drums_l4_03_polyrhythm: {
+    id: "drums_l4_03_polyrhythm", instrumentId: "drums", level: 4, tier: "pro",
+    title: "Polyrhythm — 3-over-4",
+    objectives: ["Play a steady quarter pulse on the kick (4 per bar)", "Simultaneously play a dotted-quarter pulse on the ride (3 per bar)", "Feel both pulses coexist without either collapsing"],
+    writtenContent:
+      "## Two pulses at once\n\n3-over-4 = 3 evenly spaced ride hits in the time 4 kick hits take. They align on beat 1 of bar 1 and beat 1 of bar 4.\n\n## Polyrhythm expands the mind\n\nAfrican and Indian classical music are polyrhythmic by default. The Western pop ear finds it weird at first — keep at it until the 'weird' becomes 'interesting'.",
+    audioRefs: [{ id: "demo", label: "3-over-4 polyrhythm, 80 bpm" }],
+    exercisePlanId: "drums_l4_03_3on4", prerequisites: ["drums_l3_05_odd_time"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 20,
+  },
+  drums_l4_04_jazz_ride: {
+    id: "drums_l4_04_jazz_ride", instrumentId: "drums", level: 4, tier: "pro",
+    title: "Advanced jazz ride — broken patterns",
+    objectives: ["Vary the classic swing ride — leave out some hits", "Comp with left hand on snare (random placements)", "Feel the 4/4 pulse without stating it on every beat"],
+    writtenContent:
+      "## Implied time\n\nAdvanced jazz drumming doesn't state the pulse on every beat — it implies it. The ride 'leaves out' hits strategically. The left hand (comping) fills syncopated snare hits.\n\n## Listen to Elvin Jones\n\nElvin Jones with Coltrane is the masterclass. The pulse never locks into a pattern; it floats.",
+    audioRefs: [{ id: "demo", label: "Broken jazz ride pattern, 100 bpm" }],
+    exercisePlanId: "drums_l4_04_broken_jazz", prerequisites: ["drums_l2_02_swing"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 20,
+  },
+  drums_l4_05_drum_solo_basic: {
+    id: "drums_l4_05_drum_solo_basic", instrumentId: "drums", level: 4, tier: "pro",
+    title: "Your first drum solo — 4 bars over silence",
+    objectives: ["Improvise a 4-bar drum solo", "Use all parts of the kit (kick, snare, toms, cymbals)", "Land on beat 1 of bar 5 with a crash"],
+    writtenContent:
+      "## The drummer's moment\n\nA 4-bar solo. No pressure. Use what you know — groove, paradiddle, tom fills, dynamics.\n\n## Build to a peak\n\nBar 1: establish. Bar 2: develop. Bar 3: build tension. Bar 4: release into the crash on bar 5 beat 1.",
+    audioRefs: [{ id: "demo", label: "Example 4-bar solo" }],
+    exercisePlanId: "drums_l4_05_solo_4bar", prerequisites: ["drums_l2_06_four_bar_fills"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 20,
+  },
+  drums_l4_06_chart_reading: {
+    id: "drums_l4_06_chart_reading", instrumentId: "drums", level: 4, tier: "pro",
+    title: "Reading a drum chart — slash notation + groove labels",
+    objectives: ["Read slash notation for drum chart (diagonal slashes = groove as written above)", "Interpret 'time' / 'chorus' / 'fill' labels", "Play the chart end-to-end at 100 bpm"],
+    writtenContent:
+      "## The drummer's score\n\nDrum charts don't usually write every hit. Instead they use slash marks + labels: 'time' (keep grooving), 'chorus' (new feel), 'fill' (do a fill here).\n\n## Why\n\nThe drummer interprets. The chart gives you a map, you fill in the detail. Real drummers read charts, not sheet music.",
+    audioRefs: [{ id: "demo", label: "Chart read-through, 100 bpm" }],
+    exercisePlanId: "drums_l4_06_chart_read", prerequisites: ["drums_l2_06_four_bar_fills"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 18,
+  },
+
+  drums_l5_01_flam: {
+    id: "drums_l5_01_flam", instrumentId: "drums", level: 5, tier: "pro",
+    title: "Flams — grace note + main stroke",
+    objectives: ["Play a flam: soft grace note from one hand, main stroke from the other, almost simultaneous", "Alternate flam lead hand (flam-tap)", "Integrate flams into a 4-bar groove"],
+    writtenContent:
+      "## Two hits feel like one\n\nA flam = a GRACE note (soft, slightly ahead) followed IMMEDIATELY by the main note (loud). To the ear it's one 'fat' hit.\n\n## Execute clean\n\nGrace note is ~10% volume, ~30ms before main note. If the grace is too loud, you hear two hits. If too early, the flam 'opens up'.",
+    audioRefs: [{ id: "demo", label: "Flam taps, snare, 60 bpm" }],
+    exercisePlanId: "drums_l5_01_flams", prerequisites: ["drums_l2_04_paradiddle"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 15,
+  },
+  drums_l5_02_rolls: {
+    id: "drums_l5_02_rolls", instrumentId: "drums", level: 5, tier: "pro",
+    title: "Rolls — continuous rapid strokes",
+    objectives: ["Play a 5-stroke roll: 2 double-strokes + accent (RR LL R)", "Play a 9-stroke roll: 4 doubles + accent", "Use loose wrist to let sticks bounce"],
+    writtenContent:
+      "## The bounce is everything\n\nRolls are made of controlled bounces. Press the stick into the head with just enough pressure that it bounces 2, 3, 4 times. That's 'multiple bounce'.\n\n## Numbering\n\n5-stroke roll = 5 sounds. 9-stroke = 9 sounds. They're measured by total sounded hits.",
+    audioRefs: [{ id: "demo", label: "5-stroke and 9-stroke rolls" }],
+    exercisePlanId: "drums_l5_02_rolls", prerequisites: ["drums_l2_04_paradiddle"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 15,
+  },
+  drums_l5_03_ghost_advanced: {
+    id: "drums_l5_03_ghost_advanced", instrumentId: "drums", level: 5, tier: "pro",
+    title: "Ghost notes in a funk groove — James Brown style",
+    objectives: ["Play a full funk groove with ghost notes on every '&' and every 'e/a'", "Maintain ghost dynamics (very soft) across 8 bars", "Add kick syncopation underneath"],
+    writtenContent:
+      "## The James Brown secret\n\nClyde Stubblefield and Jabo Starks — James Brown's drummers — put ghost notes everywhere. You don't hear them as separate notes; you feel the groove's texture.\n\n## Volume control\n\nGhosts at 10% of main snare volume. Measure each stroke deliberately. This is dynamics practice disguised as groove practice.",
+    audioRefs: [{ id: "demo", label: "Funk groove with heavy ghosting, 90 bpm" }],
+    exercisePlanId: "drums_l5_03_funk_ghosts", prerequisites: ["drums_l2_05_ghost_notes"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { dynamics: 0.78, rhythm: 0.76 } }, estimatedMinutes: 20,
+  },
+  drums_l5_04_cross_stick: {
+    id: "drums_l5_04_cross_stick", instrumentId: "drums", level: 5, tier: "pro",
+    title: "Cross-stick / rim click technique",
+    objectives: ["Place the stick shaft across the snare's rim, lay the tip on the head", "Strike the rim with the shaft for a clear 'click' tone", "Use instead of a regular snare hit for softer ballads"],
+    writtenContent:
+      "## Quieter snare\n\nBallads don't need a full snare crack. The cross-stick (or 'rim click') gives you a wooden click tone — quieter, more intimate.\n\n## Technique\n\nLay the stick across the rim near the head. Strike the rim (not the head) with the far end of the shaft. Muted, woody sound.",
+    audioRefs: [{ id: "demo", label: "Ballad groove with cross-stick, 70 bpm" }],
+    exercisePlanId: "drums_l5_04_cross_stick", prerequisites: ["drums_l1_01_grip"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 15,
+  },
+  drums_l5_05_solo_intermediate: {
+    id: "drums_l5_05_solo_intermediate", instrumentId: "drums", level: 5, tier: "pro",
+    title: "8-bar drum solo with dynamic arc",
+    objectives: ["Improvise 8 bars building from quiet to loud", "Incorporate at least one rudiment + one tom pattern + one cymbal accent", "Return to the groove on bar 9 beat 1"],
+    writtenContent:
+      "## Dynamic shape\n\nA solo without a shape is a drum barrage. Build over 8 bars: bars 1-2 quiet (cross-stick), 3-4 louder (toms), 5-6 loud (full kit), 7 peak (fast 16ths), 8 wind down → crash bar 9.\n\n## Tell a story\n\nEvery solo should have an arc. Anyone can play loud for 8 bars. The art is HOW the loud arrives.",
+    audioRefs: [{ id: "demo", label: "8-bar solo with dynamic shape" }],
+    exercisePlanId: "drums_l5_05_solo_8bar", prerequisites: ["drums_l4_05_drum_solo_basic"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { dynamics: 0.78 } }, estimatedMinutes: 20,
+  },
+  drums_l5_06_hand_independence: {
+    id: "drums_l5_06_hand_independence", instrumentId: "drums", level: 5, tier: "pro",
+    title: "Hand independence — jazz hi-hat + snare comping",
+    objectives: ["Play steady swing ride RH", "Play hi-hat on 2 and 4 with LH foot", "Comp randomly with LH on snare (improvised)", "Keep all 3 limbs completely independent"],
+    writtenContent:
+      "## Four limbs, four minds\n\nAt L5 Pro, each limb should be able to do something completely different AT THE SAME TIME without the others interfering. Jazz drumming is the ultimate test.\n\n## Build slowly\n\nStart with just ride + LH foot hi-hat. When that's locked, add LH snare comping. Each new limb adds weeks of practice.",
+    audioRefs: [{ id: "demo", label: "Jazz independence pattern, 100 bpm" }],
+    exercisePlanId: "drums_l5_06_independence", prerequisites: ["drums_l4_04_jazz_ride"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 25,
+  },
+
+  drums_l6_01_rosanna: {
+    id: "drums_l6_01_rosanna", instrumentId: "drums", level: 6, tier: "pro",
+    title: "Toto's 'Rosanna' half-time shuffle",
+    objectives: ["Play Jeff Porcaro's famous groove: half-time feel, triplet ghost notes, kick on 1&3", "Maintain tempo at 87 bpm (original)", "Nail the ghost-note density that defines the pattern"],
+    writtenContent:
+      "## The most-studied groove in drumming\n\nJeff Porcaro invented the Rosanna shuffle — a half-time, heavily-ghosted shuffle. Every serious drummer learns it. Every drum teacher teaches it.\n\n## The secret sauce\n\nHalf-time = snare on beat 3 only (not 2 and 4). Ghosts = continuous sixteenth-triplet ghost notes on snare. Kick = 1 and 3. Ride = shuffle 8ths.",
+    audioRefs: [{ id: "demo", label: "Rosanna shuffle, 87 bpm" }],
+    exercisePlanId: "drums_l6_01_rosanna", prerequisites: ["drums_l5_03_ghost_advanced"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { rhythm: 0.78, dynamics: 0.76 } }, estimatedMinutes: 25,
+  },
+  drums_l6_02_funky_drummer: {
+    id: "drums_l6_02_funky_drummer", instrumentId: "drums", level: 6, tier: "pro",
+    title: "Clyde Stubblefield's 'Funky Drummer' break",
+    objectives: ["Play the most-sampled drum break in history — the 4-bar funk pattern", "Snare on 2 and 4 + a signature 16th ghost pattern", "Kick: 1, 1e, 2-&, 3-a, 4-e"],
+    writtenContent:
+      "## The most-sampled beat ever\n\n'Funky Drummer' (1969) by Clyde Stubblefield for James Brown. Sampled on over 1,500 hip-hop and R&B tracks. Every drummer should be able to play it.\n\n## Why it matters\n\nThis pattern IS funk. Learn it, understand how ghost notes + syncopated kick create irresistible groove.",
+    audioRefs: [{ id: "demo", label: "Funky Drummer break, 100 bpm" }],
+    exercisePlanId: "drums_l6_02_funky_drummer", prerequisites: ["drums_l5_03_ghost_advanced"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 25,
+  },
+  drums_l6_03_afro_cuban: {
+    id: "drums_l6_03_afro_cuban", instrumentId: "drums", level: 6, tier: "pro",
+    title: "Afro-Cuban 6/8 — the bembé pattern",
+    objectives: ["Play the 6/8 bembé clave on the ride cymbal", "Layer kick on the downbeats", "Feel the 3+3 subdivision (two triplets per bar)"],
+    writtenContent:
+      "## The mother rhythm\n\nThe 6/8 bembé is foundational to Afro-Cuban music — Santería, bembé, Yoruba. Also the skeleton of a lot of jazz 'rhumba' grooves.\n\n## The clave\n\nOn a 6-count bar: hit 1, 2.5, 4, 5.5, 6.5. That's the bembé clave. Play it on ride cymbal; the 6/8 pulse does the rest.",
+    audioRefs: [{ id: "demo", label: "Bembé 6/8 groove, 120 bpm" }],
+    exercisePlanId: "drums_l6_03_bembe", prerequisites: ["drums_l3_04_samba"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 20,
+  },
+  drums_l6_04_metal_double_bass: {
+    id: "drums_l6_04_metal_double_bass", instrumentId: "drums", level: 6, tier: "pro",
+    title: "Metal — sustained double-bass at 160 bpm",
+    objectives: ["Play continuous 16th-note double-bass at 160 bpm for 16 bars", "Maintain snare on 2 and 4 through the barrage", "Use ride bell for bright metal cymbal color"],
+    writtenContent:
+      "## Endurance + speed\n\nMetal double-bass requires both feet playing 16ths at high tempo. 160 bpm × 16 16ths per bar × 16 bars = 1,024 consecutive kicks. That's 90 seconds of sustained double-kick work.\n\n## Practice method\n\nStart at 100 bpm. Add 5 bpm per week. 6 months to get to 160 cleanly. Don't rush it; bad technique injures ankles.",
+    audioRefs: [{ id: "demo", label: "Metal double-bass, 160 bpm" }],
+    exercisePlanId: "drums_l6_04_metal", prerequisites: ["drums_l4_01_double_bass"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { rhythm: 0.8, consistency: 0.78 } }, estimatedMinutes: 25,
+  },
+  drums_l6_05_practice_pad: {
+    id: "drums_l6_05_practice_pad", instrumentId: "drums", level: 6, tier: "pro",
+    title: "All 40 rudiments — continuous practice pad workout",
+    objectives: ["Play through all 40 rudiments at 80 bpm", "4 measures per rudiment, no gaps between", "Clean transitions from singles → doubles → paradiddle families → rolls → flams"],
+    writtenContent:
+      "## The foundation of drumming\n\nThe Percussive Arts Society's 40 essential rudiments. Every rudimental drummer knows them. At L6 Pro, cycling through all 40 at 80 bpm is expected.\n\n## This is the Pro gate\n\n40 rudiments × 4 measures = 160 bars of practice. Clean execution across singles, doubles, paradiddles, rolls, and flam families. Pass this → earn Pro Certificate.",
+    audioRefs: [{ id: "demo", label: "Rudiment workout, first 10 rudiments" }],
+    exercisePlanId: "drums_l6_05_rudiments", prerequisites: ["drums_l5_02_rolls", "drums_l5_01_flam"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { rhythm: 0.82, consistency: 0.8 } }, estimatedMinutes: 30,
+  },
+  drums_l6_06_drum_chart: {
+    id: "drums_l6_06_drum_chart", instrumentId: "drums", level: 6, tier: "pro",
+    title: "Play an unseen drum chart (Pro Certificate practical)",
+    objectives: ["Read an unseen drum chart with feel changes (rock → funk → latin)", "Execute each feel change cleanly", "Add appropriate fills at phrase boundaries"],
+    writtenContent:
+      "## The Pro gate\n\nUnseen drum chart. Multiple grooves. Fill markers. Dynamic shifts. Read it once, play it at 100 bpm with appropriate feel and fills.\n\n## How pros work\n\nSession drummers sight-read charts all day. Get comfortable looking 2-4 bars ahead while playing the current bar. It feels impossible until it doesn't.",
+    audioRefs: [{ id: "demo", label: "Reference chart playthrough" }],
+    exercisePlanId: "drums_l6_06_chart_pro", prerequisites: ["drums_l4_06_chart_reading", "drums_l5_06_hand_independence"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { rhythm: 0.82 } }, estimatedMinutes: 30,
+  },
+
   sitar_l1_01_sa: {
     id: "sitar_l1_01_sa",
     instrumentId: "sitar",

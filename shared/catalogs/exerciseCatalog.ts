@@ -1558,12 +1558,199 @@ export const EXERCISES: Record<string, Exercise> = {
     instrumentId: "drums",
     title: "1-bar tom fill at the end of a 4-bar phrase",
     targetPattern: {
-      // At 80 bpm: beat = 750ms, 16th = 187.5ms
-      // Bar 4 fill: 6 16th notes (T1 T1 T2 T2 T3 T3) starting at 9000ms
-      onsets: [9000, 9187, 9375, 9562, 9750, 9937, 12000], // 6 fill hits + crash on next beat 1
+      onsets: [9000, 9187, 9375, 9562, 9750, 9937, 12000],
     },
     tempo: { bpm: 80, meter: [4, 4] },
     gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l2_01_16ths: {
+    id: "drums_l2_01_16ths", type: "rhythm_clap", instrumentId: "drums",
+    title: "16th-note hi-hat, 2 bars @ 60 bpm",
+    targetPattern: { onsets: Array.from({length:32}, (_,i)=>i*250) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l2_02_swing_ride: {
+    id: "drums_l2_02_swing_ride", type: "rhythm_clap", instrumentId: "drums",
+    title: "Swing ride pattern, 4 bars @ 100 bpm",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=> {
+      // Swing 8ths: quarter + 2/3 triplet positions
+      const beat = Math.floor(i/2)*600;
+      const sub = (i%2===0) ? 0 : 400;
+      return beat + sub;
+    }) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l2_03_funk: {
+    id: "drums_l2_03_funk", type: "rhythm_clap", instrumentId: "drums",
+    title: "Funk kick pattern — syncopated",
+    targetPattern: { onsets: [0, 333, 666, 1333, 1666, 2000, 2666, 3000, 3333] },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l2_04_paradiddle: {
+    id: "drums_l2_04_paradiddle", type: "rhythm_clap", instrumentId: "drums",
+    title: "Paradiddle RLRR LRLL, 60 bpm",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=>i*500) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l2_05_ghosts: {
+    id: "drums_l2_05_ghosts", type: "rhythm_clap", instrumentId: "drums",
+    title: "Groove with ghost notes, 85 bpm",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=>i*176) },
+    tempo: { bpm: 85, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l2_06_four_bar: {
+    id: "drums_l2_06_four_bar", type: "rhythm_clap", instrumentId: "drums",
+    title: "4-bar phrase with tom fill, 85 bpm",
+    targetPattern: { onsets: Array.from({length:48},(_,i)=>i*176) },
+    tempo: { bpm: 85, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l3_01_bossa: {
+    id: "drums_l3_01_bossa", type: "rhythm_clap", instrumentId: "drums",
+    title: "Bossa nova clave",
+    targetPattern: { onsets: [0, 1000, 1666, 2666, 4000, 5000, 5666, 6666] },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l3_02_shuffle: {
+    id: "drums_l3_02_shuffle", type: "rhythm_clap", instrumentId: "drums",
+    title: "Blues shuffle, 100 bpm",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=>{
+      const beat = Math.floor(i/2)*600;
+      const sub = (i%2===0) ? 0 : 400;
+      return beat + sub;
+    }) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l3_03_reggae: {
+    id: "drums_l3_03_reggae", type: "rhythm_clap", instrumentId: "drums",
+    title: "Reggae one-drop, 75 bpm",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=>i*200) },
+    tempo: { bpm: 75, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l3_04_samba: {
+    id: "drums_l3_04_samba", type: "rhythm_clap", instrumentId: "drums",
+    title: "Samba, 2 bars @ 100 bpm",
+    targetPattern: { onsets: Array.from({length:32},(_,i)=>i*150) },
+    tempo: { bpm: 100, meter: [2, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l3_05_seven_eight: {
+    id: "drums_l3_05_seven_eight", type: "rhythm_clap", instrumentId: "drums",
+    title: "7/8 groove (3+2+2), 100 bpm",
+    targetPattern: { onsets: Array.from({length:14},(_,i)=>i*300) },
+    tempo: { bpm: 100, meter: [7, 8] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l3_06_endurance: {
+    id: "drums_l3_06_endurance", type: "rhythm_clap", instrumentId: "drums",
+    title: "32-bar rock groove endurance, 140 bpm",
+    targetPattern: { onsets: Array.from({length:64},(_,i)=>Math.round(i*214)) },
+    tempo: { bpm: 140, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l4_01_double_bass: {
+    id: "drums_l4_01_double_bass", type: "rhythm_clap", instrumentId: "drums",
+    title: "Double-bass groove, 100 bpm",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=>i*150) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l4_02_linear: {
+    id: "drums_l4_02_linear", type: "rhythm_clap", instrumentId: "drums",
+    title: "Linear pattern, 90 bpm",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=>i*166) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l4_03_3on4: {
+    id: "drums_l4_03_3on4", type: "rhythm_clap", instrumentId: "drums",
+    title: "3-over-4 polyrhythm, 80 bpm",
+    targetPattern: { onsets: Array.from({length:12},(_,i)=>Math.round(i*250)) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l4_04_broken_jazz: {
+    id: "drums_l4_04_broken_jazz", type: "rhythm_clap", instrumentId: "drums",
+    title: "Broken jazz ride, 100 bpm",
+    targetPattern: { onsets: [0, 600, 1200, 1800, 2400, 3600, 4800, 5400] },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l4_05_solo_4bar: {
+    id: "drums_l4_05_solo_4bar", type: "improvise", instrumentId: "drums",
+    title: "4-bar drum solo",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=>i*187) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l4_06_chart_read: {
+    id: "drums_l4_06_chart_read", type: "sight_read", instrumentId: "drums",
+    title: "Drum chart read-through, 100 bpm",
+    targetPattern: { onsets: Array.from({length:32},(_,i)=>i*150) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l5_01_flams: {
+    id: "drums_l5_01_flams", type: "rhythm_clap", instrumentId: "drums",
+    title: "Flam taps, snare, 60 bpm",
+    targetPattern: { onsets: Array.from({length:8},(_,i)=>i*500) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l5_02_rolls: {
+    id: "drums_l5_02_rolls", type: "rhythm_clap", instrumentId: "drums",
+    title: "5-stroke + 9-stroke rolls",
+    targetPattern: { onsets: [0, 75, 150, 225, 300, 1500, 1575, 1650, 1725, 1800, 1875, 1950, 2025, 2100] },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l5_03_funk_ghosts: {
+    id: "drums_l5_03_funk_ghosts", type: "rhythm_clap", instrumentId: "drums",
+    title: "Funk groove with ghost notes, 90 bpm",
+    targetPattern: { onsets: Array.from({length:32},(_,i)=>Math.round(i*166)) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l5_04_cross_stick: {
+    id: "drums_l5_04_cross_stick", type: "rhythm_clap", instrumentId: "drums",
+    title: "Ballad groove with cross-stick, 70 bpm",
+    targetPattern: { onsets: Array.from({length:8},(_,i)=>i*857) },
+    tempo: { bpm: 70, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l5_05_solo_8bar: {
+    id: "drums_l5_05_solo_8bar", type: "improvise", instrumentId: "drums",
+    title: "8-bar drum solo with dynamic arc",
+    targetPattern: { onsets: Array.from({length:32},(_,i)=>i*187) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l5_06_independence: {
+    id: "drums_l5_06_independence", type: "rhythm_clap", instrumentId: "drums",
+    title: "Jazz independence pattern, 100 bpm",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=>i*150) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l6_01_rosanna: {
+    id: "drums_l6_01_rosanna", type: "rhythm_clap", instrumentId: "drums",
+    title: "Rosanna half-time shuffle, 87 bpm",
+    targetPattern: { onsets: Array.from({length:32},(_,i)=>Math.round(i*172)) },
+    tempo: { bpm: 87, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l6_02_funky_drummer: {
+    id: "drums_l6_02_funky_drummer", type: "rhythm_clap", instrumentId: "drums",
+    title: "Funky Drummer break, 100 bpm",
+    targetPattern: { onsets: Array.from({length:32},(_,i)=>i*150) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l6_03_bembe: {
+    id: "drums_l6_03_bembe", type: "rhythm_clap", instrumentId: "drums",
+    title: "Bembé 6/8, 120 bpm",
+    targetPattern: { onsets: [0, 250, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750] },
+    tempo: { bpm: 120, meter: [6, 8] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l6_04_metal: {
+    id: "drums_l6_04_metal", type: "rhythm_clap", instrumentId: "drums",
+    title: "Metal double-bass, 160 bpm, 16 bars",
+    targetPattern: { onsets: Array.from({length:64},(_,i)=>Math.round(i*93)) },
+    tempo: { bpm: 160, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l6_05_rudiments: {
+    id: "drums_l6_05_rudiments", type: "rhythm_clap", instrumentId: "drums",
+    title: "Rudiment workout — first 10 rudiments",
+    targetPattern: { onsets: Array.from({length:80},(_,i)=>i*187) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l6_06_chart_pro: {
+    id: "drums_l6_06_chart_pro", type: "sight_read", instrumentId: "drums",
+    title: "Unseen drum chart (Pro Cert practical)",
+    targetPattern: { onsets: Array.from({length:32},(_,i)=>i*150) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
   },
 
   sitar_l1_01_sustain_sa: {
