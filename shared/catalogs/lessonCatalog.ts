@@ -236,6 +236,61 @@ export const LESSONS: Record<string, Lesson> = {
     estimatedMinutes: 12,
   },
 
+  drums_l1_01_grip: {
+    id: "drums_l1_01_grip",
+    instrumentId: "drums",
+    level: 1, tier: "standard",
+    title: "Grip, posture, and your first strokes",
+    objectives: [
+      "Hold sticks with a matched grip — thumb and index form the fulcrum, other fingers loose",
+      "Sit with your kick-drum foot flat, hi-hat foot on its pedal, snare between your knees",
+      "Strike the snare four times at 80 bpm — equal volume, equal spacing",
+    ],
+    writtenContent:
+      "## The stick is a pendulum\n\nHold lightly. The stick should bounce off the drum, not be forced into it. If your forearms are tense, you're gripping too hard.\n\n## Matched grip\n\nBoth hands the same: thumb pad on one side of the stick, index finger on the other, forming a pinch (the 'fulcrum'). Other three fingers drape underneath — they guide, they don't grip.\n\n## First strokes\n\n4 snare hits at 80 bpm. Goal: each hit sounds identical. If they don't, you're gripping inconsistently.",
+    audioRefs: [{ id: "demo", label: "4 snare hits, 80 bpm" }],
+    exercisePlanId: "drums_l1_01_snare_4",
+    prerequisites: [],
+    passCriteria: { minGradeOverall: 0.7 },
+    estimatedMinutes: 8,
+  },
+  drums_l1_02_kick_snare: {
+    id: "drums_l1_02_kick_snare",
+    instrumentId: "drums",
+    level: 1, tier: "standard",
+    title: "The backbeat — kick on 1&3, snare on 2&4",
+    objectives: [
+      "Play kick on beats 1 and 3, snare on beats 2 and 4",
+      "Keep both feet and hands relaxed — no stomping the kick",
+      "Loop it for 8 bars without breaking tempo",
+    ],
+    writtenContent:
+      "## The most important pattern in popular music\n\nKick-1, snare-2, kick-3, snare-4. Repeat forever. Half the world's music sits on this foundation.\n\n## The kick is quiet\n\nDon't stomp. A controlled heel-up motion gives you power and evenness. The drum does the work; your leg is a lever.\n\n## Count out loud\n\nSeriously — say **'ONE two THREE four'** while you play. Your mouth locks in the timing that your limbs are still learning.",
+    audioRefs: [{ id: "demo", label: "Backbeat loop, 8 bars @ 80 bpm" }],
+    exercisePlanId: "drums_l1_02_backbeat",
+    prerequisites: ["drums_l1_01_grip"],
+    passCriteria: { minGradeOverall: 0.7 },
+    estimatedMinutes: 10,
+  },
+  drums_l1_03_hihat: {
+    id: "drums_l1_03_hihat",
+    instrumentId: "drums",
+    level: 1, tier: "standard",
+    title: "Add the hi-hat — your first full groove",
+    objectives: [
+      "Add closed hi-hat on every quarter note (1 2 3 4)",
+      "Keep kick and snare from L1.2 pattern intact underneath",
+      "Play 8 bars — three limbs, one tempo",
+    ],
+    writtenContent:
+      "## Three limbs, one rhythm\n\nRight hand plays hi-hat on every beat: 1, 2, 3, 4. Left hand plays snare on 2 and 4. Right foot plays kick on 1 and 3. Left foot stays on the hi-hat pedal, keeping it closed.\n\nIf your brain protests, that's normal. Go slower — 60 bpm, even 50. **Coordination is a physical skill, not a musical one**. It will come.",
+    audioRefs: [{ id: "demo", label: "Full rock groove, 8 bars @ 80 bpm" }],
+    exercisePlanId: "drums_l1_03_full_groove",
+    prerequisites: ["drums_l1_02_kick_snare"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { rhythm: 0.75 } },
+    estimatedMinutes: 12,
+  },
+
   sitar_l1_01_sa: {
     id: "sitar_l1_01_sa",
     instrumentId: "sitar",

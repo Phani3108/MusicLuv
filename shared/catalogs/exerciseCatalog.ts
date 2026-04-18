@@ -268,6 +268,40 @@ export const EXERCISES: Record<string, Exercise> = {
     gradingRubricId: "rubric_early_level",
   },
 
+  drums_l1_01_snare_4: {
+    id: "drums_l1_01_snare_4",
+    type: "rhythm_clap",
+    instrumentId: "drums",
+    title: "Four equal snare hits at 80 bpm",
+    targetPattern: { onsets: [0, 750, 1500, 2250] },
+    tempo: { bpm: 80, meter: [4, 4] },
+    gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l1_02_backbeat: {
+    id: "drums_l1_02_backbeat",
+    type: "rhythm_clap",
+    instrumentId: "drums",
+    title: "Kick on 1&3, snare on 2&4 — 4 bars",
+    targetPattern: {
+      // Each beat at 80 bpm = 750ms. 16 onsets total across 4 bars.
+      onsets: Array.from({ length: 16 }, (_, i) => i * 750),
+    },
+    tempo: { bpm: 80, meter: [4, 4] },
+    gradingRubricId: "rubric_rhythm_only",
+  },
+  drums_l1_03_full_groove: {
+    id: "drums_l1_03_full_groove",
+    type: "rhythm_clap",
+    instrumentId: "drums",
+    title: "Full rock groove — hi-hat on every beat, 4 bars",
+    targetPattern: {
+      // Hi-hat plays every 8th note — 32 onsets across 4 bars at 80 bpm
+      onsets: Array.from({ length: 32 }, (_, i) => i * 375),
+    },
+    tempo: { bpm: 80, meter: [4, 4] },
+    gradingRubricId: "rubric_rhythm_only",
+  },
+
   sitar_l1_01_sustain_sa: {
     id: "sitar_l1_01_sustain_sa",
     type: "play_note",

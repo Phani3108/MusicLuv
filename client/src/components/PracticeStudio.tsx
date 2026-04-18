@@ -15,6 +15,7 @@ import { SitarHero } from "./SitarHero";
 import { GenericHero } from "./GenericHero";
 import { VirtualGuitar } from "./VirtualGuitar";
 import { VirtualViolin } from "./VirtualViolin";
+import { VirtualDrums } from "./VirtualDrums";
 import { PitchMeter } from "./PitchMeter";
 import { TimelineRibbon } from "./TimelineRibbon";
 import { GhostHand } from "./GhostHand";
@@ -250,7 +251,8 @@ export function PracticeStudio() {
           {instrument.id === "sitar" && <SitarHero highlight={null} />}
           {instrument.id === "guitar" && <VirtualGuitar />}
           {instrument.id === "violin" && <VirtualViolin />}
-          {instrument.id !== "piano" && instrument.id !== "sitar" && instrument.id !== "guitar" && instrument.id !== "violin" && <GenericHero instrument={instrument} />}
+          {instrument.id === "drums" && <VirtualDrums />}
+          {instrument.id !== "piano" && instrument.id !== "sitar" && instrument.id !== "guitar" && instrument.id !== "violin" && instrument.id !== "drums" && <GenericHero instrument={instrument} />}
         </div>
 
         <div className="flex items-center gap-2 mb-4 flex-wrap">
