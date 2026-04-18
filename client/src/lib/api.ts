@@ -52,5 +52,6 @@ export async function realGrade(
     issues: body.issues ?? [],
     feedback: { canned: body.feedback?.canned ?? "Nice work." },
     xpAwarded: body.xpAwarded ?? 0,
+    userNotesDetected: body.userNotesDetected ?? [],
   };
 }

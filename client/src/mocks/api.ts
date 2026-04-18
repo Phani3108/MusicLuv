@@ -67,7 +67,16 @@ export async function mockGrade(exercise: Exercise, opts?: { attemptNumber?: num
 
   const xpAwarded = passed ? 12 : 3;
 
-  return { composite, passed, dimensions, issues, feedback: { canned, mentor: mentorLine }, xpAwarded };
+  // Synthesize detected user notes — same shape as target but with small perturbations so
+  // the overlay has something meaningful to render even in mock mode.
+  const userNotesDetected = (exercise.targetPattern.notes ?? []).map((n) => ({
+    pitch: n.pitch,
+    startMs: n.startMs + Math.round(rand(-50, 50)),
+    durationMs: n.durationMs + Math.round(rand(-60, 60)),
+    centsOff: Math.round(rand(-30, 30)),
+  }));
+
+  return { composite, passed, dimensions, issues, feedback: { canned, mentor: mentorLine }, xpAwarded, userNotesDetected };
 }
 
 /** Simulated live pitch stream — ticks every 60ms with plausible values around a target note. */

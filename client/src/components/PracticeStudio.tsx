@@ -4,6 +4,7 @@ import { currentInstrumentAtom, currentLessonIdAtom, progressAtom, userAtom } fr
 import {
   practiceStatusAtom, currentExerciseIdAtom, playheadMsAtom,
   livePitchHzAtom, livePitchNoteAtom, livePitchCentsAtom, lastGradeAtom,
+  lastAttemptAudioUrlAtom,
 } from "@/atoms/practice";
 import { dissectionAtom, gradingModalAtom } from "@/atoms/panels";
 import { getInstrument } from "@catalogs/instrumentCatalog";
@@ -29,6 +30,7 @@ export function PracticeStudio() {
   const setLivePitchNote = useSetAtom(livePitchNoteAtom);
   const setLivePitchCents = useSetAtom(livePitchCentsAtom);
   const setLastGrade = useSetAtom(lastGradeAtom);
+  const [lastAudioUrl, setLastAudioUrl] = useAtom(lastAttemptAudioUrlAtom);
   const setGradingModalOpen = useSetAtom(gradingModalAtom);
   const setDissection = useSetAtom(dissectionAtom);
   const [progress, setProgress] = useAtom(progressAtom);
@@ -101,8 +103,11 @@ export function PracticeStudio() {
         if (usingRealBackend && micHandleRef.current) {
           const wav = await micHandleRef.current.stop();
           micHandleRef.current = null;
+          if (lastAudioUrl) URL.revokeObjectURL(lastAudioUrl);
+          setLastAudioUrl(URL.createObjectURL(wav));
           grade = await realGrade(exercise, wav, `a_${Date.now()}`);
         } else {
+          if (lastAudioUrl) { URL.revokeObjectURL(lastAudioUrl); setLastAudioUrl(null); }
           grade = await mockGrade(exercise, { attemptNumber: attemptCount + 1 });
         }
       } catch (e) {
