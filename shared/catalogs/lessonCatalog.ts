@@ -19,7 +19,7 @@ export const LESSONS: Record<string, Lesson> = {
     ],
     exercisePlanId: "piano_l1_01_scale5",
     prerequisites: [],
-    passCriteria: { minGradeOverall: 0.75, minPerDimension: { pitch: 0.8, rhythm: 0.6 } as any },
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { pitch: 0.8, rhythm: 0.6 } },
     estimatedMinutes: 8,
   },
   piano_l1_02_rhythm: {
@@ -87,7 +87,7 @@ export const LESSONS: Record<string, Lesson> = {
     audioRefs: [{ id: "drone", label: "Tanpura drone in C" }, { id: "sa_demo", label: "Guruji plays Sa" }],
     exercisePlanId: "sitar_l1_01_sustain_sa",
     prerequisites: [],
-    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.8, tone: 0.65 } as any },
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.8, tone: 0.65 } },
     estimatedMinutes: 10,
   },
   sitar_l4_01_yaman_alap: {
@@ -105,7 +105,7 @@ export const LESSONS: Record<string, Lesson> = {
     audioRefs: [{ id: "demo", label: "Ustad's alap in Yaman" }],
     exercisePlanId: "sitar_l4_01_yaman_meend",
     prerequisites: ["sitar_l1_01_sa"],
-    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.75, tone: 0.7 } as any },
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.75, tone: 0.7 } },
     estimatedMinutes: 15,
   },
 

@@ -1,0 +1,17 @@
+{
+  "maestro_piano_western::u_smoke": {
+    "turns": [
+      {
+        "role": "user",
+        "text": "How can I tell if my wrist is too tense?",
+        "at": 1776507964414
+      },
+      {
+        "role": "mentor",
+        "text": "Maestro Adrienne, Conservatory-trained, teaches with warmth and the occasional dry quip here — you asked \"Phani: How can I tell if my wrist is too tense?\". (Real Claude answer lands once ANTHROPIC_API_KEY is set.)",
+        "at": 1776507964414
+      }
+    ],
+    "updatedAt": 1776507964414
+  }
+}
