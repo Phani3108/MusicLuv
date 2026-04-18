@@ -1250,6 +1250,189 @@ export const LESSONS: Record<string, Lesson> = {
     passCriteria: { minGradeOverall: 0.78, minPerDimension: { pitch: 0.8, rhythm: 0.8 } }, estimatedMinutes: 25,
   },
 
+  guitar_l7_01_sweep_arpeggios: {
+    id: "guitar_l7_01_sweep_arpeggios", instrumentId: "guitar", level: 7, tier: "genius",
+    title: "5-string sweep arpeggios — Yngwie territory",
+    objectives: ["Execute a 5-string A minor sweep cleanly at 100 bpm", "Use economy picking + legato connections between sweeps", "Build to 140 bpm over weeks"],
+    writtenContent:
+      "## Neoclassical shred\n\nYngwie Malmsteen, Jason Becker, Frank Gambale — the sweep-picking tradition. At Genius level, a 5-string sweep (A minor: A C E A C) should feel fluid.\n\n## Left-hand muting\n\nAs the pick sweeps down, your left-hand fingers ROLL — lifting each string microseconds after it sounds so notes don't bleed together.\n\n## Target 140 bpm\n\n100 → 140 over 2 months. Slower + clean > fast + messy. No exceptions.",
+    audioRefs: [{ id: "demo", label: "A minor 5-string sweep, 100 bpm" }],
+    exercisePlanId: "guitar_l7_01_5string_sweep", prerequisites: ["guitar_l5_05_sweep"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { pitch: 0.82, consistency: 0.8 } }, estimatedMinutes: 35,
+  },
+  guitar_l7_02_classical_fantasia: {
+    id: "guitar_l7_02_classical_fantasia", instrumentId: "guitar", level: 7, tier: "genius",
+    title: "Villa-Lobos Étude No. 1 — arpeggios at speed",
+    objectives: ["Play Villa-Lobos Étude No. 1 arpeggios at 120 bpm on classical guitar", "Maintain independent finger action (p-i-m-a assigned)", "Ring every note cleanly in the 5-note arpeggio cycle"],
+    writtenContent:
+      "## Classical guitar's Everest\n\nHeitor Villa-Lobos's 12 Études are the classical guitar pinnacle. Étude No. 1 = continuous arpeggios, starting E minor, modulating. Every classical guitarist practices it.\n\n## Finger assignment\n\np (thumb) on strings 5-6. i-m-a on strings 3-2-1. Each arpeggio = 5 notes across 5 strings in a flowing pattern.\n\n## The challenge\n\nCleanliness + speed + voicing + pedal-like sustain (fingers hold notes across sweeps). At 120 bpm = 30-second workout per bar.",
+    audioRefs: [{ id: "demo", label: "Villa-Lobos Étude 1 opening" }],
+    exercisePlanId: "guitar_l7_02_villa_lobos", prerequisites: ["guitar_l6_02_bourree"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 35,
+  },
+  guitar_l7_03_wes_octaves: {
+    id: "guitar_l7_03_wes_octaves", instrumentId: "guitar", level: 7, tier: "genius",
+    title: "Wes Montgomery octaves — the thumb technique",
+    objectives: ["Fret two octave-apart notes simultaneously", "Use thumb (no pick) to strum both strings", "Play a 4-bar jazz head in octaves"],
+    writtenContent:
+      "## The Wes signature\n\nWes Montgomery played entire melodies in octaves — two notes an octave apart fretted at once, strummed with his thumb. Smooth, warm, ultra-distinctive.\n\n## The shape\n\nFor an octave on guitar: fret the lower note, skip the next string up, fret the string 2 frets higher. Mute the skipped string with a finger touch.\n\n## Why thumb + no pick?\n\nThumb gives a rounder attack. Pick sounds brittle. Wes's tone is almost entirely his thumb technique.",
+    audioRefs: [{ id: "demo", label: "Octave melody on Autumn Leaves" }],
+    exercisePlanId: "guitar_l7_03_wes", prerequisites: ["guitar_l6_03_jazz_standard"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 25,
+  },
+  guitar_l7_04_indian_slide: {
+    id: "guitar_l7_04_indian_slide", instrumentId: "guitar", level: 7, tier: "genius",
+    title: "Indian slide guitar — raga Yaman on standard acoustic",
+    objectives: ["Play raga Yaman phrase using slides between notes (approximating sitar meend)", "Use the D-string + G-string for the primary phrase", "Hold long notes to let them 'speak' — Indian time feel"],
+    writtenContent:
+      "## The Indian slide tradition\n\nDebashish Bhattacharya, Vishwa Mohan Bhatt — Indian slide guitarists who brought raga to the guitar. The glide between notes approximates the sitar's meend.\n\n## Yaman on guitar\n\nIn D: D E F♯ G♯ A B C♯ D. The G♯ (Ma♯) is THE Yaman note. Slide between Ma♯ and Dha (A) to hear the raga's soul.\n\n## Time\n\nIndian classical breathes. A single note can last 4 beats. Don't rush. Let the raga unfold.",
+    audioRefs: [{ id: "demo", label: "Yaman phrase with slides on acoustic guitar" }],
+    exercisePlanId: "guitar_l7_04_yaman_slide", prerequisites: ["guitar_l5_03_slides"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { pitch: 0.76 } }, estimatedMinutes: 30,
+  },
+  guitar_l7_05_chord_melody: {
+    id: "guitar_l7_05_chord_melody", instrumentId: "guitar", level: 7, tier: "genius",
+    title: "Jazz chord-melody — 'Misty' arrangement",
+    objectives: ["Play 'Misty' as a full solo piece — melody + harmony simultaneously", "Use inverted voicings so melody sits on top", "Apply walking bass lines on string 6 under the chord-melody"],
+    writtenContent:
+      "## One guitarist, full arrangement\n\nJoe Pass, Ted Greene, Tuck Andress — masters of solo jazz guitar. They play melody + chords + bass lines all at once. This is the guitar's version of solo piano chord-melody.\n\n## Misty technique\n\nMelody note = finger 1 (index) or thumb — always on a high string. Chord voicing below. Occasional walking bass on the 6th string between phrases.\n\n## Voicing rule\n\nAny chord voicing's top note = the melody. You invert the chord so the melody sings.",
+    audioRefs: [{ id: "demo", label: "'Misty' opening, chord-melody style" }],
+    exercisePlanId: "guitar_l7_05_misty", prerequisites: ["guitar_l6_03_jazz_standard"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 35,
+  },
+  guitar_l7_06_genius_exam: {
+    id: "guitar_l7_06_genius_exam", instrumentId: "guitar", level: 7, tier: "genius",
+    title: "L7 exam — execute a complex piece with two techniques combined",
+    objectives: ["Perform a 60-second passage combining 5-string sweep + legato + chord-melody", "Composite score ≥0.80", "Every dimension ≥0.80"],
+    writtenContent:
+      "## Genius tier entry gate\n\nCombine at least two advanced techniques in one 60-second passage. Examples:\n- 5-string sweep + legato runs\n- Chord-melody + slide ornaments\n- Classical fingerstyle + jazz voicings\n\n## The bar is high\n\nPer-dimension thresholds of 0.80 mean every aspect — pitch, rhythm, tone, dynamics, consistency — must hit Pro-plus quality simultaneously.",
+    audioRefs: [{ id: "demo", label: "Reference combined-technique passage" }],
+    exercisePlanId: "guitar_l7_06_exam", prerequisites: ["guitar_l7_01_sweep_arpeggios", "guitar_l7_05_chord_melody"],
+    passCriteria: { minGradeOverall: 0.80, minPerDimension: { pitch: 0.82, rhythm: 0.82, consistency: 0.80 } }, estimatedMinutes: 40,
+  },
+
+  guitar_l8_01_blues_improv: {
+    id: "guitar_l8_01_blues_improv", instrumentId: "guitar", level: 8, tier: "genius",
+    title: "Blues improvisation — B.B. King vocabulary",
+    objectives: ["Deploy 10 classic B.B. King licks (bending, repeating motif, dynamic contrast)", "Improvise 24 bars over 12-bar blues in G using the vocabulary", "Leave space — one idea every 2 bars"],
+    writtenContent:
+      "## The King's vocabulary\n\nB.B. King's genius: ~20 licks he played for 60 years. Same phrases, infinite arrangements. The vocabulary IS the style.\n\n## 10 essential BB licks\n\nBending 3 → 4 → 3, repeating motif with 1-step variation, silence + sustained bend on the flat 5, 'vibrato at the bend's peak' — each lick a whole expressive statement.\n\n## Your job\n\nLearn 10 licks verbatim first. Then deploy them in improv — the way B.B. did.",
+    audioRefs: [{ id: "demo", label: "B.B. style improv over 12-bar G blues" }],
+    exercisePlanId: "guitar_l8_01_bb_vocab", prerequisites: ["guitar_l4_06_improv"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 30,
+  },
+  guitar_l8_02_jazz_improv: {
+    id: "guitar_l8_02_jazz_improv", instrumentId: "guitar", level: 8, tier: "genius",
+    title: "Jazz improvisation — bebop vocabulary over Rhythm Changes",
+    objectives: ["Navigate 'Rhythm Changes' (AABA, 32 bars) with chord-tone improv", "Apply bebop-style 8th-note lines through each chord change", "Use enclosures (chromatic approach notes) to target chord tones"],
+    writtenContent:
+      "## The jazz gauntlet\n\n'Rhythm Changes' (based on Gershwin's 'I Got Rhythm') is the jazz musician's standard progression — 32 bars AABA in B♭. Every jazz musician improvises through it thousands of times.\n\n## Bebop 8ths\n\nContinuous 8th-note lines with enclosures: chromatic notes approaching chord tones. Study Charlie Parker, Dizzy, Bud Powell.\n\n## The challenge\n\nKeep up with chord changes (often 2 per bar in the A section). Your vocabulary must include lines that connect I → vi → ii → V smoothly.",
+    audioRefs: [{ id: "demo", label: "Bebop line over Rhythm Changes A section" }],
+    exercisePlanId: "guitar_l8_02_rhythm_changes", prerequisites: ["guitar_l6_03_jazz_standard"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 40,
+  },
+  guitar_l8_03_metal_style: {
+    id: "guitar_l8_03_metal_style", instrumentId: "guitar", level: 8, tier: "genius",
+    title: "Metal style — palm muting + tremolo picking + octave doubling",
+    objectives: ["Execute palm-muted 16th-note chugging on low E at 140 bpm", "Tremolo-pick a single note continuously (Metallica/Megadeth style)", "Add rhythmic octave accents as riff structure"],
+    writtenContent:
+      "## The metal vocabulary\n\nMetal guitar has three core techniques: palm muting (right-hand resting lightly on strings = muted thud), tremolo picking (continuous rapid alternating picks), octave doubling (root + octave for weight).\n\n## Palm muting\n\nHeel of the picking hand rests on the string just in front of the bridge. Lightly. Too much = dead sound. Just right = percussive chug.\n\n## Target 140 bpm 16ths\n\nPhil Anselmo (Pantera) at 180+. Your gate is 140 bpm sustained 16ths for 16 bars. Cardio for the picking hand.",
+    audioRefs: [{ id: "demo", label: "Metal riff: palm mute 16ths, 140 bpm" }],
+    exercisePlanId: "guitar_l8_03_metal_riff", prerequisites: ["guitar_l5_04_alternate_picking"],
+    passCriteria: { minGradeOverall: 0.76, minPerDimension: { rhythm: 0.80, consistency: 0.78 } }, estimatedMinutes: 30,
+  },
+  guitar_l8_04_flamenco: {
+    id: "guitar_l8_04_flamenco", instrumentId: "guitar", level: 8, tier: "genius",
+    title: "Flamenco — rasgueado + picado",
+    objectives: ["Execute rasgueado (strum with all 4 fingers unrolling in rapid succession)", "Play picado (aggressive rest-stroke) on single-note runs", "Combine both in a 4-bar flamenco phrase"],
+    writtenContent:
+      "## The Spanish tradition\n\nFlamenco guitar has its own technique vocabulary. Rasgueado = multi-finger downstroke strum (fingers 4-3-2-1 unfold like a wave). Picado = aggressive rest-strokes on single notes, using alternating i-m fingers.\n\n## Rasgueado\n\nFingers folded into palm. Uncurl them rapidly across the strings: pinky → ring → middle → index. Each finger gives a separate strum. Total: 4 rapid strums in one gesture.\n\n## Flamenco isn't just technique\n\nIt's rhythm (compás), energy, passion. Paco de Lucía made the guitar sing flamenco across the world.",
+    audioRefs: [{ id: "demo", label: "Rasgueado + picado flamenco phrase" }],
+    exercisePlanId: "guitar_l8_04_flamenco", prerequisites: ["guitar_l3_02_fingerpicking"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 35,
+  },
+  guitar_l8_05_gypsy_jazz: {
+    id: "guitar_l8_05_gypsy_jazz", instrumentId: "guitar", level: 8, tier: "genius",
+    title: "Gypsy jazz — Django Reinhardt rest-stroke + minor key",
+    objectives: ["Play rest-stroke alternation (strong downstrokes that rest on the next string)", "Execute minor 6 arpeggios (Am6 = A C E F♯)", "Improvise 16 bars over 'Minor Swing' (Am + Dm + E7)"],
+    writtenContent:
+      "## The Django tradition\n\nGypsy jazz (manouche) is Django Reinhardt's invention. Strong rest-stroke picking, minor keys, fast tempos, minor-6 arpeggios everywhere.\n\n## Rest stroke technique\n\nA downstroke that lands on the next string, pinning it. Forces clean, deliberate articulation at speed. Different from floating strokes.\n\n## Am6 arpeggio\n\nA C E F♯. The major 6th (F♯) is the gypsy-jazz color — bright-meets-dark.",
+    audioRefs: [{ id: "demo", label: "Minor Swing improv in Am" }],
+    exercisePlanId: "guitar_l8_05_gypsy", prerequisites: ["guitar_l4_02_caged"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 30,
+  },
+  guitar_l8_06_style_exam: {
+    id: "guitar_l8_06_style_exam", instrumentId: "guitar", level: 8, tier: "genius",
+    title: "L8 exam — improvise across 3 distinct styles in 4 minutes",
+    objectives: ["Play 80 seconds of B.B. King style blues", "Transition to 80 seconds of bebop over Rhythm Changes", "End with 80 seconds of flamenco rasgueado", "Demonstrate that you can 'speak' each dialect convincingly"],
+    writtenContent:
+      "## Cross-style mastery\n\nL7 was about technique. L8 is about STYLE VOCABULARY. Can you switch fluently between blues, jazz, and flamenco? Each requires a different rhythmic feel, a different note palette, a different tone.\n\n## Your 4 minutes\n\n- 80 sec: B.B. King blues (bending vocabulary, dynamic contrast)\n- 80 sec: Bebop over Rhythm Changes (8th-note lines, enclosures)\n- 80 sec: Flamenco (rasgueado, minor keys, compás)\n\n## The bar\n\nNot 'you played something in each style.' ACTUALLY SOUND like a blues/bebop/flamenco guitarist in each section.",
+    audioRefs: [{ id: "demo", label: "Reference 3-style improvisation" }],
+    exercisePlanId: "guitar_l8_06_tristyle", prerequisites: ["guitar_l8_01_blues_improv", "guitar_l8_04_flamenco"],
+    passCriteria: { minGradeOverall: 0.78 }, estimatedMinutes: 30,
+  },
+
+  guitar_l9_01_composition: {
+    id: "guitar_l9_01_composition", instrumentId: "guitar", level: 9, tier: "genius",
+    title: "Instrumental guitar composition — shape a 2-minute piece",
+    objectives: ["Compose a 2-minute solo guitar piece with clear melodic arc", "Include at least one key modulation", "Incorporate at least 2 contrasting techniques (fingerstyle, sweep, chord-melody, flamenco...)"],
+    writtenContent:
+      "## Your own guitar piece\n\nEvery Genius-tier guitarist eventually writes their own material. This is your capstone composition. 2 minutes of original solo guitar.\n\n## Make it YOU\n\nPick the tradition(s) you love most. Flamenco classical? Fingerstyle folk? Jazz chord-melody? Metal instrumental? The piece reflects your voice.\n\n## Must include\n\n- Clear melodic arc (peak + resolution)\n- At least 1 modulation\n- 2+ contrasting techniques (e.g., fingerpicking into chord-melody)",
+    audioRefs: [{ id: "demo", label: "Example student guitar composition" }],
+    exercisePlanId: "guitar_l9_01_compose", prerequisites: ["guitar_l7_05_chord_melody", "guitar_l8_06_style_exam"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 90,
+  },
+  guitar_l9_02_recording: {
+    id: "guitar_l9_02_recording", instrumentId: "guitar", level: 9, tier: "genius",
+    title: "Studio recording — multi-take + arrangement",
+    objectives: ["Record a multi-take version of your L9.1 composition", "Add a second guitar track (harmony / counter-melody)", "Consider tone, EQ, reverb, dynamic layering"],
+    writtenContent:
+      "## The pro skill\n\nStudio recording is where your composition becomes a FINISHED product. Layering + editing + production are as important as the performance.\n\n## Second guitar\n\nHarmony in 3rds under the melody? Counter-melody between phrases? Drone on an open string? Pick one — and arrange deliberately.\n\n## The goals\n\nMix feels full but uncluttered. Each guitar has a distinct role. Dynamics and space keep it interesting for 2 minutes.",
+    audioRefs: [{ id: "demo", label: "Before/after student recording with production" }],
+    exercisePlanId: "guitar_l9_02_record", prerequisites: ["guitar_l9_01_composition"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 120,
+  },
+  guitar_l9_03_ensemble: {
+    id: "guitar_l9_03_ensemble", instrumentId: "guitar", level: 9, tier: "genius",
+    title: "Arranging for ensemble — guitar in a band context",
+    objectives: ["Take your composition and arrange it for rock-band instrumentation (guitar + bass + drums + optional keys)", "Decide which parts guitar keeps, which are handed off", "Leave space in the arrangement for each instrument to breathe"],
+    writtenContent:
+      "## Your piece, now a band piece\n\nYour solo guitar composition was self-contained. An ensemble version gives each instrument a job and lets them converse.\n\n## What to keep, what to hand off\n\n- Melody → often stays on guitar, sometimes splits\n- Walking bass line → hand off to bass player\n- Chord-melody harmonies → guitar or keys\n- Rhythmic drive → drums\n\n## Don't overcrowd\n\nMore instruments ≠ more music. A clean arrangement has clear roles and moments of space.",
+    audioRefs: [{ id: "demo", label: "Solo vs. band arrangement of the same piece" }],
+    exercisePlanId: "guitar_l9_03_arrange", prerequisites: ["guitar_l9_01_composition"],
+    passCriteria: { minGradeOverall: 0.73 }, estimatedMinutes: 45,
+  },
+  guitar_l9_04_improv_duet: {
+    id: "guitar_l9_04_improv_duet", instrumentId: "guitar", level: 9, tier: "genius",
+    title: "Improv duet — conversing with another musician",
+    objectives: ["Improvise for 3 minutes with a recorded backing player (or live partner)", "Respond to what they play — don't just play over them", "Let your solo + their backing create a musical conversation"],
+    writtenContent:
+      "## Musical conversation\n\nAt Genius tier, improvisation isn't solo display. It's CONVERSATION. Another musician plays; you listen; you respond. They respond to you. Musical dialogue.\n\n## Response, not speech\n\nThe amateur improviser plays their prepared licks regardless of what the other musician does. The master plays what the music CALLS FOR in that moment.\n\n## Practice approach\n\nLoop a 4-bar backing phrase. Play 4 bars that respond to it (not just over it). Trade phrases like conversation partners.",
+    audioRefs: [{ id: "demo", label: "Call-and-response improv duet" }],
+    exercisePlanId: "guitar_l9_04_duet", prerequisites: ["guitar_l8_06_style_exam"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 40,
+  },
+  guitar_l9_05_pedagogy: {
+    id: "guitar_l9_05_pedagogy", instrumentId: "guitar", level: 9, tier: "genius",
+    title: "Teaching — articulate your technique to another learner",
+    objectives: ["Pick one technique you've mastered (e.g., sweep picking or chord-melody)", "Explain it in 5 minutes in a way a mid-level student could follow", "Demonstrate + describe pitfalls + offer practice strategy"],
+    writtenContent:
+      "## Teaching = deep understanding\n\nYou only truly understand a technique when you can teach it to someone else. At Genius tier, you should be able to explain HOW you do what you do.\n\n## Structure your teaching\n\n1. Demonstrate the technique at full speed + slow speed\n2. Explain the MOTION (hands, picking, fretting)\n3. Flag common pitfalls (what goes wrong)\n4. Offer practice strategy (starting tempo, build-up over weeks)\n\n## Record yourself\n\nTeach it to camera. Watch back. Edit. Refine. This lesson could become part of your own guitar library.",
+    audioRefs: [{ id: "demo", label: "Example 5-min technique tutorial" }],
+    exercisePlanId: "guitar_l9_05_teach", prerequisites: ["guitar_l8_06_style_exam"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 60,
+  },
+  guitar_l9_06_recital: {
+    id: "guitar_l9_06_recital", instrumentId: "guitar", level: 9, tier: "genius",
+    title: "Genius Certificate — 15-minute guitar recital",
+    objectives: ["Perform a 15-min recital including: classical (Villa-Lobos or Bach), jazz standard (Misty or similar), flamenco/gypsy, blues, your L9.1 original", "All from memory", "Submit to human reviewer panel + peer feedback"],
+    writtenContent:
+      "## The Genius Certificate recital\n\n15 minutes. 5 pieces. Breadth across traditions.\n\n## Across styles\n\n- Classical (Villa-Lobos Étude, Bach Bourrée, or similar)\n- Jazz standard (Misty, Autumn Leaves, or similar — chord-melody)\n- Flamenco or gypsy jazz (Paco de Lucía / Django Reinhardt style)\n- Blues (B.B. King, SRV, or your own)\n- Your L9.1 original composition\n\n## Pass = Genius Certificate\n\nHuman reviewer panel + peer feedback. Both must approve. You earn the Genius Certificate = recognized mastery of guitar across multiple traditions.",
+    audioRefs: [{ id: "demo", label: "Sample 15-minute Genius recital" }],
+    exercisePlanId: "guitar_l9_06_recital", prerequisites: ["guitar_l9_01_composition"],
+    passCriteria: { minGradeOverall: 0.80, minPerDimension: { pitch: 0.82, rhythm: 0.82, tone: 0.8, dynamics: 0.78, consistency: 0.8 } }, estimatedMinutes: 60,
+  },
+
   violin_l1_01_hold: {
     id: "violin_l1_01_hold",
     instrumentId: "violin",

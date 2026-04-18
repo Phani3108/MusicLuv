@@ -1276,6 +1276,131 @@ export const EXERCISES: Record<string, Exercise> = {
       .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
     tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
   },
+  guitar_l7_01_5string_sweep: {
+    id: "guitar_l7_01_5string_sweep", type: "play_chord", instrumentId: "guitar",
+    title: "A minor 5-string sweep",
+    targetPattern: { notes: ["A2","E3","A3","C4","E4","C4","A3","E3","A2"]
+      .map((p,i)=>({pitch:p, startMs:i*100, durationMs:100})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l7_02_villa_lobos: {
+    id: "guitar_l7_02_villa_lobos", type: "play_along", instrumentId: "guitar",
+    title: "Villa-Lobos Étude No. 1 opening",
+    targetPattern: { notes: ["E3","B3","E4","G4","B4","G4","E4","B3","E3","A3","E4","A4","C5","A4","E4","A3"]
+      .map((p,i)=>({pitch:p, startMs:i*200, durationMs:200})) },
+    tempo: { bpm: 120, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l7_03_wes: {
+    id: "guitar_l7_03_wes", type: "play_along", instrumentId: "guitar",
+    title: "Autumn Leaves octaves (first phrase)",
+    targetPattern: { notes: ["A3","A4","B3","B4","C4","C5","E4","E5"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l7_04_yaman_slide: {
+    id: "guitar_l7_04_yaman_slide", type: "improvise", instrumentId: "guitar",
+    title: "Yaman phrase on guitar — D E F♯ G♯ A B C♯ D",
+    targetPattern: { notes: ["D3","E3","F#3","G#3","A3","B3","C#4","D4","C#4","B3","A3","G#3","F#3","E3","D3"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 50, meter: [4, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  guitar_l7_05_misty: {
+    id: "guitar_l7_05_misty", type: "play_along", instrumentId: "guitar",
+    title: "'Misty' melody (first 4 bars)",
+    targetPattern: { notes: ["G3","B3","D4","F#4","E4","D4","C4","B3","A3","B3","G3","A3","B3","D4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 70, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l7_06_exam: {
+    id: "guitar_l7_06_exam", type: "play_along", instrumentId: "guitar",
+    title: "L7 exam — combined techniques passage",
+    targetPattern: { notes: ["A2","E3","A3","C4","E4","B3","A3","G3","E3","C3","A2","E2","A2","C3","E3","A3"]
+      .map((p,i)=>({pitch:p, startMs:i*300, durationMs:300})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l8_01_bb_vocab: {
+    id: "guitar_l8_01_bb_vocab", type: "improvise", instrumentId: "guitar",
+    title: "B.B. King style improv in G blues (key notes + bends)",
+    targetPattern: { notes: ["G3","B♭3","C4","D4","B♭3","G3","F3","G3","A3","G3","B♭3","G3"]
+      .map((p,i)=>({pitch:p, startMs:i*600, durationMs:600})) },
+    tempo: { bpm: 95, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l8_02_rhythm_changes: {
+    id: "guitar_l8_02_rhythm_changes", type: "improvise", instrumentId: "guitar",
+    title: "Rhythm Changes A section bebop line",
+    targetPattern: { notes: ["B♭3","D4","F4","B♭4","A4","G4","F4","E4","D4","C4","B♭3","A3","G3","F3","E3","D3"]
+      .map((p,i)=>({pitch:p, startMs:i*250, durationMs:250})) },
+    tempo: { bpm: 160, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l8_03_metal_riff: {
+    id: "guitar_l8_03_metal_riff", type: "rhythm_clap", instrumentId: "guitar",
+    title: "Metal palm-mute 16ths on low E, 140 bpm, 8 bars",
+    targetPattern: { onsets: Array.from({length:32}, (_,i)=> Math.round(i*107)) },
+    tempo: { bpm: 140, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l8_04_flamenco: {
+    id: "guitar_l8_04_flamenco", type: "play_chord", instrumentId: "guitar",
+    title: "Flamenco rasgueado phrase (Am)",
+    targetPattern: { notes: ["A2","E3","A3","C4","E4","E4","C4","A3","E3","A2"]
+      .map((p,i)=>({pitch:p, startMs:i*200, durationMs:200})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l8_05_gypsy: {
+    id: "guitar_l8_05_gypsy", type: "improvise", instrumentId: "guitar",
+    title: "Minor Swing improv (Am D7 E7)",
+    targetPattern: { notes: ["A3","C4","E4","F#4","E4","C4","A3","G3","A3","D4","F4","A4","G4","E4","D4","A3"]
+      .map((p,i)=>({pitch:p, startMs:i*300, durationMs:300})) },
+    tempo: { bpm: 120, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l8_06_tristyle: {
+    id: "guitar_l8_06_tristyle", type: "improvise", instrumentId: "guitar",
+    title: "L8 exam — 3-style improv (representative phrases)",
+    targetPattern: { notes: ["G3","B♭3","D4","B♭3","G3","F3","B♭3","D4","F4","B♭4","D4","A3","C4","E4","A3","E3"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 110, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l9_01_compose: {
+    id: "guitar_l9_01_compose", type: "compose", instrumentId: "guitar",
+    title: "2-minute guitar composition (reference shape)",
+    targetPattern: { notes: ["E3","G3","B3","E4","D4","B3","G3","E3","A3","C4","E4","A4","C5","A4","E4","C4","A3"]
+      .map((p,i)=>({pitch:p, startMs:i*600, durationMs:600})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l9_02_record: {
+    id: "guitar_l9_02_record", type: "compose", instrumentId: "guitar",
+    title: "Multi-take recording with second guitar overdub",
+    targetPattern: { notes: ["E3","G3","B3","E4","E4","D4","B3","G3"]
+      .map((p,i)=>({pitch:p, startMs:i*800, durationMs:800})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l9_03_arrange: {
+    id: "guitar_l9_03_arrange", type: "compose", instrumentId: "guitar",
+    title: "Band arrangement of your solo piece",
+    targetPattern: { notes: ["E3","G3","B3","D4","E4","D4","B3","G3","E3"]
+      .map((p,i)=>({pitch:p, startMs:i*700, durationMs:700})) },
+    tempo: { bpm: 95, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l9_04_duet: {
+    id: "guitar_l9_04_duet", type: "improvise", instrumentId: "guitar",
+    title: "Call-and-response improv duet",
+    targetPattern: { notes: ["G3","B3","D4","G4","D4","B3","G3","A3","C4","E4","A4","E4","C4","A3"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l9_05_teach: {
+    id: "guitar_l9_05_teach", type: "compose", instrumentId: "guitar",
+    title: "5-minute teaching demo — articulate one technique",
+    targetPattern: { notes: ["E3","G3","B3","E4"]
+      .map((p,i)=>({pitch:p, startMs:i*1500, durationMs:1500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l9_06_recital: {
+    id: "guitar_l9_06_recital", type: "play_along", instrumentId: "guitar",
+    title: "Genius Cert recital — excerpt",
+    targetPattern: { notes: ["E3","A3","C4","E4","A4","G4","F4","E4","D4","C4","B3","A3","G3","E3","A3","C4","E4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500, velocity: 0.3 + i*0.03})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
 
   violin_l1_01_open_a: {
     id: "violin_l1_01_open_a",
