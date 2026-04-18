@@ -132,3 +132,72 @@ export interface SongLibraryEntry {
   copyrightNote: "public_domain" | "licensed" | "user_performance";
   blurb: string;
 }
+
+// ---------- Exams ----------
+
+export type ExamScope = "lesson" | "level" | "grade";
+
+export type ExamQuestion =
+  | {
+      id: string;
+      type: "mcq";
+      prompt: string;
+      options: string[];              // 2-4 options
+      correctIndex: number;
+      explanation: string;
+    }
+  | {
+      id: string;
+      type: "listening";
+      prompt: string;                 // "Which scale is this?"
+      audioRef: { notes: Array<{ pitch: string; startMs: number; durationMs: number }> };  // Tone.js-playable
+      options: string[];
+      correctIndex: number;
+      explanation: string;
+    }
+  | {
+      id: string;
+      type: "notation";
+      prompt: string;                 // "Name this note"
+      staff: { noteOnStaff: string };  // simple: e.g. "E4" rendered on treble staff
+      options: string[];
+      correctIndex: number;
+      explanation: string;
+    }
+  | {
+      id: string;
+      type: "tap_rhythm";
+      prompt: string;
+      targetOnsets: number[];          // ms timestamps for the correct tap pattern
+      tempoBpm: number;
+      toleranceMs: number;
+      explanation: string;
+    }
+  | {
+      id: string;
+      type: "free_text";
+      prompt: string;
+      rubric: string;                  // what the AI grader looks for
+      expectedConcepts: string[];
+      explanation: string;
+    }
+  | {
+      id: string;
+      type: "practical";
+      prompt: string;
+      exerciseId: string;              // link into exerciseCatalog
+      minComposite: number;
+      explanation: string;
+    };
+
+export interface Exam {
+  id: string;
+  scope: ExamScope;
+  instrumentId: string;
+  lessonId?: string;                 // for "lesson" scope
+  level?: Level;                     // for "level" scope
+  tier?: Tier;                       // for "grade" scope
+  title: string;
+  questions: ExamQuestion[];
+  passThreshold: number;             // fraction of questions correct, e.g. 0.67
+}
