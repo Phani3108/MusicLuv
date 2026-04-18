@@ -974,6 +974,171 @@ export const EXERCISES: Record<string, Exercise> = {
       { pitch: "A2", startMs: 6000, durationMs: 1800 },
     ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
   },
+  guitar_l4_01_cmaj_box: {
+    id: "guitar_l4_01_cmaj_box", type: "play_scale", instrumentId: "guitar",
+    title: "C major 3NPS box",
+    targetPattern: { notes: ["C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4"]
+      .map((p,i)=>({pitch:p, startMs:i*350, durationMs:350})) },
+    tempo: { bpm: 110, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l4_02_caged_c: {
+    id: "guitar_l4_02_caged_c", type: "play_chord", instrumentId: "guitar",
+    title: "C major in 5 CAGED positions (roots only for grading)",
+    targetPattern: { notes: [
+      { pitch: "C3", startMs: 0,    durationMs: 1500 },
+      { pitch: "C3", startMs: 2000, durationMs: 1500 },
+      { pitch: "C3", startMs: 4000, durationMs: 1500 },
+      { pitch: "C3", startMs: 6000, durationMs: 1500 },
+      { pitch: "C3", startMs: 8000, durationMs: 1500 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l4_03_f_barre: {
+    id: "guitar_l4_03_f_barre", type: "play_chord", instrumentId: "guitar",
+    title: "F barre chord × 4 strums",
+    targetPattern: { onsets: [0, 2000, 4000, 6000], notes: [
+      { pitch: "F2", startMs: 0, durationMs: 1800 },
+      { pitch: "F2", startMs: 2000, durationMs: 1800 },
+      { pitch: "F2", startMs: 4000, durationMs: 1800 },
+      { pitch: "F2", startMs: 6000, durationMs: 1800 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l4_04_blues_scale: {
+    id: "guitar_l4_04_blues_scale", type: "play_scale", instrumentId: "guitar",
+    title: "E blues scale ascending + descending",
+    targetPattern: { notes: ["E2","G2","A2","A#2","B2","D3","E3","D3","B2","A#2","A2","G2","E2"]
+      .map((p,i)=>({pitch:p, startMs:i*300, durationMs:300})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l4_05_dorian_mixo: {
+    id: "guitar_l4_05_dorian_mixo", type: "play_scale", instrumentId: "guitar",
+    title: "D Dorian then G Mixolydian",
+    targetPattern: { notes: [
+      ...["D3","E3","F3","G3","A3","B3","C4","D4"].map((p,i)=>({pitch:p, startMs:i*300, durationMs:300})),
+      ...["G3","A3","B3","C4","D4","E4","F4","G4"].map((p,i)=>({pitch:p, startMs:2400+i*300, durationMs:300})),
+    ]}, tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l4_06_blues_solo: {
+    id: "guitar_l4_06_blues_solo", type: "improvise", instrumentId: "guitar",
+    title: "12-bar blues improv (pitch checked against E blues scale)",
+    targetPattern: { notes: ["E3","G3","B3","A3","G3","E3"]
+      .map((p,i)=>({pitch:p, startMs:i*800, durationMs:800})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l5_01_legato: {
+    id: "guitar_l5_01_legato", type: "play_scale", instrumentId: "guitar",
+    title: "Legato scale run with hammer-ons + pull-offs",
+    targetPattern: { notes: ["E3","F3","G3","A3","G3","F3","E3"]
+      .map((p,i)=>({pitch:p, startMs:i*250, durationMs:250})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l5_02_bends: {
+    id: "guitar_l5_02_bends", type: "play_note", instrumentId: "guitar",
+    title: "Half + whole-step bends on G string (grading targets the end pitch)",
+    targetPattern: { notes: [
+      { pitch: "G#3", startMs: 0, durationMs: 1000 },
+      { pitch: "A3",  startMs: 1000, durationMs: 1000 },
+      { pitch: "B3",  startMs: 2000, durationMs: 1000 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l5_03_slide_scale: {
+    id: "guitar_l5_03_slide_scale", type: "play_scale", instrumentId: "guitar",
+    title: "C major scale with slides between 3-5 and 5-7",
+    targetPattern: { notes: ["C3","D3","E3","F3","G3","A3","B3","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l5_04_alt_pick_cmaj: {
+    id: "guitar_l5_04_alt_pick_cmaj", type: "play_scale", instrumentId: "guitar",
+    title: "C major scale, strict alternate picking, 120 bpm",
+    targetPattern: { notes: ["C3","D3","E3","F3","G3","A3","B3","C4","B3","A3","G3","F3","E3","D3","C3"]
+      .map((p,i)=>({pitch:p, startMs:i*250, durationMs:250})) },
+    tempo: { bpm: 120, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l5_05_am_sweep: {
+    id: "guitar_l5_05_am_sweep", type: "play_chord", instrumentId: "guitar",
+    title: "Am 3-string sweep",
+    targetPattern: { notes: [
+      { pitch: "A3", startMs: 0, durationMs: 200 },
+      { pitch: "C4", startMs: 200, durationMs: 200 },
+      { pitch: "E4", startMs: 400, durationMs: 400 },
+      { pitch: "C4", startMs: 800, durationMs: 200 },
+      { pitch: "A3", startMs: 1000, durationMs: 600 },
+    ]}, tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l5_06_tap_pattern: {
+    id: "guitar_l5_06_tap_pattern", type: "play_along", instrumentId: "guitar",
+    title: "Eruption-style 3-note tap pattern",
+    targetPattern: { notes: [
+      { pitch: "E5", startMs: 0, durationMs: 150 },
+      { pitch: "A4", startMs: 150, durationMs: 150 },
+      { pitch: "B4", startMs: 300, durationMs: 150 },
+      { pitch: "E5", startMs: 450, durationMs: 150 },
+      { pitch: "A4", startMs: 600, durationMs: 150 },
+      { pitch: "B4", startMs: 750, durationMs: 150 },
+    ]}, tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l6_01_stairway: {
+    id: "guitar_l6_01_stairway", type: "play_along", instrumentId: "guitar",
+    title: "Stairway to Heaven — opening arpeggios",
+    targetPattern: { notes: [
+      { pitch: "A2", startMs: 0,    durationMs: 400 },
+      { pitch: "E3", startMs: 400,  durationMs: 400 },
+      { pitch: "A3", startMs: 800,  durationMs: 400 },
+      { pitch: "C4", startMs: 1200, durationMs: 400 },
+      { pitch: "E4", startMs: 1600, durationMs: 400 },
+      { pitch: "G3", startMs: 2000, durationMs: 400 },
+      { pitch: "C3", startMs: 2400, durationMs: 400 },
+      { pitch: "E3", startMs: 2800, durationMs: 400 },
+      { pitch: "G3", startMs: 3200, durationMs: 400 },
+      { pitch: "C4", startMs: 3600, durationMs: 400 },
+      { pitch: "E4", startMs: 4000, durationMs: 400 },
+      { pitch: "G3", startMs: 4400, durationMs: 800 },
+    ]}, tempo: { bpm: 70, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l6_02_bourree: {
+    id: "guitar_l6_02_bourree", type: "play_along", instrumentId: "guitar",
+    title: "Bach Bourrée in E minor — opening",
+    targetPattern: { notes: ["E4","F#4","G4","A4","B4","A4","G4","F#4","E4","B3","E4"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l6_03_autumn_comp: {
+    id: "guitar_l6_03_autumn_comp", type: "play_chord", instrumentId: "guitar",
+    title: "Autumn Leaves A-section comp (root notes)",
+    targetPattern: { notes: [
+      { pitch: "A2",  startMs: 0,    durationMs: 900 },  // Am7
+      { pitch: "D3",  startMs: 1000, durationMs: 900 },  // D7
+      { pitch: "G2",  startMs: 2000, durationMs: 900 },  // Gmaj7
+      { pitch: "C3",  startMs: 3000, durationMs: 900 },  // Cmaj7
+      { pitch: "F#2", startMs: 4000, durationMs: 900 },  // F#m7b5
+      { pitch: "B2",  startMs: 5000, durationMs: 900 },  // B7
+      { pitch: "E2",  startMs: 6000, durationMs: 1900 }, // Em
+    ]}, tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  guitar_l6_04_hendrix_bend: {
+    id: "guitar_l6_04_hendrix_bend", type: "play_note", instrumentId: "guitar",
+    title: "Hendrix-style double-stop (grading targets the bent pitches)",
+    targetPattern: { notes: [
+      { pitch: "E4", startMs: 0, durationMs: 500 },
+      { pitch: "G4", startMs: 0, durationMs: 500 },
+      { pitch: "F#4", startMs: 500, durationMs: 500 },
+      { pitch: "A4", startMs: 500, durationMs: 500 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l6_05_scale_pro: {
+    id: "guitar_l6_05_scale_pro", type: "play_scale", instrumentId: "guitar",
+    title: "Major scale at 120 bpm — C major 2 octaves",
+    targetPattern: { notes: ["C3","D3","E3","F3","G3","A3","B3","C4","D4","E4","F4","G4","A4","B4","C5"]
+      .map((p,i)=>({pitch:p, startMs:i*250, durationMs:250})) },
+    tempo: { bpm: 120, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  guitar_l6_06_unseen: {
+    id: "guitar_l6_06_unseen", type: "sight_read", instrumentId: "guitar",
+    title: "Unseen intermediate piece (Pro Cert gate)",
+    targetPattern: { notes: ["G3","B3","D4","G4","D4","B3","E4","G3","C4","E4","G4","E4","C4","G3"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
 
   violin_l1_01_open_a: {
     id: "violin_l1_01_open_a",

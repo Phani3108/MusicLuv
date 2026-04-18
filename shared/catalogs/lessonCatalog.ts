@@ -884,6 +884,189 @@ export const LESSONS: Record<string, Lesson> = {
     passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 20,
   },
 
+  guitar_l4_01_movable_major: {
+    id: "guitar_l4_01_movable_major", instrumentId: "guitar", level: 4, tier: "pro",
+    title: "Movable major scale shape — Ionian box (root on 6th string)",
+    objectives: ["Learn the 3-notes-per-string major scale box", "Play C major starting from 8th fret of low E", "Slide the box up 2 frets = D major, down 2 = B♭ major"],
+    writtenContent:
+      "## One shape, twelve keys\n\nLearn ONE movable major scale box and you can play major scale in any key just by sliding the shape. That's the gift of the guitar fretboard.\n\n## The pattern (root on 6th string)\n\nFret 8 → 10 → 12 on low E · Fret 8 → 10 → 12 on A · Fret 9 → 10 → 12 on D · Fret 9 → 10 → 12 on G · Fret 10 → 12 → 13 on B · Fret 10 → 12 → 13 on high E.\n\nThat's C major starting from C on fret 8 of low E.",
+    audioRefs: [{ id: "demo", label: "C major scale, 3NPS box, 110 bpm" }],
+    exercisePlanId: "guitar_l4_01_cmaj_box", prerequisites: ["guitar_l3_04_pentatonic"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { pitch: 0.8 } }, estimatedMinutes: 15,
+  },
+  guitar_l4_02_caged: {
+    id: "guitar_l4_02_caged", instrumentId: "guitar", level: 4, tier: "pro",
+    title: "The CAGED system — five chord shapes, every key",
+    objectives: ["Understand C-A-G-E-D as the 5 open chord shapes", "See how sliding each shape up the neck plays the same chord in a new position", "Play C major in all 5 CAGED positions"],
+    writtenContent:
+      "## Five shapes, whole fretboard\n\nOpen chords C / A / G / E / D are the 5 basic shapes. Slide any of them up the neck (barred across) and you get the SAME CHORD in a new position. The whole fretboard is 5 shapes stacked.\n\n## Why it matters\n\nCAGED lets you play any chord anywhere. Perfect for voice leading, for matching the band's register, for avoiding huge hand jumps.",
+    audioRefs: [{ id: "demo", label: "C major in all 5 CAGED positions" }],
+    exercisePlanId: "guitar_l4_02_caged_c", prerequisites: ["guitar_l4_01_movable_major"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 18,
+  },
+  guitar_l4_03_barre_f: {
+    id: "guitar_l4_03_barre_f", instrumentId: "guitar", level: 4, tier: "pro",
+    title: "First barre chord — F major",
+    objectives: ["Lay finger 1 flat across all 6 strings at the 1st fret", "Press hard enough to sound every string clean", "Fret the E-shape chord behind it: F major in barre"],
+    writtenContent:
+      "## The barre is the filter\n\nFinger 1 becomes a 'nut' — pressing all 6 strings at the 1st fret. Behind it, the rest of the hand fingers an E major shape — now raised a half-step to F.\n\n## Build strength gradually\n\nYour hand will be weak at first. Hold the barre for 5 seconds, release. Do it 10 times a day. Within a week, F will sound clean. Within a month, you'll wonder what the fuss was about.",
+    audioRefs: [{ id: "demo", label: "F barre chord × 4 strums" }],
+    exercisePlanId: "guitar_l4_03_f_barre", prerequisites: ["guitar_l2_04_a_chord"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 15,
+  },
+  guitar_l4_04_blues_scale: {
+    id: "guitar_l4_04_blues_scale", instrumentId: "guitar", level: 4, tier: "pro",
+    title: "The blues scale — minor pentatonic + flat 5",
+    objectives: ["Add the 'blue note' (♭5) to the minor pentatonic you learned in L3.4", "Play E blues scale: E G A B♭ B D", "Hear how the ♭5 creates tension that wants to resolve"],
+    writtenContent:
+      "## Six notes, infinite blues\n\nE minor pentatonic + a flat 5 (B♭) = E blues scale. The ♭5 is the 'evil' note that makes blues sound like blues.\n\n## Use it sparingly\n\nThe ♭5 is spicy. Pass through it, don't live on it. B.B. King played ten thousand notes but only a handful were ♭5s — and those few were devastating.",
+    audioRefs: [{ id: "demo", label: "E blues scale ascending + descending" }],
+    exercisePlanId: "guitar_l4_04_blues_scale", prerequisites: ["guitar_l3_04_pentatonic"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.75 } }, estimatedMinutes: 12,
+  },
+  guitar_l4_05_modes: {
+    id: "guitar_l4_05_modes", instrumentId: "guitar", level: 4, tier: "pro",
+    title: "Modes intro — Dorian and Mixolydian",
+    objectives: ["Understand modes = major-scale notes starting on a different degree", "Play D Dorian (same as C major starting from D)", "Play G Mixolydian (same as C major starting from G)"],
+    writtenContent:
+      "## Modes are perspective shifts\n\nPlay the C major scale but **start and end on D** — that's D Dorian (minor-ish with a brighter 6th). **Start on G** — that's G Mixolydian (major-ish with a flat 7th).\n\nAll 7 modes use the same seven notes. The 'home' note changes, which changes the mood.\n\n## Why guitarists need modes\n\nFunk = Dorian. Rock ballads = Mixolydian. Metal = Phrygian. Jazz uses all 7. Understanding modes makes all of these accessible.",
+    audioRefs: [{ id: "demo", label: "D Dorian + G Mixolydian over a drone" }],
+    exercisePlanId: "guitar_l4_05_dorian_mixo", prerequisites: ["guitar_l4_01_movable_major"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 18,
+  },
+  guitar_l4_06_improv: {
+    id: "guitar_l4_06_improv", instrumentId: "guitar", level: 4, tier: "pro",
+    title: "Your first improv — soloing over a 12-bar blues",
+    objectives: ["Improvise a 12-bar solo over an E blues backing", "Use the E blues scale as your note palette", "Leave space — silence between phrases is as important as notes"],
+    writtenContent:
+      "## Improvisation is conversation\n\nYou're not reciting a memorized passage. You're talking to the band, replying to what they play. Phrases in, phrases out. Space matters.\n\n## The rules, simplified\n\n1. Stay in the E blues scale.\n2. Start and end each phrase on E.\n3. Leave at least 1 bar of silence per 4 bars.\n4. Repetition is POWERFUL. Play a 3-note motif, then repeat it. Repeat it again. Variations come later.",
+    audioRefs: [{ id: "demo", label: "Sample 12-bar improv solo" }],
+    exercisePlanId: "guitar_l4_06_blues_solo", prerequisites: ["guitar_l4_04_blues_scale", "guitar_l3_01_blues_shuffle"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 20,
+  },
+
+  guitar_l5_01_hammer_pull: {
+    id: "guitar_l5_01_hammer_pull", instrumentId: "guitar", level: 5, tier: "pro",
+    title: "Hammer-ons and pull-offs",
+    objectives: ["Pluck one note, then 'hammer' a higher finger onto the same string without re-picking", "Pull-off: the reverse — finger comes off, revealing a lower fretted/open note", "Play a scale using only hammer-ons and pull-offs (slurs)"],
+    writtenContent:
+      "## Legato on guitar\n\nHammer-on = add finger without picking. Pull-off = remove finger without picking. These are how guitarists connect notes smoothly — no pick attack between every note.\n\n## Practice\n\nPluck E (open) → hammer finger 3 onto fret 3 (G). You hear E → G without picking again. Clean hammers require pressing hard and fast.",
+    audioRefs: [{ id: "demo", label: "Scale run with hammer-ons and pull-offs" }],
+    exercisePlanId: "guitar_l5_01_legato", prerequisites: ["guitar_l4_01_movable_major"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 15,
+  },
+  guitar_l5_02_bending: {
+    id: "guitar_l5_02_bending", instrumentId: "guitar", level: 5, tier: "pro",
+    title: "String bending — half-step, whole-step, blues bend",
+    objectives: ["Push a string sideways to raise its pitch — half-step first, whole-step next", "Support the bending finger with the finger(s) behind it", "Hold a bend at target pitch, then release slowly"],
+    writtenContent:
+      "## Guitar's secret weapon\n\nBending is how guitarists sing. You push a string across the fretboard (not toward the neck) to raise the pitch. A whole-step bend goes from G to A, A to B, etc.\n\n## Support the bend\n\nDon't bend with just one finger — use 2 or 3 fingers stacked behind the note. More strength = more control.\n\n## Reference pitch\n\nBend to a pitch you KNOW. Play the target note elsewhere first, then match.",
+    audioRefs: [{ id: "demo", label: "Half + whole-step bends on G string" }],
+    exercisePlanId: "guitar_l5_02_bends", prerequisites: ["guitar_l4_04_blues_scale"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.75 } }, estimatedMinutes: 15,
+  },
+  guitar_l5_03_slides: {
+    id: "guitar_l5_03_slides", instrumentId: "guitar", level: 5, tier: "pro",
+    title: "Slides — smooth transitions between frets",
+    objectives: ["Pluck a note, then slide the fretting finger to a new fret while keeping pressure", "Execute 'legato slide' (smooth) vs 'slide with pick' (each note picked)", "Play a scale using slides between some notes"],
+    writtenContent:
+      "## The glide\n\nYou hear slides in Hendrix, Clapton, everyone. Pluck a note, slide the finger without releasing, arrive at the new note. One note becomes two — smoothly.\n\n## Distance matters\n\nShort slides (2-3 frets) are glides. Long slides (6+ frets) are statements. Use them sparingly — too many and the music sounds slippery.",
+    audioRefs: [{ id: "demo", label: "Scale with slides between 3rd-5th, 5th-7th frets" }],
+    exercisePlanId: "guitar_l5_03_slide_scale", prerequisites: ["guitar_l4_01_movable_major"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 12,
+  },
+  guitar_l5_04_alternate_picking: {
+    id: "guitar_l5_04_alternate_picking", instrumentId: "guitar", level: 5, tier: "pro",
+    title: "Alternate picking — efficient scale runs",
+    objectives: ["Pick DOWN-UP-DOWN-UP always, regardless of string changes", "Play the C major scale at 120 bpm with clean alternate picking", "Feel the pick as a pendulum, never stopping mid-motion"],
+    writtenContent:
+      "## Up AND down\n\nBeginners down-pick everything. That's fine at slow tempos. To play fast clean, you MUST alternate: down, up, down, up.\n\n## Cross-string alternate picking\n\nThe challenge: when you cross strings, keep alternating. The natural instinct is to downstroke the new string. Fight that instinct. The metronome doesn't care which string you're on.",
+    audioRefs: [{ id: "demo", label: "C major scale, strict alternate picking, 120 bpm" }],
+    exercisePlanId: "guitar_l5_04_alt_pick_cmaj", prerequisites: ["guitar_l4_01_movable_major"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 15,
+  },
+  guitar_l5_05_sweep: {
+    id: "guitar_l5_05_sweep", instrumentId: "guitar", level: 5, tier: "pro",
+    title: "Sweep picking — arpeggios at speed",
+    objectives: ["Sweep the pick across multiple strings in one continuous motion", "Play a 3-string arpeggio (Am shape) in a sweep", "Keep each note distinct — sweep, don't strum"],
+    writtenContent:
+      "## The illegal speed trick\n\nSweep picking lets you play arpeggios faster than alternate picking allows. The pick moves in ONE direction across multiple strings, each note sounded distinctly as the pick passes.\n\n## Don't strum\n\nA strum = all strings ring together. A sweep = each string sounds separately, as the pick touches it. Left-hand finger MUTES the previous string as you move to the next.",
+    audioRefs: [{ id: "demo", label: "3-string Am sweep" }],
+    exercisePlanId: "guitar_l5_05_am_sweep", prerequisites: ["guitar_l5_04_alternate_picking"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 18,
+  },
+  guitar_l5_06_tapping: {
+    id: "guitar_l5_06_tapping", instrumentId: "guitar", level: 5, tier: "pro",
+    title: "Two-hand tapping — Van Halen's trick",
+    objectives: ["Use the right hand to tap a note on the fretboard (like a hammer-on)", "Combine with left-hand hammer-ons / pull-offs for fast arpeggio-like phrases", "Execute Eddie Van Halen's 'Eruption' pattern: tap on fret 12, pull off to fret 5, hammer fret 7"],
+    writtenContent:
+      "## Both hands on the fretboard\n\nTapping uses the right hand as a second fretting hand. Tap a high note with the right index finger, pull it off to reveal a fretted note from the left hand. Repeat at speed = Eruption.\n\n## Start slow\n\nLike all techniques that LOOK flashy, tapping works only if the underlying rhythm is solid. 60 bpm first, build up.",
+    audioRefs: [{ id: "demo", label: "Eruption-style tapping pattern" }],
+    exercisePlanId: "guitar_l5_06_tap_pattern", prerequisites: ["guitar_l5_01_hammer_pull"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 15,
+  },
+
+  guitar_l6_01_stairway: {
+    id: "guitar_l6_01_stairway", instrumentId: "guitar", level: 6, tier: "pro",
+    title: "'Stairway to Heaven' — opening fingerpicked arpeggios",
+    objectives: ["Fingerpick the famous opening: Am → C/G → D/F♯ → Fmaj7", "Let every note ring, overlapping into a cloud of sound", "Hold the tempo steady — it's slow but merciless"],
+    writtenContent:
+      "## The most famous acoustic intro\n\nJimmy Page's Stairway to Heaven intro is part of guitar history. Four chords, fingerpicked. Slow, deliberate, every note ringing into the next.\n\n## The chord moves\n\nAm → C/G (same as C but bass note moves to G) → D/F♯ → Fmaj7. The BASS NOTE descends: A → G → F♯ → F. That's the 'Stairway' — a descending bass walk.",
+    audioRefs: [{ id: "demo", label: "Stairway intro, 4 bars" }],
+    exercisePlanId: "guitar_l6_01_stairway", prerequisites: ["guitar_l3_02_fingerpicking"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 20,
+  },
+  guitar_l6_02_bourree: {
+    id: "guitar_l6_02_bourree", instrumentId: "guitar", level: 6, tier: "pro",
+    title: "Bach Bourrée in E minor — opening bars",
+    objectives: ["Play Bach's Bourrée melody on the top 2 strings", "Keep an independent bass line on the lower strings", "Feel the dance rhythm — this was written for dancing"],
+    writtenContent:
+      "## Classical guitar's greatest hit\n\nJS Bach wrote the Bourrée for lute in 1717. Every classical guitarist learns it. Two voices — melody on top, bass underneath — played by one pair of hands.\n\n## Two voices, one hand\n\nThe right-hand thumb plays bass notes; the index + middle + ring alternate on the melody. Listen carefully — both lines must be audible, independent, human.",
+    audioRefs: [{ id: "demo", label: "Bourrée opening 4 bars" }],
+    exercisePlanId: "guitar_l6_02_bourree", prerequisites: ["guitar_l6_01_stairway"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 25,
+  },
+  guitar_l6_03_jazz_standard: {
+    id: "guitar_l6_03_jazz_standard", instrumentId: "guitar", level: 6, tier: "pro",
+    title: "Jazz comping — 'Autumn Leaves' chord changes",
+    objectives: ["Play 'Autumn Leaves' chord changes using 3-note jazz voicings (root-3-7)", "Comp in a swung rhythm: one chord every 2 beats", "Make the chord changes sing — each one lands on its beat"],
+    writtenContent:
+      "## Comping is the guitarist's jazz job\n\nAccompaniment = 'comping' in jazz slang. Light, sparse, responsive to the soloist. 3-note voicings (root-3-7) hold the harmony without crowding the ensemble.\n\n## Autumn Leaves in E minor\n\nChord order: Am7 → D7 → Gmaj7 → Cmaj7 → F♯m7♭5 → B7 → Em → Em. That's the A-section. Play each for 2 beats, swung.",
+    audioRefs: [{ id: "demo", label: "Autumn Leaves A-section comp" }],
+    exercisePlanId: "guitar_l6_03_autumn_comp", prerequisites: ["guitar_l5_01_hammer_pull"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 20,
+  },
+  guitar_l6_04_hendrix: {
+    id: "guitar_l6_04_hendrix", instrumentId: "guitar", level: 6, tier: "pro",
+    title: "Hendrix-style double-stop bends (the 'Little Wing' lick)",
+    objectives: ["Fret two strings with one finger (double-stop)", "Bend one string while holding the other steady", "Play a signature Hendrix phrase from 'Little Wing'"],
+    writtenContent:
+      "## Why Jimi sounds like Jimi\n\nHendrix bent two strings simultaneously but unevenly — one moves, one stays. The result: a beautifully dissonant lilt you've heard in Little Wing, Castles Made of Sand, everything.\n\n## The trick\n\nFinger 3 presses two strings at the same fret. When you bend, the thicker string moves less than the thinner — so each string bends a different amount. That's the magic.",
+    audioRefs: [{ id: "demo", label: "Hendrix-style double-stop bend" }],
+    exercisePlanId: "guitar_l6_04_hendrix_bend", prerequisites: ["guitar_l5_02_bending"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 15,
+  },
+  guitar_l6_05_scale_fluency: {
+    id: "guitar_l6_05_scale_fluency", instrumentId: "guitar", level: 6, tier: "pro",
+    title: "Scale fluency — all major scales at 120 bpm",
+    objectives: ["Play C, G, D, A, E, B, F major scales each at 120 bpm", "Use strict alternate picking throughout", "No fretting errors; clean across all string crossings"],
+    writtenContent:
+      "## Speed through repetition\n\nBy L6, you should be able to play any major scale cleanly at 120 bpm. Start slow, metronome-steady. Add 2 bpm per day. Don't cheat the slow tempos.\n\n## Why 120?\n\nIt's the gate for Pro Certificate practical. Once you're clean at 120, you have the motor skills for any intermediate repertoire.",
+    audioRefs: [{ id: "demo", label: "7 major scales at 120 bpm in sequence" }],
+    exercisePlanId: "guitar_l6_05_scale_pro", prerequisites: ["guitar_l5_04_alternate_picking", "guitar_l4_02_caged"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { pitch: 0.8, rhythm: 0.82 } }, estimatedMinutes: 20,
+  },
+  guitar_l6_06_sightread_pro: {
+    id: "guitar_l6_06_sightread_pro", instrumentId: "guitar", level: 6, tier: "pro",
+    title: "Sight-read an intermediate piece (Pro Certificate practical)",
+    objectives: ["Read an unseen 16-bar piece in TAB + standard notation", "Play at 90 bpm with clean chord voicings", "Don't stop for mistakes — keep the pulse"],
+    writtenContent:
+      "## The Pro Certificate gate\n\nThis is the test. An unseen piece with mixed picking, chord voicings, and basic solo lines. Read it, play it, hold the tempo. Pass this and you unlock L7 — Genius tier.\n\n## How to approach\n\n1. Scan key signature, time sig, tempo, general shape (30 seconds).\n2. Play through slowly first pass.\n3. Second pass at target tempo (90 bpm).\n4. Never stop. Never repeat. Keep moving.",
+    audioRefs: [{ id: "demo", label: "Reference sight-read target" }],
+    exercisePlanId: "guitar_l6_06_unseen", prerequisites: ["guitar_l6_05_scale_fluency", "guitar_l6_03_jazz_standard"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { pitch: 0.8, rhythm: 0.8 } }, estimatedMinutes: 25,
+  },
+
   violin_l1_01_hold: {
     id: "violin_l1_01_hold",
     instrumentId: "violin",
