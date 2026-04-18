@@ -245,6 +245,145 @@ export const EXERCISES: Record<string, Exercise> = {
     tempo: { bpm: 80, meter: [4, 4] },
     gradingRubricId: "rubric_early_level",
   },
+  piano_l3_01_ode_melody: {
+    id: "piano_l3_01_ode_melody",
+    type: "play_along",
+    instrumentId: "piano",
+    title: "Ode to Joy — 8-bar melody",
+    targetPattern: {
+      // First 8 bars (melody only): E E F G · G F E D · C C D E · E D D
+      notes: [
+        { pitch: "E4", startMs: 0,    durationMs: 650 },
+        { pitch: "E4", startMs: 650,  durationMs: 650 },
+        { pitch: "F4", startMs: 1300, durationMs: 650 },
+        { pitch: "G4", startMs: 1950, durationMs: 650 },
+        { pitch: "G4", startMs: 2600, durationMs: 650 },
+        { pitch: "F4", startMs: 3250, durationMs: 650 },
+        { pitch: "E4", startMs: 3900, durationMs: 650 },
+        { pitch: "D4", startMs: 4550, durationMs: 650 },
+        { pitch: "C4", startMs: 5200, durationMs: 650 },
+        { pitch: "C4", startMs: 5850, durationMs: 650 },
+        { pitch: "D4", startMs: 6500, durationMs: 650 },
+        { pitch: "E4", startMs: 7150, durationMs: 650 },
+        { pitch: "E4", startMs: 7800, durationMs: 975 },
+        { pitch: "D4", startMs: 8775, durationMs: 325 },
+        { pitch: "D4", startMs: 9100, durationMs: 1300 },
+      ],
+    },
+    tempo: { bpm: 90, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l3_02_amazing_grace: {
+    id: "piano_l3_02_amazing_grace",
+    type: "play_along",
+    instrumentId: "piano",
+    title: "Amazing Grace — first verse in 3/4",
+    targetPattern: {
+      // "A-ma-zing Grace, how sweet the sound…" in C major, 3/4 time
+      notes: [
+        { pitch: "G3", startMs: 0,     durationMs: 500 },   // pickup "A-"
+        { pitch: "C4", startMs: 500,   durationMs: 1000 },  // "-MAZ-"
+        { pitch: "E4", startMs: 1500,  durationMs: 500 },   // "-ing"
+        { pitch: "C4", startMs: 2000,  durationMs: 1000 },  // "Grace"
+        { pitch: "E4", startMs: 3000,  durationMs: 1500 },  // "how"
+        { pitch: "D4", startMs: 4500,  durationMs: 500 },   // "sweet"
+        { pitch: "C4", startMs: 5000,  durationMs: 1000 },  // "the"
+        { pitch: "A3", startMs: 6000,  durationMs: 500 },   // "sound"
+        { pitch: "G3", startMs: 6500,  durationMs: 1500 },
+      ],
+    },
+    tempo: { bpm: 90, meter: [3, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l3_03_mohanam: {
+    id: "piano_l3_03_mohanam",
+    type: "play_scale",
+    instrumentId: "piano",
+    title: "Raga Mohanam phrase",
+    targetPattern: {
+      notes: [
+        { pitch: "C4", startMs: 0,    durationMs: 400 },
+        { pitch: "D4", startMs: 400,  durationMs: 400 },
+        { pitch: "E4", startMs: 800,  durationMs: 400 },
+        { pitch: "G4", startMs: 1200, durationMs: 400 },
+        { pitch: "A4", startMs: 1600, durationMs: 400 },
+        { pitch: "G4", startMs: 2000, durationMs: 400 },
+        { pitch: "E4", startMs: 2400, durationMs: 400 },
+        { pitch: "D4", startMs: 2800, durationMs: 400 },
+        { pitch: "C4", startMs: 3200, durationMs: 800 },
+      ],
+    },
+    tempo: { bpm: 75, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l3_04_autumn_leaves: {
+    id: "piano_l3_04_autumn_leaves",
+    type: "play_along",
+    instrumentId: "piano",
+    title: "Autumn Leaves — A-section melody",
+    targetPattern: {
+      // A B C E · D F# G# B · first two phrases of the head, E-minor-ish
+      notes: [
+        { pitch: "A4", startMs: 0,    durationMs: 500 },
+        { pitch: "B4", startMs: 500,  durationMs: 500 },
+        { pitch: "C5", startMs: 1000, durationMs: 500 },
+        { pitch: "E5", startMs: 1500, durationMs: 1500 },
+        { pitch: "D5", startMs: 3000, durationMs: 500 },
+        { pitch: "F#5",startMs: 3500, durationMs: 500 },
+        { pitch: "G#4",startMs: 4000, durationMs: 500 }, // typo-safe: can't resolve → drops to E
+        { pitch: "B4", startMs: 4500, durationMs: 1500 },
+      ],
+    },
+    tempo: { bpm: 70, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l3_05_hanon_1: {
+    id: "piano_l3_05_hanon_1",
+    type: "play_scale",
+    instrumentId: "piano",
+    title: "Hanon #1 — first pattern only",
+    targetPattern: {
+      notes: [
+        { pitch: "C4", startMs: 0,    durationMs: 333 },
+        { pitch: "D4", startMs: 333,  durationMs: 333 },
+        { pitch: "F4", startMs: 666,  durationMs: 333 },
+        { pitch: "E4", startMs: 999,  durationMs: 333 },
+        { pitch: "F4", startMs: 1332, durationMs: 333 },
+        { pitch: "D4", startMs: 1665, durationMs: 333 },
+        { pitch: "E4", startMs: 1998, durationMs: 333 },
+        { pitch: "C4", startMs: 2331, durationMs: 333 },
+        // Pattern shift up
+        { pitch: "D4", startMs: 2664, durationMs: 333 },
+        { pitch: "E4", startMs: 2997, durationMs: 333 },
+        { pitch: "G4", startMs: 3330, durationMs: 333 },
+        { pitch: "F4", startMs: 3663, durationMs: 333 },
+        { pitch: "G4", startMs: 3996, durationMs: 333 },
+        { pitch: "E4", startMs: 4329, durationMs: 333 },
+        { pitch: "F4", startMs: 4662, durationMs: 333 },
+        { pitch: "D4", startMs: 4995, durationMs: 666 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  piano_l3_06_chord_progression: {
+    id: "piano_l3_06_chord_progression",
+    type: "play_chord",
+    instrumentId: "piano",
+    title: "C F G C — 2 beats each",
+    targetPattern: {
+      // Bass roots only for the grader; full chords are played by the student
+      notes: [
+        { pitch: "C3", startMs: 0,    durationMs: 1500 },
+        { pitch: "F3", startMs: 1500, durationMs: 1500 },
+        { pitch: "G3", startMs: 3000, durationMs: 1500 },
+        { pitch: "C3", startMs: 4500, durationMs: 1500 },
+      ],
+    },
+    tempo: { bpm: 80, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+
   piano_l2_06_crescendo: {
     id: "piano_l2_06_crescendo",
     type: "play_along",
