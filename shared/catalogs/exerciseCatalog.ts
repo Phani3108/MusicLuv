@@ -221,6 +221,53 @@ export const EXERCISES: Record<string, Exercise> = {
     gradingRubricId: "rubric_rhythm_only",
   },
 
+  violin_l1_01_open_a: {
+    id: "violin_l1_01_open_a",
+    type: "play_note",
+    instrumentId: "violin",
+    title: "Open A — sustained, down-bow + up-bow",
+    targetPattern: {
+      notes: [
+        { pitch: "A4", startMs: 0,    durationMs: 4000 },
+        { pitch: "A4", startMs: 4000, durationMs: 4000 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  violin_l1_02_a_to_b: {
+    id: "violin_l1_02_a_to_b",
+    type: "play_note",
+    instrumentId: "violin",
+    title: "A → B → A on the A string",
+    targetPattern: {
+      notes: [
+        { pitch: "A4", startMs: 0,    durationMs: 1500 },
+        { pitch: "B4", startMs: 1500, durationMs: 1500 },
+        { pitch: "A4", startMs: 3000, durationMs: 1500 },
+        { pitch: "B4", startMs: 4500, durationMs: 1500 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+  violin_l1_03_d_tetrachord: {
+    id: "violin_l1_03_d_tetrachord",
+    type: "play_scale",
+    instrumentId: "violin",
+    title: "A · B · C♯ · D — rising tetrachord",
+    targetPattern: {
+      notes: [
+        { pitch: "A4",  startMs: 0,    durationMs: 1000 },
+        { pitch: "B4",  startMs: 1000, durationMs: 1000 },
+        { pitch: "C#5", startMs: 2000, durationMs: 1000 },
+        { pitch: "D5",  startMs: 3000, durationMs: 2000 },
+      ],
+    },
+    tempo: { bpm: 60, meter: [4, 4] },
+    gradingRubricId: "rubric_early_level",
+  },
+
   sitar_l1_01_sustain_sa: {
     id: "sitar_l1_01_sustain_sa",
     type: "play_note",

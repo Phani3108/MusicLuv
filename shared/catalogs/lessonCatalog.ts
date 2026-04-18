@@ -180,6 +180,62 @@ export const LESSONS: Record<string, Lesson> = {
     passCriteria: { minGradeOverall: 0.7 },
     estimatedMinutes: 10,
   },
+
+  violin_l1_01_hold: {
+    id: "violin_l1_01_hold",
+    instrumentId: "violin",
+    level: 1, tier: "standard",
+    title: "Holding the violin & bowing an open string",
+    objectives: [
+      "Rest the violin on your collarbone; chin gently on the rest — not clamped",
+      "Hold the bow with a relaxed grip: thumb curved, pinky on top, hair angled toward the bridge",
+      "Draw a straight bow on the open A string for a clean, singing tone (4 seconds)",
+    ],
+    writtenContent:
+      "## Where the violin lives\n\nThe violin's **body** rests on your collarbone. Your chin sits on the chinrest — **gently**. If your shoulder is raised or your neck is straining, you're holding it wrong; take it off, shake out, try again.\n\n## The bow is a breath\n\nBow grip: thumb curved like a hook, pinky balanced on top of the stick, other fingers draped. The bow moves parallel to the bridge — not swinging in an arc. A straight bow = a straight tone.\n\n## Your first note\n\nBow the open **A string** — that's the second-highest string. No fingers touching the fingerboard yet. Down-bow from frog to tip, slowly, 4 seconds. Then up-bow back. Clean tone, no scratching.",
+    audioRefs: [{ id: "demo", label: "Open A, 4-second down-bow + up-bow" }],
+    exercisePlanId: "violin_l1_01_open_a",
+    prerequisites: [],
+    passCriteria: { minGradeOverall: 0.65, minPerDimension: { tone: 0.65 } },
+    estimatedMinutes: 10,
+  },
+  violin_l1_02_first_finger: {
+    id: "violin_l1_02_first_finger",
+    instrumentId: "violin",
+    level: 1, tier: "standard",
+    title: "First finger — playing B on the A string",
+    objectives: [
+      "Curl your first finger onto the A string about one inch from the nut",
+      "Press firmly enough to stop the string cleanly; don't squeeze",
+      "Bow the result: it should sound a whole step up from A — that's B",
+    ],
+    writtenContent:
+      "## Intonation is everything\n\nThe violin has **no frets**. There's no 'right' spot — there's only 'in tune' and 'not in tune'. Your ear is the only judge. Start by listening to a reference B, then try to match it.\n\n## Where the finger goes\n\nLook at the fingerboard. About **one inch from the nut** (the bone at the top where the strings begin), press your first finger down firmly. Keep it curved, not flat. Bow slowly — if you hear a clean note, you found B. If it's buzzing, press harder or move slightly.",
+    audioRefs: [{ id: "demo", label: "B on A string — reference tone" }],
+    exercisePlanId: "violin_l1_02_a_to_b",
+    prerequisites: ["violin_l1_01_hold"],
+    passCriteria: { minGradeOverall: 0.68, minPerDimension: { pitch: 0.7 } },
+    estimatedMinutes: 10,
+  },
+  violin_l1_03_first_phrase: {
+    id: "violin_l1_03_first_phrase",
+    instrumentId: "violin",
+    level: 1, tier: "standard",
+    title: "First phrase — A B C♯ D (D-major tetrachord)",
+    objectives: [
+      "Add finger 2 (C♯) and finger 3 (D) on the A string",
+      "Play the four notes as a rising phrase, clean intonation",
+      "Keep the bow steady — one note per bow stroke",
+    ],
+    writtenContent:
+      "## Four notes, one bow each\n\nA (open) → B (finger 1) → C♯ (finger 2) → D (finger 3). That's a **tetrachord** — the lower half of a D major scale.\n\nFinger 2 sits **close to** finger 1 (only a half-step gap feels tight, but this is a whole step — about an inch). Finger 3 is a half-step from finger 2 — fingers almost touching.\n\n## Listen as you play\n\nIf the note sounds 'off', it IS off. Move the finger a millimeter. This is the whole game of violin — listen, adjust, repeat.",
+    audioRefs: [{ id: "demo", label: "A B C# D rising, 60 bpm" }],
+    exercisePlanId: "violin_l1_03_d_tetrachord",
+    prerequisites: ["violin_l1_02_first_finger"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.72 } },
+    estimatedMinutes: 12,
+  },
+
   sitar_l1_01_sa: {
     id: "sitar_l1_01_sa",
     instrumentId: "sitar",

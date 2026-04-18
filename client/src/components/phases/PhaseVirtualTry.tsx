@@ -4,6 +4,7 @@ import { PianoHero } from "../PianoHero";
 import { SitarHero } from "../SitarHero";
 import { GenericHero } from "../GenericHero";
 import { VirtualGuitar } from "../VirtualGuitar";
+import { VirtualViolin } from "../VirtualViolin";
 
 export function PhaseVirtualTry({ instrument, exercise, onEngage }: { instrument: Instrument; exercise: Exercise; onEngage: () => void }) {
   const [keysPressed, setKeysPressed] = useState(0);
@@ -24,8 +25,9 @@ export function PhaseVirtualTry({ instrument, exercise, onEngage }: { instrument
 
       {instrument.id === "piano" && <PianoHero onKeyClick={handleKeyClick} />}
       {instrument.id === "guitar" && <VirtualGuitar />}
+      {instrument.id === "violin" && <VirtualViolin />}
       {instrument.id === "sitar" && <SitarHero />}
-      {instrument.id !== "piano" && instrument.id !== "sitar" && instrument.id !== "guitar" && (
+      {instrument.id !== "piano" && instrument.id !== "sitar" && instrument.id !== "guitar" && instrument.id !== "violin" && (
         <GenericHero instrument={instrument} />
       )}
 
