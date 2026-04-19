@@ -1847,6 +1847,189 @@ export const LESSONS: Record<string, Lesson> = {
     passCriteria: { minGradeOverall: 0.78, minPerDimension: { pitch: 0.8, rhythm: 0.78 } }, estimatedMinutes: 25,
   },
 
+  violin_l7_01_bach_sonata: {
+    id: "violin_l7_01_bach_sonata", instrumentId: "violin", level: 7, tier: "genius",
+    title: "Bach Sonata No. 1 in G minor — Adagio opening",
+    objectives: ["Play the opening adagio of Bach's Sonata No. 1 in G minor (BWV 1001)", "Execute multi-voice double-stops with clean voice leading", "Shape the phrase despite the free tempo"],
+    writtenContent:
+      "## Unaccompanied Bach\n\nBach's 6 Sonatas + Partitas for solo violin are the mountain top of violin literature. The G minor Sonata's Adagio is where Genius-tier violinists prove their musicianship.\n\n## 4 voices, 1 violin\n\nBach writes 3- and 4-note chords; you play them as double-stops or broken arpeggios. Each implied voice has its own melodic logic.\n\n## Free tempo, rigorous shape\n\nAdagio = slow, but not amorphous. Every rubato move serves phrasing; no note is a throwaway.",
+    audioRefs: [{ id: "demo", label: "Bach G minor Adagio opening" }],
+    exercisePlanId: "violin_l7_01_bach_adagio", prerequisites: ["violin_l6_05_etude"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { pitch: 0.82, tone: 0.80 } }, estimatedMinutes: 45,
+  },
+  violin_l7_02_paganini_caprice: {
+    id: "violin_l7_02_paganini_caprice", instrumentId: "violin", level: 7, tier: "genius",
+    title: "Paganini Caprice No. 24 — theme + first variation",
+    objectives: ["Play the famous theme of Paganini Caprice No. 24 (A minor)", "Execute the first variation's rapid 16th-note runs", "Maintain intonation despite difficult shifts"],
+    writtenContent:
+      "## The violinist's proving ground\n\n24 Caprices by Niccolò Paganini — every serious violinist eventually plays at least one. No. 24 (theme + variations) is the most famous; Rachmaninoff wrote a piano rhapsody on its theme.\n\n## The theme\n\nA minor, 2/4 time, rhythmic lilt. Simple on paper; the variations turn it into pyrotechnics.\n\n## Start with the theme + variation 1\n\nThe full piece has 11 variations + a coda. For L7, focus on theme + variation 1 (rapid 16ths with string crossings).",
+    audioRefs: [{ id: "demo", label: "Paganini Caprice 24 theme + variation 1" }],
+    exercisePlanId: "violin_l7_02_caprice_24", prerequisites: ["violin_l5_02_third_position"],
+    passCriteria: { minGradeOverall: 0.76, minPerDimension: { pitch: 0.80 } }, estimatedMinutes: 40,
+  },
+  violin_l7_03_raga_darbari: {
+    id: "violin_l7_03_raga_darbari", instrumentId: "violin", level: 7, tier: "genius",
+    title: "Raga Darbari on violin — deep andolan",
+    objectives: ["Play raga Darbari svaras with deep andolan (oscillating gamaka)", "Use finger slides to approximate the oscillation between pitches", "Feel the raga's majestic, deliberate tempo"],
+    writtenContent:
+      "## The king's raga\n\nDarbari is royal music — Tansen's creation, performed for Akbar's court. It's slow, majestic, uses komal Ga and komal Ni with deep andolan (oscillation).\n\n## Andolan on violin\n\nViolin (unlike piano) CAN produce real pitch oscillation through finger/bow interaction. Slide the fingertip slowly above and below the target pitch — 5-10 cent swings, 2-3 Hz.\n\n## The tempo\n\nDarbari breathes in seconds, not beats. One phrase might last 20 seconds. Patience is the raga's essence.",
+    audioRefs: [{ id: "demo", label: "Raga Darbari characteristic phrase" }],
+    exercisePlanId: "violin_l7_03_darbari", prerequisites: ["violin_l5_01_vibrato_control"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { pitch: 0.78, tone: 0.78 } }, estimatedMinutes: 35,
+  },
+  violin_l7_04_kreisler: {
+    id: "violin_l7_04_kreisler", instrumentId: "violin", level: 7, tier: "genius",
+    title: "Kreisler 'Liebesfreud' — Viennese sweetness",
+    objectives: ["Play Fritz Kreisler's 'Liebesfreud' with Viennese rubato and charm", "Execute rapid 16th-note runs in 3/4 with waltz feel", "Voice the melody with Kreisler's signature warm vibrato"],
+    writtenContent:
+      "## The salon tradition\n\nFritz Kreisler (1875-1962) wrote short showpieces in Viennese style — lighter than Paganini, deeper than salon trifles. 'Liebesfreud' (Love's Joy) is his most famous.\n\n## The Kreisler vibrato\n\nKreisler invented the continuous vibrato used by modern violinists. Apply vibrato to EVERY note (when possible), not just long ones. Warmth is constant.\n\n## Viennese rubato\n\nThe 2nd beat of each 3/4 bar lingers slightly. It's the heartbeat of the waltz.",
+    audioRefs: [{ id: "demo", label: "Liebesfreud opening" }],
+    exercisePlanId: "violin_l7_04_liebesfreud", prerequisites: ["violin_l5_01_vibrato_control"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 35,
+  },
+  violin_l7_05_extended_technique: {
+    id: "violin_l7_05_extended_technique", instrumentId: "violin", level: 7, tier: "genius",
+    title: "Extended techniques — col legno, ponticello, spiccato volante",
+    objectives: ["Play col legno (wood side of the bow) on open strings", "Execute sul ponticello (extreme bowing near the bridge)", "Spiccato volante — sustained bouncing spiccato across a scale"],
+    writtenContent:
+      "## Beyond the standard tone\n\n20th-century composers demanded new violin colors. Learn the core extended techniques:\n\n- **Col legno**: turn bow upside down; wood strikes string. Percussive, dry.\n- **Sul ponticello**: bow right against the bridge. Glassy, metallic, brittle.\n- **Spiccato volante**: bow bounces along a scale — 'flying spiccato'.\n\n## Why\n\nBartók, Penderecki, Ligeti, Sciarrino — modern music asks for these. At Genius tier, you should be able to produce them on command.",
+    audioRefs: [{ id: "demo", label: "Col legno + ponticello demos" }],
+    exercisePlanId: "violin_l7_05_extended", prerequisites: ["violin_l3_04_spiccato"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 25,
+  },
+  violin_l7_06_genius_entry: {
+    id: "violin_l7_06_genius_entry", instrumentId: "violin", level: 7, tier: "genius",
+    title: "L7 exam — Bach or Paganini with full expression",
+    objectives: ["Perform a 2-minute excerpt of Bach sonata OR Paganini caprice", "Composite score ≥0.80 with per-dimension floors at 0.80", "Intonation + tone + musicality all at genius-level standard"],
+    writtenContent:
+      "## Genius tier entry\n\nPick ONE: the Bach adagio or the Paganini caprice theme+variation. Perform it. Every aspect must hit genius-level standard simultaneously.\n\n## What's different at L7\n\nIntonation tolerance tightens to 15 cents. Tone scoring is more aggressive. Expression (dynamics + phrasing) matters as much as notes.",
+    audioRefs: [{ id: "demo", label: "Reference L7 exam performance" }],
+    exercisePlanId: "violin_l7_06_exam", prerequisites: ["violin_l7_01_bach_sonata", "violin_l7_02_paganini_caprice"],
+    passCriteria: { minGradeOverall: 0.80, minPerDimension: { pitch: 0.82, rhythm: 0.80, tone: 0.80 } }, estimatedMinutes: 40,
+  },
+
+  violin_l8_01_concerto_mov: {
+    id: "violin_l8_01_concerto_mov", instrumentId: "violin", level: 8, tier: "genius",
+    title: "Mendelssohn Violin Concerto — opening theme",
+    objectives: ["Play the famous E minor opening theme of Mendelssohn's Violin Concerto", "Execute the sighing 'falling octave' phrasing", "Apply rubato without losing the underlying tempo"],
+    writtenContent:
+      "## Romantic concerto territory\n\nMendelssohn's Concerto in E minor (1844) opens with perhaps the most famous solo violin entry in the repertoire. The melody 'falls' — starting on B4 and sighing downward through intervals.\n\n## The phrasing\n\nLong bows, continuous vibrato, soft entries. The concerto is romantic but never indulgent — Mendelssohn's taste always wins.\n\n## Target\n\n90 seconds of the opening, from memory, with professional phrasing.",
+    audioRefs: [{ id: "demo", label: "Mendelssohn concerto opening" }],
+    exercisePlanId: "violin_l8_01_mendelssohn", prerequisites: ["violin_l7_04_kreisler"],
+    passCriteria: { minGradeOverall: 0.78 }, estimatedMinutes: 45,
+  },
+  violin_l8_02_improvisation: {
+    id: "violin_l8_02_improvisation", instrumentId: "violin", level: 8, tier: "genius",
+    title: "Jazz violin improvisation — Stéphane Grappelli style",
+    objectives: ["Improvise 16 bars over 'All of Me' chord changes", "Use bebop-style vocabulary adapted for violin (arpeggios + chromatic notes)", "Apply 'hot jazz' swing feel on 8ths"],
+    writtenContent:
+      "## The jazz violin tradition\n\nStéphane Grappelli, Joe Venuti, Jean-Luc Ponty — jazz violin has a rich lineage. Grappelli's swing-era style is the entry point.\n\n## Swing 8ths on violin\n\nViolin 8ths in jazz are swung: long-short, long-short. Bow direction emphasizes the 'long' 8th, lightens the 'short' one.\n\n## Over All of Me\n\nChord sequence: C6 - E7 - A7 - Dm7 - G7 - C6. Use arpeggios of each chord; connect with chromatic runs.",
+    audioRefs: [{ id: "demo", label: "Grappelli-style improv on All of Me" }],
+    exercisePlanId: "violin_l8_02_improv", prerequisites: ["violin_l5_02_third_position"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 35,
+  },
+  violin_l8_03_hindustani_concert: {
+    id: "violin_l8_03_hindustani_concert", instrumentId: "violin", level: 8, tier: "genius",
+    title: "Hindustani violin — a mini alap-jod-jhala in raga Bageshri",
+    objectives: ["Play a 3-minute alap in raga Bageshri (Ma Pa Dha♭ Ni Sa' Re Ga)", "Build through jod (rhythmic pulse added) to jhala (rhythmic climax)", "Demonstrate patience + raga grammar"],
+    writtenContent:
+      "## The Hindustani form\n\nA Hindustani performance has 3 sections:\n- **Alap**: free-time raga exploration, no rhythm\n- **Jod**: a pulse begins\n- **Jhala**: rhythmic climax\n\n## Raga Bageshri\n\nNight raga. Komal Ga + komal Dha. Omits Re in ascent.\n\n## 3 minutes total\n\nAlap ~90 sec, jod ~60 sec, jhala ~30 sec. Practice the proportions.",
+    audioRefs: [{ id: "demo", label: "Bageshri alap-jod-jhala mini" }],
+    exercisePlanId: "violin_l8_03_bageshri", prerequisites: ["violin_l7_03_raga_darbari"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { pitch: 0.78 } }, estimatedMinutes: 40,
+  },
+  violin_l8_04_chamber: {
+    id: "violin_l8_04_chamber", instrumentId: "violin", level: 8, tier: "genius",
+    title: "Chamber music — playing a Haydn string quartet 1st violin part",
+    objectives: ["Play the 1st violin part of Haydn's Op. 76 No. 3 'Emperor' (opening)", "Lead the ensemble — entries, tempo, dynamics", "Shape phrases as a dialogue with the other 3 parts"],
+    writtenContent:
+      "## Leading an ensemble\n\nAs 1st violin in a quartet, you're the anchor + frequent leader. Cues, breaths, tempo shifts — the others follow you.\n\n## Emperor Quartet\n\nOp. 76 No. 3's famous slow movement uses the 'God Save the Emperor' hymn (later Germany's national anthem). Your job: state the hymn clearly while others support.\n\n## Chamber music is conversation\n\nDon't just play your part. Listen to the cello line underneath. Respond to the viola's counter-melody. Your phrasing reacts to theirs.",
+    audioRefs: [{ id: "demo", label: "Haydn Emperor slow movement opening" }],
+    exercisePlanId: "violin_l8_04_emperor", prerequisites: ["violin_l7_04_kreisler"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 30,
+  },
+  violin_l8_05_contemporary: {
+    id: "violin_l8_05_contemporary", instrumentId: "violin", level: 8, tier: "genius",
+    title: "Contemporary violin — a Pärt or Glass passage",
+    objectives: ["Play a minimalist-style passage (Arvo Pärt's 'Fratres' opening)", "Sustain long tones with microdynamics (subtle volume shifts)", "Apply contemporary techniques (col legno, ponticello) where marked"],
+    writtenContent:
+      "## Contemporary classical\n\nArvo Pärt, Philip Glass, Steve Reich — minimalism and 'holy' minimalism both need a different violin approach. Sustained tones, gradual evolution, extreme patience.\n\n## Pärt's 'Fratres'\n\nOpens with slow 3-note figures (arpeggios), then layers grow. Silence is a note. Every micro-dynamic shift matters.\n\n## Why play contemporary music?\n\nIt's alive. Composers are writing today. Pro violinists premiere new works — learning to read and interpret modern notation is essential.",
+    audioRefs: [{ id: "demo", label: "Fratres opening" }],
+    exercisePlanId: "violin_l8_05_fratres", prerequisites: ["violin_l7_05_extended_technique"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { tone: 0.78, dynamics: 0.76 } }, estimatedMinutes: 30,
+  },
+  violin_l8_06_style_exam: {
+    id: "violin_l8_06_style_exam", instrumentId: "violin", level: 8, tier: "genius",
+    title: "L8 exam — 3 styles in 5 minutes",
+    objectives: ["Perform 90 seconds of classical concerto (Mendelssohn or Bruch)", "Transition to 90 seconds of jazz improvisation", "End with 90 seconds of raga alap (Yaman, Darbari, or Bageshri)"],
+    writtenContent:
+      "## Three traditions, one violinist\n\nL7 was technical mastery. L8 is stylistic breadth. You need to convincingly SOUND LIKE a classical violinist, then a jazz violinist, then a Hindustani violinist — within a single performance.\n\n## Expected level\n\nNot 'you played something in each style.' Each 90-second segment should feel like it BELONGS in that tradition.",
+    audioRefs: [{ id: "demo", label: "Reference 3-style performance" }],
+    exercisePlanId: "violin_l8_06_tristyle", prerequisites: ["violin_l8_01_concerto_mov", "violin_l8_02_improvisation", "violin_l8_03_hindustani_concert"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { pitch: 0.80 } }, estimatedMinutes: 35,
+  },
+
+  violin_l9_01_composition: {
+    id: "violin_l9_01_composition", instrumentId: "violin", level: 9, tier: "genius",
+    title: "Compose an original solo violin piece (3 minutes)",
+    objectives: ["Write 3 minutes of original solo violin music", "Include: melodic arc, at least 1 modulation, at least 1 extended technique", "Notate the piece — staff + bowing + dynamics"],
+    writtenContent:
+      "## Your voice on your instrument\n\nBach, Paganini, Ysaÿe, Sciarrino — every great violinist-composer wrote solo violin music. Now it's your turn. 3 minutes of you.\n\n## Required elements\n\n- Clear melodic arc across the 3 minutes\n- At least 1 modulation (key change)\n- At least 1 extended technique (col legno, harmonic, sul ponticello...)\n- Full notation with bowings + dynamics\n\n## Don't write what you can't play\n\nEvery bar should be playable by YOU today. Don't write fantasy pyrotechnics.",
+    audioRefs: [{ id: "demo", label: "Example student composition" }],
+    exercisePlanId: "violin_l9_01_compose", prerequisites: ["violin_l8_06_style_exam"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 120,
+  },
+  violin_l9_02_transcription: {
+    id: "violin_l9_02_transcription", instrumentId: "violin", level: 9, tier: "genius",
+    title: "Transcribe a non-violin piece for violin",
+    objectives: ["Transcribe a piano or guitar piece you love for solo violin", "Adapt what's unplayable (chords become arpeggios, etc.)", "Retain the essence of the original while serving the violin"],
+    writtenContent:
+      "## Transcription is composition in reverse\n\nPick a piece NOT originally for violin — a Chopin nocturne, a Beatles song, a film theme. Adapt it for solo violin.\n\n## Decisions\n\n- Piano's 4-voice chord → violin's 2-string double-stop (keep melody + bass)\n- Guitar's strummed chord → broken arpeggio on violin\n- Vocal line → violin with free rubato\n\n## The art\n\nWhat violin-specific techniques can highlight what the original hinted at? This is where you learn idiomatic writing.",
+    audioRefs: [{ id: "demo", label: "Before/after transcription example" }],
+    exercisePlanId: "violin_l9_02_transcribe", prerequisites: ["violin_l9_01_composition"],
+    passCriteria: { minGradeOverall: 0.74 }, estimatedMinutes: 90,
+  },
+  violin_l9_03_pedagogy: {
+    id: "violin_l9_03_pedagogy", instrumentId: "violin", level: 9, tier: "genius",
+    title: "Teaching — a 10-minute lesson on intonation",
+    objectives: ["Prepare + deliver a 10-minute lesson on an intonation topic", "Include demonstration + explanation + student practice strategy", "Record + review your own teaching"],
+    writtenContent:
+      "## Teaching = deep understanding\n\nYou understand something when you can teach it. Pick an intonation topic (tuning half-steps, ringing 5ths with open strings, adjusting for double-stops...) and explain it.\n\n## Lesson structure\n\n1. State the problem (2 min)\n2. Demonstrate (3 min) — show correct + common wrong\n3. Explain mechanics (3 min) — how the hand/ear do it\n4. Practice strategy (2 min) — daily drill\n\n## Why you need this\n\nIn the real world, violinists who get booked for teaching work need this skill. Students aren't you — they need your knowledge translated.",
+    audioRefs: [{ id: "demo", label: "Example 10-min intonation lesson" }],
+    exercisePlanId: "violin_l9_03_teach", prerequisites: ["violin_l8_06_style_exam"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 60,
+  },
+  violin_l9_04_recording: {
+    id: "violin_l9_04_recording", instrumentId: "violin", level: 9, tier: "genius",
+    title: "Studio-quality solo recording",
+    objectives: ["Record a 2-minute solo violin performance at studio quality", "Mic placement, room acoustics, take selection all considered", "Mix with subtle reverb; submit the polished audio"],
+    writtenContent:
+      "## The professional standard\n\nReal violinists record their own demos, audition tapes, publicity material. At Genius tier, you should be able to produce a studio-quality recording.\n\n## Mic placement\n\nViolin lives 1-2 meters above the f-holes. Too close = harsh. Too far = too much room. Experiment.\n\n## Take selection\n\nPlay 6 takes. Pick the best. Edit subtly (no pitch-correcting). The recording should sound like you playing live, captured well.",
+    audioRefs: [{ id: "demo", label: "Before/after studio recording" }],
+    exercisePlanId: "violin_l9_04_record", prerequisites: ["violin_l9_01_composition"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { tone: 0.80 } }, estimatedMinutes: 120,
+  },
+  violin_l9_05_performance_practice: {
+    id: "violin_l9_05_performance_practice", instrumentId: "violin", level: 9, tier: "genius",
+    title: "Performance practice — Baroque vs Romantic interpretation",
+    objectives: ["Play the same phrase (Bach + Mendelssohn) with Baroque + Romantic interpretation", "Show the difference: Baroque = less vibrato, crisper articulation; Romantic = continuous vibrato, generous rubato", "Articulate WHY each tradition has those conventions"],
+    writtenContent:
+      "## Style IS performance practice\n\nA Baroque piece played with Romantic techniques sounds WRONG, even if technically perfect. At Genius tier, you adapt your playing to the historical period.\n\n## Baroque (1600-1750)\n\n- Less or no vibrato (especially at phrase endings)\n- Shorter, crisper bows\n- Ornaments expected (trills, appoggiaturas added by performer)\n\n## Romantic (1830-1900)\n\n- Continuous vibrato\n- Long, sustained bows\n- Generous rubato\n- Notated dynamics taken to extremes",
+    audioRefs: [{ id: "demo", label: "Same phrase in Baroque vs. Romantic style" }],
+    exercisePlanId: "violin_l9_05_style_comparison", prerequisites: ["violin_l7_01_bach_sonata", "violin_l8_01_concerto_mov"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 30,
+  },
+  violin_l9_06_recital: {
+    id: "violin_l9_06_recital", instrumentId: "violin", level: 9, tier: "genius",
+    title: "Genius Certificate — 15-minute violin recital",
+    objectives: ["Perform a 15-min recital across: Bach, Paganini, Kreisler, jazz (Grappelli-style), raga alap, your L9.1 original", "All from memory", "Submit to human reviewer panel + peer feedback"],
+    writtenContent:
+      "## The recital\n\n15 minutes. 6 pieces across 6 traditions. Your certification performance.\n\n## Programme\n\n- 2 min: Bach unaccompanied movement\n- 2 min: Paganini caprice excerpt\n- 3 min: Kreisler or Mendelssohn Romantic piece\n- 2 min: Jazz improvisation (Grappelli style)\n- 3 min: Raga alap (any raga you've mastered)\n- 3 min: Your L9.1 original composition\n\n## Pass = Genius Certificate\n\nHuman reviewer panel + peer feedback. Both approve → certified violin mastery across traditions.",
+    audioRefs: [{ id: "demo", label: "Sample 15-minute Genius recital" }],
+    exercisePlanId: "violin_l9_06_recital", prerequisites: ["violin_l9_01_composition"],
+    passCriteria: { minGradeOverall: 0.80, minPerDimension: { pitch: 0.82, rhythm: 0.80, tone: 0.82, dynamics: 0.78, consistency: 0.80 } }, estimatedMinutes: 60,
+  },
+
   drums_l1_01_grip: {
     id: "drums_l1_01_grip",
     instrumentId: "drums",

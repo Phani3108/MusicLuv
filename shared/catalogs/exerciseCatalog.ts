@@ -1755,6 +1755,137 @@ export const EXERCISES: Record<string, Exercise> = {
       .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
     tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
   },
+  violin_l7_01_bach_adagio: {
+    id: "violin_l7_01_bach_adagio", type: "play_along", instrumentId: "violin",
+    title: "Bach G minor Adagio — opening phrase",
+    targetPattern: { notes: ["G4","Bb4","D5","G5","F5","D5","Bb4","G4","F4","Eb4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*700, durationMs:700, velocity: 0.4 + 0.03*i})) },
+    tempo: { bpm: 50, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l7_02_caprice_24: {
+    id: "violin_l7_02_caprice_24", type: "play_along", instrumentId: "violin",
+    title: "Paganini Caprice 24 theme opening",
+    targetPattern: { notes: ["A4","E5","C5","A4","E5","C5","B4","A4","B4","C5","D5","E5","C5","A4"]
+      .map((p,i)=>({pitch:p, startMs:i*300, durationMs:300})) },
+    tempo: { bpm: 100, meter: [2, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l7_03_darbari: {
+    id: "violin_l7_03_darbari", type: "improvise", instrumentId: "violin",
+    title: "Raga Darbari characteristic phrase (with andolan approximation)",
+    targetPattern: { notes: ["G4","Bb4","C5","D5","Eb5","D5","C5","Bb4","A4","G4","F4","Eb4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*800, durationMs:800})) },
+    tempo: { bpm: 40, meter: [4, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  violin_l7_04_liebesfreud: {
+    id: "violin_l7_04_liebesfreud", type: "play_along", instrumentId: "violin",
+    title: "Kreisler Liebesfreud opening",
+    targetPattern: { notes: ["C5","E5","G5","A5","G5","E5","C5","D5","F5","A5","C6","A5","F5","D5","C5"]
+      .map((p,i)=>({pitch:p, startMs:i*400, durationMs:400})) },
+    tempo: { bpm: 120, meter: [3, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l7_05_extended: {
+    id: "violin_l7_05_extended", type: "play_note", instrumentId: "violin",
+    title: "Col legno + ponticello demos",
+    targetPattern: { notes: [
+      { pitch: "G4", startMs: 0, durationMs: 2000 },
+      { pitch: "D5", startMs: 2000, durationMs: 2000 },
+      { pitch: "A5", startMs: 4000, durationMs: 2000 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l7_06_exam: {
+    id: "violin_l7_06_exam", type: "play_along", instrumentId: "violin",
+    title: "L7 exam — Bach/Paganini excerpt",
+    targetPattern: { notes: ["G4","Bb4","D5","G5","F#5","D5","Bb4","A4","G4","F#4","G4","A4","Bb4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500, velocity: 0.4})) },
+    tempo: { bpm: 70, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l8_01_mendelssohn: {
+    id: "violin_l8_01_mendelssohn", type: "play_along", instrumentId: "violin",
+    title: "Mendelssohn Concerto E-minor opening theme",
+    targetPattern: { notes: ["B4","G5","F#5","E5","D#5","E5","F#5","G5","B5","A5","G5","F#5","E5","D5","B4"]
+      .map((p,i)=>({pitch:p, startMs:i*600, durationMs:600, velocity: 0.35 + 0.03*i})) },
+    tempo: { bpm: 70, meter: [2, 2] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l8_02_improv: {
+    id: "violin_l8_02_improv", type: "improvise", instrumentId: "violin",
+    title: "Grappelli-style improv — All of Me chord tones",
+    targetPattern: { notes: ["C5","E5","G5","E5","C5","B4","D5","F#5","A5","F#5","D5","A4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 120, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l8_03_bageshri: {
+    id: "violin_l8_03_bageshri", type: "improvise", instrumentId: "violin",
+    title: "Raga Bageshri mini-alap phrase",
+    targetPattern: { notes: ["D5","G5","Bb5","C6","Bb5","A5","G5","F5","Eb5","D5","C5","Bb4","A4","G4"]
+      .map((p,i)=>({pitch:p, startMs:i*900, durationMs:900})) },
+    tempo: { bpm: 40, meter: [4, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  violin_l8_04_emperor: {
+    id: "violin_l8_04_emperor", type: "play_along", instrumentId: "violin",
+    title: "Haydn Emperor Op.76 No.3 — 2nd mov theme",
+    targetPattern: { notes: ["G4","G4","A4","B4","A4","G4","F#4","E4","D4","G4","A4","B4","A4","G4","F#4","G4"]
+      .map((p,i)=>({pitch:p, startMs:i*600, durationMs:600})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l8_05_fratres: {
+    id: "violin_l8_05_fratres", type: "play_note", instrumentId: "violin",
+    title: "Fratres opening sustained pattern",
+    targetPattern: { notes: [
+      { pitch: "A4", startMs: 0, durationMs: 3000, velocity: 0.3 },
+      { pitch: "D5", startMs: 3000, durationMs: 3000, velocity: 0.35 },
+      { pitch: "F5", startMs: 6000, durationMs: 3000, velocity: 0.4 },
+      { pitch: "A5", startMs: 9000, durationMs: 3000, velocity: 0.45 },
+    ]}, tempo: { bpm: 40, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l8_06_tristyle: {
+    id: "violin_l8_06_tristyle", type: "play_along", instrumentId: "violin",
+    title: "L8 3-style exam — representative passage",
+    targetPattern: { notes: ["B4","G5","E5","C5","A4","C5","E5","G5","A5","G5","E5","C5","A4","F5","D5","A4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l9_01_compose: {
+    id: "violin_l9_01_compose", type: "compose", instrumentId: "violin",
+    title: "Original 3-min solo violin composition (reference shape)",
+    targetPattern: { notes: ["D4","G4","Bb4","D5","F5","D5","Bb4","G4","A4","C5","E5","A5","G5","E5","C5","A4"]
+      .map((p,i)=>({pitch:p, startMs:i*700, durationMs:700})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l9_02_transcribe: {
+    id: "violin_l9_02_transcribe", type: "compose", instrumentId: "violin",
+    title: "Violin transcription (Chopin-style nocturne adapted)",
+    targetPattern: { notes: ["E5","G5","B5","E6","D6","B5","G5","E5","A5","C6","E6","C6","A5","E5"]
+      .map((p,i)=>({pitch:p, startMs:i*700, durationMs:700})) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l9_03_teach: {
+    id: "violin_l9_03_teach", type: "compose", instrumentId: "violin",
+    title: "Teaching demo — intonation lesson content",
+    targetPattern: { notes: ["A4","A4","B4","B4","C5","C5","D5","D5"]
+      .map((p,i)=>({pitch:p, startMs:i*1000, durationMs:1000})) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l9_04_record: {
+    id: "violin_l9_04_record", type: "play_along", instrumentId: "violin",
+    title: "Studio-quality recording sample",
+    targetPattern: { notes: ["G4","B4","D5","G5","D5","B4","G4","A4","C5","E5","A5","E5","C5","A4","G4"]
+      .map((p,i)=>({pitch:p, startMs:i*700, durationMs:700, velocity: 0.5})) },
+    tempo: { bpm: 70, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l9_05_style_comparison: {
+    id: "violin_l9_05_style_comparison", type: "play_along", instrumentId: "violin",
+    title: "Baroque vs Romantic — same phrase, two styles",
+    targetPattern: { notes: ["G4","A4","B4","C5","D5","C5","B4","A4","G4"]
+      .map((p,i)=>({pitch:p, startMs:i*600, durationMs:600})) },
+    tempo: { bpm: 70, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  violin_l9_06_recital: {
+    id: "violin_l9_06_recital", type: "play_along", instrumentId: "violin",
+    title: "Genius Cert recital — programme excerpt",
+    targetPattern: { notes: ["G4","Bb4","D5","G5","F#5","E5","D5","C5","Bb4","A4","G4","A4","Bb4","D5","G5","D5","Bb4","G4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500, velocity: 0.4 + 0.02*i})) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
 
   drums_l1_01_snare_4: {
     id: "drums_l1_01_snare_4",
