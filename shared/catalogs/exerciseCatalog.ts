@@ -2266,6 +2266,275 @@ export const EXERCISES: Record<string, Exercise> = {
     tempo: { bpm: 60, meter: [4, 4] },
     gradingRubricId: "rubric_early_level",
   },
+  sitar_l1_02_sargam: {
+    id: "sitar_l1_02_sargam", type: "play_scale", instrumentId: "sitar",
+    title: "Sargam ascending",
+    targetPattern: { notes: ["C4","D4","E4","F4","G4","A4","B4","C5"]
+      .map((p,i)=>({pitch:p, startMs:i*600, durationMs:600})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l1_03_descent: {
+    id: "sitar_l1_03_descent", type: "play_scale", instrumentId: "sitar",
+    title: "Sargam descending",
+    targetPattern: { notes: ["C5","B4","A4","G4","F4","E4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*600, durationMs:600})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l1_04_alankar: {
+    id: "sitar_l1_04_alankar", type: "play_scale", instrumentId: "sitar",
+    title: "3-note alankar pattern ascending",
+    targetPattern: { notes: ["C4","D4","E4","D4","E4","F4","E4","F4","G4","F4","G4","A4","G4","A4","B4","A4","B4","C5"]
+      .map((p,i)=>({pitch:p, startMs:i*300, durationMs:300})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l1_05_teentaal: {
+    id: "sitar_l1_05_teentaal", type: "play_note", instrumentId: "sitar",
+    title: "Sa on beat 1 of each teentaal cycle",
+    targetPattern: { notes: [
+      { pitch: "C4", startMs: 0, durationMs: 800 },
+      { pitch: "C4", startMs: 12000, durationMs: 800 },
+    ]}, tempo: { bpm: 80, meter: [16, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l1_06_yaman_bandish: {
+    id: "sitar_l1_06_yaman_bandish", type: "play_along", instrumentId: "sitar",
+    title: "Simple Yaman bandish — sthayi",
+    targetPattern: { notes: ["C4","D4","E4","F#4","A4","B4","C5","C5"]
+      .map((p,i)=>({pitch:p, startMs:i*1500, durationMs:1500})) },
+    tempo: { bpm: 80, meter: [16, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l2_01_bhupali: {
+    id: "sitar_l2_01_bhupali", type: "play_scale", instrumentId: "sitar",
+    title: "Bhupali aaroha + avaroha",
+    targetPattern: { notes: ["C4","D4","E4","G4","A4","C5","A4","G4","E4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*600, durationMs:600})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l2_02_alap: {
+    id: "sitar_l2_02_alap", type: "improvise", instrumentId: "sitar",
+    title: "Mini Yaman alap, 2 minutes",
+    targetPattern: { notes: ["C4","D4","E4","D4","E4","F#4","A4","F#4","E4","A4","B4","C5","B4","A4","F#4","E4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*2500, durationMs:2500})) },
+    tempo: { bpm: 40, meter: [4, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  sitar_l2_03_bols: {
+    id: "sitar_l2_03_bols", type: "rhythm_clap", instrumentId: "sitar",
+    title: "Da Ra Diri Da pattern, 80 bpm",
+    targetPattern: { onsets: [0, 750, 1125, 1500, 2250, 3000, 3375, 3750, 4500, 5250, 5625, 6000, 6750] },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  sitar_l2_04_meend: {
+    id: "sitar_l2_04_meend", type: "play_note", instrumentId: "sitar",
+    title: "Ma → Ga meend",
+    targetPattern: { notes: [
+      { pitch: "F4", startMs: 0, durationMs: 1500 },
+      { pitch: "E4", startMs: 1500, durationMs: 2500 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  sitar_l2_05_jhaptal: {
+    id: "sitar_l2_05_jhaptal", type: "play_note", instrumentId: "sitar",
+    title: "Sa on beat 1 of jhaptal cycle",
+    targetPattern: { notes: [
+      { pitch: "C4", startMs: 0, durationMs: 600 },
+      { pitch: "C4", startMs: 6666, durationMs: 600 },
+    ]}, tempo: { bpm: 90, meter: [10, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l2_06_bandish: {
+    id: "sitar_l2_06_bandish", type: "play_along", instrumentId: "sitar",
+    title: "Bhupali bandish — sthayi + antara",
+    targetPattern: { notes: ["C4","D4","E4","G4","E4","D4","C4","G4","A4","C5","D5","C5","A4","G4"]
+      .map((p,i)=>({pitch:p, startMs:i*1000, durationMs:1000})) },
+    tempo: { bpm: 90, meter: [16, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l3_01_bhairav: {
+    id: "sitar_l3_01_bhairav", type: "play_scale", instrumentId: "sitar",
+    title: "Bhairav aaroha + avaroha",
+    targetPattern: { notes: ["C4","Db4","E4","F4","G4","Ab4","B4","C5","B4","Ab4","G4","F4","E4","Db4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*700, durationMs:700})) },
+    tempo: { bpm: 70, meter: [4, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  sitar_l3_02_taan: {
+    id: "sitar_l3_02_taan", type: "play_scale", instrumentId: "sitar",
+    title: "16-svara taan in teentaal",
+    targetPattern: { notes: ["C4","D4","E4","F#4","G4","F#4","E4","D4","C4","D4","E4","F#4","G4","F#4","E4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*188, durationMs:188})) },
+    tempo: { bpm: 120, meter: [16, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l3_03_gat: {
+    id: "sitar_l3_03_gat", type: "play_along", instrumentId: "sitar",
+    title: "Yaman gat — 4 cycles",
+    targetPattern: { notes: ["C4","D4","E4","F#4","A4","F#4","E4","D4"]
+      .map((p,i)=>({pitch:p, startMs:i*1500, durationMs:1500})) },
+    tempo: { bpm: 90, meter: [16, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l3_04_alap_ext: {
+    id: "sitar_l3_04_alap_ext", type: "improvise", instrumentId: "sitar",
+    title: "5-minute Bhupali alap (reference phrases)",
+    targetPattern: { notes: ["C4","D4","E4","D4","C4","G4","E4","C4","A4","G4","E4","C5","A4","G4","E4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*3500, durationMs:3500})) },
+    tempo: { bpm: 35, meter: [4, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  sitar_l3_05_rupak: {
+    id: "sitar_l3_05_rupak", type: "play_note", instrumentId: "sitar",
+    title: "Sa on beat 2 of rupak cycles",
+    targetPattern: { notes: [
+      { pitch: "C4", startMs: 667, durationMs: 500 },
+      { pitch: "C4", startMs: 5333, durationMs: 500 },
+    ]}, tempo: { bpm: 90, meter: [7, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  sitar_l3_06_cert: {
+    id: "sitar_l3_06_cert", type: "improvise", instrumentId: "sitar",
+    title: "Standard Cert — alap + gat combined",
+    targetPattern: { notes: ["C4","D4","E4","F#4","A4","B4","C5","A4","F#4","E4","D4","C4","G3"]
+      .map((p,i)=>({pitch:p, startMs:i*2000, durationMs:2000})) },
+    tempo: { bpm: 60, meter: [16, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  vocals_l1_01_sustained_ah: {
+    id: "vocals_l1_01_sustained_ah", type: "play_note", instrumentId: "vocals",
+    title: "Sustained 'ah' on A4, 10 seconds",
+    targetPattern: { notes: [{ pitch: "A4", startMs: 0, durationMs: 10000 }] },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l1_02_pitch_match: {
+    id: "vocals_l1_02_pitch_match", type: "play_note", instrumentId: "vocals",
+    title: "Pitch matching — 5 pitches",
+    targetPattern: { notes: [
+      { pitch: "C4", startMs: 0, durationMs: 2000 },
+      { pitch: "E4", startMs: 2500, durationMs: 2000 },
+      { pitch: "G4", startMs: 5000, durationMs: 2000 },
+      { pitch: "A4", startMs: 7500, durationMs: 2000 },
+      { pitch: "D4", startMs: 10000, durationMs: 2000 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l1_03_five_tone: {
+    id: "vocals_l1_03_five_tone", type: "play_scale", instrumentId: "vocals",
+    title: "5-tone ascending + descending",
+    targetPattern: { notes: ["C4","D4","E4","F4","G4","F4","E4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*800, durationMs:800})) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l1_04_vowels: {
+    id: "vocals_l1_04_vowels", type: "play_note", instrumentId: "vocals",
+    title: "5 pure vowels on A4",
+    targetPattern: { notes: Array.from({length:5},(_,i)=>({pitch:"A4", startMs:i*3000, durationMs:3000})) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l1_05_octave: {
+    id: "vocals_l1_05_octave", type: "play_note", instrumentId: "vocals",
+    title: "Octave jump: low Do → high Do → low Do",
+    targetPattern: { notes: [
+      { pitch: "C4", startMs: 0, durationMs: 2000 },
+      { pitch: "C5", startMs: 2500, durationMs: 2000 },
+      { pitch: "C4", startMs: 5000, durationMs: 2000 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l1_06_birthday: {
+    id: "vocals_l1_06_birthday", type: "play_along", instrumentId: "vocals",
+    title: "Happy Birthday in C major",
+    targetPattern: { notes: ["C4","C4","D4","C4","F4","E4","C4","C4","D4","C4","G4","F4"]
+      .map((p,i)=>({pitch:p, startMs:i*750, durationMs:750})) },
+    tempo: { bpm: 90, meter: [3, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l2_01_range: {
+    id: "vocals_l2_01_range", type: "play_scale", instrumentId: "vocals",
+    title: "Range exploration — C4 chromatically down + up",
+    targetPattern: { notes: ["C4","B3","Bb3","A3","Ab3","G3","A3","B3","C4","C#4","D4","E4","F4","G4","A4","B4","C5"]
+      .map((p,i)=>({pitch:p, startMs:i*1000, durationMs:1000})) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l2_02_major: {
+    id: "vocals_l2_02_major", type: "play_scale", instrumentId: "vocals",
+    title: "Major scale — Do Re Mi Fa Sol La Ti Do",
+    targetPattern: { notes: ["C4","D4","E4","F4","G4","A4","B4","C5","B4","A4","G4","F4","E4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l2_03_intervals: {
+    id: "vocals_l2_03_intervals", type: "play_note", instrumentId: "vocals",
+    title: "Sing 5th + 4th + 3rd intervals",
+    targetPattern: { notes: [
+      { pitch: "C4", startMs: 0, durationMs: 1000 },
+      { pitch: "G4", startMs: 1000, durationMs: 1000 },
+      { pitch: "C4", startMs: 2500, durationMs: 1000 },
+      { pitch: "F4", startMs: 3500, durationMs: 1000 },
+      { pitch: "C4", startMs: 5000, durationMs: 1000 },
+      { pitch: "E4", startMs: 6000, durationMs: 1000 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l2_04_dynamics: {
+    id: "vocals_l2_04_dynamics", type: "play_note", instrumentId: "vocals",
+    title: "Dynamic arc on A4 — pp → f → pp",
+    targetPattern: { notes: [
+      { pitch: "A4", startMs: 0,    durationMs: 6000, velocity: 0.3 },
+      { pitch: "A4", startMs: 6000, durationMs: 2000, velocity: 0.6 },
+      { pitch: "A4", startMs: 8000, durationMs: 4000, velocity: 0.3 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l2_05_sargam: {
+    id: "vocals_l2_05_sargam", type: "play_scale", instrumentId: "vocals",
+    title: "Sargam ascending + descending",
+    targetPattern: { notes: ["C4","D4","E4","F4","G4","A4","B4","C5","B4","A4","G4","F4","E4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*700, durationMs:700})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l2_06_twinkle: {
+    id: "vocals_l2_06_twinkle", type: "play_along", instrumentId: "vocals",
+    title: "Twinkle Twinkle in C major",
+    targetPattern: { notes: ["C4","C4","G4","G4","A4","A4","G4","F4","F4","E4","E4","D4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l3_01_head: {
+    id: "vocals_l3_01_head", type: "play_note", instrumentId: "vocals",
+    title: "Chest-to-head slide on 'oo'",
+    targetPattern: { notes: [
+      { pitch: "C4", startMs: 0, durationMs: 2000 },
+      { pitch: "E4", startMs: 2000, durationMs: 2000 },
+      { pitch: "G4", startMs: 4000, durationMs: 2000 },
+      { pitch: "C5", startMs: 6000, durationMs: 2000 },
+      { pitch: "E5", startMs: 8000, durationMs: 2000 },
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l3_02_consonants: {
+    id: "vocals_l3_02_consonants", type: "play_along", instrumentId: "vocals",
+    title: "Phrase with clean consonants",
+    targetPattern: { notes: ["C4","D4","E4","F4","G4","F4","E4","D4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*600, durationMs:600})) },
+    tempo: { bpm: 90, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l3_03_amazing: {
+    id: "vocals_l3_03_amazing", type: "play_along", instrumentId: "vocals",
+    title: "Amazing Grace verse 1 in G major",
+    targetPattern: { notes: ["D4","G4","B4","G4","B4","A4","G4","E4","G4","E4","D4"]
+      .map((p,i)=>({pitch:p, startMs:i*900, durationMs:900})) },
+    tempo: { bpm: 85, meter: [3, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l3_04_sarali: {
+    id: "vocals_l3_04_sarali", type: "play_scale", instrumentId: "vocals",
+    title: "Sarali Varisai pattern 1",
+    targetPattern: { notes: ["C4","Db4","E4","F4","G4","Ab4","B4","C5","C5","B4","Ab4","G4","F4","E4","Db4","C4"]
+      .map((p,i)=>({pitch:p, startMs:i*500, durationMs:500})) },
+    tempo: { bpm: 100, meter: [4, 4] }, gradingRubricId: "rubric_raga_intermediate",
+  },
+  vocals_l3_05_phrasing: {
+    id: "vocals_l3_05_phrasing", type: "play_along", instrumentId: "vocals",
+    title: "Shaped 4-bar phrase",
+    targetPattern: { notes: [
+      { pitch: "C4", startMs: 0,    durationMs: 800, velocity: 0.4 },
+      { pitch: "E4", startMs: 800,  durationMs: 800, velocity: 0.5 },
+      { pitch: "G4", startMs: 1600, durationMs: 800, velocity: 0.7 },
+      { pitch: "A4", startMs: 2400, durationMs: 1600, velocity: 0.85 },
+      { pitch: "G4", startMs: 4000, durationMs: 800, velocity: 0.75 },
+      { pitch: "E4", startMs: 4800, durationMs: 800, velocity: 0.6 },
+      { pitch: "C4", startMs: 5600, durationMs: 2400, velocity: 0.45 },
+    ]}, tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  vocals_l3_06_cert: {
+    id: "vocals_l3_06_cert", type: "play_along", instrumentId: "vocals",
+    title: "Standard Cert — complete song with phrasing",
+    targetPattern: { notes: ["D4","G4","B4","A4","G4","E4","D4","G4","B4","D5","B4","A4","G4","E4","D4"]
+      .map((p,i)=>({pitch:p, startMs:i*800, durationMs:800, velocity: 0.4 + 0.04*i})) },
+    tempo: { bpm: 80, meter: [3, 4] }, gradingRubricId: "rubric_early_level",
+  },
   sitar_l4_01_yaman_meend: {
     id: "sitar_l4_01_yaman_meend",
     type: "improvise",

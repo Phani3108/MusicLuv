@@ -2664,6 +2664,362 @@ export const LESSONS: Record<string, Lesson> = {
     estimatedMinutes: 15,
   },
 
+  sitar_l1_02_sargam: {
+    id: "sitar_l1_02_sargam", instrumentId: "sitar", level: 1, tier: "standard",
+    title: "Sargam — the 7 svaras Sa Re Ga Ma Pa Dha Ni",
+    objectives: ["Play all 7 svaras cleanly ascending", "Say each svara name while playing it", "Return to Sa with a clean final stroke"],
+    writtenContent:
+      "## The Indian solfege\n\nSa Re Ga Ma Pa Dha Ni Sa' — seven svaras = the Indian scale. Equivalent to Western Do Re Mi. Each svara has a name AND a feel.\n\n## Speak while you play\n\nSay 'Sa' as you pluck Sa. 'Re' for Re. Your mouth and your fingers must learn the same thing. That's how Hindustani music grows.",
+    audioRefs: [{ id: "demo", label: "Full sargam Sa to Sa'" }],
+    exercisePlanId: "sitar_l1_02_sargam", prerequisites: ["sitar_l1_01_sa"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.75 } }, estimatedMinutes: 12,
+  },
+  sitar_l1_03_descent: {
+    id: "sitar_l1_03_descent", instrumentId: "sitar", level: 1, tier: "standard",
+    title: "Sargam descending — Sa' Ni Dha Pa Ma Ga Re Sa",
+    objectives: ["Descend through the sargam smoothly", "Keep bow/mizrab strokes consistent", "Land solidly on Sa at the end"],
+    writtenContent:
+      "## The other direction\n\nAscending tests your climb. Descending tests your control — gravity wants to rush you. Slow down on the way back.\n\n## Rest on Sa\n\nSa is home. Every phrase — alap, bandish, gat — returns to Sa. Make that return feel like coming home.",
+    audioRefs: [{ id: "demo", label: "Descending sargam" }],
+    exercisePlanId: "sitar_l1_03_descent", prerequisites: ["sitar_l1_02_sargam"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 10,
+  },
+  sitar_l1_04_alankar: {
+    id: "sitar_l1_04_alankar", instrumentId: "sitar", level: 1, tier: "standard",
+    title: "Alankar patterns — Sa Re Ga, Re Ga Ma, Ga Ma Pa…",
+    objectives: ["Play the classic 3-note alankar pattern through the scale", "Keep the pattern shape consistent as it climbs", "Time each 3-note group evenly"],
+    writtenContent:
+      "## Pattern practice\n\nAn alankar is a scale pattern. The simplest: **Sa Re Ga | Re Ga Ma | Ga Ma Pa | Ma Pa Dha | Pa Dha Ni | Dha Ni Sa'**. Three-note groups, each starting one note higher.\n\n## Why\n\nAlankars train finger dexterity. Every Indian classical musician practices them daily. Start slow; tempo follows.",
+    audioRefs: [{ id: "demo", label: "3-note alankar ascending" }],
+    exercisePlanId: "sitar_l1_04_alankar", prerequisites: ["sitar_l1_02_sargam"],
+    passCriteria: { minGradeOverall: 0.7 }, estimatedMinutes: 12,
+  },
+  sitar_l1_05_teentaal_basic: {
+    id: "sitar_l1_05_teentaal_basic", instrumentId: "sitar", level: 1, tier: "standard",
+    title: "Feel teentaal — 16 beats with a tabla companion",
+    objectives: ["Count to 16 with the tabla theka playing", "Clap on beats 1, 5, 13 (taali) and stay silent on 9 (khali)", "Play a single Sa on beat 1 of each cycle"],
+    writtenContent:
+      "## The rhythmic house\n\nTeentaal is 16 beats grouped 4+4+4+4. Strong beats (taali = clap) on 1, 5, 13. Weak beat (khali = silent palm wave) on 9.\n\n## Your part\n\nSimple: play Sa on beat 1 of each 16-beat cycle. Let the tabla do the rhythmic work. You're learning the HOUSE first; the furniture (melody) comes later.",
+    audioRefs: [{ id: "demo", label: "Teentaal theka with Sa on beat 1" }],
+    exercisePlanId: "sitar_l1_05_teentaal", prerequisites: ["sitar_l1_01_sa"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { rhythm: 0.75 } }, estimatedMinutes: 12,
+  },
+  sitar_l1_06_first_bandish: {
+    id: "sitar_l1_06_first_bandish", instrumentId: "sitar", level: 1, tier: "standard",
+    title: "Your first bandish — a simple melody in raga Yaman",
+    objectives: ["Play an 8-svara melody using Yaman svaras", "Fit the melody into a teentaal cycle", "Feel the difference between scale practice and composed music"],
+    writtenContent:
+      "## A composed melody\n\nA **bandish** is a short composed melody. Simple Yaman bandish: Sa Re Ga Ma♯ Dha Ni Sa' Sa' — 8 svaras, played once per teentaal cycle.\n\n## What this teaches\n\nBandish = composed pattern. Alap = free improvisation of the same raga. Both serve the raga; bandish is your first proof you can play MUSIC, not just scales.",
+    audioRefs: [{ id: "demo", label: "Simple Yaman bandish, teentaal" }],
+    exercisePlanId: "sitar_l1_06_yaman_bandish", prerequisites: ["sitar_l1_04_alankar", "sitar_l1_05_teentaal_basic"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 15,
+  },
+
+  sitar_l2_01_raga_bhupali: {
+    id: "sitar_l2_01_raga_bhupali", instrumentId: "sitar", level: 2, tier: "standard",
+    title: "Raga Bhupali — your second raga (pentatonic)",
+    objectives: ["Play Bhupali svaras: Sa Re Ga Pa Dha Sa' (5 notes only)", "Notice: no Ma, no Ni — skipped", "Feel the pentatonic sweetness"],
+    writtenContent:
+      "## Pentatonic raga\n\nBhupali uses 5 svaras: **Sa Re Ga Pa Dha**. Skips Ma + Ni. Equivalent to Western major pentatonic.\n\n## Why it feels sweet\n\nNo semitones. Every svara is a whole or major-third step apart. Consonant, joyful, evening raga.",
+    audioRefs: [{ id: "demo", label: "Bhupali aaroha + avaroha" }],
+    exercisePlanId: "sitar_l2_01_bhupali", prerequisites: ["sitar_l1_06_first_bandish"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.74 } }, estimatedMinutes: 12,
+  },
+  sitar_l2_02_alap_basics: {
+    id: "sitar_l2_02_alap_basics", instrumentId: "sitar", level: 2, tier: "standard",
+    title: "Alap basics — free-time exploration in Yaman",
+    objectives: ["Play 2-3 minutes of free-time alap in Yaman", "Dwell on each svara before moving on", "Breathe between phrases"],
+    writtenContent:
+      "## Time stops in alap\n\nNo tabla. No tempo. Just raga. Alap is a meditation on the raga's svaras.\n\n## What to do\n\n- Start on Sa. Sustain it.\n- Introduce one new svara at a time (Re, then Ga, then Ma♯ for Yaman).\n- Return often to the vadi (Ga in Yaman).\n- Every phrase returns to Sa eventually.\n\nPatience is the technique.",
+    audioRefs: [{ id: "demo", label: "Mini alap in Yaman, 2 min" }],
+    exercisePlanId: "sitar_l2_02_alap", prerequisites: ["sitar_l1_06_first_bandish"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.74, tone: 0.72 } }, estimatedMinutes: 20,
+  },
+  sitar_l2_03_mizrab_bols: {
+    id: "sitar_l2_03_mizrab_bols", instrumentId: "sitar", level: 2, tier: "standard",
+    title: "Mizrab bols — Da Ra Diri Da",
+    objectives: ["Execute Da (down-stroke) cleanly", "Execute Ra (up-stroke)", "Play the pattern Da Ra Diri Da repeatedly"],
+    writtenContent:
+      "## The sitar's rhythmic vocabulary\n\nMizrab strokes have names: **Da** (down), **Ra** (up), **Diri** (fast down-up pair). Combine them into patterns: Da Ra Diri Da is the foundation.\n\n## Speak the bols\n\nJust like sargam, say the bol while playing it. 'Da Ra Diri Da.' Mouth + right hand learn together.",
+    audioRefs: [{ id: "demo", label: "Da Ra Diri Da pattern, 80 bpm" }],
+    exercisePlanId: "sitar_l2_03_bols", prerequisites: ["sitar_l1_01_sa"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { rhythm: 0.75 } }, estimatedMinutes: 12,
+  },
+  sitar_l2_04_meend_basics: {
+    id: "sitar_l2_04_meend_basics", instrumentId: "sitar", level: 2, tier: "standard",
+    title: "Your first meend — Ma to Ga glide",
+    objectives: ["Pull the string laterally across the curved fret", "Glide pitch from Ma down to Ga in one motion", "Hold Ga at the end of the glide"],
+    writtenContent:
+      "## The sitar's voice\n\nMeend is what makes sitar sound like sitar. Pull the main string LATERALLY (across the curved fret), pitch bends up to 5 semitones.\n\n## Ma → Ga meend\n\nStart on Ma. Pull the string. Pitch rises… then release slowly, pitch falls to Ga. One continuous motion. Both ends should sing.",
+    audioRefs: [{ id: "demo", label: "Ma→Ga meend" }],
+    exercisePlanId: "sitar_l2_04_meend", prerequisites: ["sitar_l1_04_alankar"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.75, tone: 0.72 } }, estimatedMinutes: 15,
+  },
+  sitar_l2_05_jhaptal_intro: {
+    id: "sitar_l2_05_jhaptal_intro", instrumentId: "sitar", level: 2, tier: "standard",
+    title: "Jhaptal — 10 beats grouped 2+3+2+3",
+    objectives: ["Count 10 beats with accented 1, 3, 8", "Play a simple Sa on beat 1 of each jhaptal cycle", "Feel the asymmetric groupings"],
+    writtenContent:
+      "## A different rhythmic house\n\nAfter teentaal's symmetry (4+4+4+4), jhaptal is asymmetric: **2+3+2+3 = 10 beats**. Taali on 1, 3, 8. Khali on 6.\n\n## The groove\n\nCount out loud: ONE two | ONE two three | ONE two | ONE two three. The uneven groupings give jhaptal its signature lilt.",
+    audioRefs: [{ id: "demo", label: "Jhaptal theka, 90 bpm" }],
+    exercisePlanId: "sitar_l2_05_jhaptal", prerequisites: ["sitar_l1_05_teentaal_basic"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 12,
+  },
+  sitar_l2_06_bandish_bhupali: {
+    id: "sitar_l2_06_bandish_bhupali", instrumentId: "sitar", level: 2, tier: "standard",
+    title: "Bandish in Bhupali — a complete short composition",
+    objectives: ["Play the sthayi (refrain) of a Bhupali bandish, 2 cycles of teentaal", "Play the antara (verse), 2 cycles", "Return to sthayi"],
+    writtenContent:
+      "## Bandish form\n\nHindustani composed melodies have two parts:\n- **Sthayi**: the 'home' section, staying in the lower/middle register\n- **Antara**: the 'up' section, exploring the higher octave\n\nPerformers alternate: sthayi → antara → sthayi → improvisation → sthayi.\n\n## Bhupali bandish\n\nSimple example: **Sthayi**: Sa Re Ga Pa Ga Re Sa. **Antara**: Pa Dha Sa' Re' Sa' Dha Pa. Each fits a teentaal cycle.",
+    audioRefs: [{ id: "demo", label: "Bhupali bandish, sthayi + antara" }],
+    exercisePlanId: "sitar_l2_06_bandish", prerequisites: ["sitar_l2_01_raga_bhupali", "sitar_l1_06_first_bandish"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 20,
+  },
+
+  sitar_l3_01_raga_bhairav: {
+    id: "sitar_l3_01_raga_bhairav", instrumentId: "sitar", level: 3, tier: "standard",
+    title: "Raga Bhairav — dawn raga, komal notes",
+    objectives: ["Play Bhairav aaroha: Sa Re♭ Ga Ma Pa Dha♭ Ni Sa'", "Place komal Re and komal Dha with precision", "Feel the austere mood"],
+    writtenContent:
+      "## Dawn raga\n\nBhairav uses TWO komal (flat) svaras: Re♭ and Dha♭. Played at sunrise in Hindustani tradition.\n\n## Mood\n\nBhairav is austere, contemplative, ancient. Slow it down. Each komal svara is a breath.",
+    audioRefs: [{ id: "demo", label: "Bhairav aaroha" }],
+    exercisePlanId: "sitar_l3_01_bhairav", prerequisites: ["sitar_l2_01_raga_bhupali"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.76 } }, estimatedMinutes: 15,
+  },
+  sitar_l3_02_taans: {
+    id: "sitar_l3_02_taans", instrumentId: "sitar", level: 3, tier: "standard",
+    title: "Taans — fast svara runs",
+    objectives: ["Play a 16-svara taan (fast run) at 120 bpm within teentaal", "Cleanly return to Sa on beat 1", "Use Diri mizrab strokes"],
+    writtenContent:
+      "## The rhythmic showpiece\n\nA **taan** is a rapid melodic run — a cascade of svaras packed into a tight rhythmic window. Requires speed + accuracy.\n\n## Your first taan\n\nIn teentaal, 16 svaras fit the cycle if played as 16th notes. Pattern: Sa Re Ga Ma Pa Ma Ga Re Sa Re Ga Ma Pa Ma Ga Re — lands back on Sa.\n\n## Diri strokes\n\nPaired down-up mizrab strokes give the fast articulation taans need. Not single Da strokes.",
+    audioRefs: [{ id: "demo", label: "16-svara taan in teentaal, 120 bpm" }],
+    exercisePlanId: "sitar_l3_02_taan", prerequisites: ["sitar_l2_03_mizrab_bols"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { rhythm: 0.76 } }, estimatedMinutes: 18,
+  },
+  sitar_l3_03_gat: {
+    id: "sitar_l3_03_gat", instrumentId: "sitar", level: 3, tier: "standard",
+    title: "Gat structure — instrumental composition",
+    objectives: ["Play a simple gat (instrumental bandish) in Yaman", "Execute the mukhda (opening melodic hook)", "Repeat the gat 4 times with minor variations"],
+    writtenContent:
+      "## The sitar's answer to bandish\n\nA **gat** is an instrumental composition — what vocalists call a bandish, sitarists call a gat. Same purpose, different name.\n\n## Mukhda\n\nThe signature opening phrase. The gat starts every cycle with the mukhda, so the audience locks onto beat 1 (sam).\n\n## Variation\n\nEach repetition, add a tiny variation — a faster descent, an extra meend. Keeps the gat alive without losing its identity.",
+    audioRefs: [{ id: "demo", label: "Yaman gat, 4 cycles" }],
+    exercisePlanId: "sitar_l3_03_gat", prerequisites: ["sitar_l2_06_bandish_bhupali"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 20,
+  },
+  sitar_l3_04_alap_extended: {
+    id: "sitar_l3_04_alap_extended", instrumentId: "sitar", level: 3, tier: "standard",
+    title: "Extended alap — 5-minute Bhupali exploration",
+    objectives: ["Play 5 minutes of Bhupali alap without tabla", "Use meend to connect phrases", "Build from low register to upper octave gradually"],
+    writtenContent:
+      "## Alap expands\n\nL2 alap was 2 minutes. L3 alap is 5 minutes. The extra time lets you develop each register.\n\n## Structure\n\n- 0-1 min: explore Sa + lower notes\n- 1-2 min: middle register (Ga-Pa)\n- 2-3 min: approach upper Sa'\n- 3-4 min: upper octave (Sa' Re' Ga')\n- 4-5 min: return to Sa\n\n## Meend connects\n\nUse meend to glide between svaras. Alap without meend sounds like exercise. Alap WITH meend sings.",
+    audioRefs: [{ id: "demo", label: "5-min Bhupali alap" }],
+    exercisePlanId: "sitar_l3_04_alap_ext", prerequisites: ["sitar_l2_02_alap_basics", "sitar_l2_04_meend_basics"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.76, tone: 0.74 } }, estimatedMinutes: 30,
+  },
+  sitar_l3_05_rupak: {
+    id: "sitar_l3_05_rupak", instrumentId: "sitar", level: 3, tier: "standard",
+    title: "Rupak taal — 7 beats with khali on beat 1",
+    objectives: ["Feel 7 beats grouped 3+2+2 with khali on beat 1 (unusual!)", "Play Sa on beat 2 of each cycle (not beat 1)", "Adjust to the unique khali-first structure"],
+    writtenContent:
+      "## The weird taal\n\nRupak is 7 beats but has **khali on beat 1** — unique in Indian music. Every other taal puts taali on beat 1.\n\n## Structure\n\nBeats 1 (khali) - 2-3 | 4-5 | 6-7 = 3+2+2. Taali on beats 4 and 6.\n\n## Your part\n\nBecause beat 1 is khali, the 'strong' landing is actually beat 2 of each cycle. Counter-intuitive at first; eventually you feel the off-kilter groove.",
+    audioRefs: [{ id: "demo", label: "Rupak theka, 90 bpm" }],
+    exercisePlanId: "sitar_l3_05_rupak", prerequisites: ["sitar_l2_05_jhaptal_intro"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { rhythm: 0.78 } }, estimatedMinutes: 15,
+  },
+  sitar_l3_06_standard_cert: {
+    id: "sitar_l3_06_standard_cert", instrumentId: "sitar", level: 3, tier: "standard",
+    title: "Standard Certificate performance — 3-min Yaman alap + gat",
+    objectives: ["Perform 3 minutes total: 2 min Yaman alap + 1 min gat in teentaal", "Demonstrate intonation, tone, meend, and rhythmic lock", "Submit for grading"],
+    writtenContent:
+      "## The Standard gate\n\nEverything from L1-L3 converges here. Show that you can play clean Yaman, execute meend, stay in teentaal, and phrase musically.\n\n## Performance structure\n\n- Minute 1: slow alap (Sa, Re, Ga, meend Ma→Ga)\n- Minute 2: extended alap up to Sa' and back\n- Minute 3: simple gat, 4 cycles of teentaal\n\n## Why this matters\n\nA learner who passes this is ready for Pro-tier rhythmic complexity (L4+). The Standard Certificate = 'I can play sitar musically.'",
+    audioRefs: [{ id: "demo", label: "Reference Standard Cert performance" }],
+    exercisePlanId: "sitar_l3_06_cert", prerequisites: ["sitar_l3_03_gat", "sitar_l3_04_alap_extended"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { pitch: 0.78, rhythm: 0.76, tone: 0.74 } }, estimatedMinutes: 30,
+  },
+
+  vocals_l1_01_posture: {
+    id: "vocals_l1_01_posture", instrumentId: "vocals", level: 1, tier: "standard",
+    title: "Singing posture + breath support",
+    objectives: ["Stand tall — feet shoulder-width, knees soft, chest open", "Breathe into your ribs (lateral) not your shoulders", "Sustain an 'ah' vowel for 10 seconds on a single comfortable pitch"],
+    writtenContent:
+      "## Body is instrument\n\nFor singers, posture IS the instrument. Slouch = constricted breath = weak tone. Stand tall, ribs open, knees soft.\n\n## Rib breath\n\nBreathe IN: ribs expand sideways (not up). Belly comes out. This is diaphragmatic breathing — where real singing breath lives.\n\n## Your first sustained note\n\nPick any comfortable pitch. Sing 'ah' for 10 seconds. Steady pitch. Steady air. Feel the ribs stay expanded throughout.",
+    audioRefs: [{ id: "demo", label: "Sustained 'ah' on A4, 10 seconds" }],
+    exercisePlanId: "vocals_l1_01_sustained_ah", prerequisites: [],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.72, tone: 0.7 } }, estimatedMinutes: 12,
+  },
+  vocals_l1_02_pitch_match: {
+    id: "vocals_l1_02_pitch_match", instrumentId: "vocals", level: 1, tier: "standard",
+    title: "Pitch matching — sing the note you hear",
+    objectives: ["Hear a piano note; sing it back within 20 cents", "Match 5 different pitches across your comfortable range", "Use the same vowel ('ah') for each"],
+    writtenContent:
+      "## The ear-voice loop\n\nEar hears → brain identifies → voice produces. Every singer's daily skill.\n\n## How to match\n\n1. Hear the note. Don't sing yet.\n2. Hum the pitch quietly first (ear check).\n3. Open to 'ah' at full voice.\n\nIf you were off, the pitch is either too high or too low — adjust by about a half-step and try again.",
+    audioRefs: [{ id: "demo", label: "5 pitches to match" }],
+    exercisePlanId: "vocals_l1_02_pitch_match", prerequisites: ["vocals_l1_01_posture"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.76 } }, estimatedMinutes: 12,
+  },
+  vocals_l1_03_five_tone: {
+    id: "vocals_l1_03_five_tone", instrumentId: "vocals", level: 1, tier: "standard",
+    title: "5-tone scale — Do Re Mi Fa Sol",
+    objectives: ["Sing 5-note ascending scale: Do Re Mi Fa Sol", "Descend cleanly", "Start from C4 (middle C) for your starting range check"],
+    writtenContent:
+      "## Solfege\n\nWestern vocal training uses solfege: **Do Re Mi Fa Sol La Ti Do**. First five = the 5-finger scale you'd play on piano starting on C.\n\n## Pick your starting note\n\nIf C4 (middle C) feels uncomfortable, try lower. Everyone's vocal range is different. Find YOUR comfortable starting pitch.\n\n## Ascend then descend\n\nDo Re Mi Fa Sol (go up) — Sol Fa Mi Re Do (come back). Even tone throughout.",
+    audioRefs: [{ id: "demo", label: "Do Re Mi Fa Sol + descent" }],
+    exercisePlanId: "vocals_l1_03_five_tone", prerequisites: ["vocals_l1_02_pitch_match"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.74 } }, estimatedMinutes: 12,
+  },
+  vocals_l1_04_vowels: {
+    id: "vocals_l1_04_vowels", instrumentId: "vocals", level: 1, tier: "standard",
+    title: "Pure vowels — 'ah' 'eh' 'ee' 'oh' 'oo'",
+    objectives: ["Sing 5 pure vowels on a single pitch, each 3 seconds", "Keep the pitch constant as the vowel changes", "Notice which vowel is easiest + which is hardest"],
+    writtenContent:
+      "## Vowels carry the melody\n\nConsonants chop words. Vowels SUSTAIN them. Good singing means sustaining on vowels.\n\n## Five pure vowels\n\n- **ah** (as in 'father')\n- **eh** (as in 'bed')\n- **ee** (as in 'see')\n- **oh** (as in 'go')\n- **oo** (as in 'too')\n\nOn one pitch, sing each for 3 seconds. The pitch shouldn't wobble as the vowel shape changes.",
+    audioRefs: [{ id: "demo", label: "5 pure vowels on A4" }],
+    exercisePlanId: "vocals_l1_04_vowels", prerequisites: ["vocals_l1_01_posture"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { tone: 0.74 } }, estimatedMinutes: 12,
+  },
+  vocals_l1_05_octave_jump: {
+    id: "vocals_l1_05_octave_jump", instrumentId: "vocals", level: 1, tier: "standard",
+    title: "Octave jumps — low Do to high Do",
+    objectives: ["Sing low Do then jump directly to high Do (an octave up)", "Don't strain for the upper note", "Return down cleanly"],
+    writtenContent:
+      "## The big interval\n\nAn octave = same note, higher register. Your voice has to 'flip' between chest and head voice.\n\n## How\n\nStart on low Do (comfortable). Inhale. Sing the octave up — **aim higher than you think**. The upper Do usually feels like it's 'up there' compared to where you expect.\n\n## Chest vs head\n\nLow Do is chest voice (full, weighted). High Do starts to use head voice (lighter, thinner). Both are valid. The transition is called the 'passaggio'.",
+    audioRefs: [{ id: "demo", label: "Octave jump: Do low → Do high → Do low" }],
+    exercisePlanId: "vocals_l1_05_octave", prerequisites: ["vocals_l1_03_five_tone"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.74 } }, estimatedMinutes: 15,
+  },
+  vocals_l1_06_happy_birthday: {
+    id: "vocals_l1_06_happy_birthday", instrumentId: "vocals", level: 1, tier: "standard",
+    title: "Sing Happy Birthday (simplified)",
+    objectives: ["Sing Happy Birthday in a comfortable key", "Keep pitch accurate across the melody", "Observe the phrasing — breaths between phrases"],
+    writtenContent:
+      "## Your first real song\n\nHappy Birthday is everyone's first song. The melody spans ~an octave — tests pitch + breath.\n\n## The melody shape\n\nStarts low, climbs to a peak on the name (e.g. 'dear PHANI'), descends to end.\n\n## Breaths\n\nBreathe between phrases, not mid-word. 'Happy birthday to you [BREATH] happy birthday to you…'",
+    audioRefs: [{ id: "demo", label: "Happy Birthday in C major" }],
+    exercisePlanId: "vocals_l1_06_birthday", prerequisites: ["vocals_l1_03_five_tone"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.74 } }, estimatedMinutes: 10,
+  },
+
+  vocals_l2_01_range_finding: {
+    id: "vocals_l2_01_range_finding", instrumentId: "vocals", level: 2, tier: "standard",
+    title: "Find your range — lowest + highest comfortable pitches",
+    objectives: ["Sing down from middle C chromatically to find your lowest comfortable pitch", "Sing up from middle C chromatically to find your highest", "Note that top limit as your 'Pro' target"],
+    writtenContent:
+      "## Your instrument's range\n\nEvery voice has a natural low + high. Women typically: A3-F5. Men: A2-E4. These are STANDARD ranges — yours could be narrower (normal) or wider (gift).\n\n## Find your notes\n\nStart middle C. Go down a semitone at a time: B3, B♭3, A3, A♭3, G3… Stop where your chest voice cracks or loses tone.\n\nReverse going up: C4, C♯4, D4… up until head voice either cracks or you need to strain.",
+    audioRefs: [{ id: "demo", label: "Range exploration reference" }],
+    exercisePlanId: "vocals_l2_01_range", prerequisites: ["vocals_l1_06_happy_birthday"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.72 } }, estimatedMinutes: 15,
+  },
+  vocals_l2_02_major_scale: {
+    id: "vocals_l2_02_major_scale", instrumentId: "vocals", level: 2, tier: "standard",
+    title: "Full octave major scale — Do Re Mi Fa Sol La Ti Do",
+    objectives: ["Sing the full 8-note major scale ascending", "Return descending", "Maintain pitch accuracy at every step, especially Ti→Do (semitone)"],
+    writtenContent:
+      "## Past five notes\n\nL1 stopped at Sol. Now we add La Ti Do — finishing the octave.\n\n## Two tight spots\n\n- **Mi → Fa** (semitone) — usually OK for beginners\n- **Ti → Do** (semitone) — where most singers undershoot. Aim HIGHER than your instinct says.\n\n## Even breathing\n\nOne breath for ascending, one for descending. If you can't make it, your breath support needs work.",
+    audioRefs: [{ id: "demo", label: "Full major scale in C" }],
+    exercisePlanId: "vocals_l2_02_major", prerequisites: ["vocals_l1_03_five_tone"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.76 } }, estimatedMinutes: 12,
+  },
+  vocals_l2_03_intervals: {
+    id: "vocals_l2_03_intervals", instrumentId: "vocals", level: 2, tier: "standard",
+    title: "Sing intervals — perfect 5th + perfect 4th + major 3rd",
+    objectives: ["Sing a perfect 5th from Do (Do → Sol)", "Sing a perfect 4th (Do → Fa)", "Sing a major 3rd (Do → Mi)"],
+    writtenContent:
+      "## Jump between scale notes\n\nIntervals = jumps. Every song moves in intervals. Train your voice to accurately hit them.\n\n## Three essential intervals\n\n- **Perfect 5th** (Do → Sol): the 'Twinkle, twinkle' opening\n- **Perfect 4th** (Do → Fa): 'Here comes the bride'\n- **Major 3rd** (Do → Mi): 'When the saints'\n\nHum each reference song before singing the interval. The memory helps your ear find the pitch.",
+    audioRefs: [{ id: "demo", label: "5th + 4th + 3rd demonstrated" }],
+    exercisePlanId: "vocals_l2_03_intervals", prerequisites: ["vocals_l2_02_major_scale"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.78 } }, estimatedMinutes: 15,
+  },
+  vocals_l2_04_dynamics: {
+    id: "vocals_l2_04_dynamics", instrumentId: "vocals", level: 2, tier: "standard",
+    title: "Dynamics — sing soft, medium, loud on the same pitch",
+    objectives: ["Sustain one pitch going soft → medium → loud over 6 seconds", "Keep pitch constant as volume changes", "Return softer at the end"],
+    writtenContent:
+      "## Vocal dynamics\n\nSingers need dynamic control. Belt the chorus; whisper the bridge.\n\n## The crescendo exercise\n\nOne pitch. Start pianissimo (very soft). Crescendo over 3 seconds to forte. Stay there 1 second. Decrescendo back to pianissimo over 2 seconds.\n\n## The challenge\n\nPitch often goes SHARP when we get loud and FLAT when we get soft. Fight both tendencies.",
+    audioRefs: [{ id: "demo", label: "Dynamic arc on a single pitch" }],
+    exercisePlanId: "vocals_l2_04_dynamics", prerequisites: ["vocals_l1_01_posture"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.75, dynamics: 0.74 } }, estimatedMinutes: 12,
+  },
+  vocals_l2_05_solfege_sargam: {
+    id: "vocals_l2_05_solfege_sargam", instrumentId: "vocals", level: 2, tier: "standard",
+    title: "Sargam for singers — Sa Re Ga Ma Pa Dha Ni Sa'",
+    objectives: ["Sing Sa Re Ga Ma Pa Dha Ni Sa' ascending", "Descend Sa' Ni Dha Pa Ma Ga Re Sa", "Say each svara name as you sing it"],
+    writtenContent:
+      "## Indian solfege\n\nWestern Do Re Mi = Indian Sa Re Ga. Exact same concept, different names.\n\n## Sargam\n\n- **Sa**: tonic (Do)\n- **Re**: 2nd\n- **Ga**: 3rd\n- **Ma**: 4th\n- **Pa**: 5th\n- **Dha**: 6th\n- **Ni**: 7th\n- **Sa'**: octave\n\nSame scale, Indian names. Both systems useful for different musical contexts.",
+    audioRefs: [{ id: "demo", label: "Full sargam ascending + descending" }],
+    exercisePlanId: "vocals_l2_05_sargam", prerequisites: ["vocals_l2_02_major_scale"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { pitch: 0.76 } }, estimatedMinutes: 12,
+  },
+  vocals_l2_06_twinkle: {
+    id: "vocals_l2_06_twinkle", instrumentId: "vocals", level: 2, tier: "standard",
+    title: "Sing Twinkle, Twinkle (one verse)",
+    objectives: ["Sing the first verse of Twinkle in C major", "Hit 'little STAR' peak cleanly (note on 'star' is C5)", "Breathe in sensible places"],
+    writtenContent:
+      "## Second real song\n\nHappy Birthday spanned an octave. Twinkle tests a 5th (C to G). Easier range, but the leap from Do to Sol (4th note) is a CLEAN INTERVAL — no sliding.\n\n## Phrasing\n\nThe two halves: 'Twinkle twinkle little STAR (breath) / how I wonder what you are.' Breathe between, not during words.",
+    audioRefs: [{ id: "demo", label: "Twinkle, C major, first verse" }],
+    exercisePlanId: "vocals_l2_06_twinkle", prerequisites: ["vocals_l2_02_major_scale"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 12,
+  },
+
+  vocals_l3_01_head_voice: {
+    id: "vocals_l3_01_head_voice", instrumentId: "vocals", level: 3, tier: "standard",
+    title: "Head voice — finding your upper register",
+    objectives: ["Slide from chest voice through passaggio into head voice on an 'oo'", "Identify the transition point (usually D4-F4 for women, G3-B3 for men)", "Sing a high note (e.g. G5 for sopranos) in pure head voice"],
+    writtenContent:
+      "## Two voices, one body\n\nChest voice = full, weighted, lower register. Head voice = lighter, brighter, higher.\n\n## Find the transition\n\nOn 'oo' vowel, start in chest voice (low). Slide UP smoothly. At some point, the voice 'flips' — chest becomes head. That's your passaggio.\n\n## Don't push\n\nForcing chest voice up into head range destroys the voice. Let it flip.",
+    audioRefs: [{ id: "demo", label: "Chest-to-head slide on 'oo'" }],
+    exercisePlanId: "vocals_l3_01_head", prerequisites: ["vocals_l2_01_range_finding"],
+    passCriteria: { minGradeOverall: 0.7, minPerDimension: { tone: 0.75 } }, estimatedMinutes: 18,
+  },
+  vocals_l3_02_consonants: {
+    id: "vocals_l3_02_consonants", instrumentId: "vocals", level: 3, tier: "standard",
+    title: "Consonants — land them crisp without breaking the line",
+    objectives: ["Sing a phrase with clear 't', 'k', 's' consonants", "Keep the vowel sustain UNAFFECTED by consonant strength", "Articulate with the tongue + lips; don't interrupt airflow"],
+    writtenContent:
+      "## Consonants are fast\n\nVowels sustain (where the melody lives). Consonants happen fast (where the words live). Both matter.\n\n## The trap\n\nMost beginners 'hitch' the line when they sing a 't' or 'k'. The airflow interrupts; the phrase fragments.\n\n## The fix\n\nArticulate with tongue/lips WITHOUT stopping air. Your diaphragm stays engaged. Consonants are TINY events; vowels are LONG.",
+    audioRefs: [{ id: "demo", label: "Phrase with clean consonants" }],
+    exercisePlanId: "vocals_l3_02_consonants", prerequisites: ["vocals_l1_04_vowels"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { tone: 0.74 } }, estimatedMinutes: 15,
+  },
+  vocals_l3_03_amazing_grace: {
+    id: "vocals_l3_03_amazing_grace", instrumentId: "vocals", level: 3, tier: "standard",
+    title: "Amazing Grace — first verse",
+    objectives: ["Sing Amazing Grace verse 1 in a comfortable key", "Observe the pickup (anacrusis)", "Use dynamic shape (quiet → medium → back)"],
+    writtenContent:
+      "## A real ballad\n\nAmazing Grace is gentle, dynamic, emotional. Perfect L3 challenge.\n\n## Key choice\n\nDepends on your range. Try G major first (starting pitch: G4). If that's low, try D major.\n\n## Pickup note\n\n'A-mazing grace' — the 'A' is a pickup before beat 1. Don't start on the downbeat.",
+    audioRefs: [{ id: "demo", label: "Amazing Grace verse 1" }],
+    exercisePlanId: "vocals_l3_03_amazing", prerequisites: ["vocals_l2_06_twinkle"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.75, dynamics: 0.72 } }, estimatedMinutes: 15,
+  },
+  vocals_l3_04_carnatic_alankara: {
+    id: "vocals_l3_04_carnatic_alankara", instrumentId: "vocals", level: 3, tier: "standard",
+    title: "Carnatic alankara — Sarali Varisai",
+    objectives: ["Sing Sarali Varisai pattern 1 in raga Mayamalavagowla", "Say each svara name as you sing", "Maintain clear intonation on komal Re + komal Dha"],
+    writtenContent:
+      "## South Indian vocal tradition\n\nCarnatic singing begins with **Sarali Varisai** — systematic scale exercises in raga Mayamalavagowla (has komal Re + komal Dha).\n\n## Pattern 1\n\n**Sa Re Ga Ma | Pa Dha Ni Sa' | Sa' Ni Dha Pa | Ma Ga Re Sa**\n\nSay each svara. Hold intonation. The discipline of svara-saying builds the Hindustani/Carnatic ear.",
+    audioRefs: [{ id: "demo", label: "Sarali Varisai pattern 1" }],
+    exercisePlanId: "vocals_l3_04_sarali", prerequisites: ["vocals_l2_05_solfege_sargam"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { pitch: 0.78 } }, estimatedMinutes: 20,
+  },
+  vocals_l3_05_phrasing: {
+    id: "vocals_l3_05_phrasing", instrumentId: "vocals", level: 3, tier: "standard",
+    title: "Phrasing — shaping a line with breath + dynamics",
+    objectives: ["Sing a 4-bar phrase with clear arc (build + release)", "Place the peak of the phrase intentionally (usually bar 3)", "Release dynamically at the phrase end"],
+    writtenContent:
+      "## What makes singing musical\n\nUnshaped singing = robotic. Shaped singing = human. The shape of a phrase — its arc from quiet → peak → release — is called PHRASING.\n\n## Build + release\n\n4-bar phrase, typical arc:\n- Bar 1: establish (mf)\n- Bar 2: subtle build (mf → f)\n- Bar 3: peak (f)\n- Bar 4: resolution (f → mf)\n\nBreath manages this — more breath at the peak, ease at the resolution.",
+    audioRefs: [{ id: "demo", label: "Shaped 4-bar phrase" }],
+    exercisePlanId: "vocals_l3_05_phrasing", prerequisites: ["vocals_l2_04_dynamics"],
+    passCriteria: { minGradeOverall: 0.72, minPerDimension: { dynamics: 0.75 } }, estimatedMinutes: 15,
+  },
+  vocals_l3_06_standard_cert: {
+    id: "vocals_l3_06_standard_cert", instrumentId: "vocals", level: 3, tier: "standard",
+    title: "Standard Certificate — sing a complete song with phrasing",
+    objectives: ["Sing Amazing Grace OR Twinkle with full phrasing + dynamics", "Comfortable key; clean intonation throughout", "Apply breath support, vowels, consonants, phrasing as taught"],
+    writtenContent:
+      "## The Standard gate\n\nA complete song performed with all the L1-L3 skills: breath, pitch, vowels, consonants, phrasing, dynamics.\n\n## What we grade\n\n- Pitch: in-tune throughout\n- Tone: clean + consistent\n- Rhythm: steady tempo\n- Dynamics: intentional shape\n- Consistency: matches across phrases\n\n## Passing\n\nEarn the Vocals Standard Certificate. You've proven you can sing a song musically.",
+    audioRefs: [{ id: "demo", label: "Reference Standard Cert performance" }],
+    exercisePlanId: "vocals_l3_06_cert", prerequisites: ["vocals_l3_03_amazing_grace", "vocals_l3_05_phrasing"],
+    passCriteria: { minGradeOverall: 0.75, minPerDimension: { pitch: 0.78, rhythm: 0.76, dynamics: 0.74 } }, estimatedMinutes: 20,
+  },
+
   tabla_l1_01_dha: {
     id: "tabla_l1_01_dha",
     instrumentId: "tabla",
