@@ -2686,6 +2686,498 @@ export const EXAMS: Record<string, Exam> = {
     ],
   },
 
+  // ==== Guitar L7-L9 Genius mastery quizzes ====
+  guitar_l7_01_mastery: {
+    id: "guitar_l7_01_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l7_01_sweep_arpeggios",
+    title: "Quick check: 5-string sweep", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Sweep picking uses picking motion that is…", options: ["Strict alternating", "One continuous direction across multiple strings", "Only down", "Random"], correctIndex: 1, explanation: "Sweep = one direction across multiple strings. Economy of motion." },
+      { id: "q2", type: "mcq", prompt: "Neoclassical shred guitarist associated with sweep picking?", options: ["Eric Clapton", "Yngwie Malmsteen", "BB King", "Django Reinhardt"], correctIndex: 1, explanation: "Yngwie popularized the sweep + neoclassical guitar style." },
+      { id: "q3", type: "mcq", prompt: "Target tempo at L7?", options: ["80 bpm", "100 bpm baseline, build to 140", "200 bpm", "Any"], correctIndex: 1, explanation: "Start at 100 clean; target 140 over 2 months." },
+    ],
+  },
+  guitar_l7_02_mastery: {
+    id: "guitar_l7_02_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l7_02_classical_fantasia",
+    title: "Quick check: Villa-Lobos Étude", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Villa-Lobos Étude No. 1 is primarily about…", options: ["Chord voicings", "Continuous arpeggios at speed", "Harmonics", "Tapping"], correctIndex: 1, explanation: "Continuous 5-note arpeggios cycling across strings." },
+      { id: "q2", type: "mcq", prompt: "Finger assignment for classical arpeggios is…", options: ["i-m-a only", "p (thumb) on bass, i-m-a on treble", "Just thumb", "Random"], correctIndex: 1, explanation: "p for bass strings (5-6). i-m-a on treble (3-2-1)." },
+      { id: "q3", type: "mcq", prompt: "Villa-Lobos composed how many Études?", options: ["6", "12", "24", "60"], correctIndex: 1, explanation: "12 Études for guitar — a complete set." },
+    ],
+  },
+  guitar_l7_03_mastery: {
+    id: "guitar_l7_03_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l7_03_wes_octaves",
+    title: "Quick check: Wes octaves", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Wes Montgomery's signature technique was…", options: ["Pick picking fast", "Thumb-strummed octaves", "Slap bass", "Flamenco"], correctIndex: 1, explanation: "Wes used his thumb (no pick) to play octaves — warmer, rounder tone." },
+      { id: "q2", type: "mcq", prompt: "To fret an octave on guitar, you…", options: ["Use one string only", "Fret 2 strings (with one skipped muted), 2 frets apart", "Use open strings only", "Bar across 6 strings"], correctIndex: 1, explanation: "Lower note on one string + higher note 2 frets up on string 2 apart; mute the skipped string." },
+      { id: "q3", type: "mcq", prompt: "Why thumb not pick?", options: ["Tradition", "Rounder, warmer attack; brittle tone from pick", "Can't use pick", "Faster"], correctIndex: 1, explanation: "Thumb gives a rounder, mellower attack that defines Wes's tone." },
+    ],
+  },
+  guitar_l7_04_mastery: {
+    id: "guitar_l7_04_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l7_04_indian_slide",
+    title: "Quick check: Indian slide guitar", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Indian slide guitar tradition comes from…", options: ["Django Reinhardt", "Vishwa Mohan Bhatt, Debashish Bhattacharya", "Chet Atkins", "Wes Montgomery"], correctIndex: 1, explanation: "Indian slide guitar masters adapted Western guitar to raga technique." },
+      { id: "q2", type: "mcq", prompt: "Yaman on guitar in D — the characteristic sharp is on…", options: ["F (Ma)", "G♯ (Ma♯)", "C (Sa)", "A (Pa)"], correctIndex: 1, explanation: "Yaman's signature = Ma♯. On guitar in D, that's G♯." },
+      { id: "q3", type: "mcq", prompt: "Slide technique approximates…", options: ["Piano staccato", "Sitar meend (pitch glide)", "Drum rolls", "Flute tonguing"], correctIndex: 1, explanation: "Slide between notes mimics sitar's continuous pitch glide." },
+    ],
+  },
+  guitar_l7_05_mastery: {
+    id: "guitar_l7_05_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l7_05_chord_melody",
+    title: "Quick check: chord-melody", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "In chord-melody, the melody sits on…", options: ["Bottom string", "Top (highest) string", "Middle", "Both"], correctIndex: 1, explanation: "Melody always on top — voicings invert to keep it there." },
+      { id: "q2", type: "mcq", prompt: "Chord-melody pioneers include…", options: ["Joe Pass, Ted Greene, Tuck Andress", "BB King only", "Only classical guitarists", "Nobody"], correctIndex: 0, explanation: "Jazz chord-melody specialists — Pass, Greene, Andress are foundational." },
+      { id: "q3", type: "mcq", prompt: "Why chord-melody matters?", options: ["It's a gimmick", "Solo guitar can play full arrangements — melody + harmony + bass", "Only for classical", "It's easier"], correctIndex: 1, explanation: "One guitarist = full arrangement. Self-contained." },
+    ],
+  },
+  guitar_l7_06_mastery: {
+    id: "guitar_l7_06_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l7_06_genius_exam",
+    title: "Quick check: L7 exam", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "L7 exam pass threshold?", options: ["0.70", "0.75", "0.80", "0.95"], correctIndex: 2, explanation: "0.80 composite + per-dim floors — Genius-tier standard." },
+      { id: "q2", type: "mcq", prompt: "L7 requires how many techniques combined?", options: ["1", "2+", "5+", "None specific"], correctIndex: 1, explanation: "At least 2 advanced techniques in one 60-second passage." },
+      { id: "q3", type: "mcq", prompt: "Passing L7 unlocks…", options: ["Nothing", "L8 — Style vocabulary", "Solo career", "A prize"], correctIndex: 1, explanation: "L7 → L8 unlocks the style-mastery level." },
+    ],
+  },
+  guitar_l8_01_mastery: {
+    id: "guitar_l8_01_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l8_01_blues_improv",
+    title: "Quick check: B.B. King vocabulary", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "B.B. King's solo style was built on…", options: ["Hundreds of licks", "~20 signature licks deployed spontaneously", "Random notes", "Only scales"], correctIndex: 1, explanation: "B.B. played ~20 licks for 60 years. Repertoire economy." },
+      { id: "q2", type: "mcq", prompt: "Repetition in B.B.'s solos is…", options: ["Lazy", "Powerful — a repeated motif with slight variation", "Forbidden", "Never used"], correctIndex: 1, explanation: "Motif + repetition + variation = B.B.'s central improvisational tool." },
+      { id: "q3", type: "mcq", prompt: "Space between phrases?", options: ["Eliminate", "Essential — makes the playing feel vocal", "Optional", "Doesn't matter"], correctIndex: 1, explanation: "Space is music. B.B. left huge gaps between phrases — that's why his solos feel sung." },
+    ],
+  },
+  guitar_l8_02_mastery: {
+    id: "guitar_l8_02_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l8_02_jazz_improv",
+    title: "Quick check: Rhythm Changes", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Rhythm Changes is based on…", options: ["Gershwin's 'I Got Rhythm'", "Ellington", "Parker", "Nothing specific"], correctIndex: 0, explanation: "Based on Gershwin's 1930 song. Used by bebop musicians ever since." },
+      { id: "q2", type: "mcq", prompt: "Rhythm Changes form is…", options: ["ABAB", "AABA 32 bars", "12-bar blues", "Through-composed"], correctIndex: 1, explanation: "AABA 32 bars in B♭. Each A = 8 bars; B = 8 bars." },
+      { id: "q3", type: "mcq", prompt: "Enclosures (chromatic approach notes) help…", options: ["Target chord tones with tension", "Ignore chord changes", "Play in any key", "None of these"], correctIndex: 0, explanation: "Enclosures = chromatic notes surrounding a chord tone — bebop signature." },
+    ],
+  },
+  guitar_l8_03_mastery: {
+    id: "guitar_l8_03_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l8_03_metal_style",
+    title: "Quick check: metal technique", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Palm muting produces…", options: ["Loud strumming", "Muted, percussive thud", "Clean chords", "Harmonics"], correctIndex: 1, explanation: "Heel of the picking hand lightly rests on strings near the bridge = chug." },
+      { id: "q2", type: "mcq", prompt: "Tremolo picking means…", options: ["One slow downstroke", "Rapid continuous alternating picks on one note", "Bending", "Slide"], correctIndex: 1, explanation: "Sustained rapid alternate picking on a single note — Metallica / Megadeth signature." },
+      { id: "q3", type: "mcq", prompt: "Octave doubling adds…", options: ["Confusion", "Weight + thickness to riffs (root + octave)", "Volume only", "Nothing"], correctIndex: 1, explanation: "Playing root + its octave together thickens the riff without muddying harmony." },
+    ],
+  },
+  guitar_l8_04_mastery: {
+    id: "guitar_l8_04_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l8_04_flamenco",
+    title: "Quick check: flamenco", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Rasgueado technique is…", options: ["A strum using all 4 fingers unfolding sequentially", "A chord voicing", "A scale", "Palm mute"], correctIndex: 0, explanation: "Fingers curl in; unfurl pinky→ring→middle→index → strum." },
+      { id: "q2", type: "mcq", prompt: "Picado is…", options: ["Soft legato", "Aggressive rest-stroke single-note runs", "A chord", "Nothing"], correctIndex: 1, explanation: "Rest-strokes with alternating i-m fingers — forceful, articulate." },
+      { id: "q3", type: "mcq", prompt: "Flamenco master Paco de Lucía brought flamenco to…", options: ["Classical only", "World stages + crossover with jazz", "Nowhere", "Only Spain"], correctIndex: 1, explanation: "De Lucía elevated flamenco guitar to global recognition + crossed over with jazz." },
+    ],
+  },
+  guitar_l8_05_mastery: {
+    id: "guitar_l8_05_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l8_05_gypsy_jazz",
+    title: "Quick check: gypsy jazz", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Gypsy jazz founder?", options: ["Joe Pass", "Django Reinhardt", "Wes Montgomery", "BB King"], correctIndex: 1, explanation: "Django Reinhardt — Belgian Romani guitarist, founded manouche / gypsy jazz." },
+      { id: "q2", type: "mcq", prompt: "Am6 chord contains…", options: ["A C E", "A C E F♯", "A C E♭", "A C E G"], correctIndex: 1, explanation: "A C E + F♯ (major 6th). Minor 6 is gypsy-jazz signature chord." },
+      { id: "q3", type: "mcq", prompt: "Rest-stroke picking means…", options: ["Light floating strokes", "Strong downstrokes that rest on the next string", "Tapping", "Strum only"], correctIndex: 1, explanation: "Downstroke pins the next string — forces clean articulation at high tempos." },
+    ],
+  },
+  guitar_l8_06_mastery: {
+    id: "guitar_l8_06_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l8_06_style_exam",
+    title: "Quick check: L8 3-style exam", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "L8 tests style mastery across…", options: ["1 style", "2 styles", "3 styles (blues + bebop + flamenco)", "None"], correctIndex: 2, explanation: "Three distinct styles in 4 minutes. Each 80 seconds." },
+      { id: "q2", type: "mcq", prompt: "Each segment should…", options: ["Sound generic", "Convincingly sound like it belongs in that tradition", "Be identical", "Use same notes"], correctIndex: 1, explanation: "Authenticity per style. Not 'I played in that style' — 'I sounded like a blues / bebop / flamenco player'." },
+      { id: "q3", type: "mcq", prompt: "L8 composite pass?", options: ["0.72", "0.78", "0.85", "1.0"], correctIndex: 1, explanation: "0.78 — high but not perfect." },
+    ],
+  },
+  guitar_l9_01_mastery: {
+    id: "guitar_l9_01_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l9_01_composition",
+    title: "Quick check: original composition", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Minimum length of L9 composition?", options: ["30 sec", "1 min", "2 min", "5 min"], correctIndex: 2, explanation: "2 minutes. Long enough for real arc; short enough to stay focused." },
+      { id: "q2", type: "mcq", prompt: "Must include…", options: ["Random notes", "Clear melodic arc + modulation + 2+ techniques", "Only chords", "A solo"], correctIndex: 1, explanation: "Arc, modulation, technique contrast — the composition's core requirements." },
+      { id: "q3", type: "mcq", prompt: "Write what you can…", options: ["Play today", "Sort of play", "Imagine", "Hear on YouTube"], correctIndex: 0, explanation: "Fantasy that's unplayable = failed composition. Write within your current technique." },
+    ],
+  },
+  guitar_l9_02_mastery: {
+    id: "guitar_l9_02_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l9_02_recording",
+    title: "Quick check: studio recording", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Why overdub a second guitar track?", options: ["Louder", "Adds harmony / counter-melody / texture", "Covers mistakes", "Random"], correctIndex: 1, explanation: "Second guitar can harmonize, counter-melody, or drone — fills out the arrangement." },
+      { id: "q2", type: "mcq", prompt: "Good recording considers…", options: ["Volume only", "Mic placement, tone, EQ, reverb, dynamic layering", "Just playing well", "Room noise"], correctIndex: 1, explanation: "Multi-dimensional. Recording is half the art in modern production." },
+      { id: "q3", type: "mcq", prompt: "Avoid crowded mixes by…", options: ["Mashing everything together", "Giving each guitar a distinct role + register", "Muting one", "Random levels"], correctIndex: 1, explanation: "Arrangement clarity. Each track has space and role." },
+    ],
+  },
+  guitar_l9_03_mastery: {
+    id: "guitar_l9_03_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l9_03_ensemble",
+    title: "Quick check: band arrangement", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "When arranging for band, the bass player gets…", options: ["Melody", "Walking bass line (usually stripped from guitar)", "Chord strumming", "Nothing"], correctIndex: 1, explanation: "Hand walking bass off guitar to bass — guitarist is freed for melody/harmony." },
+      { id: "q2", type: "mcq", prompt: "Common arrangement mistake?", options: ["Leaving space", "Overcrowding — all instruments playing all the time", "Using dynamics", "Different keys"], correctIndex: 1, explanation: "More instruments ≠ more music. Space matters." },
+      { id: "q3", type: "mcq", prompt: "Dynamics across a band arrangement should…", options: ["Stay flat", "Vary — verse quieter, chorus bigger, etc.", "Always loud", "Always soft"], correctIndex: 1, explanation: "Dynamic contrast drives listener engagement." },
+    ],
+  },
+  guitar_l9_04_mastery: {
+    id: "guitar_l9_04_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l9_04_improv_duet",
+    title: "Quick check: improv duet", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "A musical conversation means…", options: ["Playing your prepared licks over any backing", "Listening + responding to what the other plays", "Being loud", "Playing through silently"], correctIndex: 1, explanation: "Respond to what the other musician plays. Don't just talk over them." },
+      { id: "q2", type: "mcq", prompt: "Call-and-response means…", options: ["One plays only", "Each phrase answers the previous one", "Silence", "Random notes"], correctIndex: 1, explanation: "Musical Q&A. Their phrase → your response. Like dialogue." },
+      { id: "q3", type: "mcq", prompt: "Pro improv duets feel…", options: ["Robotic", "Natural, conversational", "One-sided", "Unplanned"], correctIndex: 1, explanation: "Like two people having a natural, flowing conversation — where each response sets up the next turn." },
+    ],
+  },
+  guitar_l9_05_mastery: {
+    id: "guitar_l9_05_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l9_05_pedagogy",
+    title: "Quick check: teaching", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Teaching a technique trains…", options: ["Your playing only", "Deep understanding — you know it when you can teach it", "Random skills", "Nothing"], correctIndex: 1, explanation: "Articulating teaching = deep comprehension of a skill." },
+      { id: "q2", type: "mcq", prompt: "Include in your teaching demo?", options: ["Just playing", "Demonstration + explanation + pitfalls + practice strategy", "Jokes only", "Skip explanation"], correctIndex: 1, explanation: "Complete pedagogy: show + tell + warn + prescribe." },
+      { id: "q3", type: "mcq", prompt: "Teaching skill matters for…", options: ["Nothing", "Getting teaching work + refining own technique", "Only professors", "Only writers"], correctIndex: 1, explanation: "Pro guitarists teach; teaching is income + understanding deepener." },
+    ],
+  },
+  guitar_l9_06_mastery: {
+    id: "guitar_l9_06_mastery", scope: "lesson", instrumentId: "guitar", lessonId: "guitar_l9_06_recital",
+    title: "Quick check: Genius Cert recital", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Recital length?", options: ["5 min", "15 min", "30 min", "1 hour"], correctIndex: 1, explanation: "15 minutes across 5 styles." },
+      { id: "q2", type: "mcq", prompt: "Traditions covered?", options: ["Only rock", "Classical + jazz + flamenco + blues + original", "Only jazz", "Any"], correctIndex: 1, explanation: "5 pieces, 5 traditions. Breadth mastery demonstration." },
+      { id: "q3", type: "mcq", prompt: "Reviewed by?", options: ["Machine only", "Human reviewer panel + peer feedback", "No one", "Random"], correctIndex: 1, explanation: "Human judgment + peer perspective combined." },
+    ],
+  },
+
+  // ==== Violin L7-L9 Genius mastery quizzes ====
+  violin_l7_01_mastery: {
+    id: "violin_l7_01_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l7_01_bach_sonata",
+    title: "Quick check: Bach Sonata No. 1", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Bach's 6 Sonatas + Partitas are for…", options: ["Orchestra", "Unaccompanied solo violin", "String quartet", "Piano"], correctIndex: 1, explanation: "Unaccompanied solo violin — the pinnacle of violin repertoire." },
+      { id: "q2", type: "mcq", prompt: "How many voices does Bach write into a solo violin work?", options: ["1", "2-4 (implied through double-stops + broken arpeggios)", "8", "12"], correctIndex: 1, explanation: "Bach writes multi-voice counterpoint that the violinist implies through double-stops + broken chords." },
+      { id: "q3", type: "mcq", prompt: "The Adagio's tempo marking implies…", options: ["Very fast", "Slow, freely shaped", "Dance", "Rubato only"], correctIndex: 1, explanation: "Adagio = slow. Phrasing is free but not shapeless — every note considered." },
+    ],
+  },
+  violin_l7_02_mastery: {
+    id: "violin_l7_02_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l7_02_paganini_caprice",
+    title: "Quick check: Paganini Caprice 24", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Paganini wrote how many Caprices?", options: ["12", "24", "60", "Not specified"], correctIndex: 1, explanation: "24 Caprices — violin's equivalent of Chopin's Études." },
+      { id: "q2", type: "mcq", prompt: "Caprice No. 24 structure?", options: ["Single melody", "Theme + variations + coda", "12-bar blues", "Fugue"], correctIndex: 1, explanation: "A theme followed by 11 variations + coda." },
+      { id: "q3", type: "mcq", prompt: "Who else wrote pieces on this theme?", options: ["Rachmaninoff (Rhapsody on a Theme of Paganini)", "Bach", "Mozart", "Nobody"], correctIndex: 0, explanation: "Rachmaninoff, Liszt, Brahms all wrote variations on Paganini's theme." },
+    ],
+  },
+  violin_l7_03_mastery: {
+    id: "violin_l7_03_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l7_03_raga_darbari",
+    title: "Quick check: raga Darbari", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Darbari is associated with…", options: ["Mughal emperor Akbar's court", "Ancient Egypt", "19th-century Europe", "Nobody"], correctIndex: 0, explanation: "Darbari was composed by Tansen for Akbar's court — royal raga." },
+      { id: "q2", type: "mcq", prompt: "Andolan means…", options: ["Static tone", "Slow pitch oscillation", "Fast trill", "Silence"], correctIndex: 1, explanation: "Andolan = slow, deep pitch oscillation around a note — key Darbari technique." },
+      { id: "q3", type: "mcq", prompt: "Darbari is best suited to…", options: ["Fast playing", "Majestic, slow, meditative tempo", "Virtuosic display", "Dance"], correctIndex: 1, explanation: "Royal, majestic, slow. Darbari breathes in seconds, not beats." },
+    ],
+  },
+  violin_l7_04_mastery: {
+    id: "violin_l7_04_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l7_04_kreisler",
+    title: "Quick check: Kreisler", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Fritz Kreisler invented…", options: ["Sul ponticello", "Continuous vibrato (applied on every note)", "Brush playing", "Staccato"], correctIndex: 1, explanation: "Kreisler's innovation: continuous vibrato throughout the phrase. Before him, vibrato was selective." },
+      { id: "q2", type: "mcq", prompt: "Viennese waltz rubato emphasizes…", options: ["Beat 1", "Beat 2", "Beat 3", "All equal"], correctIndex: 1, explanation: "The 2nd beat of each 3/4 bar lingers slightly — that's the Viennese heartbeat." },
+      { id: "q3", type: "mcq", prompt: "Liebesfreud means…", options: ["Love's Joy", "Love's Sorrow", "Love's End", "Nothing"], correctIndex: 0, explanation: "Liebesfreud = Love's Joy. Its sister piece is Liebesleid = Love's Sorrow." },
+    ],
+  },
+  violin_l7_05_mastery: {
+    id: "violin_l7_05_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l7_05_extended_technique",
+    title: "Quick check: extended techniques", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Col legno means…", options: ["With the hair", "With the wood (of the bow, striking the string)", "Plucked", "Silent"], correctIndex: 1, explanation: "Col legno = 'with the wood'. Turn bow upside down; wood strikes string. Dry percussive sound." },
+      { id: "q2", type: "mcq", prompt: "Sul ponticello is bowing…", options: ["Near the fingerboard", "Right against the bridge", "Off the string", "Behind the neck"], correctIndex: 1, explanation: "Ponticello = the bridge area. Glassy, brittle, metallic tone." },
+      { id: "q3", type: "mcq", prompt: "Spiccato volante is…", options: ["Sustained spiccato across a scale", "Pizzicato", "Legato", "Silent"], correctIndex: 0, explanation: "'Flying spiccato' — sustained bouncing bow while moving across pitches." },
+    ],
+  },
+  violin_l7_06_mastery: {
+    id: "violin_l7_06_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l7_06_genius_entry",
+    title: "Quick check: L7 exam", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "L7 tightens pitch tolerance to…", options: ["40 cents", "20 cents", "15 cents", "5 cents"], correctIndex: 2, explanation: "15 cents. Genius-tier intonation demands near-perfect ear + hand." },
+      { id: "q2", type: "mcq", prompt: "L7 exam pieces?", options: ["Any", "Bach Sonata Adagio OR Paganini Caprice excerpt", "Random piece", "Scales only"], correctIndex: 1, explanation: "Bach or Paganini — one serious repertoire piece fully performed." },
+      { id: "q3", type: "mcq", prompt: "Passes L7 unlocks…", options: ["Nothing", "L8 (Style breadth)", "Auditions", "A discount"], correctIndex: 1, explanation: "L7 → L8. Style across traditions next." },
+    ],
+  },
+  violin_l8_01_mastery: {
+    id: "violin_l8_01_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l8_01_concerto_mov",
+    title: "Quick check: Mendelssohn Concerto", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Mendelssohn's Violin Concerto is in…", options: ["D major", "E minor", "G minor", "A major"], correctIndex: 1, explanation: "E minor. Perhaps the most famous violin concerto opening in repertoire." },
+      { id: "q2", type: "mcq", prompt: "The opening melody falls through…", options: ["Rising intervals", "Descending intervals — 'sigh' motif", "Repeated notes", "Pentatonic"], correctIndex: 1, explanation: "Descending 'sigh' — the motif defines the concerto's emotional tone." },
+      { id: "q3", type: "mcq", prompt: "Mendelssohn wrote how many violin concertos?", options: ["3 (like Mozart)", "1 (E minor, 1844)", "7", "0"], correctIndex: 1, explanation: "Only one — the E minor of 1844. A juvenile D minor exists but is rarely played." },
+    ],
+  },
+  violin_l8_02_mastery: {
+    id: "violin_l8_02_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l8_02_improvisation",
+    title: "Quick check: jazz violin", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Jazz violin pioneer?", options: ["Paganini", "Stéphane Grappelli", "Perlman", "Hahn"], correctIndex: 1, explanation: "Grappelli with Django Reinhardt in Hot Club of France — jazz violin's father." },
+      { id: "q2", type: "mcq", prompt: "Swing 8ths on violin are…", options: ["Even", "Long-short", "All equal", "Random"], correctIndex: 1, explanation: "Swing = long-short. Bow emphasis follows." },
+      { id: "q3", type: "mcq", prompt: "'All of Me' chord progression starts with…", options: ["C6", "Dm7", "G7", "F major"], correctIndex: 0, explanation: "C6 is the opening. Jazz-standard changes." },
+    ],
+  },
+  violin_l8_03_mastery: {
+    id: "violin_l8_03_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l8_03_hindustani_concert",
+    title: "Quick check: Hindustani form", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "A Hindustani performance has which sections?", options: ["Intro, verse, chorus", "Alap, jod, jhala", "Verse 1, bridge, chorus", "A, B, C"], correctIndex: 1, explanation: "Alap (free rhythm) → jod (pulse) → jhala (climax). Classical Hindustani form." },
+      { id: "q2", type: "mcq", prompt: "Raga Bageshri is performed…", options: ["At dawn", "At noon", "At night", "Any time"], correctIndex: 2, explanation: "Bageshri = late night raga." },
+      { id: "q3", type: "mcq", prompt: "Jhala is characterized by…", options: ["Silence", "Rhythmic climax — fastest + most intense section", "Tuning", "Rest"], correctIndex: 1, explanation: "Jhala = rhythmic climax. Fastest, densest section — brings the performance to a peak." },
+    ],
+  },
+  violin_l8_04_mastery: {
+    id: "violin_l8_04_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l8_04_chamber",
+    title: "Quick check: chamber music", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "In a string quartet, the 1st violin…", options: ["Plays the lowest part", "Usually leads + plays the most melodic material", "Is optional", "Plays only accompaniment"], correctIndex: 1, explanation: "1st violin = ensemble leader. Dictates entries, tempo, character." },
+      { id: "q2", type: "mcq", prompt: "Haydn's 'Emperor' quartet uses…", options: ["Beethoven's themes", "'God Save the Emperor' hymn (later German national anthem)", "Random material", "Mozart tunes"], correctIndex: 1, explanation: "The slow movement uses the Austrian hymn that became Germany's anthem." },
+      { id: "q3", type: "mcq", prompt: "Chamber music demands…", options: ["Solo playing", "Active listening + responding to other 3 parts", "Loudness", "Reading only"], correctIndex: 1, explanation: "Conversation, not soloing. Your phrasing reacts to theirs." },
+    ],
+  },
+  violin_l8_05_mastery: {
+    id: "violin_l8_05_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l8_05_contemporary",
+    title: "Quick check: contemporary violin", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Arvo Pärt's style is called…", options: ["Serialism", "Minimalism / 'holy' minimalism", "Bebop", "Atonal"], correctIndex: 1, explanation: "Pärt's minimalist approach. Meditative, spiritually charged." },
+      { id: "q2", type: "mcq", prompt: "'Fratres' by Pärt is built on…", options: ["Complex counterpoint", "Sustained tones + gradual layered evolution", "12-bar blues", "Random"], correctIndex: 1, explanation: "Long sustained notes with subtle dynamic evolution. Silence is a note." },
+      { id: "q3", type: "mcq", prompt: "Why play contemporary music?", options: ["Money", "Music is living — composers are writing today", "Tradition", "Nothing"], correctIndex: 1, explanation: "Pro violinists premiere new works. Contemporary music keeps the art alive." },
+    ],
+  },
+  violin_l8_06_mastery: {
+    id: "violin_l8_06_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l8_06_style_exam",
+    title: "Quick check: L8 3-style exam", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "L8 exam styles?", options: ["Any 3", "Classical concerto + jazz + Hindustani (90 sec each)", "Western only", "Indian only"], correctIndex: 1, explanation: "3 specific traditions. Each 90 seconds. Authentic in each." },
+      { id: "q2", type: "mcq", prompt: "Transitions between sections should be…", options: ["Abrupt only", "Smooth enough to feel like one performance", "Silent", "Different tempos clashing"], correctIndex: 1, explanation: "Pro performers transition smoothly. The audience shouldn't feel jarred (unless intentional)." },
+      { id: "q3", type: "mcq", prompt: "Pitch tolerance at L8?", options: ["50¢", "40¢", "20¢", "Depends on style"], correctIndex: 2, explanation: "Genius-tier pitch precision across all three styles." },
+    ],
+  },
+  violin_l9_01_mastery: {
+    id: "violin_l9_01_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l9_01_composition",
+    title: "Quick check: original composition", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "L9.1 composition length?", options: ["30 sec", "1 min", "3 min", "10 min"], correctIndex: 2, explanation: "3 minutes — enough for a complete musical arc." },
+      { id: "q2", type: "mcq", prompt: "Must include at least one…", options: ["Random technique", "Modulation + extended technique + clear arc", "Harmonic", "Fugue"], correctIndex: 1, explanation: "Three key requirements: modulation, extended technique, arc." },
+      { id: "q3", type: "mcq", prompt: "Notate the piece with…", options: ["Just the melody", "Full notation — staff + bowings + dynamics", "Only chords", "Nothing"], correctIndex: 1, explanation: "Professional-quality notation for violin. Bowings especially matter." },
+    ],
+  },
+  violin_l9_02_mastery: {
+    id: "violin_l9_02_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l9_02_transcription",
+    title: "Quick check: transcription", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Transcription means…", options: ["Writing silence", "Adapting a piece not written for violin to violin", "Copying exactly", "Tuning"], correctIndex: 1, explanation: "Take a piano/guitar/vocal piece and adapt it idiomatically for violin." },
+      { id: "q2", type: "mcq", prompt: "Adapt piano's 4-voice chords by…", options: ["Playing all 4 notes at once", "Breaking into double-stops or arpeggios", "Skipping", "Using pizzicato"], correctIndex: 1, explanation: "Violin can't play 4 notes simultaneously with sustain. Arpeggios or double-stops distribute them in time." },
+      { id: "q3", type: "mcq", prompt: "Goal: retain…", options: ["Nothing", "The essence + emotion of the original while serving violin idiom", "Exact notes", "Form only"], correctIndex: 1, explanation: "Transcription preserves the soul of the piece while adapting to the new instrument's strengths." },
+    ],
+  },
+  violin_l9_03_mastery: {
+    id: "violin_l9_03_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l9_03_pedagogy",
+    title: "Quick check: pedagogy", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Teaching intonation requires…", options: ["Not teaching", "Explaining what the ear should hear + what the hand should do", "Only showing", "Nothing"], correctIndex: 1, explanation: "Intonation has ear + hand components. Both must be articulated." },
+      { id: "q2", type: "mcq", prompt: "10-minute lesson structure?", options: ["Random", "Problem → demo → mechanics → practice strategy", "Just demonstration", "Talking only"], correctIndex: 1, explanation: "Complete pedagogy: identify, show, explain, prescribe." },
+      { id: "q3", type: "mcq", prompt: "Record yourself teaching because…", options: ["Vanity", "You learn what works + what needs refining", "It's required", "Tradition"], correctIndex: 1, explanation: "Self-review improves teaching. The recording becomes a teaching asset." },
+    ],
+  },
+  violin_l9_04_mastery: {
+    id: "violin_l9_04_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l9_04_recording",
+    title: "Quick check: studio recording", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Violin mic placement is typically…", options: ["Behind the neck", "1-2 meters above the f-holes", "At the player's feet", "Clipped to the bridge"], correctIndex: 1, explanation: "Overhead, ~1-2m above the f-holes. Captures the full instrument resonance." },
+      { id: "q2", type: "mcq", prompt: "Pitch-correcting a violin recording is…", options: ["Standard practice", "Frowned upon at pro/Genius level — should play in tune", "Required", "Easy"], correctIndex: 1, explanation: "Real violinists play in tune without correction. Genius-tier recording = clean tracks." },
+      { id: "q3", type: "mcq", prompt: "Reverb in the mix should be…", options: ["Overused", "Subtle — suggest a concert hall, not drown it", "None", "Always maxed"], correctIndex: 1, explanation: "Subtle reverb adds ambience without washing out articulation." },
+    ],
+  },
+  violin_l9_05_mastery: {
+    id: "violin_l9_05_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l9_05_performance_practice",
+    title: "Quick check: performance practice", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Baroque violin playing uses…", options: ["Continuous vibrato", "Less/no vibrato; crisper bowing", "Maximum vibrato", "Electronic effects"], correctIndex: 1, explanation: "Baroque (1600-1750) used vibrato selectively. Modern continuous vibrato is a Romantic invention." },
+      { id: "q2", type: "mcq", prompt: "Romantic period violin (1830-1900) features…", options: ["No rubato", "Continuous vibrato + generous rubato + sustained phrasing", "Only short bows", "Avoidance of dynamics"], correctIndex: 1, explanation: "Romantic = indulgent expression. Vibrato, rubato, dynamics all amplified." },
+      { id: "q3", type: "mcq", prompt: "Why different periods have different practices?", options: ["They don't", "Instruments, acoustics, and aesthetics all evolved", "Random fashion", "No reason"], correctIndex: 1, explanation: "Historical performance practice reflects what violins sounded like + what audiences expected at each time." },
+    ],
+  },
+  violin_l9_06_mastery: {
+    id: "violin_l9_06_mastery", scope: "lesson", instrumentId: "violin", lessonId: "violin_l9_06_recital",
+    title: "Quick check: Genius Cert recital", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Recital duration?", options: ["5 min", "10 min", "15 min", "30 min"], correctIndex: 2, explanation: "15 minutes across 6 traditions." },
+      { id: "q2", type: "mcq", prompt: "Number of pieces?", options: ["1", "3", "6 — Bach, Paganini, Kreisler, jazz, raga, original", "10"], correctIndex: 2, explanation: "6 pieces. Breadth mastery across traditions." },
+      { id: "q3", type: "mcq", prompt: "All from…", options: ["Sheet music", "Memory", "Random", "Backing tracks"], correctIndex: 1, explanation: "All from memory. Genius-tier requires internalization." },
+    ],
+  },
+
+  // ==== Drums L7-L9 Genius mastery quizzes ====
+  drums_l7_01_mastery: {
+    id: "drums_l7_01_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l7_01_odd_groupings",
+    title: "Quick check: odd groupings", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "5/8 time usually groups as…", options: ["5 equal", "3+2 or 2+3", "All quarters", "Random"], correctIndex: 1, explanation: "3+2 or 2+3 groupings. Both valid; different feel." },
+      { id: "q2", type: "mcq", prompt: "7/8 common groupings?", options: ["3+2+2 or 2+2+3", "4+3 only", "7 equal", "Doesn't matter"], correctIndex: 0, explanation: "3+2+2 and 2+2+3 are the main options. Changes accent locations." },
+      { id: "q3", type: "mcq", prompt: "Feeling odd time, not counting…", options: ["Wrong approach", "Develops over weeks — feel the accents", "Impossible", "Only works for 4/4"], correctIndex: 1, explanation: "Eventually you feel 5/8 as naturally as 4/4. Comes with repetition." },
+    ],
+  },
+  drums_l7_02_mastery: {
+    id: "drums_l7_02_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l7_02_indian_percussion",
+    title: "Quick check: tihai", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Tihai means…", options: ["Silence", "A rhythmic phrase repeated 3 times", "A single hit", "A drone"], correctIndex: 1, explanation: "3x repetition ending on sam (beat 1 of next cycle)." },
+      { id: "q2", type: "mcq", prompt: "Sam is…", options: ["A tempo", "Beat 1 of the cycle — the landing point", "A tihai", "Random"], correctIndex: 1, explanation: "Sam = the first beat of the tala cycle. Where the tihai lands for musical resolution." },
+      { id: "q3", type: "mcq", prompt: "Tihai on drum kit translates tabla's…", options: ["Silence", "Bol vocabulary to kit voices", "Cymbals only", "Kick only"], correctIndex: 1, explanation: "Translate tabla bols to kit (kick = Dha-like, snare = Na-like, etc.)." },
+    ],
+  },
+  drums_l7_03_mastery: {
+    id: "drums_l7_03_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l7_03_brushes",
+    title: "Quick check: brushes", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Brushes are used in…", options: ["Metal", "Jazz ballads + intimate sets", "Loud rock", "Classical"], correctIndex: 1, explanation: "Brushes = quiet, texture-rich — jazz ballads + intimate drumming." },
+      { id: "q2", type: "mcq", prompt: "Left brush typically does…", options: ["Nothing", "Continuous circular sweep on the snare", "Strikes toms", "Holds"], correctIndex: 1, explanation: "Continuous sweep creates the 'jazz ballad' texture." },
+      { id: "q3", type: "mcq", prompt: "Right brush does…", options: ["Nothing", "Rhythmic patterns (jazz ride or snare strikes)", "Waves", "Claps"], correctIndex: 1, explanation: "Right brush = rhythm keeper. Left brush = continuous texture." },
+    ],
+  },
+  drums_l7_04_mastery: {
+    id: "drums_l7_04_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l7_04_gospel_chops",
+    title: "Quick check: gospel chops", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Gospel chops emerged from…", options: ["European classical", "Black church music tradition", "Jazz fusion", "Electronic"], correctIndex: 1, explanation: "Gospel drumming's roots — Aaron Spears, Calvin Rodgers brought it to secular music." },
+      { id: "q2", type: "mcq", prompt: "Core signature?", options: ["Silence", "Extreme density of ghost notes + syncopated kick", "Only loud hits", "Cymbal wash"], correctIndex: 1, explanation: "Ghost-note density + kick syncopation = gospel chops vocabulary." },
+      { id: "q3", type: "mcq", prompt: "Start at what tempo?", options: ["120 bpm", "60 bpm", "200 bpm", "Any"], correctIndex: 1, explanation: "60 bpm slow enough to execute the density cleanly. Build over months." },
+    ],
+  },
+  drums_l7_05_mastery: {
+    id: "drums_l7_05_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l7_05_improv_solo",
+    title: "Quick check: 32-bar thematic solo", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "A 32-bar solo needs…", options: ["More notes", "A theme that develops through variations", "Only fast licks", "No structure"], correctIndex: 1, explanation: "Theme + variations. The theme returns, transformed." },
+      { id: "q2", type: "mcq", prompt: "Building tension over 32 bars means…", options: ["Random dynamics", "Gradual dynamic + density increase toward a climax", "Constant volume", "Starting loud"], correctIndex: 1, explanation: "Arc: state → develop → climax → resolve." },
+      { id: "q3", type: "mcq", prompt: "End with…", options: ["Silence", "Return to theme or signature phrase", "Anything", "New material"], correctIndex: 1, explanation: "Thematic return ties the solo together. Listener recognizes the arc completing." },
+    ],
+  },
+  drums_l7_06_mastery: {
+    id: "drums_l7_06_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l7_06_genius_entry",
+    title: "Quick check: L7 exam", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "L7 exam combines…", options: ["Rock only", "Odd-time groove + thematic solo", "Just soloing", "Scales"], correctIndex: 1, explanation: "Odd time + solo. Tests both technical facility + compositional solo sense." },
+      { id: "q2", type: "mcq", prompt: "Pass threshold?", options: ["0.75", "0.80", "0.90", "1.0"], correctIndex: 1, explanation: "0.80 composite + 0.82 rhythm. Genius-tier precision." },
+      { id: "q3", type: "mcq", prompt: "L7 → L8 unlocks…", options: ["Nothing", "Style breadth (fusion, Afro-Cuban, jazz trio, big band)", "Solo career", "A certificate"], correctIndex: 1, explanation: "L8 = style breadth across traditions." },
+    ],
+  },
+  drums_l8_01_mastery: {
+    id: "drums_l8_01_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l8_01_fusion",
+    title: "Quick check: fusion drumming", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Fusion drumming master?", options: ["John Bonham", "Vinnie Colaiuta / Dave Weckl / Steve Smith", "Neil Peart only", "Ringo Starr"], correctIndex: 1, explanation: "The fusion school. Colaiuta with Sting, Weckl with Chick Corea, Smith with Journey + solo." },
+      { id: "q2", type: "mcq", prompt: "Linear drumming works in fusion because…", options: ["It's easy", "Fusion harmony is busy; linear = clarity for every other instrument", "It's traditional", "No reason"], correctIndex: 1, explanation: "Fusion harmony is dense. Linear drumming creates space so harmony lines are heard." },
+      { id: "q3", type: "mcq", prompt: "Mixing odd-time with 4/4…", options: ["Is illegal", "Creates unexpected rhythmic texture in fusion", "Makes fusion impossible", "Confuses only"], correctIndex: 1, explanation: "Fusion's signature: elements of odd time layered on 4/4 or vice versa. Colaiuta is the master." },
+    ],
+  },
+  drums_l8_02_mastery: {
+    id: "drums_l8_02_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l8_02_afro_cuban_advanced",
+    title: "Quick check: songo + mambo", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Songo is a…", options: ["Classical form", "Afro-Cuban groove (Jose Luis Quintana)", "Brazilian dance", "Jazz style"], correctIndex: 1, explanation: "Cuban drummer Quintana's signature groove. Timba-era evolution of Afro-Cuban drumming." },
+      { id: "q2", type: "mcq", prompt: "Mambo bell pattern plays on…", options: ["Cowbell / ride bell", "Only kick", "Only snare", "Nothing"], correctIndex: 0, explanation: "Cowbell or ride bell plays the mambo bell pattern — bright clave partner." },
+      { id: "q3", type: "mcq", prompt: "Clave stays…", options: ["Random", "The same throughout the song (3-2 or 2-3)", "Changes every bar", "Silent"], correctIndex: 1, explanation: "Clave is the foundation — establish 3-2 or 2-3 and maintain throughout." },
+    ],
+  },
+  drums_l8_03_mastery: {
+    id: "drums_l8_03_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l8_03_jazz_trio",
+    title: "Quick check: jazz trio drumming", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Jazz trio drumming's main job is…", options: ["Solo", "Conversation with piano + bass", "Backbeat", "Loud"], correctIndex: 1, explanation: "Not keeping time alone — active response to pianist + bassist." },
+      { id: "q2", type: "mcq", prompt: "On a jazz ballad, dynamics should be…", options: ["Forte throughout", "Pianissimo to mezzo", "Random", "Off"], correctIndex: 1, explanation: "Ballads = intimate. Dynamics in soft range, brushes or light sticks." },
+      { id: "q3", type: "mcq", prompt: "Comping means…", options: ["Playing nothing", "Accompaniment — responsive, syncopated snare + ride", "Solo", "Ignoring the band"], correctIndex: 1, explanation: "Comping = 'accompanying'. Drums support + respond to the soloist." },
+    ],
+  },
+  drums_l8_04_mastery: {
+    id: "drums_l8_04_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l8_04_electronic",
+    title: "Quick check: electronic-influenced drumming", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "The Amen break was originally from…", options: ["1969 song 'Amen Brother' by The Winstons", "The Beatles", "James Brown", "Invented today"], correctIndex: 0, explanation: "1969 B-side by The Winstons. Sampled 1,500+ times since." },
+      { id: "q2", type: "mcq", prompt: "Emulating electronic drums acoustically requires…", options: ["Randomness", "Metronomic precision (no human push/pull)", "Being messy", "Silence"], correctIndex: 1, explanation: "Electronic drums have no timing drift. Emulating that acoustically demands metronomic consistency." },
+      { id: "q3", type: "mcq", prompt: "Modern drummers blend acoustic + electronic because…", options: ["It's easier", "Contemporary music production calls for both textures", "It's required", "Nobody does"], correctIndex: 1, explanation: "Many modern pop/R&B recordings blend acoustic kit + electronic samples. Versatility matters." },
+    ],
+  },
+  drums_l8_05_mastery: {
+    id: "drums_l8_05_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l8_05_big_band",
+    title: "Quick check: big band drumming", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Big band drumming masters?", options: ["Buddy Rich, Gene Krupa, Louie Bellson", "Only modern drummers", "Not specific", "Dave Grohl"], correctIndex: 0, explanation: "Buddy, Krupa, Bellson — big band drumming lineage from swing era forward." },
+      { id: "q2", type: "mcq", prompt: "A 'setup' before an ensemble hit is…", options: ["Silence", "A rhythmic figure on drums that signals the upcoming horn hit", "A solo", "Nothing"], correctIndex: 1, explanation: "Setups = drum figures that cue the big band's ensemble hits. Essential big-band skill." },
+      { id: "q3", type: "mcq", prompt: "Reading ahead in a big band chart means…", options: ["Looking at the current bar only", "Eyes on bars 2-4 ahead while playing current bar", "Memorizing everything", "No reading"], correctIndex: 1, explanation: "Must read 2-4 bars ahead while playing. Pro session skill." },
+    ],
+  },
+  drums_l8_06_mastery: {
+    id: "drums_l8_06_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l8_06_style_exam",
+    title: "Quick check: L8 4-style exam", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "L8 exam styles?", options: ["Any 4", "Fusion + Afro-Cuban + jazz trio + big band", "Only rock", "Metal only"], correctIndex: 1, explanation: "Specific: fusion, Afro-Cuban, jazz trio, big band. 60 seconds each." },
+      { id: "q2", type: "mcq", prompt: "Transitions between styles should…", options: ["Jar the listener", "Flow naturally (clean transitions)", "Be silent", "Be random"], correctIndex: 1, explanation: "Pros transition gracefully. Authenticity per style + smooth transitions = L8 standard." },
+      { id: "q3", type: "mcq", prompt: "Pass composite + rhythm dim?", options: ["0.70 / 0.75", "0.78 / 0.82", "0.85 / 0.90", "0.95 / 1.0"], correctIndex: 1, explanation: "Composite 0.78 + rhythm 0.82. Genius-tier precision." },
+    ],
+  },
+  drums_l9_01_mastery: {
+    id: "drums_l9_01_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l9_01_composition",
+    title: "Quick check: compose a drum part", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Writing a drum part for a song means…", options: ["Playing loud", "Serving the song — appropriate density for each section", "Showing off", "Random"], correctIndex: 1, explanation: "Drums serve the song. Intro sparse; verse supportive; chorus bigger; bridge different." },
+      { id: "q2", type: "mcq", prompt: "Should you overplay?", options: ["Always", "No — less is often more", "Only on solos", "Only on fills"], correctIndex: 1, explanation: "Restraint is the pro drummer's most important skill." },
+      { id: "q3", type: "mcq", prompt: "Notate as…", options: ["Mental notes only", "A drum chart another drummer could read + play", "Audio only", "Nothing"], correctIndex: 1, explanation: "Written chart = reproducible. Professional deliverable." },
+    ],
+  },
+  drums_l9_02_mastery: {
+    id: "drums_l9_02_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l9_02_recording",
+    title: "Quick check: multi-mic drum recording", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Minimum mic setup?", options: ["One overhead", "Kick + snare + overheads", "Only kick", "Only cymbals"], correctIndex: 1, explanation: "Kick, snare, overheads = minimum pro setup. More mics add detail but increase phase complexity." },
+      { id: "q2", type: "mcq", prompt: "Phase issues happen because…", options: ["Mic too loud", "Multiple mics capture the kit at slightly different times → cancellations", "Bad cables", "Nothing"], correctIndex: 1, explanation: "Time differences between mics cause frequency cancellations. Phase alignment is critical." },
+      { id: "q3", type: "mcq", prompt: "Mic position on the kick drum?", options: ["Outside the kit", "Inside, near the beater", "On the cymbals", "Doesn't matter"], correctIndex: 1, explanation: "Mic inside the bass drum near the beater captures attack + body." },
+    ],
+  },
+  drums_l9_03_mastery: {
+    id: "drums_l9_03_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l9_03_pedagogy",
+    title: "Quick check: teaching demo", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Teaching demo length?", options: ["2 min", "10 min", "30 min", "1 hour"], correctIndex: 1, explanation: "10 minutes focused on one technique. Enough to cover depth; short enough to hold attention." },
+      { id: "q2", type: "mcq", prompt: "Include in demo?", options: ["Just playing", "Demo + mechanics breakdown + pitfalls + practice strategy", "Stories", "Metronome only"], correctIndex: 1, explanation: "Complete pedagogy across 4 dimensions." },
+      { id: "q3", type: "mcq", prompt: "Recording the demo…", options: ["Unnecessary", "Becomes reusable teaching content", "Required by law", "Impossible"], correctIndex: 1, explanation: "Record, edit, upload — instructional content for other learners + income stream." },
+    ],
+  },
+  drums_l9_04_mastery: {
+    id: "drums_l9_04_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l9_04_session_simulation",
+    title: "Quick check: session simulation", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Session drummers typically get…", options: ["Weeks to prepare", "A few minutes + one or two takes", "Unlimited takes", "No prep"], correctIndex: 1, explanation: "Pros show up, read chart in 5 min, play 1-2 takes. Fast." },
+      { id: "q2", type: "mcq", prompt: "If you can't deliver in one take…", options: ["Keep trying forever", "The producer calls another drummer next time", "They wait", "You're paid more"], correctIndex: 1, explanation: "Reliability is the currency. Pros who deliver first take get booked again." },
+      { id: "q3", type: "mcq", prompt: "Session mindset?", options: ["Perfectionism", "Commit + deliver. Trust yourself.", "Complain", "Demand breaks"], correctIndex: 1, explanation: "Pros don't over-think. Commit to the take; fix what's fixable; move on." },
+    ],
+  },
+  drums_l9_05_mastery: {
+    id: "drums_l9_05_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l9_05_performance_tour",
+    title: "Quick check: 5-style medley", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Medley spans how many styles?", options: ["1", "5 (across 10 minutes)", "20", "Random"], correctIndex: 1, explanation: "5 distinct styles. ~2 min each. Tests full breadth." },
+      { id: "q2", type: "mcq", prompt: "Transitions can be…", options: ["Only abrupt", "Abrupt OR gradual — composer's choice", "Only gradual", "Silent"], correctIndex: 1, explanation: "Both work. Abrupt = drama; gradual = evolution. Intentional choice." },
+      { id: "q3", type: "mcq", prompt: "Each section should sound…", options: ["Generic", "Authentic in its tradition — not caricature", "Identical", "Random"], correctIndex: 1, explanation: "Authenticity per style. 2-min Afro-Cuban should feel like you could sit in with Cuban players." },
+    ],
+  },
+  drums_l9_06_mastery: {
+    id: "drums_l9_06_mastery", scope: "lesson", instrumentId: "drums", lessonId: "drums_l9_06_recital",
+    title: "Quick check: Genius Cert recital", passThreshold: 0.67,
+    questions: [
+      { id: "q1", type: "mcq", prompt: "Recital duration?", options: ["5 min", "15 min", "30 min", "1 hour"], correctIndex: 1, explanation: "15-minute program across 5 contexts." },
+      { id: "q2", type: "mcq", prompt: "Contexts covered?", options: ["Just rock", "Solo + trio + big band + world + original", "Jazz only", "Any"], correctIndex: 1, explanation: "5 contexts. Breadth of drumming across traditions + compositional work." },
+      { id: "q3", type: "mcq", prompt: "Reviewed by?", options: ["Only machines", "Human reviewer panel + peer feedback", "Only peers", "Random"], correctIndex: 1, explanation: "Human judgment is essential. Panel + peer = complete review." },
+    ],
+  },
+
   // ---- Piano · Level 1 → Level 2 advancement exam ----
   piano_l1_level_exam: {
     id: "piano_l1_level_exam",
