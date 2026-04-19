@@ -2444,6 +2444,189 @@ export const LESSONS: Record<string, Lesson> = {
     passCriteria: { minGradeOverall: 0.78, minPerDimension: { rhythm: 0.82 } }, estimatedMinutes: 30,
   },
 
+  drums_l7_01_odd_groupings: {
+    id: "drums_l7_01_odd_groupings", instrumentId: "drums", level: 7, tier: "genius",
+    title: "Odd groupings — 5/8, 7/8, 9/8 grooves",
+    objectives: ["Play a 5/8 groove (3+2 or 2+3) at 120 bpm", "Transition between 5/8, 7/8, and 9/8 smoothly", "Maintain feel even when the meter is unfamiliar"],
+    writtenContent:
+      "## Beyond 4/4\n\nGenius-tier drumming demands fluency in odd meters. Prog rock (Rush, Tool), modern jazz (Dave Brubeck's Take Five in 5/4), Indian classical (talas in 7, 9, 11) — all require odd groupings.\n\n## Subdivide\n\n- **5/8**: group as 3+2 OR 2+3. Accent the first beat of each group.\n- **7/8**: typically 3+2+2 or 2+2+3.\n- **9/8**: compound triple (3+3+3) or 4+2+3.\n\n## Feel, not math\n\nDon't count every beat individually once you've internalized the grouping. Feel the accents.",
+    audioRefs: [{ id: "demo", label: "5/8 groove, 120 bpm" }],
+    exercisePlanId: "drums_l7_01_odd_grouping", prerequisites: ["drums_l3_05_odd_time"],
+    passCriteria: { minGradeOverall: 0.76, minPerDimension: { rhythm: 0.82 } }, estimatedMinutes: 30,
+  },
+  drums_l7_02_indian_percussion: {
+    id: "drums_l7_02_indian_percussion", instrumentId: "drums", level: 7, tier: "genius",
+    title: "Indian rhythmic vocabulary — tihai on the kit",
+    objectives: ["Translate a tabla tihai (3x repeated phrase ending on sam) to drum kit", "Play a 3x repetition that ends on beat 1 of a new 4-bar phrase", "Use the kit's full color — kick, snare, toms, cymbals — to emulate tabla's bol vocabulary"],
+    writtenContent:
+      "## The tihai\n\nA tihai is a rhythmic phrase repeated 3 times, timed so the last note lands on 'sam' (beat 1) of the next cycle. Common in Hindustani classical.\n\n## On drum kit\n\nExample 4-bar cycle: play 3 bars of regular groove, then a tihai that fits the last bar. Each repetition = 4 16th notes. 3 × 4 = 12 × 16ths = 3 beats. Start the tihai on beat 2 of bar 4 → last note lands on beat 1 of bar 5.\n\n## Why this matters\n\nIndian classical rhythmic thinking is entering global music. Drummers who can play tihais sound sophisticated.",
+    audioRefs: [{ id: "demo", label: "4-bar groove with tihai climax" }],
+    exercisePlanId: "drums_l7_02_tihai", prerequisites: ["drums_l5_02_rolls"],
+    passCriteria: { minGradeOverall: 0.76, minPerDimension: { rhythm: 0.80 } }, estimatedMinutes: 30,
+  },
+  drums_l7_03_brushes: {
+    id: "drums_l7_03_brushes", instrumentId: "drums", level: 7, tier: "genius",
+    title: "Brushes — jazz drumming's whisper",
+    objectives: ["Play a 'sweep' pattern on the snare head with the left brush", "Pair with the right brush doing standard jazz ride taps", "Create a continuous texture unique to brush drumming"],
+    writtenContent:
+      "## Sticks off, brushes on\n\nJazz ballads + intimate sets call for brushes instead of sticks. Soft, swept texture. Impossible to fake — you either have the technique or you don't.\n\n## The sweep\n\nLeft brush makes a continuous circular motion on the snare head. Right brush strikes rhythmic patterns (jazz ride on the ride cymbal or on the snare).\n\n## Requires finesse\n\nBrush playing trains dynamic control — ghost notes are essentially brush strokes with extra volume. Every jazz drummer learns this.",
+    audioRefs: [{ id: "demo", label: "Jazz brush pattern, 100 bpm ballad" }],
+    exercisePlanId: "drums_l7_03_brush_sweep", prerequisites: ["drums_l5_04_cross_stick"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { dynamics: 0.78 } }, estimatedMinutes: 30,
+  },
+  drums_l7_04_gospel_chops: {
+    id: "drums_l7_04_gospel_chops", instrumentId: "drums", level: 7, tier: "genius",
+    title: "Gospel chops — fast ghost-noted 16ths",
+    objectives: ["Execute the 'gospel chop' 32nd-note groove (16 ghost notes per beat)", "Maintain kick/snare accent structure underneath", "Play at 90 bpm — gospel chops demand extreme density"],
+    writtenContent:
+      "## The modern gospel drummer\n\nGospel drumming evolved in Black churches — Aaron Spears, Calvin Rodgers, Tony Royster Jr. Their signature: unbelievable density of ghost notes + kick syncopation.\n\n## 32nd-note feel\n\nEach beat has 8 ghost 16ths + 8 accents — effectively 32nd notes of continuous snare activity. Hi-hat adds another layer.\n\n## Practical tempo\n\nStart at 60 bpm. Build to 90 over months. Gospel chops at 120+ take years.",
+    audioRefs: [{ id: "demo", label: "Gospel chops groove, 80 bpm" }],
+    exercisePlanId: "drums_l7_04_gospel", prerequisites: ["drums_l5_03_ghost_advanced"],
+    passCriteria: { minGradeOverall: 0.76, minPerDimension: { dynamics: 0.80, rhythm: 0.80 } }, estimatedMinutes: 35,
+  },
+  drums_l7_05_improv_solo: {
+    id: "drums_l7_05_improv_solo", instrumentId: "drums", level: 7, tier: "genius",
+    title: "Extended drum solo — 32 bars with thematic development",
+    objectives: ["Improvise a 32-bar solo with a central motif that develops", "Vary the motif through rhythm (augment, diminish), kit voicing, dynamics", "End with a thematic resolution"],
+    writtenContent:
+      "## Theme + variations\n\nLong solos need a THEME to return to. Pick a 4-bar rhythmic motif. State it. Develop it (rhythm changes, dynamics change, kit voicing changes). Always return to something recognizable.\n\n## 32 bars structure\n\n- Bars 1-8: state the theme clearly + once\n- Bars 9-16: first variation\n- Bars 17-24: development (build tension)\n- Bars 25-32: climax + return to theme\n\n## Not just noise\n\nEvery note serves the larger arc. Drummers like Bonham, Gadd, and Porcaro played solos that told stories.",
+    audioRefs: [{ id: "demo", label: "32-bar thematic drum solo" }],
+    exercisePlanId: "drums_l7_05_big_solo", prerequisites: ["drums_l5_05_solo_intermediate"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 40,
+  },
+  drums_l7_06_genius_entry: {
+    id: "drums_l7_06_genius_entry", instrumentId: "drums", level: 7, tier: "genius",
+    title: "L7 exam — odd-time groove + thematic solo",
+    objectives: ["Play 2 minutes: 60 seconds of 7/8 funk groove, 60 seconds of 32-bar solo", "Composite score ≥0.80, rhythm dimension ≥0.82", "Demonstrate odd-time fluency + solo coherence"],
+    writtenContent:
+      "## Genius tier entry\n\nTwo demonstrations combined: odd-time funk groove + thematic solo. The bar is high — you should sound like a pro drummer, not a student.\n\n## Tempo\n\n7/8 groove at 110 bpm. Solo tempo your choice (80-120).",
+    audioRefs: [{ id: "demo", label: "Reference L7 exam performance" }],
+    exercisePlanId: "drums_l7_06_exam", prerequisites: ["drums_l7_01_odd_groupings", "drums_l7_05_improv_solo"],
+    passCriteria: { minGradeOverall: 0.80, minPerDimension: { rhythm: 0.82, consistency: 0.80 } }, estimatedMinutes: 30,
+  },
+
+  drums_l8_01_fusion: {
+    id: "drums_l8_01_fusion", instrumentId: "drums", level: 8, tier: "genius",
+    title: "Fusion — Vinnie Colaiuta linear-drumming approach",
+    objectives: ["Play a linear fusion groove (no two voices coincide)", "Mix odd-time groupings with conventional 4/4 feel", "Use the full kit — toms, cowbell, splash — as melodic voices"],
+    writtenContent:
+      "## The Vinnie school\n\nVinnie Colaiuta, Steve Smith, Dave Weckl — fusion drumming masters. Linear approach: no overlapping hits. Each note stands alone.\n\n## Why linear works for fusion\n\nFusion harmony is busy (jazz chords, fast changes). Conventional drum density would muddy it. Linear = clarity for every other instrument.\n\n## Practice\n\nRemove one layer: no 'kick + snare together'. Play them sequentially. Your brain fights; train it.",
+    audioRefs: [{ id: "demo", label: "Linear fusion groove, 100 bpm" }],
+    exercisePlanId: "drums_l8_01_fusion", prerequisites: ["drums_l4_02_linear"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 30,
+  },
+  drums_l8_02_afro_cuban_advanced: {
+    id: "drums_l8_02_afro_cuban_advanced", instrumentId: "drums", level: 8, tier: "genius",
+    title: "Afro-Cuban — songo + mambo bell patterns",
+    objectives: ["Play a 2-bar songo groove (Jose Luis Quintana style)", "Add mambo bell pattern (on cowbell or ride bell) on top", "Maintain 3-2 clave underneath as the reference"],
+    writtenContent:
+      "## Advanced Afro-Cuban\n\nBeyond bossa (L3.1) and bembé (L6.3), songo and mambo bring the rhythmic sophistication of modern Afro-Cuban drumming.\n\n## Songo\n\nCuban timba-era drummer style. Complex kick/snare/hi-hat interlock around the clave.\n\n## Mambo bell\n\nCowbell (or ride bell) plays the mambo pattern: '1+2+3' on beat 1, '+2+3+' between — adds a bright clave partner.",
+    audioRefs: [{ id: "demo", label: "Songo + mambo bell, 100 bpm" }],
+    exercisePlanId: "drums_l8_02_songo", prerequisites: ["drums_l6_03_afro_cuban"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 35,
+  },
+  drums_l8_03_jazz_trio: {
+    id: "drums_l8_03_jazz_trio", instrumentId: "drums", level: 8, tier: "genius",
+    title: "Jazz trio drumming — leading + following",
+    objectives: ["Play in a jazz trio context (piano + bass + drums) on a ballad", "Maintain the 4-feel on ride while comping on snare", "Respond to what the piano/bass are playing — dynamic + phrasing"],
+    writtenContent:
+      "## Not just keeping time\n\nIn a jazz trio, the drummer is a CONVERSATIONAL partner. You lay down time AND respond to pianist's accents, catch bassist's transitions, push dynamics up in choruses, pull back in intros.\n\n## Listening skills\n\nAt L8, pro listening = playing what serves the moment. Anticipate. React. Never just 'play your part'.",
+    audioRefs: [{ id: "demo", label: "Jazz trio drumming example" }],
+    exercisePlanId: "drums_l8_03_trio", prerequisites: ["drums_l5_06_hand_independence"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 35,
+  },
+  drums_l8_04_electronic: {
+    id: "drums_l8_04_electronic", instrumentId: "drums", level: 8, tier: "genius",
+    title: "Electronic-influenced drumming — glitch + programming feel",
+    objectives: ["Emulate a programmed breakbeat (Amen break derivative) on acoustic kit", "Play micro-accents that suggest electronic chopping", "Maintain the robotic precision that electronic drums require"],
+    writtenContent:
+      "## Acoustic meets electronic\n\nModern drummers blend acoustic kit with electronic pads/samples. Songs by Tom Misch, FKJ, Moses Sumney use this.\n\n## The Amen break\n\nA 4-bar drum loop from 'Amen Brother' (1969) became the foundation of jungle / drum-and-bass. Sampled thousands of times. Learn to play it acoustically.\n\n## Robotic feel\n\nElectronic programming has no human timing drift. To emulate, your acoustic kit must be METRONOMIC — no subtle push/pull. Challenging but instructive.",
+    audioRefs: [{ id: "demo", label: "Amen break played live" }],
+    exercisePlanId: "drums_l8_04_amen", prerequisites: ["drums_l5_03_ghost_advanced"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { rhythm: 0.82 } }, estimatedMinutes: 30,
+  },
+  drums_l8_05_big_band: {
+    id: "drums_l8_05_big_band", instrumentId: "drums", level: 8, tier: "genius",
+    title: "Big band drumming — chart reading + ensemble cues",
+    objectives: ["Read a big band chart with 'setups' (cue notes before ensemble hits)", "Play shuffle feel + cue horn ensemble entries", "Apply explosive fills on 'stop time' sections"],
+    writtenContent:
+      "## The big band tradition\n\nBuddy Rich, Louie Bellson, Gene Krupa, Mel Lewis — big band drumming is a distinct genre. Drummer is the engine: shuffle on the ride, dynamics on the snare, setups for horn hits, explosions during stop-time breaks.\n\n## Setups\n\nThe drummer plays rhythmic 'setups' 1-2 beats before the horns hit. These signal the ensemble. Classic setup: snare roll → crash → horn stab.\n\n## Read ahead\n\nBig band charts are dense. You're reading 4 bars ahead constantly. Ensemble figures are written as rhythms; you interpret.",
+    audioRefs: [{ id: "demo", label: "Big band chart with setups, 110 bpm" }],
+    exercisePlanId: "drums_l8_05_big_band", prerequisites: ["drums_l6_06_drum_chart"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 35,
+  },
+  drums_l8_06_style_exam: {
+    id: "drums_l8_06_style_exam", instrumentId: "drums", level: 8, tier: "genius",
+    title: "L8 exam — 4 styles in 4 minutes",
+    objectives: ["Play 60 sec each: fusion linear + Afro-Cuban songo + jazz trio + big band", "Transition cleanly between styles", "Demonstrate convincingly different feel in each"],
+    writtenContent:
+      "## Four traditions, one drummer\n\nFusion. Afro-Cuban. Jazz trio. Big band. Each has its own rhythmic grammar, kit voicings, dynamics. Genius-tier drummers navigate all of them.\n\n## The test\n\n60 seconds of each. Transitions should feel natural. Each segment should SOUND like it belongs in that genre.",
+    audioRefs: [{ id: "demo", label: "Reference 4-style performance" }],
+    exercisePlanId: "drums_l8_06_fourstyle", prerequisites: ["drums_l8_01_fusion", "drums_l8_05_big_band"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { rhythm: 0.82 } }, estimatedMinutes: 25,
+  },
+
+  drums_l9_01_composition: {
+    id: "drums_l9_01_composition", instrumentId: "drums", level: 9, tier: "genius",
+    title: "Compose a drum part for an existing song",
+    objectives: ["Take a published song (melody + chords + bass) and write a drum part for it", "Serve the song — don't overplay", "Notate the part as a playable drum chart"],
+    writtenContent:
+      "## Arranging is composition\n\nReal session drumming means being handed a song + no drum part + asked to play. You listen, decide what the song needs, craft a part.\n\n## Serve the song\n\nRules:\n1. Intro: sparse, establish tempo\n2. Verse: quiet, let vocals sing\n3. Chorus: bigger — crash on 1 of each new phrase\n4. Bridge: different feel (maybe half-time?)\n5. Outro: taper or explode — composer's choice\n\n## Notate\n\nWrite it as a drum chart so another drummer could play YOUR part.",
+    audioRefs: [{ id: "demo", label: "Song → drum part composition example" }],
+    exercisePlanId: "drums_l9_01_compose", prerequisites: ["drums_l6_06_drum_chart"],
+    passCriteria: { minGradeOverall: 0.75 }, estimatedMinutes: 90,
+  },
+  drums_l9_02_recording: {
+    id: "drums_l9_02_recording", instrumentId: "drums", level: 9, tier: "genius",
+    title: "Multi-mic drum recording",
+    objectives: ["Record drums with multiple mics (kick, snare, overheads minimum)", "Understand mic placement + phase relationships", "Mix the tracks to a cohesive drum sound"],
+    writtenContent:
+      "## Beyond playing\n\nAt Genius level, you should be able to record drums well — placement, phase, gain staging, mixing. This is a pro skill worth tens of thousands of dollars per session.\n\n## Minimum mic setup\n\n- Kick: inside the bass drum, near the beater\n- Snare: 1-2 inches above the rim, pointed at the head center\n- Overheads: XY pair or spaced pair above the kit\n\n## Phase\n\nEach mic picks up the whole kit at slightly different times. Phase-align them or they cancel each other out. This is where recording drums gets deep.",
+    audioRefs: [{ id: "demo", label: "Before/after multi-mic drum mix" }],
+    exercisePlanId: "drums_l9_02_record", prerequisites: ["drums_l9_01_composition"],
+    passCriteria: { minGradeOverall: 0.74, minPerDimension: { tone: 0.78 } }, estimatedMinutes: 120,
+  },
+  drums_l9_03_pedagogy: {
+    id: "drums_l9_03_pedagogy", instrumentId: "drums", level: 9, tier: "genius",
+    title: "Teaching demo — 10-minute lesson on an advanced technique",
+    objectives: ["Pick an advanced technique you've mastered (linear drumming, gospel chops, brushes...)", "Prepare + deliver a 10-min teaching demo", "Include: demonstration + breakdown + practice strategy"],
+    writtenContent:
+      "## Teaching = mastery\n\nYou understand a technique when you can teach it. Structure:\n1. Demo at full speed + slow speed\n2. Break down the mechanics\n3. Common pitfalls\n4. Daily practice strategy (how to build over weeks)\n\n## Record it\n\nThe recording itself becomes teaching material. Many pros have YouTube channels that started exactly here.",
+    audioRefs: [{ id: "demo", label: "Example 10-min drum lesson" }],
+    exercisePlanId: "drums_l9_03_teach", prerequisites: ["drums_l7_06_genius_entry"],
+    passCriteria: { minGradeOverall: 0.72 }, estimatedMinutes: 60,
+  },
+  drums_l9_04_session_simulation: {
+    id: "drums_l9_04_session_simulation", instrumentId: "drums", level: 9, tier: "genius",
+    title: "Session simulation — sight-read + record in one take",
+    objectives: ["Receive an unseen chart + demo track", "Write your drum part suggestions during 5 min prep", "Record ONE take that would be usable in a real session"],
+    writtenContent:
+      "## How sessions actually work\n\nPros show up, receive charts, prep briefly, record. One or two takes. If you're not ready, they call someone else next time.\n\n## The simulation\n\n1. Get a never-seen song + chart (5 min prep time)\n2. Play through once at slower tempo\n3. Record ONE take at performance tempo\n4. That take is judged as if it's going on a record\n\n## The mindset\n\nPros don't complain or ask for extra takes. You figure out the song, commit, deliver.",
+    audioRefs: [{ id: "demo", label: "Session recording example" }],
+    exercisePlanId: "drums_l9_04_session", prerequisites: ["drums_l8_05_big_band"],
+    passCriteria: { minGradeOverall: 0.76 }, estimatedMinutes: 45,
+  },
+  drums_l9_05_performance_tour: {
+    id: "drums_l9_05_performance_tour", instrumentId: "drums", level: 9, tier: "genius",
+    title: "Performance practice — 5 styles in a medley",
+    objectives: ["Perform a 10-minute continuous medley spanning 5 rhythmic traditions", "Example: rock → jazz → Afro-Cuban → Indian 7-beat → fusion", "Seamless transitions; each section lasts ~2 minutes"],
+    writtenContent:
+      "## The world-rhythm medley\n\nFor Genius-tier drumming, a medley across traditions proves you aren't just ONE style of drummer. You're a versatile musician.\n\n## Programming\n\n5 styles × 2 minutes = 10 minutes. Transitions can be abrupt (dramatic style shift) or gradual (common tempo, evolving feel). Your choice.\n\n## Each section\n\nMust sound AUTHENTIC. Not caricature. A 2-min Afro-Cuban section should feel like you could sit in with a Cuban band.",
+    audioRefs: [{ id: "demo", label: "5-style 10-minute medley" }],
+    exercisePlanId: "drums_l9_05_medley", prerequisites: ["drums_l8_06_style_exam"],
+    passCriteria: { minGradeOverall: 0.78, minPerDimension: { rhythm: 0.82, consistency: 0.80 } }, estimatedMinutes: 30,
+  },
+  drums_l9_06_recital: {
+    id: "drums_l9_06_recital", instrumentId: "drums", level: 9, tier: "genius",
+    title: "Genius Certificate — 15-minute drum recital",
+    objectives: ["Perform a 15-min recital across: solo (unaccompanied), trio (with backing track), big band chart, world music groove, your composition", "All from memory", "Submit to human reviewer panel + peer feedback"],
+    writtenContent:
+      "## Your 15-minute case\n\nThis is your Genius Certificate performance. Breadth (traditions) + depth (execution quality).\n\n## Programme\n\n- 3 min: solo (thematic, unaccompanied drum solo from L7.5/L7.6)\n- 3 min: trio (with piano + bass backing) — jazz standard\n- 2 min: big band chart (read at tempo)\n- 3 min: world music groove (Afro-Cuban or Indian classical)\n- 4 min: your L9.1 song composition\n\n## Pass = Genius Certificate\n\nHuman reviewer panel + peer feedback. Both must approve. You earn certified drum mastery across multiple traditions.",
+    audioRefs: [{ id: "demo", label: "Sample 15-minute Genius drum recital" }],
+    exercisePlanId: "drums_l9_06_recital", prerequisites: ["drums_l9_01_composition", "drums_l9_05_performance_tour"],
+    passCriteria: { minGradeOverall: 0.80, minPerDimension: { rhythm: 0.82, consistency: 0.82 } }, estimatedMinutes: 45,
+  },
+
   sitar_l1_01_sa: {
     id: "sitar_l1_01_sa",
     instrumentId: "sitar",
