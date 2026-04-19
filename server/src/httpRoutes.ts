@@ -12,6 +12,14 @@ import {
   handleStripeWebhook, verifyIapReceipt, cancelSubscription,
 } from "./billingService.js";
 import type { PlanTier } from "@catalogs/planCatalog";
+import {
+  listPublicRecitals, listRecitalsForUser, createRecital, likeRecital,
+  listComments, addComment, getProfile, upsertProfile,
+  listAssignmentsForTeacher, listAssignmentsForStudent, createAssignment, updateAssignmentStatus,
+  listCreatorLessonsFor, submitCreatorLesson, reviewCreatorLesson,
+  listProctoredForUser, scheduleProctored, completeProctored,
+  listAvailableLiveSlots, listLiveSlotsForTeacher, bookLiveSlot,
+} from "./communityService.js";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
 
@@ -142,5 +150,93 @@ export function registerRoutes(app: Express): void {
 
   app.post("/api/v1/billing/webhook/stripe", (req, res) => {
     void handleStripeWebhook(req, res);
+  });
+
+  // ── Community · Recitals + comments ───────────────────────────────
+  app.get("/api/v1/recitals", (req, res) => {
+    const { userId } = req.query as { userId?: string };
+    res.json({ ok: true, recitals: userId ? listRecitalsForUser(userId) : listPublicRecitals() });
+  });
+  app.post("/api/v1/recitals", (req, res) => {
+    const record = req.body;
+    res.json({ ok: true, recital: createRecital(record) });
+  });
+  app.post("/api/v1/recitals/:id/like", (req, res) => {
+    const r = likeRecital(req.params.id);
+    if (!r) return res.status(404).json({ ok: false });
+    res.json({ ok: true, recital: r });
+  });
+  app.get("/api/v1/recitals/:id/comments", (req, res) => {
+    res.json({ ok: true, comments: listComments(req.params.id) });
+  });
+  app.post("/api/v1/recitals/:id/comments", (req, res) => {
+    const comment = { ...req.body, recitalId: req.params.id };
+    res.json({ ok: true, comment: addComment(comment) });
+  });
+
+  // ── Community · Profiles ──────────────────────────────────────────
+  app.get("/api/v1/profiles/:userId", (req, res) => {
+    const p = getProfile(req.params.userId);
+    if (!p) return res.status(404).json({ ok: false });
+    res.json({ ok: true, profile: p });
+  });
+  app.put("/api/v1/profiles/:userId", (req, res) => {
+    res.json({ ok: true, profile: upsertProfile({ ...req.body, userId: req.params.userId }) });
+  });
+
+  // ── Community · Teacher assignments ───────────────────────────────
+  app.get("/api/v1/teacher/:teacherId/assignments", (req, res) => {
+    res.json({ ok: true, assignments: listAssignmentsForTeacher(req.params.teacherId) });
+  });
+  app.get("/api/v1/student/:studentId/assignments", (req, res) => {
+    res.json({ ok: true, assignments: listAssignmentsForStudent(req.params.studentId) });
+  });
+  app.post("/api/v1/teacher/assignments", (req, res) => {
+    res.json({ ok: true, assignment: createAssignment(req.body) });
+  });
+  app.patch("/api/v1/teacher/assignments/:id", (req, res) => {
+    const updated = updateAssignmentStatus(req.params.id, req.body.status);
+    if (!updated) return res.status(404).json({ ok: false });
+    res.json({ ok: true, assignment: updated });
+  });
+
+  // ── Community · Creator portal ────────────────────────────────────
+  app.get("/api/v1/creator/:creatorId/lessons", (req, res) => {
+    res.json({ ok: true, lessons: listCreatorLessonsFor(req.params.creatorId) });
+  });
+  app.post("/api/v1/creator/lessons", (req, res) => {
+    res.json({ ok: true, lesson: submitCreatorLesson(req.body) });
+  });
+  app.patch("/api/v1/creator/lessons/:id/review", (req, res) => {
+    const updated = reviewCreatorLesson(req.params.id, req.body.status);
+    if (!updated) return res.status(404).json({ ok: false });
+    res.json({ ok: true, lesson: updated });
+  });
+
+  // ── Community · Proctored exams ───────────────────────────────────
+  app.get("/api/v1/proctored/:userId", (req, res) => {
+    res.json({ ok: true, sessions: listProctoredForUser(req.params.userId) });
+  });
+  app.post("/api/v1/proctored/schedule", (req, res) => {
+    res.json({ ok: true, session: scheduleProctored(req.body) });
+  });
+  app.patch("/api/v1/proctored/:id/complete", (req, res) => {
+    const updated = completeProctored(req.params.id, req.body.status, req.body.proctorNotes);
+    if (!updated) return res.status(404).json({ ok: false });
+    res.json({ ok: true, session: updated });
+  });
+
+  // ── Community · Live lessons marketplace ──────────────────────────
+  app.get("/api/v1/live/available", (_req, res) => {
+    res.json({ ok: true, slots: listAvailableLiveSlots() });
+  });
+  app.get("/api/v1/live/teacher/:teacherId", (req, res) => {
+    res.json({ ok: true, slots: listLiveSlotsForTeacher(req.params.teacherId) });
+  });
+  app.post("/api/v1/live/:slotId/book", (req, res) => {
+    const { studentId, meetingUrl } = req.body as { studentId: string; meetingUrl: string };
+    const slot = bookLiveSlot(req.params.slotId, studentId, meetingUrl);
+    if (!slot) return res.status(409).json({ ok: false, error: "unavailable" });
+    res.json({ ok: true, slot });
   });
 }

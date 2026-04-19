@@ -15,6 +15,11 @@ import { DissectionOverlay } from "@/components/DissectionOverlay";
 import { PaywallModal } from "@/components/PaywallModal";
 import { PlanPickerPanel } from "@/components/PlanPickerPanel";
 import { AuthPanel } from "@/components/AuthPanel";
+import { RecitalFeedPanel } from "@/components/RecitalFeedPanel";
+import { ProfilePanel } from "@/components/ProfilePanel";
+import { TeacherDashboardPanel } from "@/components/TeacherDashboardPanel";
+import { CreatorPortalPanel } from "@/components/CreatorPortalPanel";
+import { ProctoredExamPanel } from "@/components/ProctoredExamPanel";
 
 export function StudioPage() {
   const instrumentId = useAtomValue(currentInstrumentAtom);
@@ -39,6 +44,11 @@ export function StudioPage() {
         <PlanPickerPanel />
         <AuthPanel />
         <PaywallModal />
+        <RecitalFeedPanel />
+        <ProfilePanel />
+        <TeacherDashboardPanel />
+        <CreatorPortalPanel />
+        <ProctoredExamPanel />
         <NavDrawer />
       </main>
     </div>

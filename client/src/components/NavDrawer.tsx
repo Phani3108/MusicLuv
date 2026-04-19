@@ -6,6 +6,10 @@ import {
 import { navDrawerOpenAtom } from "@/atoms/session";
 import { currentInstrumentAtom, progressAtom, userAtom } from "@/atoms/session";
 import { authUserAtom, subscriptionAtom, planPickerOpenAtom, authPanelOpenAtom } from "@/atoms/billing";
+import {
+  recitalFeedPanelAtom, profilePanelAtom, teacherDashboardPanelAtom,
+  creatorPortalPanelAtom, proctoredExamPanelAtom,
+} from "@/atoms/community";
 import { getInstrument } from "@catalogs/instrumentCatalog";
 import { tierForXp } from "@catalogs/tierCatalog";
 import { getPlan } from "@catalogs/planCatalog";
@@ -39,6 +43,11 @@ export function NavDrawer() {
   const sub = useAtomValue(subscriptionAtom);
   const [, setPlanPicker] = useAtom(planPickerOpenAtom);
   const [, setAuthPanel] = useAtom(authPanelOpenAtom);
+  const [, setRecitalFeed] = useAtom(recitalFeedPanelAtom);
+  const [, setProfile] = useAtom(profilePanelAtom);
+  const [, setTeacherDash] = useAtom(teacherDashboardPanelAtom);
+  const [, setCreatorPortal] = useAtom(creatorPortalPanelAtom);
+  const [, setProctoredExam] = useAtom(proctoredExamPanelAtom);
   const plan = getPlan(sub.plan);
 
   const openPanel = (setter: (v: boolean) => void) => {
@@ -99,6 +108,14 @@ export function NavDrawer() {
               <NavItem glyph="🎵" title="Song library" subtitle="Curated play-alongs" onClick={() => openPanel(setLibraryOpen)} />
               <NavItem glyph="⭐" title="Genius artists" subtitle="Study Hendrix, Ravi, Rahman…" onClick={() => openPanel(setArtistOpen)} />
               <NavItem glyph="⬆️" title="Upload a song" subtitle="Analyze → step-by-step" onClick={() => openPanel(setSongOpen)} />
+            </NavGroup>
+
+            <NavGroup label="Community">
+              <NavItem glyph="🎼" title="Recital feed" subtitle="Learners sharing best takes" onClick={() => { setRecitalFeed(true); setOpen(false); }} />
+              <NavItem glyph="👥" title="My profile" subtitle="Your public page" onClick={() => { if (authUser) { setProfile(authUser.id); setOpen(false); } else { setAuthPanel(true); setOpen(false); } }} />
+              <NavItem glyph="🏆" title="Proctored exams" subtitle="Official certificate testing" onClick={() => { setProctoredExam(true); setOpen(false); }} />
+              {authUser && <NavItem glyph="🎓" title="Teach" subtitle="Dashboard for teachers" onClick={() => { setTeacherDash(true); setOpen(false); }} />}
+              {authUser && sub.plan === "genius" && <NavItem glyph="✍️" title="Creator portal" subtitle="Author lessons + earn" onClick={() => { setCreatorPortal(true); setOpen(false); }} />}
             </NavGroup>
 
             <NavGroup label="Account">
