@@ -3551,6 +3551,626 @@ export const EXAMS: Record<string, Exam> = {
       },
     ],
   },
+
+  // ============================================================
+  // PHASE 4 · Sitar L1-L9 mastery quizzes
+  // ============================================================
+  sitar_l1_01_mastery: { id: "sitar_l1_01_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l1_01_sa", title: "Quick check: Sa + the drone", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "What is Sa?", options: ["Any random note","The tonic — the anchor of every raga","The 5th","A percussion bol"], correctIndex: 1, explanation: "Sa is the tonic. Every raga's home note." },
+    { id: "q2", type: "mcq", prompt: "What does the tanpura provide?", options: ["Melody","A sustained drone of Sa + Pa","Rhythm","Chords"], correctIndex: 1, explanation: "Tanpura drones Sa + Pa so the performer's ear is always anchored." },
+    { id: "q3", type: "mcq", prompt: "Down-stroke on the mizrab is called…", options: ["Ra","Dha","Da","Na"], correctIndex: 2, explanation: "Da = down-stroke; Ra = up-stroke." },
+  ]},
+  sitar_l1_02_mastery: { id: "sitar_l1_02_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l1_02_sargam", title: "Quick check: sargam names", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "What comes after Ga?", options: ["Re","Ma","Pa","Ni"], correctIndex: 1, explanation: "Sa Re Ga Ma Pa Dha Ni Sa' — Ma follows Ga." },
+    { id: "q2", type: "mcq", prompt: "Sargam is equivalent to…", options: ["Drum bols","Western solfege (Do Re Mi)","Note duration","Chord quality"], correctIndex: 1, explanation: "Sargam = Indian solfege. Sa≈Do, Re≈Re, Ga≈Mi, etc." },
+    { id: "q3", type: "mcq", prompt: "How many svaras in a sargam scale?", options: ["5","6","7","12"], correctIndex: 2, explanation: "7 svaras from Sa to Ni, with Sa' (octave) making 8 notes total." },
+  ]},
+  sitar_l1_03_mastery: { id: "sitar_l1_03_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l1_03_descent", title: "Quick check: sargam descending", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Descending sargam starts on…", options: ["Sa","Sa' (upper octave)","Pa","Ni"], correctIndex: 1, explanation: "Sa' Ni Dha Pa Ma Ga Re Sa — start from the upper Sa." },
+    { id: "q2", type: "mcq", prompt: "Why is descending harder?", options: ["It isn't","Gravity makes you rush","No reason","Wrong strings"], correctIndex: 1, explanation: "Instinctively we speed up going down. Fight it." },
+    { id: "q3", type: "mcq", prompt: "Sa is called…", options: ["The exit","Home","The modulation","The resolution note only"], correctIndex: 1, explanation: "Sa is home. Every phrase returns there." },
+  ]},
+  sitar_l1_04_mastery: { id: "sitar_l1_04_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l1_04_alankar", title: "Quick check: alankar patterns", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "An alankar is…", options: ["A raga","A melodic ornament pattern","A drum bol","A tuning"], correctIndex: 1, explanation: "Alankar = melodic pattern, typically moving up a scale." },
+    { id: "q2", type: "mcq", prompt: "Pattern 'Sa Re Ga, Re Ga Ma, Ga Ma Pa…' is an example of…", options: ["Jhaptal","Alankar","Tihai","Tanpura drone"], correctIndex: 1, explanation: "Overlapping 3-note groups = a basic alankar." },
+    { id: "q3", type: "mcq", prompt: "Why practice alankars?", options: ["Waste time","Build finger memory + ear for the scale","Impress teachers","Tuning"], correctIndex: 1, explanation: "They drill scale fluency." },
+  ]},
+  sitar_l1_05_mastery: { id: "sitar_l1_05_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l1_05_teentaal_basic", title: "Quick check: teentaal", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Teentaal has how many matras?", options: ["10","12","16","8"], correctIndex: 2, explanation: "16 matras in 4 vibhags of 4." },
+    { id: "q2", type: "mcq", prompt: "Sam falls on…", options: ["Beat 9","Beat 1","Beat 16","Any beat"], correctIndex: 1, explanation: "Sam = beat 1 of the cycle." },
+    { id: "q3", type: "mcq", prompt: "Khali in teentaal is on…", options: ["Beat 1","Beat 9","Beat 16","Never"], correctIndex: 1, explanation: "Khali (the empty beat) falls on beat 9." },
+  ]},
+  sitar_l1_06_mastery: { id: "sitar_l1_06_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l1_06_first_bandish", title: "Quick check: first bandish", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "A bandish is…", options: ["A composed piece in a raga + taal","A freely improvised piece","A tuning","A drone"], correctIndex: 0, explanation: "Bandish = composed piece, with sthayi + antara." },
+    { id: "q2", type: "mcq", prompt: "Yaman's vadi (most important note) is…", options: ["Sa","Ga","Pa","Ni"], correctIndex: 1, explanation: "Ga is vadi in Yaman." },
+    { id: "q3", type: "mcq", prompt: "Bandish sections are called…", options: ["Verse + chorus","Sthayi + antara","Intro + outro","Alap + gat"], correctIndex: 1, explanation: "Sthayi (refrain) + antara (variation)." },
+  ]},
+  sitar_l2_01_mastery: { id: "sitar_l2_01_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l2_01_raga_bhupali", title: "Quick check: Raga Bhupali", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Bhupali is a pentatonic raga — how many svaras?", options: ["4","5","6","7"], correctIndex: 1, explanation: "5: Sa Re Ga Pa Dha. Omits Ma + Ni." },
+    { id: "q2", type: "mcq", prompt: "Bhupali's time of performance is…", options: ["Dawn","Late afternoon / evening","Midnight","Noon"], correctIndex: 1, explanation: "First prahar of night." },
+    { id: "q3", type: "mcq", prompt: "Which svaras does Bhupali omit?", options: ["Sa + Pa","Ma + Ni","Re + Ga","Dha + Ni"], correctIndex: 1, explanation: "No Ma, no Ni." },
+  ]},
+  sitar_l2_02_mastery: { id: "sitar_l2_02_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l2_02_alap_basics", title: "Quick check: alap basics", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Alap is…", options: ["Rhythmic + fast","Free-rhythm exploration of the raga","Always with tabla","Always < 1 min"], correctIndex: 1, explanation: "Alap = free-rhythm opening, no tabla." },
+    { id: "q2", type: "mcq", prompt: "Alap's purpose is…", options: ["Show off speed","Establish the raga's mood","Warm up fingers","Tune the instrument"], correctIndex: 1, explanation: "Reveals the raga's personality phrase by phrase." },
+    { id: "q3", type: "mcq", prompt: "Alap typically starts on…", options: ["Upper Sa","Sa in mid-octave","Pa","Ga"], correctIndex: 1, explanation: "Start on Sa. Build outward." },
+  ]},
+  sitar_l2_03_mastery: { id: "sitar_l2_03_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l2_03_mizrab_bols", title: "Quick check: mizrab bols", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Da = …", options: ["Up-stroke","Down-stroke","Silence","Left-hand pull"], correctIndex: 1, explanation: "Da = down; Ra = up." },
+    { id: "q2", type: "mcq", prompt: "What does chikari mean?", options: ["The main string","Drone strings strummed for rhythmic punctuation","A drum","Nothing"], correctIndex: 1, explanation: "Chikari = the upper drone strings." },
+    { id: "q3", type: "mcq", prompt: "Diri means…", options: ["One down-stroke","Two rapid down-up strokes","Silence","Chikari"], correctIndex: 1, explanation: "Diri = Da + Ra played as a single rapid figure." },
+  ]},
+  sitar_l2_04_mastery: { id: "sitar_l2_04_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l2_04_meend_basics", title: "Quick check: meend", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Meend is…", options: ["Drum pattern","Pitch slide from one svara to another","Tuning","Written notation"], correctIndex: 1, explanation: "Meend = continuous pitch slide." },
+    { id: "q2", type: "mcq", prompt: "Meend on sitar is executed by…", options: ["Fingerpicking","Pulling the string sideways while sliding","Strumming harder","Adjusting the drone"], correctIndex: 1, explanation: "Left hand bends the string sideways." },
+    { id: "q3", type: "mcq", prompt: "Meend Ma→Ga means slide…", options: ["From Ma down to Ga","From Ga up to Ma","Any direction","Stay on Ma"], correctIndex: 0, explanation: "Ma → Ga descends." },
+  ]},
+  sitar_l2_05_mastery: { id: "sitar_l2_05_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l2_05_jhaptal_intro", title: "Quick check: jhaptal", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Jhaptal has how many matras?", options: ["8","10","12","16"], correctIndex: 1, explanation: "10 matras in 2+3+2+3." },
+    { id: "q2", type: "mcq", prompt: "Jhaptal's vibhag pattern is…", options: ["4+4+4+4","2+3+2+3","3+3+4","5+5"], correctIndex: 1, explanation: "2+3+2+3 = 10." },
+    { id: "q3", type: "mcq", prompt: "Teentaal = 16, jhaptal = 10, rupak = …", options: ["6","7","8","12"], correctIndex: 1, explanation: "Rupak = 7 matras (3+2+2)." },
+  ]},
+  sitar_l2_06_mastery: { id: "sitar_l2_06_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l2_06_bandish_bhupali", title: "Quick check: Bhupali bandish", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Bhupali uses only which 5 svaras?", options: ["Sa Re Ga Pa Dha","Sa Re Ga Ma Pa","Sa Re ga Ma Pa","Sa Ma Pa Dha Ni"], correctIndex: 0, explanation: "Sa Re Ga Pa Dha — all shuddha, no Ma or Ni." },
+    { id: "q2", type: "mcq", prompt: "Sthayi should stay primarily in…", options: ["Upper octave","Middle octave","Lower octave","Any"], correctIndex: 1, explanation: "Sthayi = middle octave; antara climbs to upper." },
+    { id: "q3", type: "mcq", prompt: "Mukhda = ?", options: ["A raga","The opening of the bandish","The hook that lands on sam","Silence"], correctIndex: 2, explanation: "Mukhda = hook phrase that signals the return to sam." },
+  ]},
+  sitar_l3_01_mastery: { id: "sitar_l3_01_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l3_01_raga_bhairav", title: "Quick check: Bhairav", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Bhairav uses…", options: ["All shuddha","Komal Re + komal Dha","Komal Ga + komal Ni","Tivra Ma"], correctIndex: 1, explanation: "Bhairav = komal Re + komal Dha; everything else shuddha." },
+    { id: "q2", type: "mcq", prompt: "Bhairav's time is…", options: ["Dawn","Dusk","Midnight","Noon"], correctIndex: 0, explanation: "Dawn raga, devotional mood." },
+    { id: "q3", type: "mcq", prompt: "Its thaat is…", options: ["Kalyan","Bhairav","Asavari","Khamaj"], correctIndex: 1, explanation: "Bhairav thaat (one of the 10)." },
+  ]},
+  sitar_l3_02_mastery: { id: "sitar_l3_02_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l3_02_taans", title: "Quick check: taans", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "A taan is…", options: ["A slow drone","A fast melodic run","A drum pattern","A tuning"], correctIndex: 1, explanation: "Taan = fast run." },
+    { id: "q2", type: "mcq", prompt: "Chhoti taan vs badi taan?", options: ["Same","Short vs long","Up vs down","Taal vs raga"], correctIndex: 1, explanation: "Chhoti = short (4-8 beats); badi = long (16+)." },
+    { id: "q3", type: "mcq", prompt: "What's the priority when playing a taan?", options: ["Speed above all","Clarity at speed","Softness","Adding chords"], correctIndex: 1, explanation: "Clarity first, then speed." },
+  ]},
+  sitar_l3_03_mastery: { id: "sitar_l3_03_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l3_03_gat", title: "Quick check: gat", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Gat is…", options: ["A raga","An instrumental composition set to a taal","A drum solo","A scale"], correctIndex: 1, explanation: "Gat = fixed instrumental composition played with tabla." },
+    { id: "q2", type: "mcq", prompt: "Gat comes after…", options: ["Alap + jor + jhala","Tabla solo","Nothing","The last bandish"], correctIndex: 0, explanation: "Classic order: alap, jor, jhala, then gat with tabla." },
+    { id: "q3", type: "mcq", prompt: "Simple gat in teentaal typically fills…", options: ["1 matra","16 matras (one cycle)","32 matras","Any"], correctIndex: 1, explanation: "One cycle = 16 matras." },
+  ]},
+  sitar_l3_04_mastery: { id: "sitar_l3_04_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l3_04_alap_extended", title: "Quick check: extended alap", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Extended alap covers how many octaves?", options: ["One","Two","All three","None"], correctIndex: 2, explanation: "Lower, middle, upper — all three." },
+    { id: "q2", type: "mcq", prompt: "Pakad is…", options: ["A rhythm","A signature phrase that identifies the raga","A tuning","An exercise"], correctIndex: 1, explanation: "Pakad = raga's identifying phrase." },
+    { id: "q3", type: "mcq", prompt: "Alap rhythm is…", options: ["Free","Strict teentaal","Jhaptal","Rupak"], correctIndex: 0, explanation: "Alap has no tabla — free time." },
+  ]},
+  sitar_l3_05_mastery: { id: "sitar_l3_05_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l3_05_rupak", title: "Quick check: rupak", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Rupak has how many matras?", options: ["7","8","10","16"], correctIndex: 0, explanation: "7 matras (3+2+2)." },
+    { id: "q2", type: "mcq", prompt: "Rupak's unusual feature is that sam is…", options: ["Always strong","On a khali beat","On beat 8","On beat 16"], correctIndex: 1, explanation: "Rupak's sam falls on a khali — quiet downbeat." },
+    { id: "q3", type: "mcq", prompt: "Rupak's vibhag structure is…", options: ["2+2+3","3+2+2","4+3","5+2"], correctIndex: 1, explanation: "3+2+2." },
+  ]},
+  sitar_l3_06_mastery: { id: "sitar_l3_06_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l3_06_standard_cert", title: "Quick check: Standard Cert prep", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Standard Cert lasts…", options: ["30 seconds","3 minutes","10 minutes","1 hour"], correctIndex: 1, explanation: "3 minutes total." },
+    { id: "q2", type: "mcq", prompt: "It includes…", options: ["Alap only","Gat only","Alap + gat in teentaal","Just tuning"], correctIndex: 2, explanation: "Combined: 2 min alap + 1 min gat." },
+    { id: "q3", type: "mcq", prompt: "Pass threshold (overall composite)?", options: ["0.5","0.6","0.75","0.9"], correctIndex: 2, explanation: "≥0.75 overall for Standard Cert." },
+  ]},
+
+  sitar_l4_01_mastery: { id: "sitar_l4_01_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l4_01_yaman_alap", title: "Quick check: Yaman alap + meend", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Yaman's vadi + samvadi are…", options: ["Sa + Pa","Ga + Ni","Re + Pa","Dha + Ga"], correctIndex: 1, explanation: "Ga (vadi) + Ni (samvadi)." },
+    { id: "q2", type: "mcq", prompt: "Yaman pakad is…", options: ["Sa Re Ga","Ni Re Ga, Ma Dha Ni Sa'","Pa Ma Ga Re","Dha Ma Ga Re"], correctIndex: 1, explanation: "The pakad identifies Yaman." },
+    { id: "q3", type: "mcq", prompt: "Yaman's time is…", options: ["Dawn","Early evening","Midnight","Noon"], correctIndex: 1, explanation: "Evening raga, Kalyan thaat." },
+  ]},
+  sitar_l4_02_mastery: { id: "sitar_l4_02_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l4_02_yaman_vistar", title: "Quick check: vistar", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Vistar means…", options: ["Speed","Slow expansion","Silence","Repetition"], correctIndex: 1, explanation: "Vistar = careful phrase-by-phrase expansion." },
+    { id: "q2", type: "mcq", prompt: "Each vistar phrase should…", options: ["Skip the pakad","Return through the pakad","Be random","Cycle the tonic only"], correctIndex: 1, explanation: "Pakad grounds every ascent." },
+    { id: "q3", type: "mcq", prompt: "Where to pause?", options: ["Any svara","Vadi + samvadi","Only Sa","Never"], correctIndex: 1, explanation: "Pause on vadi (Ga) + samvadi (Ni)." },
+  ]},
+  sitar_l4_03_mastery: { id: "sitar_l4_03_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l4_03_raga_bhairavi", title: "Quick check: Bhairavi", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Bhairavi uses how many komal svaras?", options: ["0","2","4","7"], correctIndex: 2, explanation: "Re, Ga, Dha, Ni all komal." },
+    { id: "q2", type: "mcq", prompt: "Bhairavi is played…", options: ["At the start of a concert","As the concluding raga","Mid-set only","Not on sitar"], correctIndex: 1, explanation: "Traditional concert closer or dawn raga." },
+    { id: "q3", type: "mcq", prompt: "Bhairavi thaat uses…", options: ["Ma tivra","All komals (Re, Ga, Dha, Ni)","All shuddha","Only Pa"], correctIndex: 1, explanation: "Bhairavi thaat = 4 komals." },
+  ]},
+  sitar_l4_04_mastery: { id: "sitar_l4_04_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l4_04_andolan", title: "Quick check: andolan", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Andolan rate is…", options: ["~2 Hz","~6 Hz","~10 Hz","~20 Hz"], correctIndex: 0, explanation: "Slower than vibrato — ~2 Hz." },
+    { id: "q2", type: "mcq", prompt: "Andolan applies mainly to…", options: ["Shuddha Ga","Komal svaras","Sa","Pa"], correctIndex: 1, explanation: "Gives komal svaras emotional weight." },
+    { id: "q3", type: "mcq", prompt: "Andolan vs meend?", options: ["Same thing","Andolan = oscillation around one svara; meend = slide between svaras","Swapped","No difference"], correctIndex: 1, explanation: "Andolan oscillates; meend slides." },
+  ]},
+  sitar_l4_05_mastery: { id: "sitar_l4_05_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l4_05_ektaal", title: "Quick check: ektaal", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Ektaal has how many matras?", options: ["10","12","14","16"], correctIndex: 1, explanation: "12 matras in 6 vibhags of 2." },
+    { id: "q2", type: "mcq", prompt: "Sam in ektaal?", options: ["Beat 7","Beat 1","Beat 12","No sam"], correctIndex: 1, explanation: "Sam = beat 1." },
+    { id: "q3", type: "mcq", prompt: "Khali in ektaal?", options: ["Beat 1","Beat 7","Beat 12","Never"], correctIndex: 1, explanation: "Khali falls on beat 7." },
+  ]},
+  sitar_l4_06_mastery: { id: "sitar_l4_06_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l4_06_bandish_bhairavi", title: "Quick check: Bhairavi bandish", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Which ornament should you apply on komal Re + komal Dha in Bhairavi?", options: ["Staccato","Andolan","Palm-mute","Nothing"], correctIndex: 1, explanation: "Andolan gives komal svaras their Bhairavi soul." },
+    { id: "q2", type: "mcq", prompt: "Bhairavi bandish cycles in…", options: ["Rupak","Teentaal","Jhaptal","Ektaal"], correctIndex: 1, explanation: "Teentaal (16 matras)." },
+    { id: "q3", type: "mcq", prompt: "Sthayi stays in which octave?", options: ["Upper","Middle","Lower","Any"], correctIndex: 1, explanation: "Middle octave; antara goes upper." },
+  ]},
+  sitar_l5_01_mastery: { id: "sitar_l5_01_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l5_01_raga_malkauns", title: "Quick check: Malkauns", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Malkauns uses how many svaras?", options: ["4","5","6","7"], correctIndex: 1, explanation: "Pentatonic (audav) — 5." },
+    { id: "q2", type: "mcq", prompt: "Which svaras does Malkauns omit?", options: ["Sa + Ma","Re + Pa","Ga + Dha","Ni + Sa"], correctIndex: 1, explanation: "No Re, no Pa." },
+    { id: "q3", type: "mcq", prompt: "Malkauns time?", options: ["Dawn","Evening","Late night (third prahar)","Noon"], correctIndex: 2, explanation: "Late-night meditative raga." },
+  ]},
+  sitar_l5_02_mastery: { id: "sitar_l5_02_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l5_02_gamaka_kan", title: "Quick check: kan-swara", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Kan means…", options: ["Full slide","Ear touch / grace note","Drone","Tuning"], correctIndex: 1, explanation: "Kan = brief neighboring-note touch before the main svara." },
+    { id: "q2", type: "mcq", prompt: "Kan duration?", options: ["Full beat","Half beat","< quarter beat","Long sustain"], correctIndex: 2, explanation: "Very brief — under a quarter beat." },
+    { id: "q3", type: "mcq", prompt: "Kan vs meend?", options: ["Same","Kan = touch; meend = slide","Both are slides","Both are rhythm"], correctIndex: 1, explanation: "Kan = instant touch; meend = continuous slide." },
+  ]},
+  sitar_l5_03_mastery: { id: "sitar_l5_03_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l5_03_jor", title: "Quick check: jor", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Jor sits between…", options: ["Tuning + alap","Alap + gat","Gat + bandish","Tihai + sam"], correctIndex: 1, explanation: "Jor = middle section between alap (free) and gat (tabla)." },
+    { id: "q2", type: "mcq", prompt: "Jor has…", options: ["Tabla accompaniment","No pulse","Steady mizrab pulse from the sitarist","Silence"], correctIndex: 2, explanation: "Sitarist provides their own pulse (Da-Ra-Da-Ra)." },
+    { id: "q3", type: "mcq", prompt: "Jor tempo?", options: ["~30 bpm","~60 bpm","~180 bpm","Any"], correctIndex: 1, explanation: "Medium tempo ~60 bpm." },
+  ]},
+  sitar_l5_04_mastery: { id: "sitar_l5_04_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l5_04_raga_desh", title: "Quick check: Desh", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Desh thaat?", options: ["Kalyan","Khamaj","Bhairav","Todi"], correctIndex: 1, explanation: "Khamaj thaat." },
+    { id: "q2", type: "mcq", prompt: "Desh's signature ambiguity?", options: ["No Sa","Komal Ni in avaroha, shuddha Ni flavor in ascent","No rhythm","Two tonic"], correctIndex: 1, explanation: "Komal Ni descending, shuddha in ascent." },
+    { id: "q3", type: "mcq", prompt: "Desh's season?", options: ["Winter","Summer","Monsoon","Spring"], correctIndex: 2, explanation: "Monsoon raga." },
+  ]},
+  sitar_l5_05_mastery: { id: "sitar_l5_05_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l5_05_chhoti_taan", title: "Quick check: chhoti taan", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Chhoti taan length?", options: ["1-2 beats","4-8 beats","16+ beats","Any"], correctIndex: 1, explanation: "Short taan — 4-8 beats." },
+    { id: "q2", type: "mcq", prompt: "Primary goal of taan practice?", options: ["Speed only","Clarity at speed","Volume","Aesthetic"], correctIndex: 1, explanation: "Clarity first." },
+    { id: "q3", type: "mcq", prompt: "Right-hand technique during taan?", options: ["Only Da","Only Ra","Strict Da-Ra alternation","Random"], correctIndex: 2, explanation: "Strict alternation." },
+  ]},
+  sitar_l5_06_mastery: { id: "sitar_l5_06_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l5_06_alap_jor_jhala_mini", title: "Quick check: alap-jor-jhala", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Classical sequence order?", options: ["Jhala → jor → alap","Alap → jor → jhala","Gat → alap → jhala","Any"], correctIndex: 1, explanation: "Always: alap → jor → jhala." },
+    { id: "q2", type: "mcq", prompt: "Jhala uses…", options: ["Silence","Rapid mizrab strokes with chikari accents","Only alap","Tabla solo"], correctIndex: 1, explanation: "Jhala = Da-Chikari-Da-Chikari." },
+    { id: "q3", type: "mcq", prompt: "Intensity arc?", options: ["Starts loud, gets quiet","Builds across sections","Random","Stays constant"], correctIndex: 1, explanation: "Builds from alap (quiet) to jhala (loud)." },
+  ]},
+  sitar_l6_01_mastery: { id: "sitar_l6_01_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l6_01_raga_kafi", title: "Quick check: Kafi", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Kafi uses which komals?", options: ["Re + Dha","Ga + Ni","Re + Ga","Dha + Ni"], correctIndex: 1, explanation: "Komal Ga, komal Ni." },
+    { id: "q2", type: "mcq", prompt: "Kafi is used in…", options: ["Dhrupad only","Thumri + bhajan + light classical","Carnatic alone","Never"], correctIndex: 1, explanation: "Folk-rooted, thumri, bhajan." },
+    { id: "q3", type: "mcq", prompt: "Kafi thaat uses…", options: ["All shuddha","Komal Ga + komal Ni","Komal Re + komal Dha","4 komals"], correctIndex: 1, explanation: "Just Ga + Ni komal." },
+  ]},
+  sitar_l6_02_mastery: { id: "sitar_l6_02_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l6_02_badi_taan", title: "Quick check: badi taan", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Badi taan length?", options: ["1-2 beats","4-8 beats","Full cycle+ (16+ matras)","Always shorter than chhoti"], correctIndex: 2, explanation: "Extends across a cycle or more." },
+    { id: "q2", type: "mcq", prompt: "The climax of a taan is…", options: ["The first note","Landing on sam","The halfway point","Silence"], correctIndex: 1, explanation: "Landing on sam is the payoff." },
+    { id: "q3", type: "mcq", prompt: "If you miss sam…", options: ["Nobody notices","The taan fails musically","You win","It's optional"], correctIndex: 1, explanation: "Sam is non-negotiable." },
+  ]},
+  sitar_l6_03_mastery: { id: "sitar_l6_03_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l6_03_bandish_yaman_drut", title: "Quick check: drut bandish", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Drut tempo?", options: ["~30 bpm","~80 bpm","~220 bpm","~400 bpm"], correctIndex: 2, explanation: "Drut ≈ 220 bpm." },
+    { id: "q2", type: "mcq", prompt: "Hindustani tempo categories (slow → fast)?", options: ["Vilambit → Madhya → Drut","Drut → Madhya → Vilambit","All equal","No tempos"], correctIndex: 0, explanation: "Vilambit (slow), Madhya (medium), Drut (fast)." },
+    { id: "q3", type: "mcq", prompt: "Vilambit tempo?", options: ["~30 bpm","~80 bpm","~220 bpm","Silent"], correctIndex: 0, explanation: "~30 bpm." },
+  ]},
+  sitar_l6_04_mastery: { id: "sitar_l6_04_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l6_04_ravi_shankar_signature", title: "Quick check: Ravi Shankar signature", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Ravi Shankar's home raga most associated with his Yaman performances?", options: ["Bhairav","Yaman","Kafi","Bhimpalasi"], correctIndex: 1, explanation: "Yaman is one of his signature ragas." },
+    { id: "q2", type: "mcq", prompt: "What is the soul of the Ravi Shankar signature lick?", options: ["Speed","Timing + meend precision","Volume","Chikari only"], correctIndex: 1, explanation: "The timing + meend carries the phrase." },
+    { id: "q3", type: "mcq", prompt: "Tempo approach?", options: ["Always fast","Slow + deliberate","Random","Inaudible"], correctIndex: 1, explanation: "Slow to honor the meend." },
+  ]},
+  sitar_l6_05_mastery: { id: "sitar_l6_05_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l6_05_jugalbandi", title: "Quick check: sawal-jawab", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Sawal-jawab means…", options: ["Song + dance","Question + answer","Fast + slow","Up + down"], correctIndex: 1, explanation: "Call + response dialogue." },
+    { id: "q2", type: "mcq", prompt: "Who does sawal-jawab with whom?", options: ["Sitarist + dancer","Sitarist + tabla player","Tanpura + mizrab","Yaman + Bhairav"], correctIndex: 1, explanation: "Melody instrument + tabla." },
+    { id: "q3", type: "mcq", prompt: "How does it end?", options: ["Randomly","Both landing on sam together","Silently","Key change"], correctIndex: 1, explanation: "Synchronous sam landing." },
+  ]},
+  sitar_l6_06_mastery: { id: "sitar_l6_06_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l6_06_pro_cert", title: "Quick check: Pro Cert prep", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Pro Cert duration?", options: ["3 min","10 min","20 min","1 hr"], correctIndex: 1, explanation: "10 minutes." },
+    { id: "q2", type: "mcq", prompt: "Required sections?", options: ["Alap only","Alap + jor + jhala + bandish + taans","Just taan","Gat only"], correctIndex: 1, explanation: "Full Pro arc." },
+    { id: "q3", type: "mcq", prompt: "Pass threshold (composite)?", options: ["0.5","0.65","0.76","0.9"], correctIndex: 2, explanation: "≥0.76 for Pro Cert." },
+  ]},
+
+  sitar_l7_01_mastery: { id: "sitar_l7_01_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l7_01_raga_darbari", title: "Quick check: Darbari Kanada", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Darbari's komal Ga is played with…", options: ["No ornament","Heavy andolan","Staccato","No bend"], correctIndex: 1, explanation: "Heavy andolan is Darbari's signature." },
+    { id: "q2", type: "mcq", prompt: "Darbari is credited to…", options: ["Ravi Shankar","Tansen","Vilayat Khan","Amir Khusrau"], correctIndex: 1, explanation: "Tansen, court musician to Akbar." },
+    { id: "q3", type: "mcq", prompt: "Thaat?", options: ["Kalyan","Bhairav","Asavari","Khamaj"], correctIndex: 2, explanation: "Asavari thaat." },
+  ]},
+  sitar_l7_02_mastery: { id: "sitar_l7_02_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l7_02_layakari", title: "Quick check: layakari", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Layakari is…", options: ["Tuning","Rhythmic play in compound ratios","A raga","Silence"], correctIndex: 1, explanation: "Rhythmic play — 3:2, 5:4, 7:4, etc." },
+    { id: "q2", type: "mcq", prompt: "Tihai is…", options: ["A tuning","A phrase played 3 times landing on sam","A raga","A scale"], correctIndex: 1, explanation: "Classic tihai." },
+    { id: "q3", type: "mcq", prompt: "Tabla during layakari holds…", options: ["Random rhythm","Steady pulse","Same rhythm as sitar","Silence"], correctIndex: 1, explanation: "Tabla anchors while sitar plays over." },
+  ]},
+  sitar_l7_03_mastery: { id: "sitar_l7_03_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l7_03_raga_todi", title: "Quick check: Todi", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Todi uses which altered svaras?", options: ["All shuddha","Komal re + komal ga + tivra Ma + komal dha","Only komal Ni","Only tivra Ma"], correctIndex: 1, explanation: "Four altered svaras." },
+    { id: "q2", type: "mcq", prompt: "Todi's vadi + samvadi?", options: ["Sa + Pa","Dha + Ga","Ga + Ni","Re + Ma"], correctIndex: 1, explanation: "Dha (vadi) + Ga (samvadi)." },
+    { id: "q3", type: "mcq", prompt: "Todi time?", options: ["Dawn","Late morning","Evening","Midnight"], correctIndex: 1, explanation: "Late morning devotional raga." },
+  ]},
+  sitar_l7_04_mastery: { id: "sitar_l7_04_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l7_04_krintan", title: "Quick check: krintan", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Krintan is executed by…", options: ["Right hand stroke","Left hand pull-off from the fret","Drone","Tuning"], correctIndex: 1, explanation: "Left hand pulls the string off the fret." },
+    { id: "q2", type: "mcq", prompt: "Krintan creates…", options: ["Silence","A ghost svara with sympathetic shimmer","Tabla sound","A chord"], correctIndex: 1, explanation: "Ghost svara + shimmering sympathetics." },
+    { id: "q3", type: "mcq", prompt: "Combine krintan with…", options: ["Nothing","Meend for fluid phrasing","Silence only","Only drone"], correctIndex: 1, explanation: "Krintan + meend = fluid phrasing." },
+  ]},
+  sitar_l7_05_mastery: { id: "sitar_l7_05_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l7_05_advanced_tihai", title: "Quick check: advanced tihai", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "To land a tihai on sam in teentaal starting from beat 8, the phrase must be…", options: ["3 matras","9 matras","16 matras","It depends"], correctIndex: 0, explanation: "3 matras × 3 = 9; starting at beat 8 ends on beat 16+1." },
+    { id: "q2", type: "mcq", prompt: "A tihai from beat 6 requires phrase length…", options: ["2 matras","11/3 matras","5 matras","7 matras"], correctIndex: 1, explanation: "11 matras ÷ 3 = 11/3 (fractional!)." },
+    { id: "q3", type: "mcq", prompt: "Why do audiences react strongly?", options: ["Random","The math works + lands on sam","It's loud","It's quiet"], correctIndex: 1, explanation: "The arithmetic is the drama." },
+  ]},
+  sitar_l7_06_mastery: { id: "sitar_l7_06_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l7_06_jugalbandi_extended", title: "Quick check: extended jugalbandi", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Extended jugalbandi adds…", options: ["Nothing","Layakari + tihai within sawal-jawab","Tuning","Silence"], correctIndex: 1, explanation: "Layers in rhythmic complexity." },
+    { id: "q2", type: "mcq", prompt: "Length target?", options: ["30 sec","1 min","4 min","1 hr"], correctIndex: 2, explanation: "~4 min dialogue." },
+    { id: "q3", type: "mcq", prompt: "End point?", options: ["Random","Synchronized tihai landing on sam","Tabla solo","Fade"], correctIndex: 1, explanation: "Synchronous sam." },
+  ]},
+
+  sitar_l8_01_mastery: { id: "sitar_l8_01_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l8_01_full_alap_darbari", title: "Quick check: full Darbari alap", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Target duration?", options: ["30 sec","3 min","10 min","30 min"], correctIndex: 2, explanation: "10 minutes." },
+    { id: "q2", type: "mcq", prompt: "How many octaves to cover?", options: ["Just middle","Lower + middle","All three","Upper only"], correctIndex: 2, explanation: "Lower, middle, upper." },
+    { id: "q3", type: "mcq", prompt: "Acceptable out-of-raga notes?", options: ["Many","A few","Zero","Half"], correctIndex: 2, explanation: "Zero." },
+  ]},
+  sitar_l8_02_mastery: { id: "sitar_l8_02_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l8_02_ravi_shankar_study", title: "Quick check: Ravi Shankar transcription", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Recommended study source?", options: ["Monterey 1967 Yaman Kalyan","Random bootleg","AI-generated","Only sheet music"], correctIndex: 0, explanation: "Monterey Pop 1967." },
+    { id: "q2", type: "mcq", prompt: "Transcription length?", options: ["3 sec","30 sec","3 min","30 min"], correctIndex: 1, explanation: "30 seconds — manageable scope." },
+    { id: "q3", type: "mcq", prompt: "After memorizing, you should…", options: ["Stop","Improvise in the same idiom","Quit","Repeat identically forever"], correctIndex: 1, explanation: "Imitation → improvisation." },
+  ]},
+  sitar_l8_03_mastery: { id: "sitar_l8_03_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l8_03_raga_improvisation", title: "Quick check: free raga improvisation", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Is improvisation 'random'?", options: ["Yes","No — it's extemporaneous speech in the raga","Sometimes","Irrelevant"], correctIndex: 1, explanation: "Raga grammar still governs." },
+    { id: "q2", type: "mcq", prompt: "Pakad role in improvisation?", options: ["Skip","Anchor when you wander","Confuse the listener","Play loudly"], correctIndex: 1, explanation: "Pakad anchors." },
+    { id: "q3", type: "mcq", prompt: "Same improvisation twice?", options: ["Always","Ideally — to prove it","Never the same twice","Exactly identical"], correctIndex: 2, explanation: "Each improvisation is unique." },
+  ]},
+  sitar_l8_04_mastery: { id: "sitar_l8_04_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l8_04_raga_mala", title: "Quick check: raga mala", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Raga mala means…", options: ["Raga lovers","Garland of ragas","Fast taan","Silence"], correctIndex: 1, explanation: "Garland of ragas." },
+    { id: "q2", type: "mcq", prompt: "Pivots between ragas use…", options: ["Random svaras","Common svaras","Rhythm","Silence"], correctIndex: 1, explanation: "Shared svaras are pivots." },
+    { id: "q3", type: "mcq", prompt: "Traditional concert closer?", options: ["Yaman","Bhairav","Bhairavi","Darbari"], correctIndex: 2, explanation: "Bhairavi traditionally closes." },
+  ]},
+  sitar_l8_05_mastery: { id: "sitar_l8_05_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l8_05_gat_toda", title: "Quick check: gat toda", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Toda is…", options: ["A new raga","A pre-composed elaboration segment","A drum","A scale"], correctIndex: 1, explanation: "Composed melodic segment, 4-8 cycles." },
+    { id: "q2", type: "mcq", prompt: "Good toda usage?", options: ["Played mechanically","Blended seamlessly with improv","Avoided","Played only once at the end"], correctIndex: 1, explanation: "Seamless blending." },
+    { id: "q3", type: "mcq", prompt: "Raga grammar during toda?", options: ["Ignore","Strict","Loose","Doesn't matter"], correctIndex: 1, explanation: "Strict — always." },
+  ]},
+  sitar_l8_06_mastery: { id: "sitar_l8_06_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l8_06_concert_piece", title: "Quick check: 25-min concert piece", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "25-min structure?", options: ["All alap","Alap-jor-jhala-vilambit-drut-climax","Only gat","Random"], correctIndex: 1, explanation: "Full performance arc." },
+    { id: "q2", type: "mcq", prompt: "Success criterion?", options: ["Loudness","Pacing + no rushed or overlong sections","Length","Speed"], correctIndex: 1, explanation: "Perfect pacing." },
+    { id: "q3", type: "mcq", prompt: "Final climax?", options: ["Silence","Jhala + taan + sam landing","Start with alap again","Tabla solo"], correctIndex: 1, explanation: "Intense close with sam landing." },
+  ]},
+
+  sitar_l9_01_mastery: { id: "sitar_l9_01_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l9_01_compose_raga_bandish", title: "Quick check: composing a bandish", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Bandish structure?", options: ["Only sthayi","Sthayi + antara + mukhda","Alap only","Tabla only"], correctIndex: 1, explanation: "Sthayi + antara + mukhda." },
+    { id: "q2", type: "mcq", prompt: "Key test?", options: ["Is it long?","Is it singable? Does it capture the raga?","Is it loud?","Is it random?"], correctIndex: 1, explanation: "Singability + raga capture." },
+    { id: "q3", type: "mcq", prompt: "Antara typically…", options: ["Stays in middle","Climbs to upper Sa","Goes to lower","Stays on Pa"], correctIndex: 1, explanation: "Antara climbs to upper octave." },
+  ]},
+  sitar_l9_02_mastery: { id: "sitar_l9_02_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l9_02_tihai_of_tihais", title: "Quick check: nested tihai", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Nested tihai matras total?", options: ["9","27","3","16"], correctIndex: 1, explanation: "3×3×3 = 27 matras." },
+    { id: "q2", type: "mcq", prompt: "Start point (to land on sam in teentaal)?", options: ["Beat 1 next cycle","Beat 6 of previous cycle","Anywhere","Beat 16"], correctIndex: 1, explanation: "27 matras before the next sam." },
+    { id: "q3", type: "mcq", prompt: "Why impressive?", options: ["Nobody cares","Complex math + flawless execution","Random","Slow"], correctIndex: 1, explanation: "The crowning tihai." },
+  ]},
+  sitar_l9_03_mastery: { id: "sitar_l9_03_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l9_03_compose_raga", title: "Quick check: composing an original raga", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "A new raga must define…", options: ["Aaroha only","Aaroha, avaroha, vadi, samvadi, pakad","Nothing","Tempo"], correctIndex: 1, explanation: "All five pillars." },
+    { id: "q2", type: "mcq", prompt: "Key criterion?", options: ["Length","Coherence + distinctive mood","Volume","Speed"], correctIndex: 1, explanation: "Must feel coherent + distinctive." },
+    { id: "q3", type: "mcq", prompt: "Historical precedent?", options: ["Never done","Ravi Shankar + Vilayat Khan + Shivkumar Sharma all composed new ragas","Forbidden","Only ancient masters"], correctIndex: 1, explanation: "Great masters did this." },
+  ]},
+  sitar_l9_04_mastery: { id: "sitar_l9_04_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l9_04_cross_genre", title: "Quick check: cross-genre sitar", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Famous Ravi Shankar collaborators?", options: ["Only Indian","George Harrison + Coltrane + Menuhin","Only pop artists","None"], correctIndex: 1, explanation: "Cross-cultural pioneer." },
+    { id: "q2", type: "mcq", prompt: "Kafi thaat maps to…", options: ["Major mode","Dorian mode","Mixolydian","Locrian"], correctIndex: 1, explanation: "Kafi ≈ Dorian (komal Ga, komal Ni)." },
+    { id: "q3", type: "mcq", prompt: "Goal of cross-genre?", options: ["Dilute sitar","Expand its reach","Abandon tradition","Pure fusion"], correctIndex: 1, explanation: "Expand, don't dilute." },
+  ]},
+  sitar_l9_05_mastery: { id: "sitar_l9_05_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l9_05_masterclass_teach", title: "Quick check: masterclass teaching", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "What level is the masterclass pitched to?", options: ["L1","L3 learners","L9 masters","No level"], correctIndex: 1, explanation: "L3 learners." },
+    { id: "q2", type: "mcq", prompt: "Grading criteria?", options: ["Length","Clarity + pedagogy + demonstration","Tempo","Volume"], correctIndex: 1, explanation: "Teaching quality." },
+    { id: "q3", type: "mcq", prompt: "Topic?", options: ["Anything","Yaman pakad + meend + first bandish","Jazz","No topic"], correctIndex: 1, explanation: "Yaman basics." },
+  ]},
+  sitar_l9_06_mastery: { id: "sitar_l9_06_mastery", scope: "lesson", instrumentId: "sitar", lessonId: "sitar_l9_06_genius_recital", title: "Quick check: Genius Cert sitar recital", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Genius recital duration?", options: ["5 min","30 min","45 min","60 min"], correctIndex: 2, explanation: "45 minutes." },
+    { id: "q2", type: "mcq", prompt: "Required components?", options: ["Just alap","2 ragas + original bandish + raga mala close","Tabla only","Random"], correctIndex: 1, explanation: "Full program." },
+    { id: "q3", type: "mcq", prompt: "Graded by…", options: ["Auto-grader only","Human Hindustani master","Peers","AI"], correctIndex: 1, explanation: "Human reviewer — not auto-graded." },
+  ]},
+
+  // ============================================================
+  // PHASE 4 · Vocals L1-L9 mastery quizzes
+  // ============================================================
+  vocals_l1_01_mastery: { id: "vocals_l1_01_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l1_01_posture", title: "Quick check: posture + breath", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Good singing breath expands…", options: ["Shoulders","Ribs laterally","Only belly","Nowhere"], correctIndex: 1, explanation: "Diaphragmatic breath — ribs expand sideways." },
+    { id: "q2", type: "mcq", prompt: "Posture for singing?", options: ["Hunched","Tall + ribs open + knees soft","Seated tightly","Anything"], correctIndex: 1, explanation: "Stand tall, ribs open." },
+    { id: "q3", type: "mcq", prompt: "First exercise length?", options: ["2 seconds","10 seconds","5 minutes","30 seconds"], correctIndex: 1, explanation: "Sustain ah for 10 seconds." },
+  ]},
+  vocals_l1_02_mastery: { id: "vocals_l1_02_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l1_02_pitch_match", title: "Quick check: pitch matching", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Pitch matching order?", options: ["Sing loud first","Hum quietly first, then open to ah","Only speak it","Whistle"], correctIndex: 1, explanation: "Hum first to check." },
+    { id: "q2", type: "mcq", prompt: "Target accuracy?", options: ["Within 100 cents","Within 20 cents","Within 500 cents","No limit"], correctIndex: 1, explanation: "Within 20 cents of the target." },
+    { id: "q3", type: "mcq", prompt: "The ear-voice loop is…", options: ["Hear → produce instantly","Hear → brain identifies → voice produces","Voice alone","Vision-only"], correctIndex: 1, explanation: "3-step loop." },
+  ]},
+  vocals_l1_03_mastery: { id: "vocals_l1_03_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l1_03_five_tone", title: "Quick check: 5-tone scale", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Solfege for 5 notes?", options: ["Do Re Mi Fa Sol","C D E F G","Sa Re Ga Ma Pa","All of the above"], correctIndex: 3, explanation: "All three systems = same concept." },
+    { id: "q2", type: "mcq", prompt: "Starting pitch?", options: ["Exactly C4","Your comfortable low note","High C","Irrelevant"], correctIndex: 1, explanation: "Yours, not someone else's." },
+    { id: "q3", type: "mcq", prompt: "Descend after ascent?", options: ["No","Yes","Only ascend","Only descend"], correctIndex: 1, explanation: "Always practice both directions." },
+  ]},
+  vocals_l1_04_mastery: { id: "vocals_l1_04_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l1_04_vowels", title: "Quick check: pure vowels", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Five pure vowels?", options: ["a e i o u (English)","ah eh ee oh oo","any sounds","consonants"], correctIndex: 1, explanation: "ah eh ee oh oo." },
+    { id: "q2", type: "mcq", prompt: "What sustains the melody?", options: ["Consonants","Vowels","Rests","Nothing"], correctIndex: 1, explanation: "Vowels carry pitch." },
+    { id: "q3", type: "mcq", prompt: "When changing vowel on one pitch, the pitch should…", options: ["Wobble","Stay constant","Rise","Fall"], correctIndex: 1, explanation: "Constant pitch through vowel changes." },
+  ]},
+  vocals_l1_05_mastery: { id: "vocals_l1_05_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l1_05_octave_jump", title: "Quick check: octave jump", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "The voice register transition is called…", options: ["Passaggio","Glottis","Crescendo","Altissimo"], correctIndex: 0, explanation: "Passaggio = transition." },
+    { id: "q2", type: "mcq", prompt: "Octave = …", options: ["Same pitch","Same name, higher register (2x frequency)","Random interval","2 semitones"], correctIndex: 1, explanation: "2x frequency, same pitch class." },
+    { id: "q3", type: "mcq", prompt: "Upper Do technique?", options: ["Aim exactly","Aim HIGHER than you think","Stay in chest","Yell"], correctIndex: 1, explanation: "Aim slightly above." },
+  ]},
+  vocals_l1_06_mastery: { id: "vocals_l1_06_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l1_06_happy_birthday", title: "Quick check: Happy Birthday", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Happy Birthday spans about…", options: ["A 3rd","An octave","2 octaves","A semitone"], correctIndex: 1, explanation: "About an octave." },
+    { id: "q2", type: "mcq", prompt: "Where to breathe?", options: ["Mid-word","Between phrases","Never","At random"], correctIndex: 1, explanation: "Between phrases." },
+    { id: "q3", type: "mcq", prompt: "Peak of melody on…", options: ["'Happy'","The name (e.g. 'dear PHANI')","'you'","'birthday'"], correctIndex: 1, explanation: "The name is the climax." },
+  ]},
+  vocals_l2_01_mastery: { id: "vocals_l2_01_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l2_01_range_finding", title: "Quick check: range", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Typical soprano range?", options: ["A3-F5","C2-C4","F4-C7","None"], correctIndex: 0, explanation: "Women typically A3-F5." },
+    { id: "q2", type: "mcq", prompt: "Find your low by…", options: ["Going up chromatically","Going down chromatically from middle C","Screaming","Whispering"], correctIndex: 1, explanation: "Descend from middle C." },
+    { id: "q3", type: "mcq", prompt: "If you strain, you've…", options: ["Found your note","Gone past your comfortable range","Succeeded","Passed the lesson"], correctIndex: 1, explanation: "Straining = too far." },
+  ]},
+  vocals_l2_02_mastery: { id: "vocals_l2_02_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l2_02_major_scale", title: "Quick check: major scale", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Major scale semitones?", options: ["All whole","2 semitones (Mi-Fa + Ti-Do)","5 semitones","1 semitone"], correctIndex: 1, explanation: "Mi-Fa + Ti-Do are semitones; others are wholetones." },
+    { id: "q2", type: "mcq", prompt: "Hardest tight spot?", options: ["Do-Re","Ti-Do","Fa-Sol","Sol-La"], correctIndex: 1, explanation: "Ti-Do — we undershoot." },
+    { id: "q3", type: "mcq", prompt: "Breath for ascending?", options: ["Two breaths","One breath for full ascent","No breath","Breath every note"], correctIndex: 1, explanation: "One breath = sign of support." },
+  ]},
+  vocals_l2_03_mastery: { id: "vocals_l2_03_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l2_03_intervals", title: "Quick check: intervals", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "'Here comes the bride' uses?", options: ["Perfect 5th","Perfect 4th","Major 3rd","Minor 2nd"], correctIndex: 1, explanation: "Perfect 4th." },
+    { id: "q2", type: "mcq", prompt: "Twinkle opening uses?", options: ["Perfect 5th","Perfect 4th","Major 3rd","Octave"], correctIndex: 0, explanation: "Do-Sol = perfect 5th." },
+    { id: "q3", type: "mcq", prompt: "Memory aid technique?", options: ["Forget","Hum a reference song","Ignore pitch","Just sing"], correctIndex: 1, explanation: "Reference songs help." },
+  ]},
+  vocals_l2_04_mastery: { id: "vocals_l2_04_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l2_04_dynamics", title: "Quick check: dynamics", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Pianissimo = ?", options: ["Very soft","Medium","Very loud","Silent"], correctIndex: 0, explanation: "pp = very soft." },
+    { id: "q2", type: "mcq", prompt: "Common pitch error going loud?", options: ["Goes flat","Goes sharp","No change","Goes silent"], correctIndex: 1, explanation: "Loud → sharp." },
+    { id: "q3", type: "mcq", prompt: "Common error going soft?", options: ["Goes flat","Goes sharp","No change","Loses pitch"], correctIndex: 0, explanation: "Soft → flat." },
+  ]},
+  vocals_l2_05_mastery: { id: "vocals_l2_05_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l2_05_solfege_sargam", title: "Quick check: sargam", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Sargam's Ga = Western…", options: ["Re","Mi","Fa","Sol"], correctIndex: 1, explanation: "Ga ≈ Mi." },
+    { id: "q2", type: "mcq", prompt: "Pa = ?", options: ["Fa","Sol","La","Ti"], correctIndex: 1, explanation: "Pa ≈ Sol." },
+    { id: "q3", type: "mcq", prompt: "How many svaras in sargam scale?", options: ["5","6","7","8"], correctIndex: 2, explanation: "7 svaras Sa-Ni." },
+  ]},
+  vocals_l2_06_mastery: { id: "vocals_l2_06_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l2_06_twinkle", title: "Quick check: Twinkle", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Twinkle peaks on…", options: ["Middle C","Do (low)","Sol","Sol (high, on 'star')"], correctIndex: 3, explanation: "'Star' lands on G (Sol)." },
+    { id: "q2", type: "mcq", prompt: "Interval from 'twinkle' to 'star'?", options: ["Major 3rd","Perfect 4th","Perfect 5th","Octave"], correctIndex: 2, explanation: "C to G = perfect 5th." },
+    { id: "q3", type: "mcq", prompt: "Breath strategy?", options: ["Breathe mid-word","Breathe between phrases","No breaths","One breath for whole song"], correctIndex: 1, explanation: "Between phrases." },
+  ]},
+  vocals_l3_01_mastery: { id: "vocals_l3_01_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l3_01_head_voice", title: "Quick check: head voice", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Head voice vs chest voice?", options: ["Same","Head lighter/brighter upper; chest fuller/weighted lower","Swapped","No difference"], correctIndex: 1, explanation: "Head = upper light; chest = lower full." },
+    { id: "q2", type: "mcq", prompt: "Passaggio is…", options: ["A note name","The transition between chest + head","A speed","A dynamic"], correctIndex: 1, explanation: "Passaggio = transition." },
+    { id: "q3", type: "mcq", prompt: "Forcing chest up into head…", options: ["Is fine","Damages voice","Is recommended","Is easy"], correctIndex: 1, explanation: "Let it flip — don't force." },
+  ]},
+  vocals_l3_02_mastery: { id: "vocals_l3_02_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l3_02_consonants", title: "Quick check: consonants", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Consonants are…", options: ["Where melody sustains","Where words happen, fast events","Neither","Both"], correctIndex: 1, explanation: "Consonants = words; vowels = melody." },
+    { id: "q2", type: "mcq", prompt: "Common beginner error with 't', 'k'?", options: ["Silence","Hitching the line, interrupting airflow","Volume jump","Pitch jump"], correctIndex: 1, explanation: "The hitch." },
+    { id: "q3", type: "mcq", prompt: "Fix?", options: ["Stop air","Articulate with tongue/lips WITHOUT stopping air","Shout","Ignore"], correctIndex: 1, explanation: "Keep air flowing." },
+  ]},
+  vocals_l3_03_mastery: { id: "vocals_l3_03_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l3_03_amazing_grace", title: "Quick check: Amazing Grace", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Anacrusis = ?", options: ["Chorus","Pickup note before beat 1","Bridge","Break"], correctIndex: 1, explanation: "Pickup note." },
+    { id: "q2", type: "mcq", prompt: "Good starting key?", options: ["A major","G major (G4 start)","Db major","F♯ major"], correctIndex: 1, explanation: "G major if comfortable; D major if G is low." },
+    { id: "q3", type: "mcq", prompt: "Arc of a verse?", options: ["Flat","Quiet → medium → back to quiet","Loud all through","Silent"], correctIndex: 1, explanation: "Dynamic shape." },
+  ]},
+  vocals_l3_04_mastery: { id: "vocals_l3_04_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l3_04_carnatic_alankara", title: "Quick check: Sarali Varisai", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Sarali Varisai is in raga…", options: ["Yaman","Mayamalavagowla","Bhairavi","Kafi"], correctIndex: 1, explanation: "Mayamalavagowla." },
+    { id: "q2", type: "mcq", prompt: "Mayamalavagowla has komal…", options: ["Only Ga","Re + Dha","Re + Ga + Ma + Dha","Nothing komal"], correctIndex: 1, explanation: "Komal Re + komal Dha." },
+    { id: "q3", type: "mcq", prompt: "Why say svara names while singing?", options: ["Annoying","Builds ear + discipline","Loudness","It's optional"], correctIndex: 1, explanation: "Svara-saying builds the ear." },
+  ]},
+  vocals_l3_05_mastery: { id: "vocals_l3_05_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l3_05_phrasing", title: "Quick check: phrasing", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Typical 4-bar arc?", options: ["Flat","Establish → build → peak → release","Peak first","Random"], correctIndex: 1, explanation: "Establish → build → peak → resolve." },
+    { id: "q2", type: "mcq", prompt: "Peak typically on bar…", options: ["Bar 1","Bar 2","Bar 3","Bar 4"], correctIndex: 2, explanation: "Bar 3 peak." },
+    { id: "q3", type: "mcq", prompt: "What shapes phrasing?", options: ["Random","Breath + dynamics","Consonants only","Nothing"], correctIndex: 1, explanation: "Breath + dynamics." },
+  ]},
+  vocals_l3_06_mastery: { id: "vocals_l3_06_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l3_06_standard_cert", title: "Quick check: Standard Cert prep", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Pass threshold (composite)?", options: ["0.5","0.65","0.75","0.9"], correctIndex: 2, explanation: "≥0.75 overall." },
+    { id: "q2", type: "mcq", prompt: "Required skills?", options: ["Breath + pitch + vowels + consonants + phrasing + dynamics","Speed only","Volume only","Lyrics only"], correctIndex: 0, explanation: "All L1-L3 skills." },
+    { id: "q3", type: "mcq", prompt: "Graded on?", options: ["Pitch only","Pitch + tone + rhythm + dynamics + consistency","Length","Loudness"], correctIndex: 1, explanation: "All 5 dimensions." },
+  ]},
+
+  vocals_l4_01_mastery: { id: "vocals_l4_01_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l4_01_minor_scale", title: "Quick check: minor scale", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Natural minor vs major: what's lowered?", options: ["3rd only","3rd + 6th + 7th","5th","Nothing"], correctIndex: 1, explanation: "3rd, 6th, 7th lowered." },
+    { id: "q2", type: "mcq", prompt: "Harmonic minor raises…", options: ["3rd","5th","7th","All"], correctIndex: 2, explanation: "Raised 7th gives the exotic sound." },
+    { id: "q3", type: "mcq", prompt: "A natural minor scale pitches?", options: ["A B C D E F G A","A B C♯ D E F♯ G A","C D E F G A B C","Other"], correctIndex: 0, explanation: "Only white keys starting on A." },
+  ]},
+  vocals_l4_02_mastery: { id: "vocals_l4_02_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l4_02_melisma", title: "Quick check: melisma", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Melisma is…", options: ["One note per syllable","Multiple notes on one syllable","Silence","Speech"], correctIndex: 1, explanation: "Multi-note on single syllable." },
+    { id: "q2", type: "mcq", prompt: "Tradition?", options: ["Classical only","Gospel + R&B + pop","Country only","No tradition"], correctIndex: 1, explanation: "Gospel → R&B → modern pop." },
+    { id: "q3", type: "mcq", prompt: "Air flow during melisma?", options: ["Stops","Continuous","Intermittent","Irrelevant"], correctIndex: 1, explanation: "Continuous air." },
+  ]},
+  vocals_l4_03_mastery: { id: "vocals_l4_03_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l4_03_chromatic", title: "Quick check: chromatic scale", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Chromatic scale has how many pitches per octave?", options: ["7","8","12","13"], correctIndex: 2, explanation: "12 semitones per octave." },
+    { id: "q2", type: "mcq", prompt: "Why hardest scale?", options: ["Length","Ear doesn't naturally hear semitones","Loudness","Speed"], correctIndex: 1, explanation: "Semitones are ear-work." },
+    { id: "q3", type: "mcq", prompt: "Once mastered, intonation elsewhere…", options: ["Gets worse","Improves","Unchanged","Not related"], correctIndex: 1, explanation: "Transfers everywhere." },
+  ]},
+  vocals_l4_04_mastery: { id: "vocals_l4_04_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l4_04_ornaments", title: "Quick check: ornaments", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Trill?", options: ["Single note sustained","Rapid alternation between main + upper neighbor","Silence","Pull-off"], correctIndex: 1, explanation: "Rapid main ↔ upper neighbor." },
+    { id: "q2", type: "mcq", prompt: "Mordent?", options: ["Trill","Main → lower neighbor → main","Turn","Silence"], correctIndex: 1, explanation: "Main-lower-main." },
+    { id: "q3", type: "mcq", prompt: "Turn?", options: ["Main only","Upper-main-lower-main","Rapid trill","Silence"], correctIndex: 1, explanation: "Upper-main-lower-main." },
+  ]},
+  vocals_l4_05_mastery: { id: "vocals_l4_05_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l4_05_adele_hello", title: "Quick check: Adele Hello", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "'Hello' is in what key?", options: ["C major","F minor","A major","E♭ major"], correctIndex: 1, explanation: "F minor." },
+    { id: "q2", type: "mcq", prompt: "Chorus requires…", options: ["Only whisper","Belt + falsetto transitions","Only falsetto","Only speaking"], correctIndex: 1, explanation: "Both registers." },
+    { id: "q3", type: "mcq", prompt: "Peak note approximately?", options: ["C4","F5 (belt peak)","G3","C7"], correctIndex: 1, explanation: "F5 in the chorus." },
+  ]},
+  vocals_l4_06_mastery: { id: "vocals_l4_06_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l4_06_harmony", title: "Quick check: harmony singing", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Harmony challenge?", options: ["Too easy","Ears want to match melody, you must hold your line","No challenge","Rhythm only"], correctIndex: 1, explanation: "Don't drift to melody." },
+    { id: "q2", type: "mcq", prompt: "A 3rd above Do?", options: ["Do","Mi","Fa","Sol"], correctIndex: 1, explanation: "Do + 3rd up = Mi." },
+    { id: "q3", type: "mcq", prompt: "Testing harmony skill?", options: ["30 sec","Full verse without drifting","Nothing","Random"], correctIndex: 1, explanation: "Full verse = real test." },
+  ]},
+  vocals_l5_01_mastery: { id: "vocals_l5_01_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l5_01_vibrato", title: "Quick check: vibrato", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Pleasing vibrato rate?", options: ["1-2 Hz","5-6 Hz","10+ Hz","0 Hz"], correctIndex: 1, explanation: "5-6 Hz sweet spot." },
+    { id: "q2", type: "mcq", prompt: "Vibrato depth?", options: ["±1 cent","±20-40 cents typical","±200 cents","No limit"], correctIndex: 1, explanation: "±20-40 cents typical." },
+    { id: "q3", type: "mcq", prompt: "Start a note…", options: ["With vibrato immediately","Straight, then add vibrato","Randomly","Never"], correctIndex: 1, explanation: "Straight → add vibrato 2s in." },
+  ]},
+  vocals_l5_02_mastery: { id: "vocals_l5_02_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l5_02_mixed_voice", title: "Quick check: mixed voice", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Mixed voice blends…", options: ["Chest + head","Head + whistle","Speech + singing","Loud + quiet"], correctIndex: 0, explanation: "Chest + head together." },
+    { id: "q2", type: "mcq", prompt: "Pop mix vs classical mix?", options: ["Same","Pop = heavier chest-like; classical = lighter head-like","Swapped","No difference"], correctIndex: 1, explanation: "Pop = heavy; classical = light." },
+    { id: "q3", type: "mcq", prompt: "Without mix, high notes either…", options: ["Are easy","Yell (chest) or go breathy (head)","Are silent","Are automatic"], correctIndex: 1, explanation: "Yell or go breathy — both bad." },
+  ]},
+  vocals_l5_03_mastery: { id: "vocals_l5_03_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l5_03_riffs", title: "Quick check: R&B riffs", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Build riffs how?", options: ["Start at full speed","Start short (3 notes) + slow, build out","Skip practice","Random"], correctIndex: 1, explanation: "3 → 4 → 6 → 8 notes gradually." },
+    { id: "q2", type: "mcq", prompt: "Riff goal?", options: ["Blur notes","Keep each note distinct at speed","Silence","Yelling"], correctIndex: 1, explanation: "Distinct at speed." },
+    { id: "q3", type: "mcq", prompt: "Riffs derive from?", options: ["Classical","Gospel melisma","Country","EDM"], correctIndex: 1, explanation: "Gospel melisma tradition." },
+  ]},
+  vocals_l5_04_mastery: { id: "vocals_l5_04_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l5_04_aria", title: "Quick check: Puccini aria", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "'O mio babbino caro' is by…", options: ["Verdi","Puccini","Mozart","Bizet"], correctIndex: 1, explanation: "Puccini." },
+    { id: "q2", type: "mcq", prompt: "Key?", options: ["C major","A♭ major","F minor","D major"], correctIndex: 1, explanation: "A♭ major." },
+    { id: "q3", type: "mcq", prompt: "Bel canto style requires…", options: ["Staccato","Legato, vibrato, phrase-end breath","Screaming","Rap"], correctIndex: 1, explanation: "Legato + vibrato + phrase breath." },
+  ]},
+  vocals_l5_05_mastery: { id: "vocals_l5_05_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l5_05_sargam_sancharis", title: "Quick check: sancharis", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Sanchari is from…", options: ["Western","Hindustani","Carnatic","Pop"], correctIndex: 2, explanation: "Carnatic tradition." },
+    { id: "q2", type: "mcq", prompt: "Gamakam is…", options: ["Loudness","Ornament with slide","Tempo","A raga"], correctIndex: 1, explanation: "Ornamental slide in Carnatic." },
+    { id: "q3", type: "mcq", prompt: "Sanchari purpose?", options: ["Random notes","Systematic melodic exploration of a raga","Tuning","Silence"], correctIndex: 1, explanation: "Systematic exploration." },
+  ]},
+  vocals_l5_06_mastery: { id: "vocals_l5_06_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l5_06_rock_ballad", title: "Quick check: rock ballad belt", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "'Livin on a Prayer' band?", options: ["Journey","Bon Jovi","Queen","AC/DC"], correctIndex: 1, explanation: "Bon Jovi, 1986." },
+    { id: "q2", type: "mcq", prompt: "Final chorus does what?", options: ["Fades","Modulates up for intensity","Goes soft","Repeats verbatim"], correctIndex: 1, explanation: "Key change up." },
+    { id: "q3", type: "mcq", prompt: "Belting without warm-up?", options: ["Fine","Damaging to voice","Recommended","Best practice"], correctIndex: 1, explanation: "NEVER cold-belt." },
+  ]},
+  vocals_l6_01_mastery: { id: "vocals_l6_01_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l6_01_tritone_leaps", title: "Quick check: hard leaps", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Tritone size?", options: ["Minor 3rd","Aug 4th / dim 5th","Perfect 5th","Octave"], correctIndex: 1, explanation: "Aug 4 / dim 5 = tritone." },
+    { id: "q2", type: "mcq", prompt: "'Maria' (West Side Story) opens with?", options: ["Major 3rd","Perfect 5th","Tritone","Octave"], correctIndex: 2, explanation: "Famous tritone." },
+    { id: "q3", type: "mcq", prompt: "Minor 7th example?", options: ["Happy Birthday","Star Trek theme","Twinkle","Silent Night"], correctIndex: 1, explanation: "Star Trek opening interval." },
+  ]},
+  vocals_l6_02_mastery: { id: "vocals_l6_02_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l6_02_opera_mozart", title: "Quick check: Queen of the Night", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Composer?", options: ["Mozart","Verdi","Puccini","Handel"], correctIndex: 0, explanation: "Mozart, The Magic Flute." },
+    { id: "q2", type: "mcq", prompt: "Highest notes approximately…", options: ["E5","F5","F6 (x4!)","A7"], correctIndex: 2, explanation: "F6 four times." },
+    { id: "q3", type: "mcq", prompt: "Coloratura = ?", options: ["Loudness","Rapid ornamental runs","Silence","Speech"], correctIndex: 1, explanation: "Rapid virtuosic runs." },
+  ]},
+  vocals_l6_03_mastery: { id: "vocals_l6_03_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l6_03_whistle_register", title: "Quick check: whistle register", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Whistle register sits…", options: ["Below chest","Above head voice","Same as head","Doesn't exist"], correctIndex: 1, explanation: "Above head voice." },
+    { id: "q2", type: "mcq", prompt: "Tone quality?", options: ["Heavy + dark","Thin + bright + flute-like","Speaking","Yelling"], correctIndex: 1, explanation: "Thin + flute-like." },
+    { id: "q3", type: "mcq", prompt: "Safety?", options: ["Always safe","Forcing damages voice","Recommended for all","Painful = correct"], correctIndex: 1, explanation: "Don't force." },
+  ]},
+  vocals_l6_04_mastery: { id: "vocals_l6_04_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l6_04_jazz_standards", title: "Quick check: jazz standards", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "'Summertime' composer?", options: ["Gershwin","Porter","Ellington","Duke"], correctIndex: 0, explanation: "Gershwin." },
+    { id: "q2", type: "mcq", prompt: "Blue notes?", options: ["Flat 3, flat 5, flat 7","Natural 3, 5, 7","Just flats","Just sharps"], correctIndex: 0, explanation: "♭3, ♭5, ♭7." },
+    { id: "q3", type: "mcq", prompt: "Jazz singing priority?", options: ["Accuracy always","Personal phrasing + feel","Volume","Speed"], correctIndex: 1, explanation: "Personal phrasing wins." },
+  ]},
+  vocals_l6_05_mastery: { id: "vocals_l6_05_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l6_05_khayal", title: "Quick check: khayal", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Khayal means…", options: ["Song","Imagination","Rhythm","Silence"], correctIndex: 1, explanation: "Imagination." },
+    { id: "q2", type: "mcq", prompt: "Tradition?", options: ["Carnatic","Hindustani classical","Western classical","Jazz"], correctIndex: 1, explanation: "Principal Hindustani vocal form." },
+    { id: "q3", type: "mcq", prompt: "Structure?", options: ["Verse + chorus","Sthayi + antara","Alap + jor","Intro + outro"], correctIndex: 1, explanation: "Sthayi + antara." },
+  ]},
+  vocals_l6_06_mastery: { id: "vocals_l6_06_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l6_06_pro_cert", title: "Quick check: Pro Cert prep", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Pro Cert = 3 songs across…", options: ["Same genre","Classical + jazz + pop","All opera","Only raga"], correctIndex: 1, explanation: "3 genres." },
+    { id: "q2", type: "mcq", prompt: "Pass threshold (composite)?", options: ["0.5","0.65","0.76","0.9"], correctIndex: 2, explanation: "≥0.76." },
+    { id: "q3", type: "mcq", prompt: "Versatility shown by…", options: ["Singing 3 classical pieces","Singing each genre with appropriate style","Same phrasing all","Silence"], correctIndex: 1, explanation: "Style matters per genre." },
+  ]},
+
+  vocals_l7_01_mastery: { id: "vocals_l7_01_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l7_01_aria_advanced", title: "Quick check: Nessun Dorma", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Composer + opera?", options: ["Puccini / Turandot","Verdi / Aida","Mozart / Flute","Bizet / Carmen"], correctIndex: 0, explanation: "Puccini, Turandot." },
+    { id: "q2", type: "mcq", prompt: "Climax word?", options: ["L'amore","Vincerò","All'alba","Dorma"], correctIndex: 1, explanation: "'Vincerò' x3, climax." },
+    { id: "q3", type: "mcq", prompt: "Peak note (tenor)?", options: ["A3","B4","C5","A5"], correctIndex: 1, explanation: "B4 — tenor high register." },
+  ]},
+  vocals_l7_02_mastery: { id: "vocals_l7_02_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l7_02_scat", title: "Quick check: scat", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Scat pioneers?", options: ["Only modern singers","Ella, Louis Armstrong, Mel Tormé","Only classical","No one"], correctIndex: 1, explanation: "Jazz greats." },
+    { id: "q2", type: "mcq", prompt: "Scat requires knowing…", options: ["Nothing","Chord changes cold","Just melody","Just rhythm"], correctIndex: 1, explanation: "Chord tones guide the line." },
+    { id: "q3", type: "mcq", prompt: "Articulation via?", options: ["Random noises","Nonsense syllables (doo-bee-doo-ba)","Silence","Speech"], correctIndex: 1, explanation: "Syllables articulate rhythm." },
+  ]},
+  vocals_l7_03_mastery: { id: "vocals_l7_03_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l7_03_hindustani_taan", title: "Quick check: vocal taan", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Vocal taan speed target?", options: ["40 bpm","80 bpm","120 bpm","250 bpm"], correctIndex: 2, explanation: "~120 bpm at L7." },
+    { id: "q2", type: "mcq", prompt: "Gamakas during taan?", options: ["Optional","Each svara with tiny meend","Skip them","Only on Sa"], correctIndex: 1, explanation: "Each svara ornamented." },
+    { id: "q3", type: "mcq", prompt: "Landing point?", options: ["Anywhere","Sam precisely","On Pa","Silence"], correctIndex: 1, explanation: "Sam exact." },
+  ]},
+  vocals_l7_04_mastery: { id: "vocals_l7_04_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l7_04_belting_advanced", title: "Quick check: belting", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Belting = ?", options: ["High head voice","High chest-mix","Whispering","Silence"], correctIndex: 1, explanation: "High chest-mix, powerful." },
+    { id: "q2", type: "mcq", prompt: "Danger without technique?", options: ["None","Vocal fold damage","Minor","Slight discomfort"], correctIndex: 1, explanation: "Real damage risk." },
+    { id: "q3", type: "mcq", prompt: "Warm-up requirement?", options: ["Skip","20+ minutes","5 seconds","No warm-up"], correctIndex: 1, explanation: "Non-negotiable." },
+  ]},
+  vocals_l7_05_mastery: { id: "vocals_l7_05_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l7_05_multilingual", title: "Quick check: multi-lingual", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Italian signature?", options: ["Nasal vowels","Open vowels, lyric, free-flowing","Crisp consonants","Harsh"], correctIndex: 1, explanation: "Open + lyric." },
+    { id: "q2", type: "mcq", prompt: "French signature?", options: ["Open","Nasal vowels + mixed vowels (ü, œ)","Crisp like German","None"], correctIndex: 1, explanation: "Nasals + mixed vowels." },
+    { id: "q3", type: "mcq", prompt: "German signature?", options: ["Nasal","Crisp consonants + diphthongs + ich-laut","Open","Rap"], correctIndex: 1, explanation: "Crisp consonants + precise diphthongs." },
+  ]},
+  vocals_l7_06_mastery: { id: "vocals_l7_06_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l7_06_harmony_3part", title: "Quick check: 3-part harmony", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Genius-tier harmony skill?", options: ["One voice only","Any of lead/alto/soprano on demand","Melody only","No skill"], correctIndex: 1, explanation: "Cover any part." },
+    { id: "q2", type: "mcq", prompt: "Career application?", options: ["Nothing","Studio session singers","Just solo","Only opera"], correctIndex: 1, explanation: "Session singers depend on this." },
+    { id: "q3", type: "mcq", prompt: "Test?", options: ["30 seconds","Hold your part through full verse","Just one note","Impossible"], correctIndex: 1, explanation: "Full verse." },
+  ]},
+
+  vocals_l8_01_mastery: { id: "vocals_l8_01_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l8_01_full_aria", title: "Quick check: full aria", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Choose aria by…", options: ["Random","Your Fach (voice type)","Just the first one","No choice"], correctIndex: 1, explanation: "Fach = voice type." },
+    { id: "q2", type: "mcq", prompt: "L8 performance standard?", options: ["Casual","Audition-grade","Practice-only","Rough draft"], correctIndex: 1, explanation: "Audition-ready." },
+    { id: "q3", type: "mcq", prompt: "Habanera singer type?", options: ["Soprano","Mezzo","Tenor","Bass"], correctIndex: 1, explanation: "Mezzo-soprano (Carmen)." },
+  ]},
+  vocals_l8_02_mastery: { id: "vocals_l8_02_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l8_02_rahman_study", title: "Quick check: Rahman study", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "A.R. Rahman blends?", options: ["Only Indian classical","Indian + Western + Arabic ornamentation","Only pop","Only rock"], correctIndex: 1, explanation: "Cross-cultural." },
+    { id: "q2", type: "mcq", prompt: "After transcribing, you should…", options: ["Stop","Compose a second verse in his style","Ignore","Repeat exactly forever"], correctIndex: 1, explanation: "Apply the style." },
+    { id: "q3", type: "mcq", prompt: "'Vande Mataram' feature?", options: ["No Indian elements","Slow meend + microtones","Heavy metal","Rap"], correctIndex: 1, explanation: "Meend + microtones." },
+  ]},
+  vocals_l8_03_mastery: { id: "vocals_l8_03_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l8_03_jazz_standard_improv", title: "Quick check: Autumn Leaves improv", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Autumn Leaves changes cycle in…", options: ["C major","E minor (ii-V-I-IV)","F♯","No changes"], correctIndex: 1, explanation: "E minor (or G major, depending)." },
+    { id: "q2", type: "mcq", prompt: "Study whom?", options: ["Nobody","Ella, Cassandra Wilson, Kurt Elling","Only opera","Random"], correctIndex: 1, explanation: "The jazz vocal canon." },
+    { id: "q3", type: "mcq", prompt: "Structure?", options: ["One chorus","Melody + 2 improv choruses","Random","Alap only"], correctIndex: 1, explanation: "Classic jazz structure." },
+  ]},
+  vocals_l8_04_mastery: { id: "vocals_l8_04_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l8_04_khayal_full", title: "Quick check: full khayal", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Length?", options: ["3 min","8 min","15 min","1 hr"], correctIndex: 2, explanation: "15 min." },
+    { id: "q2", type: "mcq", prompt: "Number of gamakas to execute?", options: ["None","At least 3","Just one","No gamakas"], correctIndex: 1, explanation: "3+ gamakas." },
+    { id: "q3", type: "mcq", prompt: "Graded on?", options: ["Volume","Raga purity + gamakas + sam + pacing","Length only","Random"], correctIndex: 1, explanation: "Complete criteria." },
+  ]},
+  vocals_l8_05_mastery: { id: "vocals_l8_05_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l8_05_original_melody", title: "Quick check: 32-bar original", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "AABA is a…", options: ["Jazz standard structure","Opera aria form","Silent form","Not real"], correctIndex: 0, explanation: "Jazz 32-bar form." },
+    { id: "q2", type: "mcq", prompt: "Good hook appears?", options: ["Never","At least twice","Only once","Only at end"], correctIndex: 1, explanation: "Twice minimum." },
+    { id: "q3", type: "mcq", prompt: "Lyric requirement?", options: ["Random","Fit natural speech rhythm","Gibberish","No words"], correctIndex: 1, explanation: "Speech rhythm." },
+  ]},
+  vocals_l8_06_mastery: { id: "vocals_l8_06_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l8_06_concert_set", title: "Quick check: 30-min set", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "How many songs typical?", options: ["1","3","6","20"], correctIndex: 2, explanation: "6 songs in 30 min." },
+    { id: "q2", type: "mcq", prompt: "Opener energy?", options: ["Lowest","Medium","Highest","Silent"], correctIndex: 1, explanation: "Medium, audience-friendly." },
+    { id: "q3", type: "mcq", prompt: "Closer?", options: ["Quietest","Biggest / loudest","Random","Silent"], correctIndex: 1, explanation: "Biggest close." },
+  ]},
+
+  vocals_l9_01_mastery: { id: "vocals_l9_01_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l9_01_vocal_composition", title: "Quick check: art song", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Art song tradition represented by…", options: ["Gospel","Schubert Lieder, French mélodie, American art song","Rock","Rap"], correctIndex: 1, explanation: "Classical art song." },
+    { id: "q2", type: "mcq", prompt: "Minimum sections?", options: ["1","2","3","10"], correctIndex: 2, explanation: "3 distinct sections." },
+    { id: "q3", type: "mcq", prompt: "Required deliverable?", options: ["Audio only","Sheet music + performance","Just lyrics","Nothing"], correctIndex: 1, explanation: "Sheet music required." },
+  ]},
+  vocals_l9_02_mastery: { id: "vocals_l9_02_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l9_02_recital_full", title: "Quick check: 45-min recital", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Duration?", options: ["15 min","30 min","45 min","90 min"], correctIndex: 2, explanation: "45 min." },
+    { id: "q2", type: "mcq", prompt: "Languages minimum?", options: ["1","2","3","10"], correctIndex: 2, explanation: "3+ languages." },
+    { id: "q3", type: "mcq", prompt: "Program standard?", options: ["Conservatory master's recital","Coffee shop set","Karaoke","Shower singing"], correctIndex: 0, explanation: "Master's recital level." },
+  ]},
+  vocals_l9_03_mastery: { id: "vocals_l9_03_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l9_03_improvisation_master", title: "Quick check: pure improv", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Length?", options: ["1 min","10 min","30 sec","1 hr"], correctIndex: 1, explanation: "10 min continuous." },
+    { id: "q2", type: "mcq", prompt: "Prepared material?", options: ["All prepared","None — pure improvisation","Only melody","Only rhythm"], correctIndex: 1, explanation: "Zero prepared material." },
+    { id: "q3", type: "mcq", prompt: "Preparation paradox?", options: ["Impossible","Practice fundamentals, then improvise","Skip practice","Random"], correctIndex: 1, explanation: "Drill fundamentals → freedom." },
+  ]},
+  vocals_l9_04_mastery: { id: "vocals_l9_04_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l9_04_new_language", title: "Quick check: 5th language", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Mandarin signature?", options: ["Nasal vowels","Tonal pronunciation (4 tones)","Open vowels","Harsh consonants"], correctIndex: 1, explanation: "4 tones matter for pitch." },
+    { id: "q2", type: "mcq", prompt: "Arabic signature?", options: ["Pure intonation","Quarter-tones + melismatic style","Western scale only","No ornaments"], correctIndex: 1, explanation: "Quarter-tones + melisma." },
+    { id: "q3", type: "mcq", prompt: "Language L9 target?", options: ["Native-like","Authentic + respectful pronunciation","Just English-style","Silent"], correctIndex: 1, explanation: "Authentic respect." },
+  ]},
+  vocals_l9_05_mastery: { id: "vocals_l9_05_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l9_05_teaching_masterclass", title: "Quick check: vocal masterclass", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Masterclass length?", options: ["2 min","15 min","1 hr","5 sec"], correctIndex: 1, explanation: "15 minutes." },
+    { id: "q2", type: "mcq", prompt: "Aimed at?", options: ["Beginners","L4-L6 Pro-tier learners","Masters only","No one"], correctIndex: 1, explanation: "Pro-tier students." },
+    { id: "q3", type: "mcq", prompt: "Graded on?", options: ["Volume","Clarity + demo + diagnosis + encouragement","Length","Looks"], correctIndex: 1, explanation: "Teaching skills." },
+  ]},
+  vocals_l9_06_mastery: { id: "vocals_l9_06_mastery", scope: "lesson", instrumentId: "vocals", lessonId: "vocals_l9_06_genius_recital", title: "Quick check: Genius Cert vocals recital", passThreshold: 0.67, questions: [
+    { id: "q1", type: "mcq", prompt: "Duration?", options: ["15 min","45 min","60 min","2 hrs"], correctIndex: 2, explanation: "60 minutes." },
+    { id: "q2", type: "mcq", prompt: "Languages?", options: ["1","2","4+","15"], correctIndex: 2, explanation: "4+ languages." },
+    { id: "q3", type: "mcq", prompt: "Judged by?", options: ["Auto-grader","Panel of human judges (one per genre)","Audience vote","Random"], correctIndex: 1, explanation: "Human judges per genre." },
+  ]},
+
+  // ============================================================
+  // PHASE 4 · Tier Certificate Exams (sitar + vocals, 3 each)
+  // ============================================================
+  sitar_standard_certificate: {
+    id: "sitar_standard_certificate", scope: "grade", instrumentId: "sitar", tier: "standard",
+    title: "Standard Certificate — Sitar", passThreshold: 0.85, questions: [
+      { id: "q1", type: "mcq", prompt: "Sa is…", options: ["A percussion bol","The tonic of every raga","A bandish","A gamaka"], correctIndex: 1, explanation: "Tonic, home note." },
+      { id: "q2", type: "mcq", prompt: "Yaman's pakad is…", options: ["Sa Re Ga","Ni Re Ga, Ma Dha Ni Sa'","Dha Pa Ma","Ma~Ga Sa"], correctIndex: 1, explanation: "Pakad identifies Yaman." },
+      { id: "q3", type: "mcq", prompt: "Teentaal matras?", options: ["10","12","16","20"], correctIndex: 2, explanation: "16 matras." },
+      { id: "q4", type: "practical", prompt: "Perform 3-min Yaman alap + gat in teentaal.", exerciseId: "sitar_l3_06_cert", minComposite: 0.75, explanation: "Standard Cert practical at ≥0.75 composite." },
+      { id: "q5", type: "mcq", prompt: "Meend is…", options: ["A drum","Pitch slide","A tuning","Silence"], correctIndex: 1, explanation: "Pitch slide between svaras." },
+    ],
+  },
+  sitar_pro_certificate: {
+    id: "sitar_pro_certificate", scope: "grade", instrumentId: "sitar", tier: "pro",
+    title: "Pro Certificate — Sitar", passThreshold: 0.85, questions: [
+      { id: "q1", type: "mcq", prompt: "Andolan rate?", options: ["~2 Hz","~6 Hz","~12 Hz","No oscillation"], correctIndex: 0, explanation: "Slow ~2 Hz oscillation." },
+      { id: "q2", type: "mcq", prompt: "Classical sequence?", options: ["Alap → jor → jhala → gat","Random","Gat first","Just gat"], correctIndex: 0, explanation: "Classical order." },
+      { id: "q3", type: "mcq", prompt: "Drut tempo?", options: ["~30 bpm","~80 bpm","~220 bpm","~500 bpm"], correctIndex: 2, explanation: "~220 bpm." },
+      { id: "q4", type: "practical", prompt: "Perform 10-min Yaman full sequence (alap + jor + jhala + bandish + taans).", exerciseId: "sitar_l6_06_pro_cert", minComposite: 0.78, explanation: "Pro Cert practical ≥0.78." },
+      { id: "q5", type: "free_text", prompt: "In 2-3 sentences, describe what makes a tihai land on sam and why it's dramatic.", rubric: "Arithmetic: phrase × 3 aligns with sam. Drama: audience anticipates the math + payoff.", expectedConcepts: ["phrase length","3 repetitions","sam","arithmetic"], explanation: "Tihai understanding." },
+    ],
+  },
+  sitar_genius_certificate: {
+    id: "sitar_genius_certificate", scope: "grade", instrumentId: "sitar", tier: "genius",
+    title: "Genius Certificate — Sitar", passThreshold: 0.85, questions: [
+      { id: "q1", type: "mcq", prompt: "Darbari's komal Ga is…", options: ["Played straight","Heavy andolan — never pure","Omitted","Played shuddha"], correctIndex: 1, explanation: "Heavy andolan is Darbari's soul." },
+      { id: "q2", type: "mcq", prompt: "Krintan technique?", options: ["Right-hand stroke","Left-hand pull-off from fret","Drone","Tuning"], correctIndex: 1, explanation: "Left hand pulls off." },
+      { id: "q3", type: "mcq", prompt: "Nested tihai matras?", options: ["9","16","27","32"], correctIndex: 2, explanation: "3×3×3 = 27." },
+      { id: "q4", type: "practical", prompt: "Perform 45-min solo sitar recital: 2 ragas + original bandish + raga mala close.", exerciseId: "sitar_l9_06_recital", minComposite: 0.82, explanation: "Genius Cert recital ≥0.82." },
+      { id: "q5", type: "free_text", prompt: "In 3-4 sentences, describe how you would compose a new raga and defend its coherence.", rubric: "Must define aaroha, avaroha, vadi, samvadi, pakad. Must argue the raga feels coherent + distinctive + sustainable for 10+ min.", expectedConcepts: ["aaroha","avaroha","vadi","samvadi","pakad","coherence","mood","sustainability"], explanation: "Genius-tier composer understanding." },
+    ],
+  },
+  vocals_standard_certificate: {
+    id: "vocals_standard_certificate", scope: "grade", instrumentId: "vocals", tier: "standard",
+    title: "Standard Certificate — Vocals", passThreshold: 0.85, questions: [
+      { id: "q1", type: "mcq", prompt: "Diaphragmatic breath expands…", options: ["Shoulders","Ribs laterally","Only belly","Nowhere"], correctIndex: 1, explanation: "Ribs expand." },
+      { id: "q2", type: "mcq", prompt: "Ti-Do tight spot?", options: ["Wholetone","Semitone (undershoot risk)","Octave","Fifth"], correctIndex: 1, explanation: "Semitone — we undershoot." },
+      { id: "q3", type: "mcq", prompt: "Phrasing arc?", options: ["Flat","Build → peak → release","Loud all through","Silent"], correctIndex: 1, explanation: "Build-peak-release." },
+      { id: "q4", type: "practical", prompt: "Sing a complete song with phrasing + dynamics.", exerciseId: "vocals_l3_06_cert", minComposite: 0.75, explanation: "Standard Cert ≥0.75." },
+      { id: "q5", type: "mcq", prompt: "Passaggio is…", options: ["A note","The transition between chest + head","A song form","A vowel"], correctIndex: 1, explanation: "Register transition." },
+    ],
+  },
+  vocals_pro_certificate: {
+    id: "vocals_pro_certificate", scope: "grade", instrumentId: "vocals", tier: "pro",
+    title: "Pro Certificate — Vocals", passThreshold: 0.85, questions: [
+      { id: "q1", type: "mcq", prompt: "Vibrato rate pleasing?", options: ["1-2 Hz","5-6 Hz","10+ Hz","0 Hz"], correctIndex: 1, explanation: "5-6 Hz." },
+      { id: "q2", type: "mcq", prompt: "Belting without warm-up?", options: ["Fine","Damages vocal folds","Recommended","Loud but safe"], correctIndex: 1, explanation: "Damaging." },
+      { id: "q3", type: "mcq", prompt: "Blue notes?", options: ["Natural","♭3, ♭5, ♭7","All flats","All sharps"], correctIndex: 1, explanation: "Flat 3, 5, 7." },
+      { id: "q4", type: "practical", prompt: "Perform 3-song set (classical + jazz + pop).", exerciseId: "vocals_l6_06_cert", minComposite: 0.78, explanation: "Pro Cert 3-genre set ≥0.78." },
+      { id: "q5", type: "free_text", prompt: "In 2-3 sentences, explain the difference between classical bel canto and pop belt phrasing.", rubric: "Bel canto: legato, continuous vibrato, phrase-end breath. Pop belt: speech-forward, less vibrato, mid-phrase breaths ok, stylistic riffs.", expectedConcepts: ["legato","vibrato","speech","riffs","dynamics"], explanation: "Style-aware singer." },
+    ],
+  },
+  vocals_genius_certificate: {
+    id: "vocals_genius_certificate", scope: "grade", instrumentId: "vocals", tier: "genius",
+    title: "Genius Certificate — Vocals", passThreshold: 0.85, questions: [
+      { id: "q1", type: "mcq", prompt: "Scat pioneers?", options: ["Only modern","Ella + Louis Armstrong + Mel Tormé","Only classical","Rap artists"], correctIndex: 1, explanation: "Jazz giants." },
+      { id: "q2", type: "mcq", prompt: "Nessun Dorma climax?", options: ["L'amore","Vincerò","Dorma","None"], correctIndex: 1, explanation: "Vincerò x3." },
+      { id: "q3", type: "mcq", prompt: "Hindustani taan landing?", options: ["Anywhere","Sam precisely","On Pa","Silence"], correctIndex: 1, explanation: "Sam exact." },
+      { id: "q4", type: "practical", prompt: "Perform 60-min solo recital: opera + art song + jazz + raga + original + encore.", exerciseId: "vocals_l9_06_recital", minComposite: 0.82, explanation: "Genius Cert recital ≥0.82." },
+      { id: "q5", type: "free_text", prompt: "In 3-4 sentences, describe how you approach preparing + performing in 4+ languages at concert level.", rubric: "Must cover: native-speaker diction consultation, IPA (International Phonetic Alphabet) as framework, respecting each language's vowel + consonant conventions, translating emotion across languages.", expectedConcepts: ["IPA","diction","vowels","consonants","emotion","style"], explanation: "Multi-lingual concert preparation." },
+    ],
+  },
 };
 
 export const getExam = (id: string) => EXAMS[id];
