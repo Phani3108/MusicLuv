@@ -12,6 +12,9 @@ import { ArtistGalleryPanel } from "@/components/ArtistGalleryPanel";
 import { SongUploadPanel } from "@/components/SongUploadPanel";
 import { GradingResultModal } from "@/components/GradingResultModal";
 import { DissectionOverlay } from "@/components/DissectionOverlay";
+import { PaywallModal } from "@/components/PaywallModal";
+import { PlanPickerPanel } from "@/components/PlanPickerPanel";
+import { AuthPanel } from "@/components/AuthPanel";
 
 export function StudioPage() {
   const instrumentId = useAtomValue(currentInstrumentAtom);
@@ -33,6 +36,9 @@ export function StudioPage() {
         <SongUploadPanel />
         <GradingResultModal />
         <DissectionOverlay />
+        <PlanPickerPanel />
+        <AuthPanel />
+        <PaywallModal />
         <NavDrawer />
       </main>
     </div>

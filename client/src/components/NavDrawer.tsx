@@ -5,8 +5,10 @@ import {
 } from "@/atoms/panels";
 import { navDrawerOpenAtom } from "@/atoms/session";
 import { currentInstrumentAtom, progressAtom, userAtom } from "@/atoms/session";
+import { authUserAtom, subscriptionAtom, planPickerOpenAtom, authPanelOpenAtom } from "@/atoms/billing";
 import { getInstrument } from "@catalogs/instrumentCatalog";
 import { tierForXp } from "@catalogs/tierCatalog";
+import { getPlan } from "@catalogs/planCatalog";
 
 /**
  * Grouped drawer navigation — replaces the 7-button TopBar clutter.
@@ -33,6 +35,11 @@ export function NavDrawer() {
   const [, setLibraryOpen]  = useAtom(libraryPanelAtom);
   const [, setArtistOpen]   = useAtom(artistPanelAtom);
   const [, setSongOpen]     = useAtom(songUploadAtom);
+  const authUser = useAtomValue(authUserAtom);
+  const sub = useAtomValue(subscriptionAtom);
+  const [, setPlanPicker] = useAtom(planPickerOpenAtom);
+  const [, setAuthPanel] = useAtom(authPanelOpenAtom);
+  const plan = getPlan(sub.plan);
 
   const openPanel = (setter: (v: boolean) => void) => {
     setter(true);
@@ -92,6 +99,23 @@ export function NavDrawer() {
               <NavItem glyph="🎵" title="Song library" subtitle="Curated play-alongs" onClick={() => openPanel(setLibraryOpen)} />
               <NavItem glyph="⭐" title="Genius artists" subtitle="Study Hendrix, Ravi, Rahman…" onClick={() => openPanel(setArtistOpen)} />
               <NavItem glyph="⬆️" title="Upload a song" subtitle="Analyze → step-by-step" onClick={() => openPanel(setSongOpen)} />
+            </NavGroup>
+
+            <NavGroup label="Account">
+              {authUser ? (
+                <>
+                  <NavItem glyph="👤" title={authUser.displayName} subtitle={authUser.email} onClick={() => {}} />
+                  <NavItem glyph={sub.plan === "genius" ? "💎" : sub.plan === "pro" ? "⚡" : "🎁"}
+                    title={`${plan.label} plan`}
+                    subtitle={sub.plan === "free" ? "Upgrade for L4+ content" : sub.status === "trialing" ? "7-day trial" : "Active"}
+                    onClick={() => openPanel(setPlanPicker)} />
+                </>
+              ) : (
+                <>
+                  <NavItem glyph="🔑" title="Sign in" subtitle="Sync across devices" onClick={() => openPanel(setAuthPanel)} />
+                  <NavItem glyph="⚡" title="See plans" subtitle="Free · Pro · Genius" onClick={() => openPanel(setPlanPicker)} />
+                </>
+              )}
             </NavGroup>
           </div>
 

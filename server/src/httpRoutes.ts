@@ -7,6 +7,11 @@ import { listProviders } from "./llm/providerCatalog.js";
 import { guardStats } from "./llm/costGuards.js";
 import { memoryStats } from "./llm/memoryStore.js";
 import { createRateLimiter } from "./rateLimiter.js";
+import {
+  getSubscription, setSubscription, createCheckoutSession,
+  handleStripeWebhook, verifyIapReceipt, cancelSubscription,
+} from "./billingService.js";
+import type { PlanTier } from "@catalogs/planCatalog";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
 
@@ -99,5 +104,43 @@ export function registerRoutes(app: Express): void {
     const userId = (req.headers["x-user-id"] as string) || "anon";
     const next = updateProgress(userId, req.body ?? {});
     res.json({ ok: true, progress: next });
+  });
+
+  // ── Billing ────────────────────────────────────────────────────────
+  app.get("/api/v1/billing/subscription", (req, res) => {
+    const userId = (req.headers["x-user-id"] as string) || "anon";
+    res.json({ ok: true, subscription: getSubscription(userId) });
+  });
+
+  app.post("/api/v1/billing/checkout", async (req, res) => {
+    const userId = (req.headers["x-user-id"] as string) || "anon";
+    const { planId, cycle } = req.body as { planId: PlanTier; cycle: "monthly" | "yearly" };
+    try {
+      const session = await createCheckoutSession(userId, planId, cycle);
+      res.json({ ok: true, ...session });
+    } catch (e) {
+      res.status(400).json({ ok: false, error: (e as Error).message });
+    }
+  });
+
+  app.post("/api/v1/billing/iap/verify", async (req, res) => {
+    const userId = (req.headers["x-user-id"] as string) || "anon";
+    const { provider, receipt, planId } = req.body as { provider: "appstore" | "playstore"; receipt: string; planId: PlanTier };
+    try {
+      const record = await verifyIapReceipt(userId, provider, receipt, planId);
+      res.json({ ok: true, subscription: record });
+    } catch (e) {
+      res.status(400).json({ ok: false, error: (e as Error).message });
+    }
+  });
+
+  app.post("/api/v1/billing/cancel", (req, res) => {
+    const userId = (req.headers["x-user-id"] as string) || "anon";
+    const record = cancelSubscription(userId);
+    res.json({ ok: true, subscription: record });
+  });
+
+  app.post("/api/v1/billing/webhook/stripe", (req, res) => {
+    void handleStripeWebhook(req, res);
   });
 }

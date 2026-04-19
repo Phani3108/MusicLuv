@@ -9,6 +9,8 @@ import { practiceStatusAtom, lastGradeAtom } from "@/atoms/practice";
 import { getInstrument } from "@catalogs/instrumentCatalog";
 import { getLesson } from "@catalogs/lessonCatalog";
 import { getExercise } from "@catalogs/exerciseCatalog";
+import { featureForLesson } from "@catalogs/planCatalog";
+import { usePaywall } from "@/lib/paywall";
 import { PhaseConcept } from "./phases/PhaseConcept";
 import { PhaseTeach } from "./phases/PhaseTeach";
 import { PhaseDemo } from "./phases/PhaseDemo";
@@ -90,7 +92,50 @@ export function LessonPhaseRunner() {
     );
   }
 
-  const meta = PHASE_META[phase];
+  return <GatedLessonShell
+    instrument={instrument} lesson={lesson} exercise={exercise}
+    phase={phase} setPhase={setPhase} completed={completed}
+    engagement={engagement} markEngaged={markEngaged} jumpTo={jumpTo}
+    advance={advance} goBack={goBack}
+  />;
+}
+
+function GatedLessonShell({
+  instrument, lesson, exercise, phase, completed, engagement,
+  markEngaged, jumpTo, advance, goBack,
+}: any) {
+  const gate = usePaywall();
+  const feature = featureForLesson(lesson.level);
+
+  if (!gate.hasSilent(feature)) {
+    return (
+      <div className="panel p-8 text-center">
+        <div className="text-4xl mb-3">🔒</div>
+        <div className="display text-xl font-semibold mb-2">{lesson.title}</div>
+        <div className="text-sm text-white/60 mb-5">
+          L{lesson.level} lessons require the {lesson.level <= 6 ? "Pro" : "Genius"} tier.
+        </div>
+        <button onClick={() => gate.canAccess(feature, `L${lesson.level} · ${lesson.title}`)}
+          className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-violet-500 font-semibold">
+          Unlock with {lesson.level <= 6 ? "Pro" : "Genius"}
+        </button>
+      </div>
+    );
+  }
+
+  return <UnlockedLessonShell
+    instrument={instrument} lesson={lesson} exercise={exercise}
+    phase={phase} completed={completed} engagement={engagement}
+    markEngaged={markEngaged} jumpTo={jumpTo} advance={advance} goBack={goBack}
+  />;
+}
+
+function UnlockedLessonShell({
+  instrument, lesson, exercise, phase, completed, engagement,
+  markEngaged, jumpTo, advance, goBack,
+}: any) {
+
+  const meta = PHASE_META[phase as LessonPhase];
   const canAdvance = engagement[phase] || phase === "attempt"; // attempt relies on graded auto-engage
   const next = nextPhase(phase);
 
