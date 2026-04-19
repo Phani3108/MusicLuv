@@ -1,6 +1,7 @@
 import { useAtomValue } from "jotai";
 import { currentInstrumentAtom } from "@/atoms/session";
 import { TopBar } from "@/components/TopBar";
+import { NavDrawer } from "@/components/NavDrawer";
 import { LessonPhaseRunner } from "@/components/LessonPhaseRunner";
 import { LessonPanel } from "@/components/LessonPanel";
 import { MentorChatPanel } from "@/components/MentorChatPanel";
@@ -32,6 +33,7 @@ export function StudioPage() {
         <SongUploadPanel />
         <GradingResultModal />
         <DissectionOverlay />
+        <NavDrawer />
       </main>
     </div>
   );

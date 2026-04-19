@@ -29,3 +29,6 @@ export const currentLessonIdAtom = atom<string | null>(null);
 
 export type Screen = "welcome" | "picker" | "studio";
 export const screenAtom = atom<Screen>("welcome");
+
+// Mobile-friendly nav drawer (grouped panel access)
+export const navDrawerOpenAtom = atom<boolean>(false);
