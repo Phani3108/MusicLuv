@@ -2993,6 +2993,96 @@ export const EXERCISES: Record<string, Exercise> = {
     targetPattern: { notes: ["C4","E4","G4","C5","G4","E4","C4","D4","F4","A4","D5","A4","F4","D4","C4"].map((p,i)=>({pitch:p,startMs:i*800,durationMs:800})) },
     tempo: { bpm: 72, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
   },
+
+  // Phase 7+ · Expansion instrument L1 kickoff exercises
+  bass_l1_01_open_e: {
+    id: "bass_l1_01_open_e", type: "play_note", instrumentId: "bass",
+    title: "Open E × 16 on the beat",
+    targetPattern: { notes: Array.from({length:16},(_,i)=>({pitch:"E1",startMs:i*750,durationMs:600})) },
+    tempo: { bpm: 80, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  ukulele_l1_01_c: {
+    id: "ukulele_l1_01_c", type: "play_chord", instrumentId: "ukulele",
+    title: "C chord × 8 strums",
+    targetPattern: { chords: Array.from({length:8},(_,i)=>({root:"C4",quality:"maj",startMs:i*1000,durationMs:900})) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  mandolin_l1_01_g: {
+    id: "mandolin_l1_01_g", type: "play_chord", instrumentId: "mandolin",
+    title: "G chord × 8 strums",
+    targetPattern: { chords: Array.from({length:8},(_,i)=>({root:"G3",quality:"maj",startMs:i*1000,durationMs:900})) },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  bansuri_l1_01_sa: {
+    id: "bansuri_l1_01_sa", type: "play_note", instrumentId: "bansuri",
+    title: "Sustained Sa × 5 seconds",
+    targetPattern: { notes: [{pitch:"C5",startMs:0,durationMs:5000}] },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  harmonium_l1_01_sa: {
+    id: "harmonium_l1_01_sa", type: "play_note", instrumentId: "harmonium",
+    title: "Sustained Sa × 10 seconds",
+    targetPattern: { notes: [{pitch:"C4",startMs:0,durationMs:10000}] },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  mridangam_l1_01_tha: {
+    id: "mridangam_l1_01_tha", type: "rhythm_clap", instrumentId: "mridangam",
+    title: "Tha × 16 at 80 bpm",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=>i*750) },
+    tempo: { bpm: 80, meter: [16, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
+  veena_l1_01_sa: {
+    id: "veena_l1_01_sa", type: "play_note", instrumentId: "veena",
+    title: "Sa × 10 seconds",
+    targetPattern: { notes: [{pitch:"C4",startMs:0,durationMs:10000}] },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  cello_l1_01_c: {
+    id: "cello_l1_01_c", type: "play_scale", instrumentId: "cello",
+    title: "Open strings C, G, D, A",
+    targetPattern: { notes: [
+      {pitch:"C2",startMs:0,durationMs:4000},
+      {pitch:"G2",startMs:4000,durationMs:4000},
+      {pitch:"D3",startMs:8000,durationMs:4000},
+      {pitch:"A3",startMs:12000,durationMs:4000},
+    ]}, tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  saxophone_l1_01_a: {
+    id: "saxophone_l1_01_a", type: "play_note", instrumentId: "saxophone",
+    title: "Concert A × 6 seconds",
+    targetPattern: { notes: [{pitch:"A4",startMs:0,durationMs:6000}] },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  trumpet_l1_01_bb: {
+    id: "trumpet_l1_01_bb", type: "play_note", instrumentId: "trumpet",
+    title: "Concert Bb × 4 seconds",
+    targetPattern: { notes: [{pitch:"Bb4",startMs:0,durationMs:4000}] },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  clarinet_l1_01_c: {
+    id: "clarinet_l1_01_c", type: "play_note", instrumentId: "clarinet",
+    title: "Low C × 5 seconds",
+    targetPattern: { notes: [{pitch:"C4",startMs:0,durationMs:5000}] },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  accordion_l1_01_c: {
+    id: "accordion_l1_01_c", type: "play_note", instrumentId: "accordion",
+    title: "Sustained C × 5 seconds",
+    targetPattern: { notes: [{pitch:"C4",startMs:0,durationMs:5000}] },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  synth_l1_01_filter: {
+    id: "synth_l1_01_filter", type: "play_note", instrumentId: "synth",
+    title: "Filter sweep on middle C",
+    targetPattern: { notes: [{pitch:"C4",startMs:0,durationMs:4000,velocity:0.6}] },
+    tempo: { bpm: 60, meter: [4, 4] }, gradingRubricId: "rubric_early_level",
+  },
+  dj_l1_01_beatmatch: {
+    id: "dj_l1_01_beatmatch", type: "rhythm_clap", instrumentId: "dj_controller",
+    title: "Beatmatched downbeats — 16 beats at 120 bpm",
+    targetPattern: { onsets: Array.from({length:16},(_,i)=>i*500) },
+    tempo: { bpm: 120, meter: [16, 4] }, gradingRubricId: "rubric_rhythm_only",
+  },
 };
 
 export const getExercise = (id: string) => EXERCISES[id];

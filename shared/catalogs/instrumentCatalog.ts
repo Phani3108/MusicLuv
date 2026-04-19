@@ -173,6 +173,178 @@ export const INSTRUMENTS: Record<string, Instrument> = {
     difficultyFloor: 1,
     micSetupHints: ["Room mic at ear height, or overheads + kick mic for detail."],
   },
+
+  // ========================================================================
+  // Phase 7+ · Expansion roster — 14 new instruments. Each ships with L1
+  // kickoff content; full L2-L9 arcs roll out in subsequent content sprints.
+  // ========================================================================
+  bass: {
+    id: "bass", name: "Bass guitar", family: "fretted", origin: "western", accent: "fretted", glyph: "🎸",
+    blurb: "The groove foundation. Four strings, four strong opinions on where the beat lives.",
+    tuningRef: { hz: 440, noteMap: "12-TET" },
+    controls: [
+      { id: "fingers_vs_pick", name: "Fingers vs pick", label: "Attack", description: "Fingerstyle = warm, rounded. Pick = percussive, consistent. Slap = funk." },
+      { id: "tone_knob", name: "Tone", label: "Tone", description: "Roll off for Motown warmth, roll on for rock clarity." },
+    ],
+    sampleAudio: [{ id: "e_open", label: "Open E (low)" }, { id: "walking", label: "Walking bass line" }],
+    pedagogyTrackId: "bass_standard", difficultyFloor: 1,
+    micSetupHints: ["Best: direct-in (DI box). Mic option: amp cab ~15cm from grille."],
+  },
+  ukulele: {
+    id: "ukulele", name: "Ukulele", family: "fretted", origin: "global", accent: "fretted", glyph: "🎶",
+    blurb: "Four nylon strings, endless joy. The easiest fretted instrument to get started on.",
+    tuningRef: { hz: 440, noteMap: "12-TET" },
+    controls: [
+      { id: "strum", name: "Strum pattern", label: "Strum", description: "Down-down-up-up-down-up = Hawaiian default. Thumb = soft, fingers = bright." },
+    ],
+    sampleAudio: [{ id: "c_chord", label: "C major chord" }, { id: "island_strum", label: "Island strum" }],
+    pedagogyTrackId: "ukulele_standard", difficultyFloor: 1,
+    micSetupHints: ["Phone mic 20cm away works great. Ukulele's quiet — kill room noise."],
+  },
+  mandolin: {
+    id: "mandolin", name: "Mandolin", family: "fretted", origin: "western", accent: "fretted", glyph: "🪕",
+    blurb: "Eight strings in four courses. Bluegrass, Italian folk, classical — a polyglot.",
+    tuningRef: { hz: 440, noteMap: "12-TET" },
+    controls: [
+      { id: "tremolo", name: "Tremolo", label: "Tremolo", description: "Rapid alternate-picking to sustain a note the mandolin can't naturally hold." },
+    ],
+    sampleAudio: [{ id: "g_chord", label: "G chord" }, { id: "tremolo_demo", label: "Tremolo on A" }],
+    pedagogyTrackId: "mandolin_standard", difficultyFloor: 2,
+    micSetupHints: ["Mic ~30cm above the f-holes."],
+  },
+  bansuri: {
+    id: "bansuri", name: "Bansuri", family: "woodwind", origin: "indian_classical", accent: "indian", glyph: "🎴",
+    blurb: "The bamboo flute of Krishna. Breath, finger-hole coverage, and meend through embouchure.",
+    tuningRef: { hz: 440, noteMap: "sa-based-C" },
+    controls: [
+      { id: "embouchure", name: "Embouchure", label: "Lip shape", description: "Angle of lips against the blow-hole determines octave + tone." },
+      { id: "finger_meend", name: "Finger meend", label: "Half-hole glide", description: "Gradually uncovering a hole slides pitch — bansuri's version of sitar meend." },
+    ],
+    sampleAudio: [{ id: "sa", label: "Sa" }, { id: "yaman", label: "Raga Yaman phrase" }],
+    pedagogyTrackId: "bansuri_standard", difficultyFloor: 3,
+    micSetupHints: ["Mic below embouchure hole; avoid breath noise by angling 30°."],
+  },
+  harmonium: {
+    id: "harmonium", name: "Harmonium", family: "keyboard", origin: "indian_classical", accent: "indian", glyph: "🎹",
+    blurb: "Hand-pumped bellows, one-octave keyboard. Heart of bhajans + qawwali + accompaniment.",
+    tuningRef: { hz: 440, noteMap: "sa-based-C" },
+    controls: [
+      { id: "bellows", name: "Bellows", label: "Pump", description: "Left hand pumps continuously — the dynamic + sustaining engine." },
+      { id: "drones", name: "Drone stops", label: "Drone", description: "Pulling stops produces sustained tonic + fifth drones." },
+    ],
+    sampleAudio: [{ id: "sa_sustain", label: "Sustained Sa with drone" }, { id: "bhajan", label: "Bhajan accompaniment" }],
+    pedagogyTrackId: "harmonium_standard", difficultyFloor: 2,
+    micSetupHints: ["Mic 30cm in front, slightly above keyboard height."],
+  },
+  mridangam: {
+    id: "mridangam", name: "Mridangam", family: "perc_pitched", origin: "indian_classical", accent: "indian", glyph: "🥁",
+    blurb: "South Indian barrel drum. Two heads, complementary pitches, the spine of Carnatic rhythm.",
+    tuningRef: { hz: 440, noteMap: "sa-based-C" },
+    controls: [
+      { id: "right_head", name: "Valanthalai (right)", label: "Treble head", description: "Higher-pitched head — strikes Tha, Nam, Dhin, Dheem." },
+      { id: "left_head", name: "Thoppi (left)", label: "Bass head", description: "Lower, pitch-bendable head — strikes Ghe, Thom." },
+    ],
+    sampleAudio: [{ id: "adi_tala", label: "Adi talam (8-beat cycle)" }],
+    pedagogyTrackId: "mridangam_standard", difficultyFloor: 2,
+    micSetupHints: ["Two mics ideal: one per head. Single mic: overhead between heads."],
+  },
+  veena: {
+    id: "veena", name: "Veena", family: "fretted", origin: "indian_classical", accent: "indian", glyph: "🪕",
+    blurb: "Ancient South Indian string instrument. Melodic strings + drones + sympathetic resonance.",
+    tuningRef: { hz: 440, noteMap: "sa-based-C" },
+    controls: [
+      { id: "gamakam", name: "Gamakam pull", label: "Pitch pull", description: "Pulling a string laterally slides pitch — the signature Carnatic ornament." },
+    ],
+    sampleAudio: [{ id: "sa", label: "Sa" }, { id: "mayamalavagowla", label: "Mayamalavagowla phrase" }],
+    pedagogyTrackId: "veena_standard", difficultyFloor: 3,
+    micSetupHints: ["Mic near the dandi (neck) for melody; second mic at the yali (resonator) for bass."],
+  },
+  cello: {
+    id: "cello", name: "Cello", family: "bowed", origin: "western", accent: "bowed", glyph: "🎻",
+    blurb: "The baritone of the string family. Rich, resonant, close to the human voice.",
+    tuningRef: { hz: 440, noteMap: "12-TET" },
+    controls: [
+      { id: "bow", name: "Bow", label: "Bow", description: "Down-bow vs up-bow alters phrasing; distance from bridge changes tone." },
+      { id: "vibrato", name: "Vibrato", label: "Vibrato", description: "Left hand rocks to modulate pitch — wider + slower than violin." },
+    ],
+    sampleAudio: [{ id: "c2_open", label: "Open C2" }, { id: "bach_prelude", label: "Bach suite prelude" }],
+    pedagogyTrackId: "cello_standard", difficultyFloor: 3,
+    micSetupHints: ["Mic ~60cm in front, at bridge height."],
+  },
+  saxophone: {
+    id: "saxophone", name: "Saxophone", family: "woodwind", origin: "western", accent: "bowed", glyph: "🎷",
+    blurb: "Brass body, reed mouthpiece. The expressive jazz voice. Alto, tenor, soprano, baritone.",
+    tuningRef: { hz: 440, noteMap: "12-TET" },
+    controls: [
+      { id: "embouchure", name: "Embouchure", label: "Lip + reed", description: "Lip pressure on reed controls tone + pitch. Loose = sub-tone; tight = bright." },
+      { id: "alt_fingerings", name: "Alternate fingerings", label: "Alt fingers", description: "Multiple fingerings for a single note — used for intonation + trills." },
+    ],
+    sampleAudio: [{ id: "concert_a", label: "Concert A" }, { id: "blues_lick", label: "Blues lick" }],
+    pedagogyTrackId: "saxophone_standard", difficultyFloor: 2,
+    micSetupHints: ["Mic 15cm from the bell, angled slightly off-axis to avoid harshness."],
+  },
+  trumpet: {
+    id: "trumpet", name: "Trumpet", family: "brass", origin: "western", accent: "bowed", glyph: "🎺",
+    blurb: "Three valves, one brilliant voice. Lead in jazz, classical, mariachi.",
+    tuningRef: { hz: 440, noteMap: "12-TET" },
+    controls: [
+      { id: "embouchure", name: "Embouchure + air", label: "Air + lips", description: "Higher notes = faster air + tighter lips. Most critical technique on any brass instrument." },
+      { id: "mutes", name: "Mutes", label: "Mute", description: "Cup, straight, Harmon mutes change tone color dramatically." },
+    ],
+    sampleAudio: [{ id: "concert_bb", label: "Concert Bb" }, { id: "fanfare", label: "Fanfare" }],
+    pedagogyTrackId: "trumpet_standard", difficultyFloor: 3,
+    micSetupHints: ["Mic ~30cm from bell, slightly off-center to tame brashness."],
+  },
+  clarinet: {
+    id: "clarinet", name: "Clarinet", family: "woodwind", origin: "western", accent: "bowed", glyph: "🎼",
+    blurb: "Cylindrical bore, single reed. The most virtuosic woodwind — from Mozart to klezmer.",
+    tuningRef: { hz: 440, noteMap: "12-TET" },
+    controls: [
+      { id: "register_key", name: "Register key", label: "Break", description: "The 'break' between low + upper registers — famously awkward to cross cleanly." },
+      { id: "embouchure", name: "Embouchure", label: "Lip + reed", description: "Firm lower lip + controlled air column. Pitch bends with lip for jazz phrasing." },
+    ],
+    sampleAudio: [{ id: "concert_c", label: "Concert C (chalumeau)" }, { id: "klezmer", label: "Klezmer phrase" }],
+    pedagogyTrackId: "clarinet_standard", difficultyFloor: 3,
+    micSetupHints: ["Mic at the middle joint, not the bell — that's where tone lives."],
+  },
+  accordion: {
+    id: "accordion", name: "Accordion", family: "keyboard", origin: "global", accent: "keyboard", glyph: "🪗",
+    blurb: "Bellows + two keyboards + reeds. Parisian musette, Cajun, tango, polka, you name it.",
+    tuningRef: { hz: 440, noteMap: "12-TET" },
+    controls: [
+      { id: "bellows", name: "Bellows", label: "Bellows", description: "Push + pull dynamics. Bellow shake = tremolo; pressure = volume." },
+      { id: "bass_buttons", name: "Bass buttons", label: "Left hand", description: "Stradella bass system — single buttons play full chords." },
+    ],
+    sampleAudio: [{ id: "musette", label: "Parisian musette sample" }, { id: "tango", label: "Tango rhythm" }],
+    pedagogyTrackId: "accordion_standard", difficultyFloor: 3,
+    micSetupHints: ["Stereo pair: one mic each side. Solo mic: front, centered."],
+  },
+  synth: {
+    id: "synth", name: "Synthesizer", family: "electronic", origin: "western", accent: "keyboard", glyph: "🎛️",
+    blurb: "Electronic sound design + keyboard performance. From Moog to Prophet to modern soft synths.",
+    tuningRef: { hz: 440, noteMap: "12-TET" },
+    controls: [
+      { id: "oscillator", name: "Oscillator", label: "Osc", description: "Saw, square, sine, triangle — the fundamental waveform." },
+      { id: "filter", name: "Filter", label: "Filter", description: "Low-pass cutoff + resonance = the signature 'synthy' sweep." },
+      { id: "envelope", name: "Envelope", label: "ADSR", description: "Attack, Decay, Sustain, Release — how a note shapes over time." },
+    ],
+    sampleAudio: [{ id: "bass_stab", label: "Bass stab (classic synth)" }, { id: "pad", label: "Warm pad" }],
+    pedagogyTrackId: "synth_standard", difficultyFloor: 2,
+    micSetupHints: ["Direct audio from line-out. MIDI controller + soft synth = ideal setup."],
+  },
+  dj_controller: {
+    id: "dj_controller", name: "DJ controller", family: "electronic", origin: "western", accent: "keyboard", glyph: "🎧",
+    blurb: "Two decks, a mixer, a crossfader. Beatmatching, cueing, phrasing — the DJ's craft.",
+    tuningRef: { hz: 440, noteMap: "12-TET" },
+    controls: [
+      { id: "jog_wheels", name: "Jog wheels", label: "Jog", description: "Nudge + scratch control. The DJ's most intimate interface." },
+      { id: "crossfader", name: "Crossfader", label: "Fade", description: "Blends the two decks. Sharp cuts vs slow fades vs scratching = signature styles." },
+      { id: "eq_knobs", name: "3-band EQ", label: "EQ", description: "Bass / mid / treble kills + boosts for frequency-based transitions." },
+    ],
+    sampleAudio: [{ id: "beatmatch", label: "Beatmatched blend" }, { id: "scratch", label: "Baby scratch" }],
+    pedagogyTrackId: "dj_standard", difficultyFloor: 2,
+    micSetupHints: ["Direct audio from master out. Headphones required for cue monitoring."],
+  },
 };
 
 export const listInstruments = () => Object.values(INSTRUMENTS);
