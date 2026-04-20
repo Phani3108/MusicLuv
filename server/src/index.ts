@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { registerRoutes } from "./httpRoutes.js";
+import { authMiddleware } from "./authMiddleware.js";
 
 const app = express();
 
@@ -11,6 +12,11 @@ app.use(
   })
 );
 app.use(express.json({ limit: "4mb" }));
+
+// Auth gate before any route. Respects PUBLIC_PATHS whitelist + in
+// dev/promo mode falls back to x-user-id. When STRICT_AUTH=true in
+// prod, every non-public route requires a valid Supabase JWT.
+app.use(authMiddleware);
 
 registerRoutes(app);
 

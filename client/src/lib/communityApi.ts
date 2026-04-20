@@ -8,7 +8,7 @@ import type {
   RecitalSubmission, RecitalComment, PublicProfile,
   TeacherAssignment, ProctoredExamSession, LiveSlot,
 } from "@catalogs/communityTypes";
-import { MUSICLUV_SERVER_URL, getDeviceUserId } from "./api";
+import { MUSICLUV_SERVER_URL, serverAuthHeaders, getDeviceUserId } from "./api";
 
 function base(): string {
   if (!MUSICLUV_SERVER_URL) throw new Error("server_unavailable");
@@ -18,7 +18,7 @@ function base(): string {
 function authHeaders(): HeadersInit {
   return {
     "Content-Type": "application/json",
-    "X-User-ID": getDeviceUserId(),
+    ...serverAuthHeaders(),
   };
 }
 

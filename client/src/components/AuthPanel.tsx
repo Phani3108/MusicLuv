@@ -2,6 +2,7 @@ import { useAtom, useSetAtom } from "jotai";
 import { useState } from "react";
 import { authPanelOpenAtom, authUserAtom, planPickerOpenAtom } from "@/atoms/billing";
 import { SidePanel } from "./SidePanel";
+import { emailAuth, oauthRedirect, isConfigured as isSupabaseConfigured } from "@/lib/supabase";
 
 /**
  * Auth panel. Supports: beta code (Phase 3/4), Google, Apple, email/password.
@@ -20,19 +21,33 @@ export function AuthPanel() {
 
   if (!open) return null;
 
-  const afterAuth = (user: { id: string; email: string; displayName: string; authProvider: "email" | "google" | "apple" | "beta-code" }) => {
+  const afterAuth = (user: { id: string; email: string; displayName: string; authProvider: "email" | "google" | "apple" | "beta-code"; avatarUrl?: string }) => {
     setUser(user);
     setOpen(false);
     setPlanPicker(true);
   };
 
+  const supaConfigured = isSupabaseConfigured();
+
   const handleEmail = async () => {
     setBusy(true); setError(null);
     try {
-      // Production: Supabase auth call.
-      await new Promise((r) => setTimeout(r, 400));
       if (!email.includes("@")) throw new Error("Invalid email");
-      afterAuth({ id: `user_${Date.now()}`, email, displayName: email.split("@")[0], authProvider: "email" });
+      if (supaConfigured) {
+        const session = await emailAuth(mode, email, password);
+        afterAuth({
+          id: session.user.id,
+          email: session.user.email,
+          displayName: session.user.displayName,
+          authProvider: "email",
+          avatarUrl: session.user.avatarUrl,
+        });
+      } else {
+        // Dev-only fallback — no Supabase project configured. Useful for
+        // local development without auth infra. In prod, set VITE_SUPABASE_URL.
+        await new Promise((r) => setTimeout(r, 300));
+        afterAuth({ id: `dev_${Date.now()}`, email, displayName: email.split("@")[0], authProvider: "email" });
+      }
     } catch (e) {
       setError((e as Error).message);
     } finally { setBusy(false); }
@@ -41,9 +56,15 @@ export function AuthPanel() {
   const handleOAuth = async (provider: "google" | "apple") => {
     setBusy(true); setError(null);
     try {
-      // Production: window.location.href = `/api/v1/auth/${provider}`
-      await new Promise((r) => setTimeout(r, 400));
-      afterAuth({ id: `user_${Date.now()}`, email: `${provider}@example.com`, displayName: `${provider} user`, authProvider: provider });
+      if (supaConfigured) {
+        // Redirects the browser — after sign-in the callback handler in
+        // App boot (absorbOAuthCallback) populates authUserAtom.
+        oauthRedirect(provider);
+        return; // navigation happens
+      }
+      // Dev-only fallback.
+      await new Promise((r) => setTimeout(r, 300));
+      afterAuth({ id: `dev_${Date.now()}`, email: `${provider}@example.com`, displayName: `${provider} user`, authProvider: provider });
     } catch (e) { setError((e as Error).message); } finally { setBusy(false); }
   };
 

@@ -2,6 +2,7 @@
 import type { Exercise, Mentor } from "@catalogs/types";
 import type { GradeResult } from "@/atoms/practice";
 import { getRubric } from "@catalogs/gradingRubricCatalog";
+import { getAccessToken } from "./supabase";
 
 export const AUDIO_ENGINE_URL = (import.meta as any).env.VITE_AUDIO_ENGINE_URL as string | undefined;
 export const MUSICLUV_SERVER_URL = (import.meta as any).env.VITE_SERVER_URL as string | undefined;
@@ -18,6 +19,21 @@ export function getDeviceUserId(): string {
     localStorage.setItem(KEY, id);
   }
   return id;
+}
+
+/**
+ * Auth headers used by every server call. When a Supabase JWT is
+ * available, it's forwarded as the bearer token so the server can
+ * verify the user's identity. x-user-id stays as a fallback for
+ * anonymous / dev-mode sessions until Supabase is wired in production.
+ */
+export function serverAuthHeaders(): HeadersInit {
+  const headers: Record<string, string> = {
+    "X-User-ID": getDeviceUserId(),
+  };
+  const token = getAccessToken();
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+  return headers;
 }
 
 export async function checkHealth(): Promise<{ ok: boolean; backends?: Record<string, string> }> {
@@ -107,7 +123,7 @@ export async function sendMentorMessage(opts: MentorMessageOpts): Promise<Mentor
   };
   const r = await fetch(`${MUSICLUV_SERVER_URL}/api/v1/mentor/message`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", "X-User-ID": getDeviceUserId() },
+    headers: { "Content-Type": "application/json", ...serverAuthHeaders() },
     body: JSON.stringify(body),
   });
   if (!r.ok) return null;
