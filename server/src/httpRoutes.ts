@@ -26,6 +26,11 @@ import {
   manuallyActivateMonetization,
   recordUserSeen,
 } from "./monetizationGate.js";
+import {
+  listCompositionsForUser, listReviewQueue, submitComposition, reviewComposition,
+} from "./compositionService.js";
+import { scoreStyleMatch, type AttemptFeatures } from "./styleFingerprint.js";
+import { ARTISTS } from "@catalogs/artistCatalog";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
 
@@ -246,6 +251,17 @@ export function registerRoutes(app: Express): void {
     if (!updated) return res.status(404).json({ ok: false });
     res.json({ ok: true, lesson: updated });
   });
+  app.post("/api/v1/creator/stripe-connect", (req, res) => {
+    // Production: use stripe.accountLinks.create({ account, type: "account_onboarding", ... })
+    //             to mint a hosted onboarding URL and redirect the creator to Stripe.
+    // Dev stub: echo a placeholder URL so the flow is end-to-end testable.
+    const userId = req.user?.id ?? (req.headers["x-user-id"] as string) ?? "anon";
+    if (process.env.STRIPE_SECRET_KEY) {
+      // TODO (prod): create account + accountLink via Stripe SDK
+    }
+    const url = `/creator/stripe-connect/onboarded?user=${encodeURIComponent(userId)}`;
+    res.json({ ok: true, url, stub: !process.env.STRIPE_SECRET_KEY });
+  });
 
   // ── Community · Proctored exams ───────────────────────────────────
   app.get("/api/v1/proctored/:userId", (req, res) => {
@@ -272,5 +288,63 @@ export function registerRoutes(app: Express): void {
     const slot = bookLiveSlot(req.params.slotId, studentId, meetingUrl);
     if (!slot) return res.status(409).json({ ok: false, error: "unavailable" });
     res.json({ ok: true, slot });
+  });
+
+  // ── Compositions (Genius tier human review) ───────────────────────
+  app.get("/api/v1/compositions/:userId", (req, res) => {
+    res.json({ ok: true, compositions: listCompositionsForUser(req.params.userId) });
+  });
+  app.post("/api/v1/compositions", (req, res) => {
+    res.json({ ok: true, composition: submitComposition(req.body) });
+  });
+  app.get("/api/v1/compositions/admin/queue", (req, res) => {
+    const adminToken = (req.headers["x-admin-token"] as string) || "";
+    if (!process.env.ADMIN_TOKEN || adminToken !== process.env.ADMIN_TOKEN) {
+      return res.status(403).json({ ok: false, error: "forbidden" });
+    }
+    res.json({ ok: true, compositions: listReviewQueue() });
+  });
+  app.patch("/api/v1/compositions/:id/review", (req, res) => {
+    const { reviewerId, status, notes, rubric } = req.body ?? {};
+    const updated = reviewComposition(req.params.id, reviewerId, status, notes, rubric);
+    if (!updated) return res.status(404).json({ ok: false });
+    res.json({ ok: true, composition: updated });
+  });
+
+  // ── Style fingerprint match ───────────────────────────────────────
+  app.post("/api/v1/style/match", (req, res) => {
+    const { artistId, features } = req.body as { artistId: string; features: AttemptFeatures };
+    const artist = ARTISTS[artistId];
+    if (!artist) return res.status(404).json({ ok: false, error: "unknown_artist" });
+    const result = scoreStyleMatch(artist, features);
+    res.json({ ok: true, artistId, ...result });
+  });
+
+  // ── URL ingest (yt-dlp stub) ──────────────────────────────────────
+  app.post("/api/v1/uploads/from-url", async (req, res) => {
+    const { url, instrumentId, level } = req.body as { url: string; instrumentId: string; level: number };
+    if (!url || !instrumentId) return res.status(400).json({ ok: false, error: "missing_fields" });
+
+    // Production: spawn yt-dlp, download audio, forward to audio-engine /transcribe.
+    // For now: stub response so the UX flow works end-to-end while we wire yt-dlp.
+    if (process.env.YT_DLP_ENABLED !== "true") {
+      return res.status(501).json({
+        ok: false,
+        error: "url_ingest_pending",
+        message:
+          "URL ingest (yt-dlp) is not enabled on this server. Set YT_DLP_ENABLED=true + install " +
+          "yt-dlp to enable. In the meantime, download the audio locally and upload via the file picker.",
+      });
+    }
+
+    try {
+      // TODO: real yt-dlp invocation + stream to audio-engine:
+      //   const tmp = await ytDlp.download(url);
+      //   const form = new FormData(); form.append("audio", tmp); ...
+      //   const r = await fetch(`${AUDIO_ENGINE}/transcribe`, { method: "POST", body: form });
+      res.json({ ok: true, jobId: `yt_${Date.now()}`, level, instrumentId, url });
+    } catch (e) {
+      res.status(500).json({ ok: false, error: (e as Error).message });
+    }
   });
 }

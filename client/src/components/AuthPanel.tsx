@@ -2,7 +2,7 @@ import { useAtom, useSetAtom } from "jotai";
 import { useState } from "react";
 import { authPanelOpenAtom, authUserAtom, planPickerOpenAtom } from "@/atoms/billing";
 import { SidePanel } from "./SidePanel";
-import { emailAuth, oauthRedirect, isConfigured as isSupabaseConfigured } from "@/lib/supabase";
+import { emailAuth, oauthRedirect, isConfigured as isSupabaseConfigured, requestPasswordReset, sendMagicLink } from "@/lib/supabase";
 
 /**
  * Auth panel. Supports: beta code (Phase 3/4), Google, Apple, email/password.
@@ -18,6 +18,7 @@ export function AuthPanel() {
   const [betaCode, setBetaCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   if (!open) return null;
 
@@ -78,6 +79,32 @@ export function AuthPanel() {
     } catch (e) { setError((e as Error).message); } finally { setBusy(false); }
   };
 
+  const handleForgot = async () => {
+    if (!email.includes("@")) { setError("Enter your email first"); return; }
+    setBusy(true); setError(null); setNotice(null);
+    try {
+      if (supaConfigured) {
+        await requestPasswordReset(email);
+        setNotice(`Reset link sent to ${email}.`);
+      } else {
+        setNotice("Password reset available once Supabase is configured.");
+      }
+    } catch (e) { setError((e as Error).message); } finally { setBusy(false); }
+  };
+
+  const handleMagicLink = async () => {
+    if (!email.includes("@")) { setError("Enter your email first"); return; }
+    setBusy(true); setError(null); setNotice(null);
+    try {
+      if (supaConfigured) {
+        await sendMagicLink(email);
+        setNotice(`Magic link sent to ${email}. Click it to sign in.`);
+      } else {
+        setNotice("Magic link available once Supabase is configured.");
+      }
+    } catch (e) { setError((e as Error).message); } finally { setBusy(false); }
+  };
+
   return (
     <SidePanel title={mode === "signin" ? "Sign in" : "Create account"} open={open} onClose={() => setOpen(false)} width="w-full md:w-[26rem]">
       <div className="space-y-4">
@@ -109,9 +136,22 @@ export function AuthPanel() {
           </button>
         </div>
 
-        <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="w-full text-xs text-white/60 hover:text-white/80">
-          {mode === "signin" ? "Need an account? Sign up" : "Have an account? Sign in"}
+        <div className="flex justify-between items-center text-[11px]">
+          <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            className="text-white/60 hover:text-white/80">
+            {mode === "signin" ? "Need an account? Sign up" : "Have an account? Sign in"}
+          </button>
+          <button onClick={handleForgot} className="text-indigo-300 hover:text-indigo-200">
+            Forgot password?
+          </button>
+        </div>
+
+        <button
+          onClick={handleMagicLink}
+          disabled={busy}
+          className="w-full py-2 rounded-md bg-white/5 hover:bg-white/10 text-xs border border-white/10 disabled:opacity-50"
+        >
+          ✨ Email me a magic link instead
         </button>
 
         <div className="rounded-lg bg-white/5 border border-white/10 p-3 space-y-2">
@@ -124,6 +164,9 @@ export function AuthPanel() {
           </button>
         </div>
 
+        {notice && (
+          <div className="text-xs text-emerald-300 bg-emerald-500/10 border border-emerald-400/20 rounded-md p-2">{notice}</div>
+        )}
         {error && <div className="text-xs text-rose-400">{error}</div>}
 
         <p className="text-[10px] text-white/40 text-center">

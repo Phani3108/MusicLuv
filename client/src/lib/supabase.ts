@@ -145,6 +145,41 @@ export function absorbOAuthCallback(): SupabaseSession | null {
   return session;
 }
 
+/** Send a password-reset email via Supabase. */
+export async function requestPasswordReset(email: string): Promise<void> {
+  if (!isConfigured()) throw new Error("Supabase not configured (VITE_SUPABASE_URL)");
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify({
+      email,
+      redirect_to: `${REDIRECT_URL}/auth/reset`,
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ msg: "reset_failed" }));
+    throw new Error(err.msg || err.error_description || `HTTP ${res.status}`);
+  }
+}
+
+/** Send a passwordless magic link. */
+export async function sendMagicLink(email: string): Promise<void> {
+  if (!isConfigured()) throw new Error("Supabase not configured (VITE_SUPABASE_URL)");
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/otp`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify({
+      email,
+      create_user: true,
+      options: { email_redirect_to: REDIRECT_URL },
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ msg: "magic_link_failed" }));
+    throw new Error(err.msg || err.error_description || `HTTP ${res.status}`);
+  }
+}
+
 export async function signOut(): Promise<void> {
   const tok = getAccessToken();
   setStoredSession(null);

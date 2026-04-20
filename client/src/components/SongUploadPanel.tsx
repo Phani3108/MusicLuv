@@ -3,7 +3,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { songUploadAtom } from "@/atoms/panels";
 import { currentInstrumentAtom } from "@/atoms/session";
 import { SidePanel } from "./SidePanel";
-import { AUDIO_ENGINE_URL } from "@/lib/api";
+import { AUDIO_ENGINE_URL, MUSICLUV_SERVER_URL, serverAuthHeaders } from "@/lib/api";
 
 type Step = "input" | "uploading" | "done" | "error";
 
@@ -40,6 +40,8 @@ export function SongUploadPanel() {
   const [open, setOpen] = useAtom(songUploadAtom);
   const instrumentId = useAtomValue(currentInstrumentAtom);
   const [step, setStep] = useState<Step>("input");
+  const [mode, setMode] = useState<"file" | "url">("file");
+  const [url, setUrl] = useState("");
   const [level, setLevel] = useState(2);
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<TranscribeResponse | null>(null);
@@ -49,7 +51,38 @@ export function SongUploadPanel() {
 
   const engineReady = Boolean(AUDIO_ENGINE_URL);
 
+  const analyzeUrl = async () => {
+    if (!url.trim() || !instrumentId) return;
+    setStep("uploading");
+    setError(null);
+    setProgressLabel("Fetching audio from URL…");
+
+    try {
+      if (!MUSICLUV_SERVER_URL) throw new Error("Server not configured (VITE_SERVER_URL)");
+      const res = await fetch(`${MUSICLUV_SERVER_URL}/api/v1/uploads/from-url`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...serverAuthHeaders() },
+        body: JSON.stringify({ url: url.trim(), instrumentId, level }),
+      });
+      const body = await res.json();
+      if (!res.ok || !body.ok) {
+        throw new Error(body.message || body.error || `HTTP ${res.status}`);
+      }
+      // Stub: the real flow polls jobId until ready, then fills `result`.
+      setResult({
+        steps: [],
+        confidence: 0,
+        warning: "Server accepted the URL; transcription will complete server-side shortly. Refresh to check.",
+      });
+      setStep("done");
+    } catch (e) {
+      setError((e as Error).message);
+      setStep("error");
+    }
+  };
+
   const analyze = async () => {
+    if (mode === "url") return analyzeUrl();
     if (!file || !instrumentId) return;
     setStep("uploading");
     setError(null);
@@ -145,22 +178,57 @@ export function SongUploadPanel() {
             </div>
           </div>
 
-          <label className="text-xs uppercase tracking-widest text-white/40 mb-2 block">
-            Audio file (mp3, wav, m4a)
-          </label>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="audio/*"
-            onChange={handlePick}
-            className="hidden"
-          />
-          <button
-            className={`w-full py-3 rounded-xl border border-dashed text-sm transition-colors ${file ? "bg-white/5 border-emerald-400/40" : "bg-white/[0.02] border-white/15 hover:bg-white/5"}`}
-            onClick={() => fileInputRef.current?.click()}
-          >
-            {file ? <>📁 {file.name}</> : "Choose an audio file"}
-          </button>
+          <div className="flex gap-1 mb-3 p-1 rounded-lg bg-white/5 border border-white/10">
+            <button
+              onClick={() => setMode("file")}
+              className={`flex-1 py-1.5 text-xs rounded-md transition-colors ${mode === "file" ? "bg-white/10 text-white" : "text-white/60 hover:text-white/80"}`}
+            >
+              📁 File
+            </button>
+            <button
+              onClick={() => setMode("url")}
+              className={`flex-1 py-1.5 text-xs rounded-md transition-colors ${mode === "url" ? "bg-white/10 text-white" : "text-white/60 hover:text-white/80"}`}
+            >
+              🔗 URL
+            </button>
+          </div>
+
+          {mode === "file" ? (
+            <>
+              <label className="text-xs uppercase tracking-widest text-white/40 mb-2 block">
+                Audio file (mp3, wav, m4a)
+              </label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="audio/*"
+                onChange={handlePick}
+                className="hidden"
+              />
+              <button
+                className={`w-full py-3 rounded-xl border border-dashed text-sm transition-colors ${file ? "bg-white/5 border-emerald-400/40" : "bg-white/[0.02] border-white/15 hover:bg-white/5"}`}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {file ? <>📁 {file.name}</> : "Choose an audio file"}
+              </button>
+            </>
+          ) : (
+            <>
+              <label className="text-xs uppercase tracking-widest text-white/40 mb-2 block">
+                YouTube / SoundCloud / direct audio URL
+              </label>
+              <input
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="https://…"
+                className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm"
+              />
+              <div className="text-[10px] text-white/40 mt-1">
+                The server fetches the audio via yt-dlp (when enabled) and runs the same
+                Demucs + Basic Pitch pipeline. Accuracy varies by source quality.
+              </div>
+            </>
+          )}
 
           <label className="text-xs uppercase tracking-widest text-white/40 mb-2 mt-5 block">
             Simplify to level
@@ -186,16 +254,12 @@ export function SongUploadPanel() {
           </div>
 
           <button
-            className="btn-primary w-full"
-            disabled={!file || !engineReady}
+            className="btn-primary w-full mt-4"
+            disabled={(mode === "file" && !file) || (mode === "url" && !url.trim()) || !engineReady}
             onClick={analyze}
           >
             Analyze →
           </button>
-
-          <div className="text-[11px] text-white/40 text-center mt-3">
-            URL ingest (yt-dlp) coming after launch. For now: download + upload locally.
-          </div>
         </>
       )}
 

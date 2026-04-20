@@ -8,6 +8,7 @@ import { fetchRecitalFeed, likeRecital as apiLikeRecital } from "@/lib/community
 import { MUSICLUV_SERVER_URL } from "@/lib/api";
 import { getInstrument } from "@catalogs/instrumentCatalog";
 import type { RecitalSubmission } from "@catalogs/communityTypes";
+import { nativeShare, twitterShareUrl, linkedInShareUrl, whatsAppShareUrl, copyLink } from "@/lib/share";
 
 /**
  * Recital feed — public stream of learner submissions. Reads from
@@ -108,6 +109,25 @@ function RecitalCard({
   onOpenProfile: (uid: string) => void;
 }) {
   const instrument = getInstrument(recital.instrumentId);
+  const [shareOpen, setShareOpen] = useState(false);
+  const shareUrl = `${window.location.origin}/r/${recital.id}`;
+  const shareTarget = {
+    url: shareUrl,
+    title: `${recital.title} · MusicLuv`,
+    text: `Listen to my ${instrument?.name ?? "music"} recital.`,
+  };
+
+  const onShare = async () => {
+    const worked = await nativeShare(shareTarget);
+    if (!worked) setShareOpen(true);
+  };
+
+  const [copied, setCopied] = useState(false);
+  const doCopy = async () => {
+    const ok = await copyLink(shareUrl);
+    setCopied(ok);
+    setTimeout(() => setCopied(false), 1500);
+  };
   const tierColor =
     recital.tier === "genius"
       ? "text-amber-300"
@@ -151,7 +171,27 @@ function RecitalCard({
             ❤️ {recital.likes}
           </button>
           <span>💬 {recital.commentCount}</span>
+          <button onClick={onShare} className="hover:text-indigo-300 ml-auto transition-colors">
+            ↗ share
+          </button>
         </div>
+
+        {shareOpen && (
+          <div className="mt-3 p-3 rounded-lg bg-white/[0.02] border border-white/5 space-y-2">
+            <div className="text-[10px] uppercase tracking-widest text-white/40">Share to</div>
+            <div className="flex flex-wrap gap-2">
+              <a href={twitterShareUrl(shareTarget)} target="_blank" rel="noreferrer" className="text-[11px] px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">𝕏 Twitter</a>
+              <a href={linkedInShareUrl(shareTarget)} target="_blank" rel="noreferrer" className="text-[11px] px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">LinkedIn</a>
+              <a href={whatsAppShareUrl(shareTarget)} target="_blank" rel="noreferrer" className="text-[11px] px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">WhatsApp</a>
+              <button onClick={doCopy} className="text-[11px] px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 border border-white/10">
+                {copied ? "✓ Copied" : "Copy link"}
+              </button>
+              <button onClick={() => setShareOpen(false)} className="text-[11px] px-2 py-1 rounded-md text-white/40 ml-auto">
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );

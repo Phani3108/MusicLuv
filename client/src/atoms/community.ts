@@ -10,7 +10,8 @@ export const recitalFeedPanelAtom = atom<boolean>(false);
 export const teacherDashboardPanelAtom = atom<boolean>(false);
 export const creatorPortalPanelAtom = atom<boolean>(false);
 export const proctoredExamPanelAtom = atom<boolean>(false);
-export const livelessonsPanelAtom = atom<boolean>(false);
+export const liveLessonsPanelAtom = atom<boolean>(false);
+export const compositionReviewPanelAtom = atom<boolean>(false);
 
 // Cached data
 export const recitalsFeedCacheAtom = atom<RecitalSubmission[]>([]);

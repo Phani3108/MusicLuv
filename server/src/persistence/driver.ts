@@ -1,17 +1,11 @@
 /**
- * Persistence driver abstraction. Keeps the existing flat-file JSON
- * atomic-write pattern (dev / launch promo window) while allowing a
- * drop-in Postgres swap once we're ready to scale beyond flat files.
+ * Persistence driver abstraction. Swap between flat-file JSON atomic
+ * writes (dev / launch promo) and Postgres via PERSISTENCE_DRIVER.
  *
- * Selection: set PERSISTENCE_DRIVER=postgres in the server env and
- * provide DATABASE_URL. Default remains "flatfile" — zero-config
- * local dev continues to work.
- *
- * Usage:
- *   import { kvStore } from "./persistence/driver.js";
- *   const users = await kvStore<Record<string, User>>("users", {});
- *   users.set({ ... });
- *   users.get();
+ * Flatfile mode is synchronous (matches existing service modules).
+ * Postgres mode is async (pg driver); the kvStore signature returns
+ * union types so callers can await either — `await store.get()` works
+ * in both cases since await on a non-Promise resolves to the value.
  */
 
 import { atomicWriteJson, readJsonSafe, dataPath } from "../persistence.js";
@@ -23,17 +17,9 @@ export interface KvStore<T> {
 
 const DRIVER = (process.env.PERSISTENCE_DRIVER || "flatfile").toLowerCase();
 
-/**
- * Key-value store keyed by a file/table name. `initial` is used on
- * first read when no prior value exists.
- *
- * The flatfile implementation is synchronous (matches the existing
- * service modules) but the signature returns a Promise-compatible
- * shape so callers can eventually await without a rewrite.
- */
 export function kvStore<T>(name: string, initial: T): KvStore<T> {
   if (DRIVER === "postgres") {
-    return postgresKv(name, initial);
+    return postgresKvLazy(name, initial);
   }
   return flatfileKv(name, initial);
 }
@@ -47,21 +33,39 @@ function flatfileKv<T>(name: string, initial: T): KvStore<T> {
 }
 
 /**
- * Postgres placeholder. Intentionally stubs at this stage — the shape
- * is the contract; the actual PG implementation lands when we add the
- * `pg` npm dep + a migration runner. Until then, selecting postgres
- * prints a warning + silently falls back to flatfile so dev doesn't
- * break.
+ * Lazy proxy — defers the dynamic import until first use so flatfile
+ * deployments don't need `pg` installed. Falls back to flatfile if the
+ * import fails (e.g. pg wasn't installed).
  */
-function postgresKv<T>(name: string, initial: T): KvStore<T> {
-  if (!warnedAboutPg) {
-    console.warn(
-      "[persistence] PERSISTENCE_DRIVER=postgres selected but the PG adapter " +
-      "is not yet wired. Falling back to flatfile. Set DATABASE_URL + add the " +
-      "`pg` dep, then implement this function.",
-    );
-    warnedAboutPg = true;
-  }
-  return flatfileKv(name, initial);
+function postgresKvLazy<T>(name: string, initial: T): KvStore<T> {
+  let real: KvStore<T> | null = null;
+  let loaded: Promise<KvStore<T>> | null = null;
+
+  const ensure = async (): Promise<KvStore<T>> => {
+    if (real) return real;
+    if (!loaded) {
+      loaded = (async () => {
+        try {
+          const mod = await import("./postgres.js");
+          return mod.postgresKvStore<T>(name, initial);
+        } catch (err) {
+          console.warn(
+            "[persistence] postgres selected but pg is not installed; falling back to flatfile.",
+            err,
+          );
+          return flatfileKv<T>(name, initial);
+        }
+      })();
+    }
+    real = await loaded;
+    return real;
+  };
+
+  return {
+    get: async () => (await ensure()).get(),
+    set: async (value: T) => {
+      const r = await ensure();
+      await r.set(value);
+    },
+  };
 }
-let warnedAboutPg = false;

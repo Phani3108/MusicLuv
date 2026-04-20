@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom, useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { artistPanelAtom } from "@/atoms/panels";
 import { currentInstrumentAtom, currentLessonIdAtom, progressAtom, screenAtom } from "@/atoms/session";
@@ -8,6 +8,8 @@ import { LESSONS } from "@catalogs/lessonCatalog";
 import type { Artist, Lesson } from "@catalogs/types";
 import { SidePanel } from "./SidePanel";
 import { playNote, unlockAudio } from "@/audio/instrumentSampler";
+import { MUSICLUV_SERVER_URL, serverAuthHeaders } from "@/lib/api";
+import { livePitchHzAtom, livePitchCentsAtom, lastGradeAtom } from "@/atoms/practice";
 
 /**
  * Artist gallery. Tap an artist to open a demo modal that:
@@ -139,14 +141,51 @@ function ArtistFocusModal({
   onCloseGallery: () => void;
 }) {
   const [playingId, setPlayingId] = useState<string | null>(null);
+  const [matchScore, setMatchScore] = useState<number | null>(null);
+  const [matchBreakdown, setMatchBreakdown] = useState<Record<string, number> | null>(null);
+  const [matching, setMatching] = useState(false);
   const setCurrentInstrument = useSetAtom(currentInstrumentAtom);
   const setCurrentLesson = useSetAtom(currentLessonIdAtom);
   const setScreen = useSetAtom(screenAtom);
+  const lastGrade = useAtomValue(lastGradeAtom);
 
   // Auto-play the first lick on open (if user has interacted with the page).
   useEffect(() => {
     // Not autoplay — require explicit click to avoid noise mid-navigation.
   }, []);
+
+  const runStyleMatch = async () => {
+    if (!MUSICLUV_SERVER_URL || !lastGrade) return;
+    setMatching(true);
+    try {
+      // Derive coarse features from the last grade + detected notes. The
+      // audio-engine returns richer timbre features when available; for
+      // now we pass what we have.
+      const notes = lastGrade.userNotesDetected ?? [];
+      const pitchVals = notes.map((n: any) => n.hz ?? 0).filter((h: number) => h > 0);
+      const mean = pitchVals.length ? pitchVals.reduce((s: number, h: number) => s + h, 0) / pitchVals.length : 0;
+      const variance = pitchVals.length ? pitchVals.reduce((s: number, h: number) => s + (h - mean) ** 2, 0) / pitchVals.length : 0;
+      const features = {
+        pitchMean: mean,
+        pitchStd: Math.sqrt(variance),
+        rhythmDensity: notes.length / Math.max(1, (lastGrade as any).durationSec ?? 10),
+        ornamentRate: 0,
+        mfccCentroid: 0.5,
+      };
+      const res = await fetch(`${MUSICLUV_SERVER_URL}/api/v1/style/match`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...serverAuthHeaders() },
+        body: JSON.stringify({ artistId: artist.id, features }),
+      });
+      const body = await res.json();
+      if (body.ok) {
+        setMatchScore(body.score);
+        setMatchBreakdown(body.breakdown);
+      }
+    } finally {
+      setMatching(false);
+    }
+  };
 
   const playLick = async (lickId: string, exerciseId?: string) => {
     if (playingId) return;
@@ -216,6 +255,35 @@ function ArtistFocusModal({
 
         <div className="p-5 pb-3 border-b border-white/5">
           <p className="text-sm text-white/80 leading-relaxed">{artist.blurb}</p>
+          {lastGrade && (
+            <div className="mt-3 p-3 rounded-lg bg-indigo-500/5 border border-indigo-400/20">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <div className="text-[10px] uppercase tracking-widest text-indigo-300">Style fingerprint</div>
+                  <div className="text-xs text-white/70">
+                    How close was your last attempt to {artist.name.split(" ")[0]}'s voice?
+                  </div>
+                </div>
+                <button
+                  onClick={runStyleMatch}
+                  disabled={matching}
+                  className="text-[11px] font-semibold px-3 py-1.5 rounded-md bg-indigo-500/20 border border-indigo-400/40 hover:bg-indigo-500/30 disabled:opacity-50"
+                >
+                  {matching ? "Matching…" : matchScore !== null ? `${Math.round(matchScore * 100)}% match` : "Run match"}
+                </button>
+              </div>
+              {matchBreakdown && (
+                <div className="grid grid-cols-5 gap-1 mt-2 text-[9px] font-mono text-white/60">
+                  {Object.entries(matchBreakdown).slice(0, 5).map(([k, v]) => (
+                    <div key={k} className="text-center p-1 rounded-md bg-white/[0.02]">
+                      <div className="text-white/90">{Math.round(v * 100)}%</div>
+                      <div className="text-[8px] text-white/40 truncate">{k}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="flex-1 overflow-y-auto p-5 space-y-3">
