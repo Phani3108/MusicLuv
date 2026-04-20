@@ -1,38 +1,85 @@
 import { useAtom } from "jotai";
-import { teacherDashboardPanelAtom, teacherAssignmentsAtom } from "@/atoms/community";
+import { teacherDashboardPanelAtom } from "@/atoms/community";
+import { authUserAtom } from "@/atoms/billing";
 import { SidePanel } from "./SidePanel";
+import { AsyncBoundary, LoadingSpinner, EmptyState, ErrorState } from "./common/AsyncBoundary";
+import { useAsync } from "@/hooks/useAsync";
+import { fetchTeacherAssignments } from "@/lib/communityApi";
+import { MUSICLUV_SERVER_URL, getDeviceUserId } from "@/lib/api";
 import { getLesson } from "@catalogs/lessonCatalog";
 import type { TeacherAssignment } from "@catalogs/communityTypes";
 
 /**
- * Teacher dashboard — list your students, see their progress, assign lessons.
- * MVP scope: list assignments + status. Production: student-selector,
- * bulk lesson assign, progress charts, send feedback notes.
+ * Teacher dashboard — list your students' assignments + statuses.
+ * Reads /api/v1/teacher/:teacherId/assignments via useAsync.
+ *
+ * MVP scope: list + status. Assignment creation + grading UI are explicitly
+ * deferred to post-monetization phase 6.5 (stub CTA surfaces the roadmap).
  */
 export function TeacherDashboardPanel() {
   const [open, setOpen] = useAtom(teacherDashboardPanelAtom);
-  const [assignments] = useAtom(teacherAssignmentsAtom);
-  const items = assignments.length > 0 ? assignments : MOCK_ASSIGNMENTS;
+  const [authUser] = useAtom(authUserAtom);
+  const teacherId = authUser?.id ?? getDeviceUserId();
+
+  const { status, data, error, refetch } = useAsync<TeacherAssignment[]>(
+    async () => {
+      if (!MUSICLUV_SERVER_URL) throw new Error("Server not configured");
+      return fetchTeacherAssignments(teacherId);
+    },
+    [open, teacherId],
+    { isEmpty: (list) => list.length === 0 },
+  );
+
+  const items = data ?? [];
+  const students = new Set(items.map((a) => a.studentId));
+  const assigned = items.filter((a) => a.status === "assigned").length;
+  const reviewed = items.filter((a) => a.status === "reviewed").length;
 
   return (
-    <SidePanel title="Teacher dashboard" subtitle="Your students + assignments" open={open} onClose={() => setOpen(false)} width="w-full md:w-[32rem]">
+    <SidePanel
+      title="Teacher dashboard"
+      subtitle="Your students + assignments"
+      open={open}
+      onClose={() => setOpen(false)}
+      width="w-full md:w-[32rem]"
+    >
       <div className="space-y-4">
         <div className="grid grid-cols-3 gap-2">
-          <SummaryCard label="Students" value={new Set(items.map((a) => a.studentId)).size} />
-          <SummaryCard label="Assigned" value={items.filter((a) => a.status === "assigned").length} />
-          <SummaryCard label="Reviewed" value={items.filter((a) => a.status === "reviewed").length} />
+          <SummaryCard label="Students" value={students.size} />
+          <SummaryCard label="Assigned" value={assigned} />
+          <SummaryCard label="Reviewed" value={reviewed} />
         </div>
 
         <section>
           <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2">Active assignments</div>
-          <div className="space-y-2">
-            {items.map((a) => <AssignmentRow key={a.id} assignment={a} />)}
-          </div>
+          <AsyncBoundary
+            status={open ? status : "idle"}
+            loading={<LoadingSpinner label="Loading assignments…" />}
+            empty={
+              <EmptyState
+                glyph="🎓"
+                title="No students yet"
+                body="Assign a lesson to a learner once you've connected with one, and the assignment will appear here."
+              />
+            }
+            error={<ErrorState message={error ?? "Unable to load assignments."} onRetry={refetch} />}
+          >
+            <div className="space-y-2">
+              {items.map((a) => (
+                <AssignmentRow key={a.id} assignment={a} />
+              ))}
+            </div>
+          </AsyncBoundary>
         </section>
 
-        <button className="w-full py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 font-semibold text-sm">
-          + Assign lesson to a student
-        </button>
+        <div className="rounded-xl p-4 bg-gradient-to-br from-emerald-500/10 to-teal-500/5 border border-emerald-400/20">
+          <div className="text-[10px] uppercase tracking-widest text-emerald-300 mb-1">Coming soon</div>
+          <div className="text-sm font-semibold mb-1">Assignment builder + grading queue</div>
+          <div className="text-xs text-white/60">
+            Full lesson-assign flow, bulk ops, and rubric-based grading ship after the launch promo window.
+            For now this view is read-only.
+          </div>
+        </div>
       </div>
     </SidePanel>
   );
@@ -59,16 +106,16 @@ function AssignmentRow({ assignment }: { assignment: TeacherAssignment }) {
     <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
       <div className="flex items-center justify-between mb-1">
         <div className="text-sm font-medium">{assignment.studentId}</div>
-        <span className={`text-[10px] uppercase tracking-widest ${statusColor[assignment.status]}`}>{assignment.status.replace("_", " ")}</span>
+        <span className={`text-[10px] uppercase tracking-widest ${statusColor[assignment.status]}`}>
+          {assignment.status.replace("_", " ")}
+        </span>
       </div>
       <div className="text-xs text-white/60">{lesson?.title ?? assignment.lessonId}</div>
-      {assignment.dueAt && <div className="text-[10px] text-white/40 mt-1">Due {new Date(assignment.dueAt).toLocaleDateString()}</div>}
+      {assignment.dueAt && (
+        <div className="text-[10px] text-white/40 mt-1">
+          Due {new Date(assignment.dueAt).toLocaleDateString()}
+        </div>
+      )}
     </div>
   );
 }
-
-const MOCK_ASSIGNMENTS: TeacherAssignment[] = [
-  { id: "a1", teacherId: "me", studentId: "priya_m", lessonId: "sitar_l4_01_yaman_alap", status: "submitted", createdAt: new Date().toISOString(), dueAt: new Date(Date.now() + 3 * 86400e3).toISOString() },
-  { id: "a2", teacherId: "me", studentId: "marcus_g", lessonId: "guitar_l2_01_em_chord", status: "in_progress", createdAt: new Date().toISOString() },
-  { id: "a3", teacherId: "me", studentId: "sofia_v", lessonId: "vocals_l7_01_aria_advanced", status: "reviewed", createdAt: new Date().toISOString() },
-];

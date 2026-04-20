@@ -19,8 +19,9 @@ import { VirtualDrums } from "./VirtualDrums";
 import { PitchMeter } from "./PitchMeter";
 import { TimelineRibbon } from "./TimelineRibbon";
 import { GhostHand } from "./GhostHand";
-import { mockGrade, startMockPitchStream } from "@/mocks/api";
+import { mockGrade } from "@/mocks/api";
 import { startMicCapture, type MicHandle } from "@/audio/mic";
+import { startLivePitch, type PitchHandle } from "@/audio/livePitch";
 import { isRealBackend, realGrade } from "@/lib/api";
 import { enqueueAttempt } from "@/lib/offlineQueue";
 import { getRubric } from "@catalogs/gradingRubricCatalog";
@@ -60,25 +61,56 @@ export function PracticeStudio() {
 
   const usingRealBackend = isRealBackend();
 
-  // Live pitch simulation (only when NOT using real mic) — visual assist
+  // Real live pitch detection: when the mic is open during recording, run a
+  // client-side autocorrelation detector and pipe hz/note/cents into the
+  // same atoms PitchMeter + TimelineRibbon already subscribe to.
+  // Zero backend dependency — works offline.
+  const pitchHandleRef = useRef<PitchHandle | null>(null);
   useEffect(() => {
-    if (status !== "recording" || !exercise) return;
-    if (usingRealBackend && micHandleRef.current) return; // real mic runs; we leave the meter static-ish
-    const stop = startMockPitchStream(
-      () => {
-        const notes = exercise.targetPattern.notes ?? [];
-        const head = playheadRef.current;
-        const n = notes.find((x) => head >= x.startMs && head < x.startMs + x.durationMs);
-        return n?.pitch ?? null;
-      },
-      (hz, note, cents) => {
-        setLivePitchHz(hz);
-        setLivePitchNote(note);
-        setLivePitchCents(cents);
+    if (status !== "recording") {
+      if (pitchHandleRef.current) {
+        pitchHandleRef.current.stop();
+        pitchHandleRef.current = null;
       }
-    );
-    return stop;
-  }, [status, exercise, setLivePitchHz, setLivePitchNote, setLivePitchCents, usingRealBackend]);
+      return;
+    }
+    const mic = micHandleRef.current;
+    if (!mic) return;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const handle = await startLivePitch(mic.stream, (frame) => {
+          if (cancelled) return;
+          if (frame.hz == null) {
+            // Unvoiced / silent frame — reset display without flickering.
+            setLivePitchHz(0);
+            setLivePitchNote(null);
+            setLivePitchCents(0);
+            return;
+          }
+          setLivePitchHz(frame.hz);
+          setLivePitchNote(frame.note);
+          setLivePitchCents(frame.cents);
+        });
+        if (cancelled) {
+          handle.stop();
+        } else {
+          pitchHandleRef.current = handle;
+        }
+      } catch (err) {
+        console.warn("[livePitch] failed to start:", err);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      if (pitchHandleRef.current) {
+        pitchHandleRef.current.stop();
+        pitchHandleRef.current = null;
+      }
+    };
+  }, [status, setLivePitchHz, setLivePitchNote, setLivePitchCents]);
 
   // Playhead clock — during recording
   useEffect(() => {

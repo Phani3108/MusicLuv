@@ -6,6 +6,15 @@
  * Pro  = all 6 instruments, L1-L6, artist paths through Pro, unlimited uploads.
  * Genius = L7-L9, proctored grade exams, style-fingerprint matching, composition review.
  *
+ * ## Launch promo (first 200 users OR first 90 days — whichever first)
+ *
+ * During the launch window, monetization is OFF — every user gets Genius-
+ * equivalent access. The client queries /api/v1/monetization/status at boot
+ * (see `server/src/monetizationGate.ts`) and renders the promo badge + a
+ * strikethrough on Pro's $7 display price. The kill-switch flips
+ * automatically when either 200 users sign up or 90 days elapse from the
+ * first signup, whichever comes first.
+ *
  * Geographic pricing (IN/LATAM discounts) surfaces at payment time;
  * the catalog stores USD baselines.
  */
@@ -35,6 +44,8 @@ export interface Plan {
   tagline: string;
   priceUsdMonthly: number;
   priceUsdYearly: number;
+  /** Display-only strikethrough anchor (e.g. show "$7" crossed out next to $5). */
+  strikethroughPriceUsdMonthly?: number;
   features: FeatureKey[];
   highlights: string[];
   stripePriceIdMonthly?: string;   // populated by server env
@@ -42,6 +53,14 @@ export interface Plan {
   appStoreProductIdMonthly?: string;
   appStoreProductIdYearly?: string;
 }
+
+/** Hard-coded launch promo. Mirrors the server-side kill-switch thresholds. */
+export const LAUNCH_PROMO = {
+  maxFreeUsers: 200,
+  maxFreeDays: 90,
+  label: "Free for first 200 users · limited",
+  copy: "No subscriptions active during launch. You're locked in at $0 while we gather feedback.",
+} as const;
 
 export const PLANS: Record<PlanTier, Plan> = {
   free: {
@@ -65,8 +84,9 @@ export const PLANS: Record<PlanTier, Plan> = {
     id: "pro",
     label: "Pro",
     tagline: "All instruments, through the Pro Certificate.",
-    priceUsdMonthly: 9.99,
-    priceUsdYearly: 79,
+    priceUsdMonthly: 5,
+    priceUsdYearly: 39,
+    strikethroughPriceUsdMonthly: 7,
     features: [
       "lessons_l1_to_l3",
       "lessons_l4_to_l6",
@@ -87,8 +107,8 @@ export const PLANS: Record<PlanTier, Plan> = {
     id: "genius",
     label: "Genius",
     tagline: "Concert-quality certification + human review.",
-    priceUsdMonthly: 19.99,
-    priceUsdYearly: 159,
+    priceUsdMonthly: 10,
+    priceUsdYearly: 79,
     features: [
       "lessons_l1_to_l3",
       "lessons_l4_to_l6",

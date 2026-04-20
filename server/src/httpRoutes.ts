@@ -20,6 +20,12 @@ import {
   listProctoredForUser, scheduleProctored, completeProctored,
   listAvailableLiveSlots, listLiveSlotsForTeacher, bookLiveSlot,
 } from "./communityService.js";
+import {
+  getPublicStatus as getMonetizationStatus,
+  isMonetizationActive,
+  manuallyActivateMonetization,
+  recordUserSeen,
+} from "./monetizationGate.js";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
 
@@ -28,6 +34,32 @@ const gradeLimiter = createRateLimiter(60, 60_000);    // 60/min/user
 const mentorLimiter = createRateLimiter(30, 60_000);   // 30/min/user
 
 export function registerRoutes(app: Express): void {
+  // ── Monetization gate ──────────────────────────────────────────────
+  // Public — the client queries this at boot to render the launch promo
+  // ($5 Pro with $7 strikethrough + "Free for first 200 users" badge).
+  app.get("/api/v1/monetization/status", (_req, res) => {
+    res.json({ ok: true, ...getMonetizationStatus() });
+  });
+
+  app.post("/api/v1/monetization/admin/activate", (req, res) => {
+    const adminToken = (req.headers["x-admin-token"] as string) || "";
+    if (!process.env.ADMIN_TOKEN || adminToken !== process.env.ADMIN_TOKEN) {
+      return res.status(403).json({ ok: false, error: "forbidden" });
+    }
+    const state = manuallyActivateMonetization();
+    res.json({ ok: true, state });
+  });
+
+  // Convenience: every authenticated request can register the user via this
+  // POST (called by the client on login / onboarding completion). Safe to
+  // call multiple times — idempotent.
+  app.post("/api/v1/monetization/seen", (req, res) => {
+    const userId = (req.headers["x-user-id"] as string) || "anon";
+    if (userId === "anon") return res.json({ ok: false, error: "no_user" });
+    const state = recordUserSeen(userId);
+    res.json({ ok: true, userCount: state.userCount, active: isMonetizationActive() });
+  });
+
   // ── Health ─────────────────────────────────────────────────────────
   app.get("/api/v1/health", async (_req, res) => {
     const engine = await audioEngineHealth();
@@ -49,6 +81,7 @@ export function registerRoutes(app: Express): void {
   app.post("/api/v1/grade", upload.single("audio"), async (req: Request, res: Response) => {
     const userId = (req.headers["x-user-id"] as string) || "anon";
     if (gradeLimiter(userId)) return res.status(429).json({ ok: false, error: "rate_limited" });
+    if (userId !== "anon") recordUserSeen(userId);
     if (!req.file) return res.status(400).json({ ok: false, error: "no_audio" });
     if (!req.body?.meta) return res.status(400).json({ ok: false, error: "no_meta" });
 
@@ -85,6 +118,7 @@ export function registerRoutes(app: Express): void {
   app.post("/api/v1/mentor/message", async (req: Request, res: Response) => {
     const userId = (req.headers["x-user-id"] as string) || "anon";
     if (mentorLimiter(userId)) return res.status(429).json({ ok: false, error: "rate_limited" });
+    if (userId !== "anon") recordUserSeen(userId);
 
     const { mentor, userName, lesson, recent, message } = req.body ?? {};
     if (!mentor?.id || !message) return res.status(400).json({ ok: false, error: "missing_fields" });

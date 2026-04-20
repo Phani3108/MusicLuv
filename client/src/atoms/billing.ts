@@ -45,3 +45,34 @@ export const planPickerOpenAtom = atom<boolean>(false);
 
 // Auth panel (sign-in/up UI).
 export const authPanelOpenAtom = atom<boolean>(false);
+
+// ── Launch promo state ────────────────────────────────────────────────
+// Queried once at app boot from /api/v1/monetization/status. While the
+// launch window is open, the paywall middleware treats every user as
+// Genius-equivalent and the UI shows "Free for first 200 users" badges.
+export interface LaunchStatus {
+  active: boolean;              // true → monetization is LIVE; false → promo still running
+  firstUserAt: string | null;
+  userCount: number;
+  seatsRemaining: number;
+  maxFreeUsers: number;
+  maxFreeDays: number;
+  daysElapsed: number;
+  daysRemaining: number;
+  monetizationActivatedAt: string | null;
+  activationReason: "user_cap_reached" | "days_elapsed" | "manual" | null;
+}
+
+/** Default assumes promo active — safest failure mode (no spurious paywalls). */
+export const launchStatusAtom = atomWithStorage<LaunchStatus>("musicluv:launchStatus", {
+  active: false,
+  firstUserAt: null,
+  userCount: 0,
+  seatsRemaining: 200,
+  maxFreeUsers: 200,
+  maxFreeDays: 90,
+  daysElapsed: 0,
+  daysRemaining: 90,
+  monetizationActivatedAt: null,
+  activationReason: null,
+});

@@ -9,6 +9,7 @@
 import type { Request, Response } from "express";
 import { PLANS, type PlanTier } from "@catalogs/planCatalog";
 import { atomicWriteJson, readJsonSafe, dataPath } from "./persistence.js";
+import { isMonetizationActive } from "./monetizationGate.js";
 
 export interface SubscriptionRecord {
   userId: string;
@@ -63,9 +64,30 @@ export async function createCheckoutSession(
   userId: string,
   planId: PlanTier,
   cycle: "monthly" | "yearly"
-): Promise<{ url: string; sessionId: string }> {
+): Promise<{ url: string; sessionId: string; promoApplied?: boolean }> {
   if (planId === "free") {
     throw new Error("Cannot checkout free plan");
+  }
+
+  // During the launch window everyone gets Genius-equivalent access.
+  // Record the checkout intent as a "promo grant" (not a real charge) and
+  // return a synthetic success URL so the client flow stays smooth.
+  if (!isMonetizationActive()) {
+    const record: SubscriptionRecord = {
+      userId,
+      plan: planId,
+      status: "active",
+      provider: "stripe",
+      stripeCustomerId: `promo_cust_${userId}`,
+      stripeSubscriptionId: `promo_${Date.now()}`,
+      startedAt: new Date().toISOString(),
+    };
+    setSubscription(record);
+    return {
+      url: `/billing/promo-granted?plan=${planId}`,
+      sessionId: record.stripeSubscriptionId!,
+      promoApplied: true,
+    };
   }
 
   const plan = PLANS[planId];

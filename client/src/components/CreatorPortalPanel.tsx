@@ -1,89 +1,62 @@
 import { useAtom } from "jotai";
-import { creatorPortalPanelAtom, creatorLessonsAtom } from "@/atoms/community";
+import { creatorPortalPanelAtom } from "@/atoms/community";
 import { SidePanel } from "./SidePanel";
-import { getInstrument } from "@catalogs/instrumentCatalog";
-import type { CreatorLesson } from "@catalogs/communityTypes";
 
 /**
- * Creator portal — author lessons, see approval status + sales revenue.
- * Genius-tier gated. Stripe Connect payout (70/30 creator/platform split)
- * wires in with the Stripe SDK once monetization is live.
+ * Creator portal — author lessons, earn revenue share.
+ *
+ * Deferred to post-monetization (phase 6.5). Stripe Connect payout plumbing,
+ * lesson editor, and approval queue are non-trivial and there's no point
+ * building them before the monetization gate flips. For now this panel
+ * surfaces the roadmap so learners know it's planned.
  */
 export function CreatorPortalPanel() {
   const [open, setOpen] = useAtom(creatorPortalPanelAtom);
-  const [lessons] = useAtom(creatorLessonsAtom);
-  const items = lessons.length > 0 ? lessons : MOCK_LESSONS;
-
-  const totalRevenue = items.reduce((s, l) => s + l.totalRevenueUsd, 0);
-  const published = items.filter((l) => l.status === "published").length;
-  const pending = items.filter((l) => l.status === "submitted").length;
 
   return (
-    <SidePanel title="Creator portal" subtitle="Your published lessons + earnings" open={open} onClose={() => setOpen(false)} width="w-full md:w-[32rem]">
-      <div className="space-y-4">
-        <div className="rounded-xl p-5 bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-400/20">
-          <div className="text-[10px] uppercase tracking-widest text-amber-300 mb-1">All-time revenue</div>
-          <div className="font-mono text-2xl font-semibold">${totalRevenue.toFixed(2)}</div>
-          <div className="text-[11px] text-white/60 mt-1">70% creator share · next payout April 30</div>
+    <SidePanel
+      title="Creator portal"
+      subtitle="Author lessons, share revenue"
+      open={open}
+      onClose={() => setOpen(false)}
+      width="w-full md:w-[30rem]"
+    >
+      <div className="space-y-5">
+        <div className="rounded-2xl p-6 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-transparent border border-amber-400/20 text-center">
+          <div className="text-5xl mb-3">✍️</div>
+          <div className="text-[10px] uppercase tracking-widest text-amber-300 mb-1">Coming after launch</div>
+          <h2 className="text-lg font-semibold mb-2">Build the curriculum with us</h2>
+          <p className="text-sm text-white/70 leading-relaxed">
+            The Creator portal opens once MusicLuv exits its launch promo. Genius-tier
+            members will be able to author lessons, submit them for educator review,
+            and earn a 70% revenue share on sales (via Stripe Connect).
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
-          <StatCard label="Published" value={published} />
-          <StatCard label="In review" value={pending} />
-        </div>
-
-        <section>
-          <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2">Your lessons</div>
-          <div className="space-y-2">
-            {items.map((l) => <LessonRow key={l.id} lesson={l} />)}
-          </div>
+        <section className="space-y-3">
+          <div className="text-[10px] uppercase tracking-widest text-white/40">What's planned</div>
+          <FeatureRow glyph="📝" title="Lesson editor" body="Structured editor for writtenContent, audio refs, exercise plans, and mastery quizzes." />
+          <FeatureRow glyph="🧪" title="Educator review queue" body="Our music educator vets every submission for pedagogical soundness before publish." />
+          <FeatureRow glyph="💸" title="Stripe Connect payouts" body="70% creator / 30% platform on each sale. Monthly payouts to your connected bank." />
+          <FeatureRow glyph="📊" title="Revenue dashboard" body="Sales, regional breakdown, top-performing lessons, suggested next topics." />
         </section>
 
-        <button className="w-full py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 font-semibold text-sm text-ink-900">
-          + Draft a new lesson
-        </button>
+        <div className="text-[11px] text-white/40 text-center">
+          Want early access? Mention it to mentor chat — we're compiling a waitlist.
+        </div>
       </div>
     </SidePanel>
   );
 }
 
-function StatCard({ label, value }: { label: string; value: number | string }) {
+function FeatureRow({ glyph, title, body }: { glyph: string; title: string; body: string }) {
   return (
-    <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5 text-center">
-      <div className="font-mono text-lg font-semibold">{value}</div>
-      <div className="text-[10px] uppercase tracking-widest text-white/40">{label}</div>
-    </div>
-  );
-}
-
-function LessonRow({ lesson }: { lesson: CreatorLesson }) {
-  const inst = getInstrument(lesson.instrumentId);
-  const statusColor: Record<typeof lesson.status, string> = {
-    draft: "text-white/40",
-    submitted: "text-amber-300",
-    approved: "text-emerald-300",
-    published: "text-emerald-300",
-    rejected: "text-rose-400",
-  };
-  return (
-    <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-      <div className="flex items-center justify-between mb-1">
-        <div className="flex items-center gap-2">
-          <span>{inst?.glyph}</span>
-          <div className="text-sm font-medium">{lesson.title}</div>
-        </div>
-        <span className={`text-[10px] uppercase tracking-widest ${statusColor[lesson.status]}`}>{lesson.status}</span>
-      </div>
-      <div className="text-[11px] text-white/60 flex justify-between">
-        <span>L{lesson.level} · {lesson.sales} sales</span>
-        <span className="font-mono">${lesson.totalRevenueUsd.toFixed(2)}</span>
+    <div className="flex gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/5">
+      <span className="text-2xl">{glyph}</span>
+      <div>
+        <div className="text-sm font-semibold">{title}</div>
+        <div className="text-xs text-white/60 mt-0.5">{body}</div>
       </div>
     </div>
   );
 }
-
-const MOCK_LESSONS: CreatorLesson[] = [
-  { id: "cl1", creatorId: "me", instrumentId: "sitar", title: "Demystifying Meend — 5 exercises", level: 4, status: "published", revenueShare: 0.7, sales: 142, totalRevenueUsd: 710, createdAt: new Date().toISOString() },
-  { id: "cl2", creatorId: "me", instrumentId: "vocals", title: "Head voice without straining", level: 3, status: "published", revenueShare: 0.7, sales: 88, totalRevenueUsd: 440, createdAt: new Date().toISOString() },
-  { id: "cl3", creatorId: "me", instrumentId: "sitar", title: "Taans that actually land on sam", level: 6, status: "submitted", revenueShare: 0.7, sales: 0, totalRevenueUsd: 0, createdAt: new Date().toISOString() },
-];

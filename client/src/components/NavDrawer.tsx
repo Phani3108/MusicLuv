@@ -5,7 +5,7 @@ import {
 } from "@/atoms/panels";
 import { navDrawerOpenAtom } from "@/atoms/session";
 import { currentInstrumentAtom, progressAtom, userAtom } from "@/atoms/session";
-import { authUserAtom, subscriptionAtom, planPickerOpenAtom, authPanelOpenAtom } from "@/atoms/billing";
+import { authUserAtom, subscriptionAtom, planPickerOpenAtom, authPanelOpenAtom, launchStatusAtom } from "@/atoms/billing";
 import {
   recitalFeedPanelAtom, profilePanelAtom, teacherDashboardPanelAtom,
   creatorPortalPanelAtom, proctoredExamPanelAtom,
@@ -48,7 +48,9 @@ export function NavDrawer() {
   const [, setTeacherDash] = useAtom(teacherDashboardPanelAtom);
   const [, setCreatorPortal] = useAtom(creatorPortalPanelAtom);
   const [, setProctoredExam] = useAtom(proctoredExamPanelAtom);
+  const launch = useAtomValue(launchStatusAtom);
   const plan = getPlan(sub.plan);
+  const promoActive = !launch.active;
 
   const openPanel = (setter: (v: boolean) => void) => {
     setter(true);
@@ -122,15 +124,30 @@ export function NavDrawer() {
               {authUser ? (
                 <>
                   <NavItem glyph="👤" title={authUser.displayName} subtitle={authUser.email} onClick={() => {}} />
-                  <NavItem glyph={sub.plan === "genius" ? "💎" : sub.plan === "pro" ? "⚡" : "🎁"}
-                    title={`${plan.label} plan`}
-                    subtitle={sub.plan === "free" ? "Upgrade for L4+ content" : sub.status === "trialing" ? "7-day trial" : "Active"}
-                    onClick={() => openPanel(setPlanPicker)} />
+                  <NavItem
+                    glyph={promoActive ? "🎁" : sub.plan === "genius" ? "💎" : sub.plan === "pro" ? "⚡" : "🎁"}
+                    title={promoActive ? "Launch seat · free" : `${plan.label} plan`}
+                    subtitle={
+                      promoActive
+                        ? `${launch.seatsRemaining}/${launch.maxFreeUsers} seats left · day ${launch.daysElapsed}/${launch.maxFreeDays}`
+                        : sub.plan === "free"
+                        ? "Upgrade for L4+ content"
+                        : sub.status === "trialing"
+                        ? "7-day trial"
+                        : "Active"
+                    }
+                    onClick={() => openPanel(setPlanPicker)}
+                  />
                 </>
               ) : (
                 <>
                   <NavItem glyph="🔑" title="Sign in" subtitle="Sync across devices" onClick={() => openPanel(setAuthPanel)} />
-                  <NavItem glyph="⚡" title="See plans" subtitle="Free · Pro · Genius" onClick={() => openPanel(setPlanPicker)} />
+                  <NavItem
+                    glyph="🎁"
+                    title={promoActive ? "Claim free seat" : "See plans"}
+                    subtitle={promoActive ? `Free for first ${launch.maxFreeUsers} users` : "Free · Pro · Genius"}
+                    onClick={() => openPanel(setPlanPicker)}
+                  />
                 </>
               )}
             </NavGroup>
