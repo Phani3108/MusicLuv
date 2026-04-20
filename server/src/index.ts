@@ -2,8 +2,18 @@ import express from "express";
 import cors from "cors";
 import { registerRoutes } from "./httpRoutes.js";
 import { authMiddleware } from "./authMiddleware.js";
+import { captureError } from "./observability.js";
 
 const app = express();
+
+// Global error safety net — don't crash the process on unhandled errors;
+// log them via the observability pipe instead so we see them in prod.
+process.on("unhandledRejection", (reason) => {
+  captureError(reason instanceof Error ? reason : new Error(String(reason)), { source: "unhandledRejection" });
+});
+process.on("uncaughtException", (err) => {
+  captureError(err, { source: "uncaughtException" });
+});
 
 app.use(
   cors({
