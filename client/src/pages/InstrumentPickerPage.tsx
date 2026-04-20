@@ -1,7 +1,7 @@
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { listInstruments } from "@catalogs/instrumentCatalog";
 import { listLessonsForInstrument } from "@catalogs/lessonCatalog";
-import { currentInstrumentAtom, currentLessonIdAtom, screenAtom } from "@/atoms/session";
+import { currentInstrumentAtom, currentLessonIdAtom, screenAtom, userAtom } from "@/atoms/session";
 import type { Instrument } from "@catalogs/types";
 
 const ACCENT_BG: Record<string, string> = {
@@ -17,11 +17,16 @@ export function InstrumentPickerPage() {
   const setScreen = useSetAtom(screenAtom);
   const setInstrument = useSetAtom(currentInstrumentAtom);
   const setLesson = useSetAtom(currentLessonIdAtom);
+  const [user, setUser] = useAtom(userAtom);
 
   const choose = (inst: Instrument) => {
     setInstrument(inst.id);
     const first = listLessonsForInstrument(inst.id)[0];
     if (first) setLesson(first.id);
+    // Mark onboarding complete so we don't bounce them back through Welcome.
+    if (user && !user.onboardedAt) {
+      setUser({ ...user, onboardedAt: new Date().toISOString() });
+    }
     setScreen("studio");
   };
 
@@ -69,7 +74,7 @@ export function InstrumentPickerPage() {
       </div>
 
       <footer className="max-w-6xl mx-auto mt-14 text-center text-xs text-white/40">
-        More instruments coming — 20+ total. Current prototype shows 8.
+        {instruments.length} instruments available. Pick anything — you can switch later.
       </footer>
     </div>
   );

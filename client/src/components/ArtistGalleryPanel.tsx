@@ -1,22 +1,48 @@
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useEffect, useMemo, useState } from "react";
 import { artistPanelAtom } from "@/atoms/panels";
-import { currentInstrumentAtom, progressAtom } from "@/atoms/session";
+import { currentInstrumentAtom, currentLessonIdAtom, progressAtom, screenAtom } from "@/atoms/session";
 import { artistsForInstrument, listArtists } from "@catalogs/artistCatalog";
+import { getExercise } from "@catalogs/exerciseCatalog";
+import { LESSONS } from "@catalogs/lessonCatalog";
+import type { Artist, Lesson } from "@catalogs/types";
 import { SidePanel } from "./SidePanel";
+import { playNote, unlockAudio } from "@/audio/instrumentSampler";
 
+/**
+ * Artist gallery. Tap an artist to open a demo modal that:
+ *   1. Plays the first signature lick through the real instrument sampler
+ *   2. Shows every lick with a "Practice this" CTA that routes into
+ *      LessonPhaseRunner for the lick's linked exercise (if present).
+ *
+ * Lick→lesson routing: find the shortest lesson whose `exercisePlanId`
+ * matches the lick's `exerciseId` and set it as the current lesson.
+ */
 export function ArtistGalleryPanel() {
   const [open, setOpen] = useAtom(artistPanelAtom);
   const instrumentId = useAtomValue(currentInstrumentAtom);
   const progress = useAtomValue(progressAtom);
+  const [focus, setFocus] = useState<Artist | null>(null);
 
-  const primary = instrumentId ? artistsForInstrument(instrumentId) : [];
-  const others  = listArtists().filter((a) => !primary.includes(a));
+  const primary = useMemo(
+    () => (instrumentId ? artistsForInstrument(instrumentId) : []),
+    [instrumentId],
+  );
+  const others = useMemo(
+    () => listArtists().filter((a) => !primary.includes(a)),
+    [primary],
+  );
 
   const instProg = instrumentId ? progress[instrumentId] : undefined;
-  const unlocked = (instProg?.lessonsCompleted.length ?? 0) >= 3;  // mock gate
+  const unlocked = (instProg?.lessonsCompleted.length ?? 0) >= 3;
 
   return (
-    <SidePanel open={open} onClose={() => setOpen(false)} title="Genius artists" subtitle="Learn their style — unlocks from Pro tier" side="right">
+    <SidePanel
+      open={open}
+      onClose={() => setOpen(false)}
+      title="Genius artists"
+      subtitle="Learn their style — licks route into real practice"
+    >
       {!unlocked && (
         <div className="panel p-4 bg-amber-400/5 border-amber-400/30 mb-5">
           <div className="flex items-start gap-3">
@@ -24,7 +50,9 @@ export function ArtistGalleryPanel() {
             <div className="flex-1">
               <div className="font-semibold text-sm mb-1">Finish the basics first</div>
               <div className="text-xs text-white/65 leading-relaxed">
-                You'll get way more out of these artists once you've passed Level 3. Browse freely — the samples work — but attempting a style path will nudge you back to fundamentals.
+                Browse freely — samples work. Once you've passed Level 3 on this
+                instrument, "Practice this lick" routes you straight into a real
+                lesson attempt.
               </div>
             </div>
           </div>
@@ -34,30 +62,206 @@ export function ArtistGalleryPanel() {
       {primary.length > 0 && (
         <section className="mb-6">
           <div className="text-[11px] uppercase tracking-widest text-white/40 mb-2">For this instrument</div>
-          <div className="grid grid-cols-2 gap-2">{primary.map((a) => <ArtistCard key={a.id} {...a} />)}</div>
+          <div className="grid grid-cols-2 gap-2">
+            {primary.map((a) => (
+              <ArtistCard key={a.id} artist={a} onOpen={() => setFocus(a)} />
+            ))}
+          </div>
         </section>
       )}
 
       <section>
         <div className="text-[11px] uppercase tracking-widest text-white/40 mb-2">Explore other styles</div>
-        <div className="grid grid-cols-2 gap-2">{others.map((a) => <ArtistCard key={a.id} {...a} />)}</div>
+        <div className="grid grid-cols-2 gap-2">
+          {others.map((a) => (
+            <ArtistCard key={a.id} artist={a} onOpen={() => setFocus(a)} />
+          ))}
+        </div>
       </section>
+
+      {focus && (
+        <ArtistFocusModal
+          artist={focus}
+          canPractice={unlocked}
+          onClose={() => setFocus(null)}
+          onCloseGallery={() => setOpen(false)}
+        />
+      )}
     </SidePanel>
   );
 }
 
-function ArtistCard({ name, photoGlyph, blurb, era, styleFingerprint, unlockTier }: any) {
+function ArtistCard({ artist, onOpen }: { artist: Artist; onOpen: () => void }) {
   return (
-    <div className="panel p-3">
-      <div className="text-4xl mb-2">{photoGlyph}</div>
-      <div className="font-semibold text-sm leading-tight">{name}</div>
-      <div className="text-[10px] uppercase tracking-widest text-white/40 mt-0.5">{era}</div>
-      <div className="text-[11px] text-white/55 mt-2 leading-snug line-clamp-3">{blurb}</div>
+    <button
+      onClick={onOpen}
+      className="panel p-3 text-left transition-colors hover:bg-white/5"
+    >
+      <div className="text-4xl mb-2">{artist.photoGlyph}</div>
+      <div className="font-semibold text-sm leading-tight">{artist.name}</div>
+      <div className="text-[10px] uppercase tracking-widest text-white/40 mt-0.5">{artist.era}</div>
+      <div className="text-[11px] text-white/55 mt-2 leading-snug line-clamp-3">{artist.blurb}</div>
       <div className="flex flex-wrap gap-1 mt-3">
-        {styleFingerprint.ornamentTags.slice(0, 2).map((t: string) => (
-          <span key={t} className="chip bg-white/5 border border-white/10 text-white/60 text-[9px]">{t}</span>
+        {artist.styleFingerprint.ornamentTags.slice(0, 2).map((t) => (
+          <span
+            key={t}
+            className="chip bg-white/5 border border-white/10 text-white/60 text-[9px]"
+          >
+            {t}
+          </span>
         ))}
-        <span className="chip bg-amber-400/10 border border-amber-400/20 text-amber-200 text-[9px] uppercase">{unlockTier}</span>
+        <span className="chip bg-amber-400/10 border border-amber-400/20 text-amber-200 text-[9px] uppercase">
+          {artist.unlockTier}
+        </span>
+      </div>
+    </button>
+  );
+}
+
+/** Find a lesson that uses this exerciseId. First match wins. */
+function lessonForExercise(exerciseId: string | undefined): Lesson | null {
+  if (!exerciseId) return null;
+  for (const lesson of Object.values(LESSONS)) {
+    if (lesson.exercisePlanId === exerciseId) return lesson;
+  }
+  return null;
+}
+
+function ArtistFocusModal({
+  artist,
+  canPractice,
+  onClose,
+  onCloseGallery,
+}: {
+  artist: Artist;
+  canPractice: boolean;
+  onClose: () => void;
+  onCloseGallery: () => void;
+}) {
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const setCurrentInstrument = useSetAtom(currentInstrumentAtom);
+  const setCurrentLesson = useSetAtom(currentLessonIdAtom);
+  const setScreen = useSetAtom(screenAtom);
+
+  // Auto-play the first lick on open (if user has interacted with the page).
+  useEffect(() => {
+    // Not autoplay — require explicit click to avoid noise mid-navigation.
+  }, []);
+
+  const playLick = async (lickId: string, exerciseId?: string) => {
+    if (playingId) return;
+    setPlayingId(lickId);
+    try {
+      await unlockAudio();
+      const ex = exerciseId ? getExercise(exerciseId) : undefined;
+      const instrumentId = artist.instruments[0];
+      const notes = ex?.targetPattern.notes ?? [];
+      if (notes.length === 0) {
+        // No target notes — play a styled 3-note arpeggio as fallback.
+        const fallback = ["C4", "E4", "G4"];
+        let t = 0;
+        for (const n of fallback) {
+          await new Promise((r) => setTimeout(r, t));
+          void playNote(instrumentId, n, 0.6);
+          t = 400;
+        }
+        await new Promise((r) => setTimeout(r, 1200));
+        return;
+      }
+      const start = notes[0].startMs;
+      const demo = notes.slice(0, Math.min(notes.length, 8));
+      const duration = (demo[demo.length - 1].startMs + demo[demo.length - 1].durationMs - start) + 300;
+      for (const n of demo) {
+        setTimeout(() => {
+          void playNote(instrumentId, n.pitch, n.durationMs / 1000);
+        }, n.startMs - start);
+      }
+      await new Promise((r) => setTimeout(r, Math.min(duration, 6000)));
+    } finally {
+      setPlayingId(null);
+    }
+  };
+
+  const practiceLick = (exerciseId?: string) => {
+    if (!exerciseId) return;
+    const lesson = lessonForExercise(exerciseId);
+    if (!lesson) return;
+    setCurrentInstrument(lesson.instrumentId);
+    setCurrentLesson(lesson.id);
+    setScreen("studio");
+    onClose();
+    onCloseGallery();
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[65] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div
+        className="panel max-w-lg w-full p-0 overflow-hidden max-h-[90vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="p-5 pb-4 border-b border-white/5 flex items-start justify-between">
+          <div>
+            <div className="text-5xl mb-2">{artist.photoGlyph}</div>
+            <h3 className="display text-xl font-semibold">{artist.name}</h3>
+            <div className="text-[10px] uppercase tracking-widest text-white/40 mt-0.5">{artist.era} · {artist.origin}</div>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/70"
+          >✕</button>
+        </div>
+
+        <div className="p-5 pb-3 border-b border-white/5">
+          <p className="text-sm text-white/80 leading-relaxed">{artist.blurb}</p>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-5 space-y-3">
+          <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2">Signature licks</div>
+          {artist.signatureLicks.map((lick) => {
+            const lesson = lessonForExercise(lick.exerciseId);
+            const playable = Boolean(lick.exerciseId);
+            const practiceable = Boolean(lesson) && canPractice;
+            return (
+              <div
+                key={lick.id}
+                className="p-3 rounded-lg bg-white/[0.02] border border-white/5"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm font-medium">{lick.label}</div>
+                  {!canPractice && lesson && (
+                    <span className="text-[9px] uppercase tracking-widest text-amber-300/70">
+                      Pass L3 to try
+                    </span>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => playLick(lick.id, lick.exerciseId)}
+                    disabled={!playable || playingId === lick.id}
+                    className="flex-1 px-3 py-2 rounded-md bg-white/5 hover:bg-white/10 text-xs font-semibold disabled:opacity-40"
+                  >
+                    {playingId === lick.id ? "Playing…" : playable ? "▶ Play demo" : "Demo not ready"}
+                  </button>
+                  <button
+                    onClick={() => practiceLick(lick.exerciseId)}
+                    disabled={!practiceable}
+                    className="flex-1 px-3 py-2 rounded-md bg-gradient-to-r from-indigo-500 to-violet-500 text-xs font-semibold disabled:opacity-40 disabled:bg-none disabled:bg-white/5"
+                  >
+                    Practice this lick
+                  </button>
+                </div>
+                {lesson && (
+                  <div className="mt-2 text-[10px] text-white/40">
+                    Opens {lesson.title}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

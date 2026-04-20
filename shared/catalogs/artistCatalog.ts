@@ -10,7 +10,7 @@ export const ARTISTS: Record<string, Artist> = {
     instruments: ["sitar"],
     signatureLicks: [
       { id: "yaman_alap_phrase", label: "Yaman alap opening", exerciseId: "sitar_l4_01_yaman_meend" },
-      { id: "jhala_climax",     label: "Jhala climax pattern" },
+      { id: "jhala_climax",     label: "Jhala climax pattern", exerciseId: "sitar_l5_06_ajj" },
     ],
     styleFingerprint: { tempoRange: [30, 120], scaleBias: "raga-yaman,raga-bhairavi", ornamentTags: ["meend", "gamaka", "krintan"] },
     sampleTracks: [{ title: "Raga Yaman — alap", licensedUse: "link_only" }],
@@ -25,8 +25,8 @@ export const ARTISTS: Record<string, Artist> = {
     origin: "Seattle, USA",
     instruments: ["guitar"],
     signatureLicks: [
-      { id: "double_stop_bends", label: "Double-stop minor-third bends" },
-      { id: "thumb_over_chords", label: "Thumb-over E chord voicing" },
+      { id: "double_stop_bends", label: "Double-stop minor-third bends", exerciseId: "guitar_l5_02_bends" },
+      { id: "thumb_over_chords", label: "Thumb-over E chord voicing", exerciseId: "guitar_l6_04_hendrix_bend" },
     ],
     styleFingerprint: { tempoRange: [80, 160], scaleBias: "blues-E,minor-pentatonic", ornamentTags: ["bend", "wah", "vibrato"] },
     sampleTracks: [{ title: "Little Wing (excerpt)", licensedUse: "excerpt" }],
@@ -41,7 +41,7 @@ export const ARTISTS: Record<string, Artist> = {
     origin: "Chennai, India",
     instruments: ["piano", "vocals"],
     signatureLicks: [
-      { id: "carnatic_fusion", label: "Carnatic-over-pop chord movement" },
+      { id: "carnatic_fusion", label: "Carnatic-over-pop chord movement", exerciseId: "vocals_l8_02_rahman" },
     ],
     styleFingerprint: { tempoRange: [70, 130], scaleBias: "carnatic-fusion,pop", ornamentTags: ["gamaka", "modulation"] },
     sampleTracks: [{ title: "Jai Ho (excerpt)", licensedUse: "excerpt" }],
@@ -56,8 +56,8 @@ export const ARTISTS: Record<string, Artist> = {
     origin: "Mumbai, India",
     instruments: ["tabla"],
     signatureLicks: [
-      { id: "teentaal_peshkar", label: "Teentaal peshkar opening" },
-      { id: "tihai_climax", label: "Tihai (3× repetition) climax" },
+      { id: "teentaal_peshkar", label: "Teentaal peshkar opening", exerciseId: "tabla_l1_01_dha_16" },
+      { id: "tihai_climax", label: "Tihai (3× repetition) climax", exerciseId: "sitar_l7_05_tihai" },
     ],
     styleFingerprint: { tempoRange: [60, 240], scaleBias: "teentaal,rupak,jhaptal", ornamentTags: ["tihai", "layakari"] },
     sampleTracks: [{ title: "Teentaal solo (excerpt)", licensedUse: "excerpt" }],
@@ -72,7 +72,7 @@ export const ARTISTS: Record<string, Artist> = {
     origin: "New Jersey, USA",
     instruments: ["piano"],
     signatureLicks: [
-      { id: "rooted_voicings", label: "Rootless left-hand voicings" },
+      { id: "rooted_voicings", label: "Rootless left-hand voicings", exerciseId: "piano_l5_06_seventh_chords" },
     ],
     styleFingerprint: { tempoRange: [60, 180], scaleBias: "modal-jazz,bebop", ornamentTags: ["voicing", "voice-leading"] },
     sampleTracks: [{ title: "Peace Piece (excerpt)", licensedUse: "excerpt" }],
@@ -86,7 +86,7 @@ export const ARTISTS: Record<string, Artist> = {
     era: "1938–",
     origin: "Prayagraj, India",
     instruments: ["flute"],
-    signatureLicks: [{ id: "bansuri_meend", label: "Bansuri meend across half-holes" }],
+    signatureLicks: [{ id: "bansuri_meend", label: "Bansuri meend across half-holes", exerciseId: "bansuri_l1_01_sa" }],
     styleFingerprint: { tempoRange: [30, 140], scaleBias: "raga-yaman,raga-bhimpalasi", ornamentTags: ["meend", "andolan"] },
     sampleTracks: [{ title: "Raga Yaman — bansuri", licensedUse: "link_only" }],
     unlockTier: "pro",

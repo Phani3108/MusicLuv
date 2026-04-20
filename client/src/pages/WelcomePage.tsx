@@ -1,11 +1,28 @@
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { screenAtom, userAtom } from "@/atoms/session";
+import { launchStatusAtom } from "@/atoms/billing";
 
 export function WelcomePage() {
   const setScreen = useSetAtom(screenAtom);
   const setUser = useSetAtom(userAtom);
+  const launch = useAtomValue(launchStatusAtom);
+  const promoActive = !launch.active;
 
   const start = () => {
+    setUser({
+      username: "you",
+      displayName: "You",
+      joinedAt: new Date().toISOString(),
+      totalXp: 0,
+      currentStreak: 0,
+      heartsToday: 5,
+      heartsMax: 5,
+      practiceMinutesToday: 0,
+    });
+    setScreen("mic_check");
+  };
+
+  const skipToPicker = () => {
     setUser({
       username: "you",
       displayName: "You",
@@ -41,7 +58,9 @@ export function WelcomePage() {
       <div className="relative max-w-2xl text-center">
         <div className="chip bg-white/5 border border-white/10 text-white/70 mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-soft" />
-          v0.1 · UI prototype
+          {promoActive
+            ? `Launch promo · free for first ${launch.maxFreeUsers} · ${launch.seatsRemaining} left`
+            : "v0.1"}
         </div>
         <h1 className="display text-6xl md:text-8xl font-semibold leading-[1.02] mb-6">
           From novice<br />
@@ -50,15 +69,15 @@ export function WelcomePage() {
           </span>
         </h1>
         <p className="text-lg md:text-xl text-white/70 max-w-xl mx-auto mb-10 leading-relaxed">
-          Learn 20+ instruments, step by step. Watch. Play. Get graded.
+          Learn 22 instruments, step by step. Watch. Play. Get graded.
           From Middle C to raga Yaman — nine levels, one beautiful arc.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
           <button className="btn-primary text-base px-8 py-4" onClick={start}>
-            Pick an instrument →
+            Get started (takes ~1 min) →
           </button>
-          <button className="btn-ghost text-sm" onClick={start}>
-            Skip intro
+          <button className="btn-ghost text-sm" onClick={skipToPicker}>
+            Skip mic check
           </button>
         </div>
 

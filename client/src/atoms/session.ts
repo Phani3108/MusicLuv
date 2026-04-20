@@ -11,6 +11,10 @@ export interface UserProfile {
   heartsToday: number;
   heartsMax: number;
   practiceMinutesToday: number;
+  /** ISO timestamp of onboarding completion. If missing, re-run the flow. */
+  onboardedAt?: string;
+  /** Mic permission explicitly granted + gain-checked during onboarding. */
+  micCheckedAt?: string;
 }
 
 export interface InstrumentProgress {
@@ -27,7 +31,7 @@ export const progressAtom = atomWithStorage<Record<string, InstrumentProgress>>(
 export const currentInstrumentAtom = atom<string | null>(null);
 export const currentLessonIdAtom = atom<string | null>(null);
 
-export type Screen = "welcome" | "picker" | "studio";
+export type Screen = "welcome" | "mic_check" | "picker" | "studio";
 export const screenAtom = atom<Screen>("welcome");
 
 // Mobile-friendly nav drawer (grouped panel access)
