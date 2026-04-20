@@ -97,7 +97,7 @@ export function PianoHero({ highlight, upcoming = [], target, onKeyClick, showNo
   };
 
   return (
-    <div className="relative select-none">
+    <div className="relative select-none" data-piano-root>
       <div className="relative rounded-[28px] bg-gradient-to-b from-zinc-800 via-zinc-900 to-black p-4 pb-6 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] border border-white/5">
         <div className="flex justify-between items-center mb-3 px-2">
           <div className="text-[10px] uppercase tracking-[0.2em] text-amber-200/70 font-mono flex items-center gap-2">
@@ -142,6 +142,7 @@ export function PianoHero({ highlight, upcoming = [], target, onKeyClick, showNo
             return (
               <button
                 key={note}
+                data-piano-note={note}
                 onMouseDown={() => handleKeyPress(note)}
                 onTouchStart={(e) => { e.preventDefault(); handleKeyPress(note); }}
                 className={`relative flex-1 rounded-b-xl transition-all duration-100 focus:outline-none
@@ -187,6 +188,7 @@ export function PianoHero({ highlight, upcoming = [], target, onKeyClick, showNo
               return (
                 <button
                   key={black}
+                  data-piano-note={black}
                   onMouseDown={() => handleKeyPress(black)}
                   onTouchStart={(e) => { e.preventDefault(); handleKeyPress(black); }}
                   className={`absolute pointer-events-auto h-[62%] rounded-b-md transition-all duration-100 focus:outline-none

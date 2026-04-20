@@ -117,7 +117,21 @@ export function OverlayPlayback() {
 
       <div className="panel bg-black/40 overflow-hidden">
         <div className="overflow-x-auto scrollbar-none">
-          <svg width={width} height={laneH * 2 + 56} style={{ minWidth: "100%" }}>
+          <svg
+            width={width}
+            height={laneH * 2 + 56}
+            style={{ minWidth: "100%", cursor: "pointer" }}
+            onClick={(e) => {
+              const svg = e.currentTarget;
+              const rect = svg.getBoundingClientRect();
+              const x = e.clientX - rect.left - 20;
+              const ms = Math.max(0, Math.round(x / pxPerMs));
+              setPlayheadMs(ms);
+              if (audioRef.current) {
+                audioRef.current.currentTime = ms / 1000;
+              }
+            }}
+          >
             {/* Bar lines every second */}
             {Array.from({ length: Math.ceil(maxMs / 1000) + 1 }).map((_, i) => (
               <line
@@ -192,14 +206,14 @@ export function OverlayPlayback() {
               })}
             </g>
 
-            {/* Playhead (only when audio is playing) */}
-            {playing && (
+            {/* Playhead — visible when playing OR when user has scrubbed */}
+            {(playing || playheadMs > 0) && (
               <line
                 x1={playheadMs * pxPerMs + 20}
                 y1={0}
                 x2={playheadMs * pxPerMs + 20}
                 y2={laneH * 2 + 40}
-                stroke="rgba(255,255,255,0.8)"
+                stroke="rgba(255,255,255,0.85)"
                 strokeWidth={1.5}
               />
             )}
@@ -212,7 +226,7 @@ export function OverlayPlayback() {
           <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span> minor</span>
           <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-rose-400"></span> major</span>
           <span className="flex-1" />
-          <span>click any note to hear it</span>
+          <span>click the timeline to scrub · click a note to hear it</span>
         </div>
       </div>
     </div>

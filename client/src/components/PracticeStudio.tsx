@@ -271,7 +271,11 @@ export function PracticeStudio() {
         </div>
 
         <div className="relative mb-4">
-          <GhostHand targetFinger={activeNote?.finger ?? nextNote?.finger} visible={status === "recording"} />
+          <GhostHand
+            targetNote={instrument.id === "piano" ? (activeNote?.pitch ?? nextNote?.pitch ?? null) : null}
+            targetFinger={activeNote?.finger ?? nextNote?.finger}
+            visible={status === "recording"}
+          />
           {instrument.id === "piano" && (
             <PianoHero
               highlight={status === "recording" ? (activeNote?.pitch ?? null) : null}
