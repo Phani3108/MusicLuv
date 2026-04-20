@@ -3822,6 +3822,12 @@ export const LESSONS: Record<string, Lesson> = {
   },
 };
 
+// Spread the programmatically-generated expansion content for the 14
+// instruments that ship with L1 kickoffs. Each gets L2-L9 lessons so
+// learners can navigate the full 9-level arc on any instrument.
+import { EXPANSION_CONTENT } from "./expansionContent";
+Object.assign(LESSONS, EXPANSION_CONTENT.lessons);
+
 export const listLessonsForInstrument = (instrumentId: string) =>
   Object.values(LESSONS)
     .filter((l) => l.instrumentId === instrumentId)

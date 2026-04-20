@@ -32,7 +32,7 @@ export function StudioPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <TopBar />
-      <main className="flex-1 relative px-4 md:px-8 py-6 md:py-10 grid-dots">
+      <main className="flex-1 relative px-3 md:px-8 py-4 md:py-10 grid-dots overflow-x-hidden">
         <div className="max-w-5xl mx-auto">
           <LessonPhaseRunner />
         </div>

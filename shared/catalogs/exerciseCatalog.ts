@@ -3085,4 +3085,8 @@ export const EXERCISES: Record<string, Exercise> = {
   },
 };
 
+// Spread the programmatically-generated expansion content exercises.
+import { EXPANSION_CONTENT } from "./expansionContent";
+Object.assign(EXERCISES, EXPANSION_CONTENT.exercises);
+
 export const getExercise = (id: string) => EXERCISES[id];
