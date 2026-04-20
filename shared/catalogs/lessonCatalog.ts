@@ -3828,6 +3828,14 @@ export const LESSONS: Record<string, Lesson> = {
 import { EXPANSION_CONTENT } from "./expansionContent";
 Object.assign(LESSONS, EXPANSION_CONTENT.lessons);
 
+// Hydrate every lesson with multi-drill content (teach × 3, demo × 3-4,
+// dissect × 3-5, virtualTry × 3, guided × 3-5, attempt × 3). Lessons
+// that hand-author their own `drills` are skipped.
+import { hydrateLessonsWithDrills } from "./lessonDrillGenerator";
+import { EXERCISES } from "./exerciseCatalog";
+import { INSTRUMENTS } from "./instrumentCatalog";
+hydrateLessonsWithDrills(LESSONS, EXERCISES, INSTRUMENTS);
+
 export const listLessonsForInstrument = (instrumentId: string) =>
   Object.values(LESSONS)
     .filter((l) => l.instrumentId === instrumentId)

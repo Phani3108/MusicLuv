@@ -50,12 +50,10 @@ export function LessonPhaseRunner() {
     });
   }, [lessonId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Attempt phase auto-engages on successful grade
-  useEffect(() => {
-    if (phase === "attempt" && practiceStatus === "graded" && lastGrade) {
-      markEngaged("attempt");
-    }
-  }, [practiceStatus, lastGrade, phase]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Attempt phase engagement is driven by PhaseAttempt itself once the
+  // learner has completed multiple takes. The single-grade auto-engage
+  // was replaced to keep learners practicing multi-take instead of
+  // auto-advancing on the first grade.
 
   const markEngaged = (p: LessonPhase) => {
     setEngagement((e) => ({ ...e, [p]: true }));
@@ -136,7 +134,7 @@ function UnlockedLessonShell({
 }: any) {
 
   const meta = PHASE_META[phase as LessonPhase];
-  const canAdvance = engagement[phase] || phase === "attempt"; // attempt relies on graded auto-engage
+  const canAdvance = engagement[phase];
   const next = nextPhase(phase);
 
   return (
@@ -164,10 +162,10 @@ function UnlockedLessonShell({
           {phase === "concept" && <PhaseConcept lesson={lesson} onEngage={() => markEngaged("concept")} />}
           {phase === "teach" && <PhaseTeach lesson={lesson} onEngage={() => markEngaged("teach")} />}
           {phase === "demo" && <PhaseDemo lesson={lesson} exercise={exercise} onEngage={() => markEngaged("demo")} />}
-          {phase === "dissect" && <PhaseDissect instrument={instrument} onEngage={() => markEngaged("dissect")} />}
-          {phase === "virtual_try" && <PhaseVirtualTry instrument={instrument} exercise={exercise} onEngage={() => markEngaged("virtual_try")} />}
-          {phase === "guided" && <PhaseGuided exercise={exercise} onEngage={() => markEngaged("guided")} />}
-          {phase === "attempt" && <PhaseAttempt />}
+          {phase === "dissect" && <PhaseDissect instrument={instrument} lesson={lesson} onEngage={() => markEngaged("dissect")} />}
+          {phase === "virtual_try" && <PhaseVirtualTry instrument={instrument} exercise={exercise} lesson={lesson} onEngage={() => markEngaged("virtual_try")} />}
+          {phase === "guided" && <PhaseGuided exercise={exercise} lesson={lesson} onEngage={() => markEngaged("guided")} />}
+          {phase === "attempt" && <PhaseAttempt onEngage={() => markEngaged("attempt")} />}
           {phase === "feedback" && <PhaseFeedback onEngage={() => markEngaged("feedback")} />}
           {phase === "mastery" && <PhaseMastery lesson={lesson} onEngage={() => markEngaged("mastery")} />}
         </div>
