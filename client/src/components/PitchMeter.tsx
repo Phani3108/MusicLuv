@@ -16,7 +16,7 @@ export function PitchMeter() {
     "bg-rose-400";
 
   return (
-    <div className="panel p-3 flex items-center gap-3 min-w-[260px]">
+    <div className="panel p-3 flex items-center gap-3 min-w-[260px]" data-pitch-meter>
       <div className="w-14 text-center">
         <div className={`text-xs uppercase tracking-widest ${active ? "text-emerald-300" : "text-white/40"}`}>
           {active ? "live" : "idle"}

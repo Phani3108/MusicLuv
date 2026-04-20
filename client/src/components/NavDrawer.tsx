@@ -10,6 +10,7 @@ import {
   recitalFeedPanelAtom, profilePanelAtom, teacherDashboardPanelAtom,
   creatorPortalPanelAtom, proctoredExamPanelAtom,
 } from "@/atoms/community";
+import { settingsPanelAtom } from "@/atoms/prefs";
 import { getInstrument } from "@catalogs/instrumentCatalog";
 import { tierForXp } from "@catalogs/tierCatalog";
 import { getPlan } from "@catalogs/planCatalog";
@@ -48,6 +49,7 @@ export function NavDrawer() {
   const [, setTeacherDash] = useAtom(teacherDashboardPanelAtom);
   const [, setCreatorPortal] = useAtom(creatorPortalPanelAtom);
   const [, setProctoredExam] = useAtom(proctoredExamPanelAtom);
+  const [, setSettings] = useAtom(settingsPanelAtom);
   const launch = useAtomValue(launchStatusAtom);
   const plan = getPlan(sub.plan);
   const promoActive = !launch.active;
@@ -118,6 +120,10 @@ export function NavDrawer() {
               <NavItem glyph="🏆" title="Proctored exams" subtitle="Official certificate testing" onClick={() => { setProctoredExam(true); setOpen(false); }} />
               {authUser && <NavItem glyph="🎓" title="Teach" subtitle="Dashboard for teachers" onClick={() => { setTeacherDash(true); setOpen(false); }} />}
               {authUser && sub.plan === "genius" && <NavItem glyph="✍️" title="Creator portal" subtitle="Author lessons + earn" onClick={() => { setCreatorPortal(true); setOpen(false); }} />}
+            </NavGroup>
+
+            <NavGroup label="Preferences">
+              <NavItem glyph="⚙️" title="Settings" subtitle="Sargam mode, mic, accessibility…" onClick={() => openPanel(setSettings)} />
             </NavGroup>
 
             <NavGroup label="Account">

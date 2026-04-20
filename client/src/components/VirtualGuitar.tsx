@@ -56,7 +56,7 @@ export function VirtualGuitar({ showNoodleHints = true }: { showNoodleHints?: bo
   };
 
   return (
-    <div className="relative select-none">
+    <div className="relative select-none" data-piano-root>
       <div className="rounded-[28px] bg-gradient-to-b from-amber-900 via-amber-950 to-black p-4 pb-5 border border-amber-800/40 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)]">
         <div className="flex justify-between items-center mb-3 px-2">
           <div className="text-[10px] uppercase tracking-[0.2em] text-amber-200/80 font-mono flex items-center gap-2">
@@ -86,6 +86,7 @@ export function VirtualGuitar({ showNoodleHints = true }: { showNoodleHints?: bo
                   return (
                     <button
                       key={fret}
+                      data-piano-note={noteAtFret(STRINGS[stringIdx], fret)}
                       onMouseDown={() => handleFretClick(stringIdx, fret)}
                       onTouchStart={(e) => { e.preventDefault(); handleFretClick(stringIdx, fret); }}
                       className={`relative h-9 border-r border-amber-600/30 transition-colors

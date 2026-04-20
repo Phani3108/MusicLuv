@@ -272,7 +272,7 @@ export function PracticeStudio() {
 
         <div className="relative mb-4">
           <GhostHand
-            targetNote={instrument.id === "piano" ? (activeNote?.pitch ?? nextNote?.pitch ?? null) : null}
+            targetNote={activeNote?.pitch ?? nextNote?.pitch ?? null}
             targetFinger={activeNote?.finger ?? nextNote?.finger}
             visible={status === "recording"}
           />
@@ -284,11 +284,11 @@ export function PracticeStudio() {
               onKeyClick={() => {}}
             />
           )}
-          {instrument.id === "sitar" && <SitarHero highlight={null} />}
+          {instrument.id === "sitar" && <SitarHero highlight={activeNote?.pitch ?? null} target={nextNote?.pitch ?? null} />}
           {instrument.id === "guitar" && <VirtualGuitar />}
           {instrument.id === "violin" && <VirtualViolin />}
           {instrument.id === "drums" && <VirtualDrums />}
-          {instrument.id !== "piano" && instrument.id !== "sitar" && instrument.id !== "guitar" && instrument.id !== "violin" && instrument.id !== "drums" && <GenericHero instrument={instrument} />}
+          {instrument.id !== "piano" && instrument.id !== "sitar" && instrument.id !== "guitar" && instrument.id !== "violin" && instrument.id !== "drums" && <GenericHero instrument={instrument} target={nextNote?.pitch ?? null} />}
         </div>
 
         <div className="flex items-center gap-2 mb-4 flex-wrap">

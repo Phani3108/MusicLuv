@@ -46,7 +46,7 @@ export function VirtualDrums({ showHints = true }: { showHints?: boolean }) {
   }, []);
 
   return (
-    <div className="relative select-none">
+    <div className="relative select-none" data-piano-root>
       <div className="rounded-[28px] bg-gradient-to-b from-slate-800 via-slate-900 to-black p-4 pb-5 border border-slate-700/40 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)]">
         <div className="flex justify-between items-center mb-3 px-2">
           <div className="text-[10px] uppercase tracking-[0.2em] text-slate-300/80 font-mono">

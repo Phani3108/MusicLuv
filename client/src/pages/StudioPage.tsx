@@ -20,6 +20,8 @@ import { ProfilePanel } from "@/components/ProfilePanel";
 import { TeacherDashboardPanel } from "@/components/TeacherDashboardPanel";
 import { CreatorPortalPanel } from "@/components/CreatorPortalPanel";
 import { ProctoredExamPanel } from "@/components/ProctoredExamPanel";
+import { OnboardingTour } from "@/components/OnboardingTour";
+import { SettingsPanel } from "@/components/SettingsPanel";
 
 export function StudioPage() {
   const instrumentId = useAtomValue(currentInstrumentAtom);
@@ -49,6 +51,8 @@ export function StudioPage() {
         <TeacherDashboardPanel />
         <CreatorPortalPanel />
         <ProctoredExamPanel />
+        <OnboardingTour />
+        <SettingsPanel />
         <NavDrawer />
       </main>
     </div>
