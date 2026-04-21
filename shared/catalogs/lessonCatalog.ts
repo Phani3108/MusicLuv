@@ -3828,6 +3828,19 @@ export const LESSONS: Record<string, Lesson> = {
 import { EXPANSION_CONTENT } from "./expansionContent";
 Object.assign(LESSONS, EXPANSION_CONTENT.lessons);
 
+// Merge hand-authored overrides into expansion-instrument L2-L3
+// lessons. These replace the generator's boilerplate writtenContent +
+// teach drills + audioRefs for the instruments beginners pick most
+// (bass, ukulele, bansuri, saxophone, cello) so a learner past L1 is
+// reading real pedagogy, not generator scaffold.
+import { HAND_AUTHORED_EXPANSION_LESSONS } from "./expansionHandAuthored";
+for (const [id, patch] of Object.entries(HAND_AUTHORED_EXPANSION_LESSONS)) {
+  const existing = LESSONS[id];
+  if (existing) {
+    LESSONS[id] = { ...existing, ...patch };
+  }
+}
+
 // Hydrate every lesson with multi-drill content (teach × 3, demo × 3-4,
 // dissect × 3-5, virtualTry × 3, guided × 3-5, attempt × 3). Lessons
 // that hand-author their own `drills` are skipped.
