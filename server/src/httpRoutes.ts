@@ -36,6 +36,8 @@ import {
   listExperts, getExpert, expertsForInstrument,
   expertNotesForLesson, masterclassesForLesson, upcomingLiveSessions,
 } from "@catalogs/expertCatalog";
+import { createZoomMeeting, isZoomConfigured } from "./zoomService.js";
+import { putObject } from "./storageService.js";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
 
@@ -275,8 +277,26 @@ export function registerRoutes(app: Express): void {
   app.get("/api/v1/proctored/:userId", (req, res) => {
     res.json({ ok: true, sessions: listProctoredForUser(req.params.userId) });
   });
-  app.post("/api/v1/proctored/schedule", (req, res) => {
-    res.json({ ok: true, session: scheduleProctored(req.body) });
+  app.post("/api/v1/proctored/schedule", async (req, res) => {
+    // Create the Zoom meeting automatically so the learner has a real
+    // join URL in their confirmation. Falls back to pending placeholder
+    // when Zoom isn't configured — the honest state is surfaced as
+    // stub:true in the response so the client toast can be accurate.
+    const payload = req.body ?? {};
+    let videoUrl: string | undefined = payload.videoUrl;
+    let stub = false;
+    if (!videoUrl && payload.scheduledAt) {
+      const { meeting, stub: isStub } = await createZoomMeeting({
+        topic: `Proctored exam · ${payload.instrumentId} · ${payload.tier}`,
+        startAt: payload.scheduledAt,
+        durationMin: payload.tier === "genius" ? 90 : payload.tier === "pro" ? 45 : 20,
+        agenda: `MusicLuv proctored ${payload.tier} certificate exam for ${payload.instrumentId}.`,
+      });
+      videoUrl = meeting?.joinUrl;
+      stub = isStub;
+    }
+    const session = scheduleProctored({ ...payload, videoUrl });
+    res.json({ ok: true, session, zoomConfigured: isZoomConfigured(), stub });
   });
   app.patch("/api/v1/proctored/:id/complete", (req, res) => {
     const updated = completeProctored(req.params.id, req.body.status, req.body.proctorNotes);
@@ -291,11 +311,28 @@ export function registerRoutes(app: Express): void {
   app.get("/api/v1/live/teacher/:teacherId", (req, res) => {
     res.json({ ok: true, slots: listLiveSlotsForTeacher(req.params.teacherId) });
   });
-  app.post("/api/v1/live/:slotId/book", (req, res) => {
-    const { studentId, meetingUrl } = req.body as { studentId: string; meetingUrl: string };
-    const slot = bookLiveSlot(req.params.slotId, studentId, meetingUrl);
+  app.post("/api/v1/live/:slotId/book", async (req, res) => {
+    const { studentId, meetingUrl: providedUrl } = req.body as { studentId: string; meetingUrl?: string };
+
+    // Best-effort mint a real Zoom meeting if we don't already have one.
+    // The live slot may or may not carry a preset meetingUrl (teacher
+    // could've provided theirs); only mint when absent.
+    let meetingUrl = providedUrl;
+    let stub = false;
+    if (!meetingUrl) {
+      const { meeting, stub: isStub } = await createZoomMeeting({
+        topic: `MusicLuv live 1:1 · slot ${req.params.slotId}`,
+        startAt: new Date().toISOString(),
+        durationMin: 45,
+        agenda: "Live 1-on-1 lesson booked via MusicLuv.",
+      });
+      meetingUrl = meeting?.joinUrl;
+      stub = isStub;
+    }
+
+    const slot = bookLiveSlot(req.params.slotId, studentId, meetingUrl ?? "");
     if (!slot) return res.status(409).json({ ok: false, error: "unavailable" });
-    res.json({ ok: true, slot });
+    res.json({ ok: true, slot, zoomConfigured: isZoomConfigured(), stub });
   });
 
   // ── Compositions (Genius tier human review) ───────────────────────
@@ -304,6 +341,54 @@ export function registerRoutes(app: Express): void {
   });
   app.post("/api/v1/compositions", (req, res) => {
     res.json({ ok: true, composition: submitComposition(req.body) });
+  });
+
+  // Composition audio upload. Multipart body: audio (file) + meta (JSON
+  // with { userId, title, description?, instrumentId? }). Returns the
+  // saved composition with its audioUrl populated.
+  app.post("/api/v1/compositions/upload", upload.single("audio"), async (req, res) => {
+    if (!req.file) return res.status(400).json({ ok: false, error: "no_audio" });
+    if (!req.body?.meta) return res.status(400).json({ ok: false, error: "no_meta" });
+
+    let meta: any;
+    try { meta = JSON.parse(req.body.meta); }
+    catch { return res.status(400).json({ ok: false, error: "invalid_meta" }); }
+
+    const userId = meta.userId || (req.headers["x-user-id"] as string) || "anon";
+    try {
+      const upload = await putObject({
+        body: req.file.buffer,
+        contentType: req.file.mimetype || "audio/mpeg",
+        keyPrefix: `compositions/${userId}`,
+      });
+      const composition = submitComposition({
+        id: `comp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+        userId,
+        title: meta.title ?? "Untitled composition",
+        description: meta.description,
+        instrumentId: meta.instrumentId,
+        audioUrl: upload.url,
+        status: "submitted",
+        createdAt: new Date().toISOString(),
+      });
+      res.json({ ok: true, composition, upload });
+    } catch (e) {
+      res.status(500).json({ ok: false, error: (e as Error).message });
+    }
+  });
+
+  // Serve locally-stored uploaded files (dev backend / STORAGE_DRIVER=local).
+  // In production with STORAGE_DRIVER=s3, this route is unused because
+  // putObject returns a CDN URL directly.
+  app.get("/data/uploads/*", (req, res) => {
+    const rel = req.path.replace(/^\/data\/uploads\//, "");
+    const { dataPath } = require("./persistence.js") as typeof import("./persistence.js");
+    const fs = require("node:fs") as typeof import("node:fs");
+    const path = require("node:path") as typeof import("node:path");
+    const full = path.join(dataPath("uploads"), rel);
+    if (!full.startsWith(dataPath("uploads"))) return res.status(403).end();
+    if (!fs.existsSync(full)) return res.status(404).end();
+    res.sendFile(full);
   });
   app.get("/api/v1/compositions/admin/queue", (req, res) => {
     const adminToken = (req.headers["x-admin-token"] as string) || "";
