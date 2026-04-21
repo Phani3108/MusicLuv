@@ -10,6 +10,7 @@ import { createRateLimiter } from "./rateLimiter.js";
 import {
   getSubscription, setSubscription, createCheckoutSession,
   handleStripeWebhook, verifyIapReceipt, cancelSubscription,
+  createConnectAccountLink,
 } from "./billingService.js";
 import type { PlanTier } from "@catalogs/planCatalog";
 import {
@@ -185,12 +186,16 @@ export function registerRoutes(app: Express): void {
     }
   });
 
-  app.post("/api/v1/billing/cancel", (req, res) => {
+  app.post("/api/v1/billing/cancel", async (req, res) => {
     const userId = (req.headers["x-user-id"] as string) || "anon";
-    const record = cancelSubscription(userId);
+    const record = await cancelSubscription(userId);
     res.json({ ok: true, subscription: record });
   });
 
+  // NOTE: webhook raw-body middleware is mounted in server/src/index.ts
+  // *before* express.json so stripe.webhooks.constructEvent can verify
+  // the signature against the exact byte stream. Do not add JSON
+  // parsing here.
   app.post("/api/v1/billing/webhook/stripe", (req, res) => {
     void handleStripeWebhook(req, res);
   });
@@ -255,16 +260,15 @@ export function registerRoutes(app: Express): void {
     if (!updated) return res.status(404).json({ ok: false });
     res.json({ ok: true, lesson: updated });
   });
-  app.post("/api/v1/creator/stripe-connect", (req, res) => {
-    // Production: use stripe.accountLinks.create({ account, type: "account_onboarding", ... })
-    //             to mint a hosted onboarding URL and redirect the creator to Stripe.
-    // Dev stub: echo a placeholder URL so the flow is end-to-end testable.
+  app.post("/api/v1/creator/stripe-connect", async (req, res) => {
     const userId = req.user?.id ?? (req.headers["x-user-id"] as string) ?? "anon";
-    if (process.env.STRIPE_SECRET_KEY) {
-      // TODO (prod): create account + accountLink via Stripe SDK
+    const email = (req.body?.email as string) || req.user?.email;
+    try {
+      const result = await createConnectAccountLink(userId, email);
+      res.json({ ok: true, ...result });
+    } catch (e) {
+      res.status(500).json({ ok: false, error: (e as Error).message });
     }
-    const url = `/creator/stripe-connect/onboarded?user=${encodeURIComponent(userId)}`;
-    res.json({ ok: true, url, stub: !process.env.STRIPE_SECRET_KEY });
   });
 
   // ── Community · Proctored exams ───────────────────────────────────

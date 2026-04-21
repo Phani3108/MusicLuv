@@ -21,6 +21,13 @@ app.use(
     credentials: false,
   })
 );
+
+// Stripe webhook must see the raw body so constructEvent can verify
+// the HMAC signature against the exact byte stream. Mount raw-body
+// middleware scoped ONLY to the webhook path — everything else uses
+// JSON parsing below.
+app.use("/api/v1/billing/webhook/stripe", express.raw({ type: "application/json" }));
+
 app.use(express.json({ limit: "4mb" }));
 
 // Auth gate before any route. Respects PUBLIC_PATHS whitelist + in
