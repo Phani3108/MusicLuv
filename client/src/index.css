@@ -51,3 +51,21 @@ body {
   background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
   background-size: 22px 22px;
 }
+
+/* Reduced-motion: honors user pref or OS `prefers-reduced-motion`.
+   Applied by App.tsx on <html>. Nukes decorative animations, keeps
+   essential transitions (e.g. button press feedback) intact. */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+.reduced-motion .animate-float,
+.reduced-motion .animate-pulse,
+.reduced-motion .animate-pulse-soft,
+.reduced-motion .animate-spin {
+  animation: none !important;
+}

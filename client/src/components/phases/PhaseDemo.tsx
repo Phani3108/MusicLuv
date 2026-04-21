@@ -3,6 +3,7 @@ import { useAtomValue } from "jotai";
 import type { Lesson, Exercise } from "@catalogs/types";
 import { playNote, playOnset, unlockAudio, ensureReady } from "@/audio/instrumentSampler";
 import { currentInstrumentAtom } from "@/atoms/session";
+import { prefsAtom } from "@/atoms/prefs";
 
 /**
  * PhaseDemo — multiple audio demonstrations the learner must listen
@@ -18,6 +19,7 @@ type Tempo = 0.5 | 0.75 | 1;
 
 export function PhaseDemo({ lesson, exercise, onEngage }: { lesson: Lesson; exercise: Exercise; onEngage: () => void }) {
   const instrumentId = useAtomValue(currentInstrumentAtom) ?? "piano";
+  const prefs = useAtomValue(prefsAtom);
   const declared = lesson.drills?.demo;
   const clips = declared && declared.length > 0
     ? declared
@@ -35,6 +37,18 @@ export function PhaseDemo({ lesson, exercise, onEngage }: { lesson: Lesson; exer
   useEffect(() => {
     setIndex(0);
     setCompleted(new Set());
+  }, [lesson.id]);
+
+  // Honor the user's autoPlayDemo preference — when enabled, play the
+  // first clip automatically on phase entry so the learner hears the
+  // target immediately.
+  useEffect(() => {
+    if (!prefs.autoPlayDemo) return;
+    if (index !== 0) return;
+    if (completed.size > 0) return; // only on very first entry
+    const t = setTimeout(() => void play(), 400);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lesson.id]);
 
   const cur = clips[index];

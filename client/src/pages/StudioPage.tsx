@@ -24,6 +24,7 @@ import { OnboardingTour } from "@/components/OnboardingTour";
 import { SettingsPanel } from "@/components/SettingsPanel";
 import { LiveLessonsPanel } from "@/components/LiveLessonsPanel";
 import { CompositionReviewPanel } from "@/components/CompositionReviewPanel";
+import { Toaster } from "@/components/Toaster";
 
 export function StudioPage() {
   const instrumentId = useAtomValue(currentInstrumentAtom);
@@ -58,6 +59,7 @@ export function StudioPage() {
         <LiveLessonsPanel />
         <CompositionReviewPanel />
         <NavDrawer />
+        <Toaster />
       </main>
     </div>
   );

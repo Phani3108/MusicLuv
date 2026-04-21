@@ -1,8 +1,10 @@
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { lessonPanelAtom } from "@/atoms/panels";
 import { currentInstrumentAtom, currentLessonIdAtom } from "@/atoms/session";
 import { getLesson, listLessonsForInstrument } from "@catalogs/lessonCatalog";
+import { getExercise } from "@catalogs/exerciseCatalog";
 import { SidePanel } from "./SidePanel";
+import { playNote, unlockAudio, ensureReady } from "@/audio/instrumentSampler";
 
 export function LessonPanel() {
   const [open, setOpen] = useAtom(lessonPanelAtom);
@@ -10,6 +12,25 @@ export function LessonPanel() {
   const [lessonId, setLessonId] = useAtom(currentLessonIdAtom);
   const current = lessonId ? getLesson(lessonId) : null;
   const all = instrumentId ? listLessonsForInstrument(instrumentId) : [];
+
+  const playAudioRef = async () => {
+    // Plays the lesson's exercise pattern through the real instrument
+    // sampler — no more "mock" alert. If a hand-authored audio URL
+    // exists on the audioRef we'd play that instead; today every
+    // audioRef is label-only, so synthesized playback is the honest
+    // preview.
+    if (!current || !instrumentId) return;
+    const exercise = getExercise(current.exercisePlanId);
+    if (!exercise) return;
+    await unlockAudio();
+    await ensureReady(instrumentId);
+    const notes = exercise.targetPattern.notes ?? [];
+    for (const n of notes.slice(0, 16)) {
+      setTimeout(() => {
+        void playNote(instrumentId, n.pitch, n.durationMs / 1000);
+      }, n.startMs);
+    }
+  };
 
   return (
     <SidePanel
@@ -46,11 +67,11 @@ export function LessonPanel() {
                 <button
                   key={a.id}
                   className="w-full panel p-3 flex items-center gap-3 text-left hover:bg-white/5"
-                  onClick={() => alert("Mock: would play " + a.label)}
+                  onClick={playAudioRef}
                 >
                   <span className="w-9 h-9 rounded-full bg-indigo-400/20 flex items-center justify-center">▶</span>
                   <div className="flex-1 text-sm">{a.label}</div>
-                  <span className="text-[10px] font-mono text-white/40">mock</span>
+                  <span className="text-[10px] font-mono text-emerald-400/70">preview</span>
                 </button>
               ))}
             </div>

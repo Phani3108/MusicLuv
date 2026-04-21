@@ -2,6 +2,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { screenAtom, userAtom } from "@/atoms/session";
 import { authUserAtom } from "@/atoms/billing";
+import { prefsAtom } from "@/atoms/prefs";
 import { WelcomePage } from "@/pages/WelcomePage";
 import { MicCheckPage } from "@/pages/MicCheckPage";
 import { InstrumentPickerPage } from "@/pages/InstrumentPickerPage";
@@ -13,6 +14,22 @@ export default function App() {
   const [screen, setScreen] = useAtom(screenAtom);
   const user = useAtomValue(userAtom);
   const setAuthUser = useSetAtom(authUserAtom);
+  const prefs = useAtomValue(prefsAtom);
+
+  // Wire reducedMotion preference + OS-level prefers-reduced-motion.
+  // Adds/removes a `reduced-motion` class on <html> so animations can
+  // be globally suppressed via CSS when the user opts out.
+  useEffect(() => {
+    const root = document.documentElement;
+    const osPrefers = typeof window !== "undefined"
+      && typeof window.matchMedia === "function"
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefs.reducedMotion || osPrefers) {
+      root.classList.add("reduced-motion");
+    } else {
+      root.classList.remove("reduced-motion");
+    }
+  }, [prefs.reducedMotion]);
 
   // Fetch monetization/launch promo status once at boot so the paywall
   // middleware + plan picker can show "$7 ➜ $5 · Free for 200" correctly.

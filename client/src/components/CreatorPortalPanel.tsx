@@ -8,6 +8,7 @@ import { useAsync } from "@/hooks/useAsync";
 import { MUSICLUV_SERVER_URL, getDeviceUserId, serverAuthHeaders } from "@/lib/api";
 import { listInstruments } from "@catalogs/instrumentCatalog";
 import type { CreatorLesson } from "@catalogs/communityTypes";
+import { useToast } from "@/lib/toast";
 
 /**
  * Creator portal — list your lessons, draft new ones, track submission
@@ -30,6 +31,7 @@ export function CreatorPortalPanel() {
   const [editing, setEditing] = useState<CreatorLesson | null>(null);
   const [showEditor, setShowEditor] = useState(false);
   const creatorId = authUser?.id ?? getDeviceUserId();
+  const toast = useToast();
 
   const { status, data, error, refetch } = useAsync<CreatorLesson[]>(
     async () => {
@@ -65,7 +67,7 @@ export function CreatorPortalPanel() {
 
   const onStripeConnect = async () => {
     if (!MUSICLUV_SERVER_URL) {
-      alert("Server not configured.");
+      toast.warning("Server not configured", "Set VITE_SERVER_URL to use Stripe Connect onboarding.");
       return;
     }
     try {
@@ -75,10 +77,18 @@ export function CreatorPortalPanel() {
         body: JSON.stringify({}),
       });
       const body = await res.json();
-      if (body.ok && body.url) window.location.href = body.url;
-      else alert(body.error || "Unable to start Stripe Connect onboarding");
+      if (body.ok && body.url && /^https?:\/\//.test(body.url)) {
+        window.location.href = body.url;
+      } else if (body.ok && body.stub) {
+        toast.info(
+          "Stripe Connect pending",
+          "The server is running in stub mode. Add STRIPE_SECRET_KEY to enable real payouts.",
+        );
+      } else {
+        toast.error("Couldn't start onboarding", body.error || "Please try again.");
+      }
     } catch (e) {
-      alert((e as Error).message);
+      toast.error("Couldn't reach Stripe", (e as Error).message);
     }
   };
 

@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
-import { useAtomValue } from "jotai";
-import { currentExerciseIdAtom, lastGradeAtom } from "@/atoms/practice";
+import { useAtomValue, useSetAtom } from "jotai";
+import { currentExerciseIdAtom, lastGradeAtom, practiceStatusAtom } from "@/atoms/practice";
+import { currentPhaseAtom } from "@/atoms/lessonPhase";
 import { getExercise } from "@catalogs/exerciseCatalog";
 import { generateDrill } from "@/lib/correctiveDrill";
 import { playPianoNote, unlockAudio, ensurePianoReady } from "@/audio/pianoSampler";
+import { useToast } from "@/lib/toast";
 
 const DIM_GLYPH: Record<string, string> = {
   pitch: "🎯", rhythm: "🥁", tone: "🎨", dynamics: "📣", consistency: "🧭",
@@ -14,9 +16,25 @@ export function CorrectiveDrillCard() {
   const grade = useAtomValue(lastGradeAtom);
   const exercise = exerciseId ? getExercise(exerciseId) : null;
   const drill = exercise && grade ? generateDrill(exercise, grade) : null;
+  const setPhase = useSetAtom(currentPhaseAtom);
+  const setStatus = useSetAtom(practiceStatusAtom);
+  const toast = useToast();
 
   const [playing, setPlaying] = useState(false);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const onQueueDrill = () => {
+    if (!drill) return;
+    // Route the user back to the Attempt phase with a fresh recording
+    // slot. The drill's target pattern lives on `drill.exercise`;
+    // PracticeStudio picks up the current exercise id, which here still
+    // points at the parent exercise (the drill is a derivative). For
+    // v1 this resets the attempt phase cleanly so the learner can
+    // retry with the drill fresh in their head.
+    setPhase("attempt");
+    setStatus("idle");
+    toast.success("Drill queued", "Retry the Attempt phase — the drill's target is fresh in your head now.");
+  };
 
   if (!drill) {
     return (
@@ -76,14 +94,9 @@ export function CorrectiveDrillCard() {
         </button>
         <button
           className="btn-primary text-sm flex-1"
-          onClick={() => {
-            // Future: route this into the practice studio as the current exercise.
-            // For now, show a confirmation — the full "load drill into studio" flow
-            // is wired when we add drill-as-exercise routing.
-            alert("Drill queued — full 'load into studio' routing lands with the offline-queue wedge.");
-          }}
+          onClick={onQueueDrill}
         >
-          Try this drill →
+          Queue this drill →
         </button>
       </div>
     </div>

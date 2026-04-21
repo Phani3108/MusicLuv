@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { currentInstrumentAtom, currentLessonIdAtom, progressAtom, userAtom } from "@/atoms/session";
+import { prefsAtom } from "@/atoms/prefs";
 import {
   practiceStatusAtom, currentExerciseIdAtom, playheadMsAtom,
   livePitchHzAtom, livePitchNoteAtom, livePitchCentsAtom, lastGradeAtom,
@@ -29,6 +30,7 @@ import { getRubric } from "@catalogs/gradingRubricCatalog";
 export function PracticeStudio() {
   const instrumentId = useAtomValue(currentInstrumentAtom);
   const lessonId = useAtomValue(currentLessonIdAtom);
+  const prefs = useAtomValue(prefsAtom);
   const [status, setStatus] = useAtom(practiceStatusAtom);
   const setExerciseId = useSetAtom(currentExerciseIdAtom);
   const [playhead, setPlayhead] = useAtom(playheadMsAtom);
@@ -274,7 +276,7 @@ export function PracticeStudio() {
           <GhostHand
             targetNote={activeNote?.pitch ?? nextNote?.pitch ?? null}
             targetFinger={activeNote?.finger ?? nextNote?.finger}
-            visible={status === "recording"}
+            visible={status === "recording" && prefs.showGhostHand}
           />
           {instrument.id === "piano" && (
             <PianoHero

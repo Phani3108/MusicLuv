@@ -1,5 +1,23 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useAtomValue } from "jotai";
 import { ensurePianoReady, playPianoNote, setSustain, isSustain, unlockAudio } from "@/audio/pianoSampler";
+import { prefsAtom } from "@/atoms/prefs";
+
+/** Mapping for sargamMode toggle — Western chromatic → svara label. */
+const SVARA: Record<string, string> = {
+  "C": "Sa", "C#": "re", "D": "Re", "D#": "ga", "E": "Ga",
+  "F": "Ma", "F#": "Ma#", "G": "Pa", "G#": "dha", "A": "Dha",
+  "A#": "ni", "B": "Ni",
+};
+function svaraLabel(note: string): string {
+  const m = /^([A-G]#?)(\d)$/.exec(note);
+  if (!m) return note;
+  const [, pitch, octave] = m;
+  const sv = SVARA[pitch];
+  if (!sv) return note;
+  const isUpper = Number(octave) >= 5;
+  return isUpper ? `${sv}'` : sv;
+}
 
 /** The 5-finger C-position (C4–G4) is special — we glow the active/target keys. */
 const WHITE_KEYS = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5"];
@@ -26,6 +44,7 @@ export interface PianoHeroProps {
 }
 
 export function PianoHero({ highlight, upcoming = [], target, onKeyClick, showNoodleHints = true }: PianoHeroProps) {
+  const prefs = useAtomValue(prefsAtom);
   const blackMap = useMemo(() => Object.entries(BLACK_KEYS), []);
   const [samplerReady, setSamplerReady] = useState(false);
   const [samplerLoading, setSamplerLoading] = useState(true);
@@ -159,7 +178,7 @@ export function PianoHero({ highlight, upcoming = [], target, onKeyClick, showNo
                 `}
               >
                 <span className="absolute bottom-2 inset-x-0 text-center text-[9px] md:text-[10px] font-mono text-zinc-500">
-                  {note}
+                  {prefs.sargamMode ? svaraLabel(note) : note}
                 </span>
                 {isTarget && (
                   <span className="absolute inset-0 flex items-start justify-center pt-1">

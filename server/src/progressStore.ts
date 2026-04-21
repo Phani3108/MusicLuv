@@ -98,9 +98,11 @@ export const recordAttempt = (
     ? Array.from(new Set([...prevInst.lessonsCompleted, lessonId]))
     : prevInst.lessonsCompleted;
 
+  const newXp = prevInst.xp + grade.xpAwarded;
   const nextInst: InstrumentProgress = {
     ...prevInst,
-    xp: prevInst.xp + grade.xpAwarded,
+    xp: newXp,
+    level: levelForXp(newXp),
     lessonsCompleted,
     lastGrade: {
       lessonId,
@@ -126,6 +128,23 @@ export const recordAttempt = (
     lastPracticeAt: new Date().toISOString(),
     byInstrument: { [instrumentId]: nextInst },
   });
+};
+
+/** Mirror of tierCatalog XP thresholds. Kept here to avoid a server-side
+ *  import cycle with the shared catalogs package. If `tierCatalog.ts`
+ *  thresholds change, update both places.
+ *  Thresholds: L1=0 · L2=200 · L3=600 · L4=1500 · L5=3500 · L6=7000
+ *              L7=12000 · L8=20000 · L9=35000
+ */
+const XP_THRESHOLDS: Array<[1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9, number]> = [
+  [9, 35000], [8, 20000], [7, 12000], [6, 7000], [5, 3500],
+  [4, 1500], [3, 600], [2, 200], [1, 0],
+];
+export const levelForXp = (xp: number): 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 => {
+  for (const [level, threshold] of XP_THRESHOLDS) {
+    if (xp >= threshold) return level;
+  }
+  return 1;
 };
 
 const isYesterday = (iso?: string): boolean => {
