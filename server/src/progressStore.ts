@@ -1,8 +1,16 @@
 /**
  * Per-user progress store — XP, level, streak, lesson completion.
- * Flat-file JSON for now (3DWorld pattern). Postgres adapter lands in Phase 5.
+ *
+ * Flat-file JSON is the authoritative store for dev + local runs.
+ * When PERSISTENCE_DRIVER=postgres + DATABASE_URL are set, the same
+ * writes are mirrored to Postgres (`user_progress`, `instrument_progress`,
+ * `attempts` tables) so analytics queries + durable backups work.
+ * The dual-write is fire-and-forget — flatfile stays the source of
+ * truth during the migration window.
  */
 import { atomicWriteJson, readJsonSafe, dataPath } from "./persistence.js";
+import { getPgPool } from "./persistence/pgClient.js";
+import { captureError } from "./observability.js";
 
 export interface InstrumentProgress {
   xp: number;
@@ -121,14 +129,71 @@ export const recordAttempt = (
         ? cur.currentStreak + 1
         : 1;
 
-  return updateProgress(userId, {
+  const result = updateProgress(userId, {
     totalXp: cur.totalXp + grade.xpAwarded,
     currentStreak: streak,
     heartsToday: grade.passed ? cur.heartsToday : Math.max(0, cur.heartsToday - 1),
     lastPracticeAt: new Date().toISOString(),
     byInstrument: { [instrumentId]: nextInst },
   });
+
+  // Dual-write to Postgres when configured. Fire-and-forget so grading
+  // latency isn't blocked on the database. Flatfile remains the source
+  // of truth until the migration is finalized.
+  void persistAttemptToPg(userId, instrumentId, lessonId, grade, nextInst, result);
+
+  return result;
 };
+
+async function persistAttemptToPg(
+  userId: string,
+  instrumentId: string,
+  lessonId: string,
+  grade: { composite: number; passed: boolean; dimensions: Record<string, number>; xpAwarded: number },
+  nextInst: InstrumentProgress,
+  totals: UserProgress,
+): Promise<void> {
+  const pool = await getPgPool();
+  if (!pool) return;
+  try {
+    const attemptId = `att_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+    await pool.query(
+      `INSERT INTO user_progress (user_id, total_xp, current_streak, hearts_today, hearts_max, last_practice_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, now())
+       ON CONFLICT (user_id) DO UPDATE SET
+         total_xp = EXCLUDED.total_xp,
+         current_streak = EXCLUDED.current_streak,
+         hearts_today = EXCLUDED.hearts_today,
+         hearts_max = EXCLUDED.hearts_max,
+         last_practice_at = EXCLUDED.last_practice_at,
+         updated_at = now()`,
+      [userId, totals.totalXp, totals.currentStreak, totals.heartsToday, totals.heartsMax, totals.lastPracticeAt],
+    );
+    await pool.query(
+      `INSERT INTO instrument_progress (user_id, instrument_id, xp, level, lessons_completed, exams_passed, last_grade, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, now())
+       ON CONFLICT (user_id, instrument_id) DO UPDATE SET
+         xp = EXCLUDED.xp,
+         level = EXCLUDED.level,
+         lessons_completed = EXCLUDED.lessons_completed,
+         exams_passed = EXCLUDED.exams_passed,
+         last_grade = EXCLUDED.last_grade,
+         updated_at = now()`,
+      [
+        userId, instrumentId, nextInst.xp, nextInst.level,
+        nextInst.lessonsCompleted, nextInst.examsPassed,
+        JSON.stringify(nextInst.lastGrade ?? null),
+      ],
+    );
+    await pool.query(
+      `INSERT INTO attempts (id, user_id, instrument_id, lesson_id, composite, passed, dimensions, xp_awarded, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8, now())`,
+      [attemptId, userId, instrumentId, lessonId, grade.composite, grade.passed, JSON.stringify(grade.dimensions), grade.xpAwarded],
+    );
+  } catch (err) {
+    captureError(err as Error, { where: "progressStore.persistAttemptToPg", userId, instrumentId });
+  }
+}
 
 /** Mirror of tierCatalog XP thresholds. Kept here to avoid a server-side
  *  import cycle with the shared catalogs package. If `tierCatalog.ts`
