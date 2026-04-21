@@ -12,6 +12,7 @@ import {
   compositionReviewPanelAtom,
 } from "@/atoms/community";
 import { settingsPanelAtom } from "@/atoms/prefs";
+import { expertLibraryPanelAtom } from "@/atoms/experts";
 import { getInstrument } from "@catalogs/instrumentCatalog";
 import { tierForXp } from "@catalogs/tierCatalog";
 import { getPlan } from "@catalogs/planCatalog";
@@ -52,6 +53,7 @@ export function NavDrawer() {
   const [, setProctoredExam] = useAtom(proctoredExamPanelAtom);
   const [, setLiveLessons] = useAtom(liveLessonsPanelAtom);
   const [, setCompositionReview] = useAtom(compositionReviewPanelAtom);
+  const [, setExpertLibrary] = useAtom(expertLibraryPanelAtom);
   const [, setSettings] = useAtom(settingsPanelAtom);
   const launch = useAtomValue(launchStatusAtom);
   const plan = getPlan(sub.plan);
@@ -115,6 +117,15 @@ export function NavDrawer() {
               <NavItem glyph="🎵" title="Song library" subtitle="Curated play-alongs" onClick={() => openPanel(setLibraryOpen)} />
               <NavItem glyph="⭐" title="Genius artists" subtitle="Study Hendrix, Ravi, Rahman…" onClick={() => openPanel(setArtistOpen)} />
               <NavItem glyph="⬆️" title="Upload a song" subtitle="Analyze → step-by-step" onClick={() => openPanel(setSongOpen)} />
+            </NavGroup>
+
+            <NavGroup label="Learn from experts">
+              <NavItem
+                glyph="🎓"
+                title="Expert library"
+                subtitle="Masterclasses · live Zoom sessions · inline lesson notes"
+                onClick={() => { setExpertLibrary(true); setOpen(false); }}
+              />
             </NavGroup>
 
             <NavGroup label="Community">

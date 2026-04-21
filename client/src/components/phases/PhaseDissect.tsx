@@ -4,6 +4,7 @@ import type { Instrument, Lesson, TargetNote } from "@catalogs/types";
 import { dissectionAtom } from "@/atoms/panels";
 import { currentInstrumentAtom } from "@/atoms/session";
 import { playNote, unlockAudio, ensureReady } from "@/audio/instrumentSampler";
+import { ExpertNotesInline } from "../ExpertNotesInline";
 
 /**
  * PhaseDissect — multiple dissection points the learner must explore
@@ -154,6 +155,8 @@ export function PhaseDissect({ instrument, lesson, onEngage }: { instrument: Ins
           );
         })}
       </div>
+
+      {lesson?.id && <ExpertNotesInline lessonId={lesson.id} phase="dissect" />}
 
       <div className="text-center text-[11px] text-white/40">
         {viewed.size === 0

@@ -25,6 +25,7 @@ import { SettingsPanel } from "@/components/SettingsPanel";
 import { LiveLessonsPanel } from "@/components/LiveLessonsPanel";
 import { CompositionReviewPanel } from "@/components/CompositionReviewPanel";
 import { Toaster } from "@/components/Toaster";
+import { ExpertLibraryPanel } from "@/components/ExpertLibraryPanel";
 
 export function StudioPage() {
   const instrumentId = useAtomValue(currentInstrumentAtom);
@@ -58,6 +59,7 @@ export function StudioPage() {
         <SettingsPanel />
         <LiveLessonsPanel />
         <CompositionReviewPanel />
+        <ExpertLibraryPanel />
         <NavDrawer />
         <Toaster />
       </main>

@@ -31,6 +31,10 @@ import {
 } from "./compositionService.js";
 import { scoreStyleMatch, type AttemptFeatures } from "./styleFingerprint.js";
 import { ARTISTS } from "@catalogs/artistCatalog";
+import {
+  listExperts, getExpert, expertsForInstrument,
+  expertNotesForLesson, masterclassesForLesson, upcomingLiveSessions,
+} from "@catalogs/expertCatalog";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
 
@@ -318,6 +322,29 @@ export function registerRoutes(app: Express): void {
     if (!artist) return res.status(404).json({ ok: false, error: "unknown_artist" });
     const result = scoreStyleMatch(artist, features);
     res.json({ ok: true, artistId, ...result });
+  });
+
+  // ── Experts ───────────────────────────────────────────────────────
+  app.get("/api/v1/experts", (req, res) => {
+    const instrument = (req.query.instrument as string) || undefined;
+    const list = instrument ? expertsForInstrument(instrument) : listExperts();
+    res.json({ ok: true, experts: list });
+  });
+  app.get("/api/v1/experts/:id", (req, res) => {
+    const expert = getExpert(req.params.id);
+    if (!expert) return res.status(404).json({ ok: false, error: "not_found" });
+    res.json({ ok: true, expert });
+  });
+  app.get("/api/v1/experts/notes/:lessonId", (req, res) => {
+    const phase = (req.query.phase as any) || undefined;
+    res.json({ ok: true, notes: expertNotesForLesson(req.params.lessonId, phase) });
+  });
+  app.get("/api/v1/experts/masterclasses/:lessonId", (req, res) => {
+    res.json({ ok: true, masterclasses: masterclassesForLesson(req.params.lessonId) });
+  });
+  app.get("/api/v1/experts/live-sessions", (req, res) => {
+    const instrument = (req.query.instrument as string) || undefined;
+    res.json({ ok: true, sessions: upcomingLiveSessions(instrument) });
   });
 
   // ── URL ingest (yt-dlp stub) ──────────────────────────────────────

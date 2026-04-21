@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Lesson } from "@catalogs/types";
 import { DrillStepper } from "./DrillStepper";
+import { ExpertNotesInline } from "../ExpertNotesInline";
 
 /**
  * PhaseTeach — deep read phase. Walks the learner through multiple
@@ -80,6 +81,8 @@ export function PhaseTeach({ lesson, onEngage }: { lesson: Lesson; onEngage: () 
         >
           {cur.body}
         </div>
+
+        <ExpertNotesInline lessonId={lesson.id} phase="teach" />
         <div className="flex items-center justify-between mt-3 text-[11px]">
           <div className="text-white/40">
             {done.size} / {steps.length} read

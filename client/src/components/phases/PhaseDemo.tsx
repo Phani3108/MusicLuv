@@ -4,6 +4,7 @@ import type { Lesson, Exercise } from "@catalogs/types";
 import { playNote, playOnset, unlockAudio, ensureReady } from "@/audio/instrumentSampler";
 import { currentInstrumentAtom } from "@/atoms/session";
 import { prefsAtom } from "@/atoms/prefs";
+import { ExpertNotesInline } from "../ExpertNotesInline";
 
 /**
  * PhaseDemo — multiple audio demonstrations the learner must listen
@@ -178,6 +179,8 @@ export function PhaseDemo({ lesson, exercise, onEngage }: { lesson: Lesson; exer
           </button>
         )}
       </div>
+
+      <ExpertNotesInline lessonId={lesson.id} phase="demo" />
 
       <div className="text-center text-[11px] text-white/40">
         {completed.size === 0 && `Listen to at least 2 clips, including at least one at full tempo`}
