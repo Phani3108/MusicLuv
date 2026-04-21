@@ -1,6 +1,8 @@
 import type { Express, Request, Response } from "express";
 import multer from "multer";
-import { proxyGrade, audioEngineHealth } from "./gradingClient.js";
+import { proxyGrade, audioEngineHealth, renderReferenceAudio } from "./gradingClient.js";
+import { LESSONS } from "@catalogs/lessonCatalog";
+import { EXERCISES } from "@catalogs/exerciseCatalog";
 import { answerAsMentor, cannedMentorLine } from "./llm/mentorService.js";
 import { getProgress, recordAttempt, updateProgress } from "./progressStore.js";
 import { listProviders } from "./llm/providerCatalog.js";
@@ -411,6 +413,71 @@ export function registerRoutes(app: Express): void {
     if (!artist) return res.status(404).json({ ok: false, error: "unknown_artist" });
     const result = scoreStyleMatch(artist, features);
     res.json({ ok: true, artistId, ...result });
+  });
+
+  // ── Reference audio (synthesized from lesson target pattern) ──────
+  // Deterministic — same lesson always produces the same WAV.
+  // Long-cached so the CDN + browser avoid repeated syntheses.
+  app.get("/api/v1/reference-audio/:lessonId", async (req, res) => {
+    const lesson = LESSONS[req.params.lessonId];
+    if (!lesson) return res.status(404).json({ ok: false, error: "lesson_not_found" });
+    const exercise = EXERCISES[lesson.exercisePlanId];
+    if (!exercise) return res.status(404).json({ ok: false, error: "exercise_not_found" });
+    const notes = exercise.targetPattern.notes ?? [];
+    if (notes.length === 0) return res.status(400).json({ ok: false, error: "no_notes" });
+
+    const result = await renderReferenceAudio(
+      notes.map((n) => ({ pitch: n.pitch, startMs: n.startMs, durationMs: n.durationMs })),
+    );
+    if (result.status !== 200 || !result.body) {
+      return res.status(502).json({ ok: false, error: "render_unavailable" });
+    }
+    res.setHeader("Content-Type", result.contentType ?? "audio/wav");
+    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+    res.setHeader("Content-Length", String(result.body.length));
+    res.send(result.body);
+  });
+
+  // Per-drill / demo-clip reference audio. Render the specific drill's
+  // notes when authoring supplied them; otherwise fall back to the
+  // lesson-level reference. Useful for demo clips at 50%/75%/100%.
+  app.get("/api/v1/reference-audio/:lessonId/:refId", async (req, res) => {
+    const lesson = LESSONS[req.params.lessonId];
+    if (!lesson) return res.status(404).json({ ok: false, error: "lesson_not_found" });
+
+    // Try to resolve a specific demo clip first.
+    const demo = lesson.drills?.demo?.find((d) => d.id === req.params.refId);
+    let notes: Array<{ pitch: string; startMs: number; durationMs: number }> = [];
+    let tempoFactor = 1;
+    if (demo?.notes && demo.notes.length > 0) {
+      notes = demo.notes.map((n) => ({ pitch: n.pitch, startMs: n.startMs, durationMs: n.durationMs }));
+    } else if (demo?.tempoBpm && lesson.exercisePlanId) {
+      const ex = EXERCISES[lesson.exercisePlanId];
+      const base = ex?.tempo.bpm ?? 100;
+      tempoFactor = base / demo.tempoBpm;
+      const src = ex?.targetPattern.notes ?? [];
+      notes = src.map((n) => ({
+        pitch: n.pitch,
+        startMs: Math.round(n.startMs * tempoFactor),
+        durationMs: Math.round(n.durationMs * tempoFactor),
+      }));
+    } else {
+      // Fall back to full lesson reference.
+      const ex = EXERCISES[lesson.exercisePlanId];
+      notes = (ex?.targetPattern.notes ?? []).map((n) => ({
+        pitch: n.pitch, startMs: n.startMs, durationMs: n.durationMs,
+      }));
+    }
+    if (notes.length === 0) return res.status(400).json({ ok: false, error: "no_notes" });
+
+    const result = await renderReferenceAudio(notes);
+    if (result.status !== 200 || !result.body) {
+      return res.status(502).json({ ok: false, error: "render_unavailable" });
+    }
+    res.setHeader("Content-Type", result.contentType ?? "audio/wav");
+    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+    res.setHeader("Content-Length", String(result.body.length));
+    res.send(result.body);
   });
 
   // ── Experts ───────────────────────────────────────────────────────

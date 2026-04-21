@@ -19,7 +19,7 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from pipelines import pitch, onsets, dtw, scoring, simplify as simplify_mod, polyphonic, stems
+from pipelines import pitch, onsets, dtw, scoring, simplify as simplify_mod, polyphonic, stems, synth
 
 
 app = FastAPI(title="MusicLuv audio-engine", version="0.1.0")
@@ -176,6 +176,54 @@ async def transcribe(
         warning = "Auto-transcription confidence is low. Try a cleaner recording, or tap any step to correct."
 
     return TranscribeOut(steps=steps, confidence=conf, warning=warning)
+
+
+# ---- Reference audio synthesis ----
+#
+# Renders a lesson's target pattern (or any notes[]) to a WAV so the
+# client can play / download / share the reference. No real recording
+# needed; the synthesis is deterministic + matches what the grading
+# pipeline tests against, so what you hear is exactly what your take
+# will be aligned to.
+
+
+class RenderIn(BaseModel):
+    notes: list[dict]           # [{pitch, startMs, durationMs}]
+    sr: int = 22050
+    detune_cents: float = 0.0
+    noise_level: float = 0.0
+    harmonics: int = 3
+
+
+@app.post("/render")
+async def render(req: RenderIn) -> Any:
+    """Synthesize a target-pattern preview. Returns WAV bytes with
+    Content-Type: audio/wav. Caches via Cache-Control; a given pattern
+    always produces the same audio, so CDN caching is safe.
+    """
+    from fastapi.responses import Response
+    if not req.notes:
+        raise HTTPException(400, "empty_notes")
+
+    wave = synth.render_notes(
+        req.notes,
+        sr=req.sr,
+        harmonics=req.harmonics,
+        detune_cents=req.detune_cents,
+        noise_level=req.noise_level,
+    )
+
+    buf = io.BytesIO()
+    sf.write(buf, wave, req.sr, format="WAV", subtype="PCM_16")
+    data = buf.getvalue()
+    return Response(
+        content=data,
+        media_type="audio/wav",
+        headers={
+            "Cache-Control": "public, max-age=31536000, immutable",
+            "Content-Length": str(len(data)),
+        },
+    )
 
 
 if __name__ == "__main__":

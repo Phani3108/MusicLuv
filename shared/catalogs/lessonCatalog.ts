@@ -3841,6 +3841,17 @@ for (const [id, patch] of Object.entries(HAND_AUTHORED_EXPANSION_LESSONS)) {
   }
 }
 
+// Apply the expanded L2-L4 hand-authored content for all 14 expansion
+// instruments (fretted + indian + bowed_reed + keyboard_electronic).
+// This layer covers ~168 lessons with real pedagogy — writtenContent,
+// 3 teach drill points, rich audioRef labels — replacing the
+// generator skeleton wherever present. Runs AFTER the focused 6-lesson
+// overrides above so both layers coexist (expansionHandAuthored wins
+// for its 6 ids; this expanded layer wins for everything else in
+// scope).
+import { applyExpansionOverrides } from "./expansion";
+applyExpansionOverrides(LESSONS);
+
 // Hydrate every lesson with multi-drill content (teach × 3, demo × 3-4,
 // dissect × 3-5, virtualTry × 3, guided × 3-5, attempt × 3). Lessons
 // that hand-author their own `drills` are skipped.
@@ -3848,6 +3859,14 @@ import { hydrateLessonsWithDrills } from "./lessonDrillGenerator";
 import { EXERCISES } from "./exerciseCatalog";
 import { INSTRUMENTS } from "./instrumentCatalog";
 hydrateLessonsWithDrills(LESSONS, EXERCISES, INSTRUMENTS);
+
+// Populate audioRefs[].url + drills.demo[].audioUrl so every lesson has
+// a real playable reference clip. Points at /api/v1/reference-audio,
+// which synthesizes via the audio-engine's /render endpoint and caches
+// aggressively. Hand-authored URLs (if/when an educator supplies them)
+// are preserved.
+import { hydrateLessonAudioRefs } from "./referenceAudioHydrator";
+hydrateLessonAudioRefs(LESSONS);
 
 export const listLessonsForInstrument = (instrumentId: string) =>
   Object.values(LESSONS)

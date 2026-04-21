@@ -43,3 +43,35 @@ export const audioEngineHealth = async () => {
     return { ok: false, error: (e as Error).message };
   }
 };
+
+/**
+ * Proxy the audio-engine's deterministic synthesis endpoint. Given a
+ * notes[] payload, returns the raw WAV bytes for streaming back to
+ * the client. Cacheable — same notes always produce the same audio.
+ */
+export const renderReferenceAudio = async (
+  notes: Array<{ pitch: string; startMs: number; durationMs: number }>,
+  opts?: { detuneCents?: number; noise?: number; harmonics?: number },
+): Promise<{ status: number; body: Buffer | null; contentType?: string }> => {
+  try {
+    const res = await fetch(`${AUDIO_ENGINE_URL}/render`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        notes,
+        detune_cents: opts?.detuneCents ?? 0,
+        noise_level: opts?.noise ?? 0,
+        harmonics: opts?.harmonics ?? 3,
+      }),
+    });
+    if (!res.ok) return { status: res.status, body: null };
+    const arr = await res.arrayBuffer();
+    return {
+      status: 200,
+      body: Buffer.from(arr),
+      contentType: res.headers.get("content-type") ?? "audio/wav",
+    };
+  } catch (e) {
+    return { status: 502, body: null };
+  }
+};

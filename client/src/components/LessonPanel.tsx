@@ -1,10 +1,12 @@
 import { useAtom, useAtomValue } from "jotai";
+import { useRef, useState } from "react";
 import { lessonPanelAtom } from "@/atoms/panels";
 import { currentInstrumentAtom, currentLessonIdAtom } from "@/atoms/session";
 import { getLesson, listLessonsForInstrument } from "@catalogs/lessonCatalog";
 import { getExercise } from "@catalogs/exerciseCatalog";
 import { SidePanel } from "./SidePanel";
 import { playNote, unlockAudio, ensureReady } from "@/audio/instrumentSampler";
+import { MUSICLUV_SERVER_URL } from "@/lib/api";
 
 export function LessonPanel() {
   const [open, setOpen] = useAtom(lessonPanelAtom);
@@ -12,24 +14,45 @@ export function LessonPanel() {
   const [lessonId, setLessonId] = useAtom(currentLessonIdAtom);
   const current = lessonId ? getLesson(lessonId) : null;
   const all = instrumentId ? listLessonsForInstrument(instrumentId) : [];
+  const audioElRef = useRef<HTMLAudioElement | null>(null);
+  const [playingId, setPlayingId] = useState<string | null>(null);
 
-  const playAudioRef = async () => {
-    // Plays the lesson's exercise pattern through the real instrument
-    // sampler — no more "mock" alert. If a hand-authored audio URL
-    // exists on the audioRef we'd play that instead; today every
-    // audioRef is label-only, so synthesized playback is the honest
-    // preview.
+  const playAudioRef = async (refUrl: string | undefined, refId: string) => {
+    // Prefer the server-synthesized reference WAV when a URL is
+    // available and VITE_SERVER_URL is configured — that matches
+    // exactly what the grader aligns against. Fall back to in-browser
+    // Tone.js synthesis if the server isn't reachable.
     if (!current || !instrumentId) return;
+    const canUseServer = Boolean(refUrl && MUSICLUV_SERVER_URL);
+    if (canUseServer) {
+      try {
+        if (!audioElRef.current) {
+          audioElRef.current = new Audio();
+          audioElRef.current.onended = () => setPlayingId(null);
+        }
+        const fullUrl = refUrl!.startsWith("http") ? refUrl! : `${MUSICLUV_SERVER_URL}${refUrl}`;
+        audioElRef.current.src = fullUrl;
+        await audioElRef.current.play();
+        setPlayingId(refId);
+        return;
+      } catch {
+        // fall through to in-browser synthesis
+      }
+    }
+    // In-browser synthesis fallback.
     const exercise = getExercise(current.exercisePlanId);
     if (!exercise) return;
     await unlockAudio();
     await ensureReady(instrumentId);
     const notes = exercise.targetPattern.notes ?? [];
+    setPlayingId(refId);
     for (const n of notes.slice(0, 16)) {
       setTimeout(() => {
         void playNote(instrumentId, n.pitch, n.durationMs / 1000);
       }, n.startMs);
     }
+    const total = Math.max(...notes.slice(0, 16).map((n) => n.startMs + n.durationMs), 1000);
+    setTimeout(() => setPlayingId(null), total + 200);
   };
 
   return (
@@ -67,11 +90,15 @@ export function LessonPanel() {
                 <button
                   key={a.id}
                   className="w-full panel p-3 flex items-center gap-3 text-left hover:bg-white/5"
-                  onClick={playAudioRef}
+                  onClick={() => playAudioRef(a.url, a.id)}
                 >
-                  <span className="w-9 h-9 rounded-full bg-indigo-400/20 flex items-center justify-center">▶</span>
+                  <span className="w-9 h-9 rounded-full bg-indigo-400/20 flex items-center justify-center">
+                    {playingId === a.id ? "◼" : "▶"}
+                  </span>
                   <div className="flex-1 text-sm">{a.label}</div>
-                  <span className="text-[10px] font-mono text-emerald-400/70">preview</span>
+                  <span className="text-[10px] font-mono text-emerald-400/70">
+                    {a.url ? "reference" : "preview"}
+                  </span>
                 </button>
               ))}
             </div>
