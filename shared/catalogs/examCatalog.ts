@@ -4173,6 +4173,14 @@ export const EXAMS: Record<string, Exam> = {
   },
 };
 
+// Phase 9 · Mastery quizzes for the L2-L4 hand-authored expansion
+// lessons. Generated at module-load time from per-family question banks
+// — produces ~168 lesson-scoped quizzes (14 instruments × 12 keys),
+// merged into EXAMS so the existing exam runner finds them via
+// examForLesson(lessonId) without any code change.
+import { buildExpansionQuizzes } from "./expansionQuizzes";
+Object.assign(EXAMS, buildExpansionQuizzes());
+
 export const getExam = (id: string) => EXAMS[id];
 
 export const examForLesson = (lessonId: string): Exam | undefined =>

@@ -51,8 +51,13 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install -r requirements.txt || pip install fastapi uvicorn pytest numpy scipy librosa pydantic
+        run: |
+          # The pyproject defines deps; install with the test extra.
+          pip install -e '.[test]' || \
+          pip install fastapi uvicorn pytest pytest-asyncio httpx numpy scipy librosa soundfile pydantic python-multipart
         working-directory: audio-engine
       - name: Run pytest
-        run: pytest -q || true
+        # Real test gate — was previously masked with `|| true`. Drop the mask;
+        # if pitch / DTW / scoring / endpoint regressions land we want CI red.
+        run: pytest -q
         working-directory: audio-engine

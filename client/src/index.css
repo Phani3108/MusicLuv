@@ -6,19 +6,59 @@
   color-scheme: dark;
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  /* Safe-area insets exposed as CSS custom props so any component can
+     read them. Defaults to 0 on browsers without notch/home-indicator. */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+}
+
+html {
+  /* Match the page chrome to the gradient bg so the iOS notch / home-bar
+     blends instead of showing a black gutter. */
+  background-color: #060816;
+  /* Disable iOS rubber-band scroll bounce on the root container —
+     individual scrollables can opt back in. */
+  overscroll-behavior-y: none;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  /* dvh accounts for the dynamic toolbar on mobile Safari/Chrome —
+     prevents the bottom-bar overlap 100vh produced. */
+  min-height: 100dvh;
   background: radial-gradient(1200px 800px at 80% -10%, rgba(139, 124, 255, 0.18), transparent 60%),
               radial-gradient(900px 700px at -10% 110%, rgba(255, 179, 71, 0.12), transparent 60%),
               #060816;
+  /* Pad against the home indicator + notch so chrome doesn't hide. */
+  padding-top: var(--safe-area-top);
+  padding-bottom: var(--safe-area-bottom);
 }
 
 #root {
   min-height: 100vh;
+  min-height: 100dvh;
 }
+
+/* Kill iOS Webkit's grey tap-highlight on every interactive element +
+   shave the 300ms delay. Required for native-feeling button feedback in
+   Capacitor builds. */
+button,
+a,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Safe-area utilities — apply on fixed headers/footers / sticky chrome. */
+.pt-safe { padding-top: max(env(safe-area-inset-top, 0px), 0.75rem); }
+.pb-safe { padding-bottom: max(env(safe-area-inset-bottom, 0px), 0.75rem); }
+.pl-safe { padding-left: max(env(safe-area-inset-left, 0px), 0.75rem); }
+.pr-safe { padding-right: max(env(safe-area-inset-right, 0px), 0.75rem); }
+.mt-safe { margin-top: env(safe-area-inset-top, 0px); }
+.mb-safe { margin-bottom: env(safe-area-inset-bottom, 0px); }
 
 @layer components {
   .panel {

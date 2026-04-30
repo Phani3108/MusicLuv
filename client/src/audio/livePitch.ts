@@ -108,15 +108,96 @@ function autocorrelate(buf: Float32Array, sampleRate: number): number | null {
 }
 
 /**
+ * Median filter over the last N Hz readings. Eliminates per-frame
+ * outliers (octave jumps, transient spikes) without smearing legitimate
+ * pitch slides — median preserves edges where mean would soften them.
+ *
+ * Crucial for ornamented playing (gamak, meend, vibrato, bends) where
+ * the pitch is continuously moving and a single bad frame can otherwise
+ * jiggle the displayed note flipping back and forth.
+ */
+class MedianHzFilter {
+  private buf: number[] = [];
+  constructor(private size = 5) {}
+  push(hz: number): number {
+    this.buf.push(hz);
+    if (this.buf.length > this.size) this.buf.shift();
+    const sorted = [...this.buf].sort((a, b) => a - b);
+    return sorted[Math.floor(sorted.length / 2)];
+  }
+  reset(): void {
+    this.buf = [];
+  }
+  get hasSamples(): boolean {
+    return this.buf.length > 0;
+  }
+}
+
+/**
+ * Note-name hysteresis. Only flip the displayed note name once we're
+ * confident the user has crossed a note boundary — staying on the
+ * current note until the new note has held for `flipFrames` frames in
+ * a row.
+ *
+ * Without this, a vibrato that swings ±50 cents would bounce the
+ * displayed note name twice per oscillation. With it, the note name
+ * stays stable while `cents` continues to oscillate.
+ */
+class NoteHysteresis {
+  private current: string | null = null;
+  private candidate: string | null = null;
+  private candidateCount = 0;
+  constructor(private flipFrames = 3) {}
+  step(rawNote: string): string {
+    if (rawNote === this.current) {
+      this.candidate = null;
+      this.candidateCount = 0;
+      return this.current;
+    }
+    if (this.current === null) {
+      // First note: accept immediately.
+      this.current = rawNote;
+      return this.current;
+    }
+    if (rawNote === this.candidate) {
+      this.candidateCount++;
+      if (this.candidateCount >= this.flipFrames) {
+        this.current = rawNote;
+        this.candidate = null;
+        this.candidateCount = 0;
+      }
+    } else {
+      this.candidate = rawNote;
+      this.candidateCount = 1;
+    }
+    return this.current;
+  }
+  reset(): void {
+    this.current = null;
+    this.candidate = null;
+    this.candidateCount = 0;
+  }
+}
+
+/**
  * Start streaming real pitch data. Attaches a ScriptProcessor to the
  * provided mic MediaStream and invokes `onFrame` ~every 40ms.
+ *
+ * Smoothing layers:
+ *   1. Per-frame autocorrelation → raw Hz
+ *   2. 5-frame median filter on Hz (kills outliers)
+ *   3. 3-frame note-name hysteresis (steadies the displayed note
+ *      during ornamented playing — gamak, vibrato, bends)
+ *
+ * The reported `cents` field uses the *smoothed* Hz so the pitch needle
+ * remains responsive while the note label stays stable.
  *
  * Returns a handle whose `.stop()` tears down the audio graph.
  */
 export async function startLivePitch(
   micStream: MediaStream,
   onFrame: (frame: PitchFrame) => void,
-  opts: { bufferSize?: number } = {},
+  opts: { bufferSize?: number; medianWindow?: number; hysteresisFrames?: number } = {},
 ): Promise<PitchHandle> {
   const AudioCtxCtor = (window.AudioContext || (window as any).webkitAudioContext) as typeof AudioContext;
   const ctx = new AudioCtxCtor();
@@ -135,6 +216,8 @@ export async function startLivePitch(
   silent.connect(ctx.destination);
 
   let lastEmitAt = 0;
+  const median = new MedianHzFilter(opts.medianWindow ?? 5);
+  const hysteresis = new NoteHysteresis(opts.hysteresisFrames ?? 3);
 
   processor.onaudioprocess = (ev: AudioProcessingEvent) => {
     const now = performance.now();
@@ -146,13 +229,18 @@ export async function startLivePitch(
     for (let i = 0; i < input.length; i++) rms += input[i] * input[i];
     rms = Math.sqrt(rms / input.length);
 
-    const hz = autocorrelate(input, ctx.sampleRate);
-    if (hz == null) {
+    const rawHz = autocorrelate(input, ctx.sampleRate);
+    if (rawHz == null) {
+      // Reset smoothing state on silence so the next note enters clean.
+      median.reset();
+      hysteresis.reset();
       onFrame({ hz: null, note: null, cents: 0, rms });
       return;
     }
-    const { note, cents } = hzToNoteCents(hz);
-    onFrame({ hz, note, cents, rms });
+    const smoothedHz = median.push(rawHz);
+    const { note: rawNote, cents } = hzToNoteCents(smoothedHz);
+    const stableNote = hysteresis.step(rawNote);
+    onFrame({ hz: smoothedHz, note: stableNote, cents, rms });
   };
 
   return {

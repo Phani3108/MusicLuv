@@ -30,8 +30,9 @@ import {
   recordUserSeen,
 } from "./monetizationGate.js";
 import {
-  listCompositionsForUser, listReviewQueue, submitComposition, reviewComposition,
+  listCompositionsForUser, listReviewQueue, submitComposition, reviewComposition, getComposition,
 } from "./compositionService.js";
+import { reviewComposition as runLlmReview } from "./llm/compositionReview.js";
 import { scoreStyleMatch, type AttemptFeatures } from "./styleFingerprint.js";
 import { ARTISTS } from "@catalogs/artistCatalog";
 import {
@@ -338,11 +339,11 @@ export function registerRoutes(app: Express): void {
   });
 
   // ── Compositions (Genius tier human review) ───────────────────────
-  app.get("/api/v1/compositions/:userId", (req, res) => {
-    res.json({ ok: true, compositions: listCompositionsForUser(req.params.userId) });
+  app.get("/api/v1/compositions/:userId", async (req, res) => {
+    res.json({ ok: true, compositions: await listCompositionsForUser(req.params.userId) });
   });
-  app.post("/api/v1/compositions", (req, res) => {
-    res.json({ ok: true, composition: submitComposition(req.body) });
+  app.post("/api/v1/compositions", async (req, res) => {
+    res.json({ ok: true, composition: await submitComposition(req.body) });
   });
 
   // Composition audio upload. Multipart body: audio (file) + meta (JSON
@@ -363,7 +364,7 @@ export function registerRoutes(app: Express): void {
         contentType: req.file.mimetype || "audio/mpeg",
         keyPrefix: `compositions/${userId}`,
       });
-      const composition = submitComposition({
+      const composition = await submitComposition({
         id: `comp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
         userId,
         title: meta.title ?? "Untitled composition",
@@ -392,18 +393,41 @@ export function registerRoutes(app: Express): void {
     if (!fs.existsSync(full)) return res.status(404).end();
     res.sendFile(full);
   });
-  app.get("/api/v1/compositions/admin/queue", (req, res) => {
+  app.get("/api/v1/compositions/admin/queue", async (req, res) => {
     const adminToken = (req.headers["x-admin-token"] as string) || "";
     if (!process.env.ADMIN_TOKEN || adminToken !== process.env.ADMIN_TOKEN) {
       return res.status(403).json({ ok: false, error: "forbidden" });
     }
-    res.json({ ok: true, compositions: listReviewQueue() });
+    res.json({ ok: true, compositions: await listReviewQueue() });
   });
-  app.patch("/api/v1/compositions/:id/review", (req, res) => {
+  app.patch("/api/v1/compositions/:id/review", async (req, res) => {
     const { reviewerId, status, notes, rubric } = req.body ?? {};
-    const updated = reviewComposition(req.params.id, reviewerId, status, notes, rubric);
+    const updated = await reviewComposition(req.params.id, reviewerId, status, notes, rubric);
     if (!updated) return res.status(404).json({ ok: false });
     res.json({ ok: true, composition: updated });
+  });
+
+  // LLM-powered auto-review. POST { digest } — body carries the
+  // audio-engine's structured digest (notes/tempo/key); the model
+  // returns rubric scores + strengths + improvements. Reviewer can
+  // accept the suggestion via the regular /review endpoint.
+  app.post("/api/v1/compositions/:id/auto-review", async (req, res) => {
+    const adminToken = (req.headers["x-admin-token"] as string) || "";
+    if (!process.env.ADMIN_TOKEN || adminToken !== process.env.ADMIN_TOKEN) {
+      return res.status(403).json({ ok: false, error: "forbidden" });
+    }
+    const composition = await getComposition(req.params.id);
+    if (!composition) return res.status(404).json({ ok: false, error: "not_found" });
+    const digest = req.body?.digest;
+    if (!digest || typeof digest !== "object") {
+      return res.status(400).json({ ok: false, error: "missing_digest" });
+    }
+    try {
+      const result = await runLlmReview(composition, digest);
+      res.json({ ok: true, review: result });
+    } catch (e) {
+      res.status(500).json({ ok: false, error: (e as Error).message });
+    }
   });
 
   // ── Style fingerprint match ───────────────────────────────────────

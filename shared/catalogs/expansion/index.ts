@@ -20,14 +20,24 @@ import { FRETTED_EXPANSION_OVERRIDES } from "./fretted";
 import { INDIAN_EXPANSION_OVERRIDES } from "./indian";
 import { BOWED_REED_EXPANSION_OVERRIDES } from "./bowedReed";
 import { KEYBOARD_ELECTRONIC_EXPANSION_OVERRIDES } from "./keyboardElectronic";
+import { FRETTED_ADVANCED_OVERRIDES } from "./frettedAdvanced";
+import { INDIAN_ADVANCED_OVERRIDES } from "./indianAdvanced";
+import { BOWED_REED_ADVANCED_OVERRIDES } from "./bowedReedAdvanced";
+import { KEYBOARD_ELECTRONIC_ADVANCED_OVERRIDES } from "./keyboardElectronicAdvanced";
 
 export type LessonPatch = Partial<Lesson> & Pick<Lesson, "id">;
 
 export const EXPANSION_OVERRIDES: Record<string, LessonPatch> = {
+  // L2-L4 (standard / pro entry) — shipped in Phase 7
   ...FRETTED_EXPANSION_OVERRIDES,
   ...INDIAN_EXPANSION_OVERRIDES,
   ...BOWED_REED_EXPANSION_OVERRIDES,
   ...KEYBOARD_ELECTRONIC_EXPANSION_OVERRIDES,
+  // L5-L9 (pro mid-tier through genius) — shipped in Phase 8
+  ...FRETTED_ADVANCED_OVERRIDES,
+  ...INDIAN_ADVANCED_OVERRIDES,
+  ...BOWED_REED_ADVANCED_OVERRIDES,
+  ...KEYBOARD_ELECTRONIC_ADVANCED_OVERRIDES,
 };
 
 /**

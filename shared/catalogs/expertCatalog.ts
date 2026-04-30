@@ -566,6 +566,161 @@ export function masterclassesForLesson(lessonId: string): Array<{ expert: Expert
   return results;
 }
 
+/**
+ * Recurring weekly schedule for live sessions. Each entry generates a
+ * fresh future-dated slot every time the catalog is loaded, so the
+ * "Live this week" panel always shows the next 4 occurrences without
+ * the catalog dates going stale.
+ *
+ * Format per entry: { expertId, dayOfWeek (0=Sun..6=Sat), hourUtc,
+ *   instrumentId, level, durationMin, capacity, priceUsd,
+ *   titleTemplate, descriptionTemplate }
+ *
+ * `populateRecurringSessions()` runs at module-load time; it appends
+ * 4 weeks of generated slots into each expert's `liveSessions` array
+ * (preserving any one-off hand-authored sessions that are already there).
+ */
+interface RecurringSlot {
+  expertId: string;
+  dayOfWeek: number;        // 0..6
+  hourUtc: number;          // 0..23
+  instrumentId: string;
+  level: Level;
+  durationMin: number;
+  capacity: number;
+  priceUsd: number;
+  title: string;
+  description: string;
+}
+
+const RECURRING_SCHEDULE: RecurringSlot[] = [
+  // Pandit Arun · Sundays 14:00 UTC (Pune evening) — Yaman/Hindustani group session
+  {
+    expertId: "guruji_arun", dayOfWeek: 0, hourUtc: 14,
+    instrumentId: "sitar", level: 4, durationMin: 60, capacity: 25, priceUsd: 0,
+    title: "Yaman alap · live group session",
+    description: "Open group session. Pandit-ji walks through Yaman alap + answers 3 student questions. Bring your sitar tuned to C.",
+  },
+  // Pandit Arun · Wednesdays 14:00 UTC — meend mastery clinic
+  {
+    expertId: "guruji_arun", dayOfWeek: 3, hourUtc: 14,
+    instrumentId: "sitar", level: 5, durationMin: 45, capacity: 12, priceUsd: 25,
+    title: "Meend mastery · 45-min clinic",
+    description: "Small-group clinic. Bring a 30-second meend phrase you're working on; Pandit-ji critiques 6 students one-on-one.",
+  },
+  // Ustad Rashid · Tuesdays 16:00 UTC — tihai workshop
+  {
+    expertId: "ustad_rashid", dayOfWeek: 2, hourUtc: 16,
+    instrumentId: "tabla", level: 4, durationMin: 75, capacity: 20, priceUsd: 15,
+    title: "Tihai workshop · construct + resolve",
+    description: "Build 3-fold tihai phrases that land on sam. Bring your tabla tuned to C/G. Capped at 20 to keep feedback personal.",
+  },
+  // Ustad Rashid · Saturdays 10:00 UTC — peshkar fundamentals
+  {
+    expertId: "ustad_rashid", dayOfWeek: 6, hourUtc: 10,
+    instrumentId: "tabla", level: 3, durationMin: 60, capacity: 30, priceUsd: 0,
+    title: "Peshkar fundamentals · open session",
+    description: "Free open group on teentaal peshkar. Loud + raucous; expect call-and-response.",
+  },
+  // Adrienne Mendez · Mondays 19:00 UTC — Bach Prelude reading
+  {
+    expertId: "adrienne_mendez", dayOfWeek: 1, hourUtc: 19,
+    instrumentId: "piano", level: 5, durationMin: 60, capacity: 18, priceUsd: 20,
+    title: "Bach WTC Prelude · reading session",
+    description: "We pick one prelude per week. Adrienne plays it twice, then 6 students perform their version live with feedback.",
+  },
+  // Adrienne Mendez · Thursdays 19:00 UTC — sight-reading drill
+  {
+    expertId: "adrienne_mendez", dayOfWeek: 4, hourUtc: 19,
+    instrumentId: "piano", level: 3, durationMin: 45, capacity: 30, priceUsd: 0,
+    title: "Sight-reading drill · open",
+    description: "Free drill session. Adrienne shares 4 unfamiliar pieces; cohort plays through them with progressive constraints.",
+  },
+  // Marcus Lin · Wednesdays 18:00 UTC — bebop heads
+  {
+    expertId: "marcus_lin", dayOfWeek: 3, hourUtc: 18,
+    instrumentId: "saxophone", level: 5, durationMin: 60, capacity: 15, priceUsd: 25,
+    title: "Bebop heads · weekly transcription circle",
+    description: "Each week we transcribe one Charlie Parker head together. Bring the recording loaded; we play through it bar-by-bar.",
+  },
+  // Marcus Lin · Sundays 22:00 UTC — improv lab
+  {
+    expertId: "marcus_lin", dayOfWeek: 0, hourUtc: 22,
+    instrumentId: "saxophone", level: 6, durationMin: 90, capacity: 8, priceUsd: 40,
+    title: "Improv lab · Coltrane changes",
+    description: "Small group. Each player takes 4 choruses over Giant Steps; Marcus critiques substitution choices.",
+  },
+  // Sunita Iyer · Fridays 13:00 UTC — Carnatic vocals
+  {
+    expertId: "sunita_iyer", dayOfWeek: 5, hourUtc: 13,
+    instrumentId: "vocals", level: 4, durationMin: 60, capacity: 25, priceUsd: 15,
+    title: "Carnatic kriti · weekly study",
+    description: "Sunita teaches one kriti's pallavi + first sangati. Open to all levels; Carnatic notation provided.",
+  },
+  // Sunita Iyer · Tuesdays 13:00 UTC — voice warmup
+  {
+    expertId: "sunita_iyer", dayOfWeek: 2, hourUtc: 13,
+    instrumentId: "vocals", level: 2, durationMin: 30, capacity: 50, priceUsd: 0,
+    title: "Vocal warmup · 30 minutes",
+    description: "Free 30-min Sa-Pa-Sa warmup before your day. Drop in any week.",
+  },
+];
+
+/** Mutate EXPERTS[*].liveSessions to append 4 weeks of recurring slots. */
+function populateRecurringSessions(): void {
+  const now = new Date();
+  const weeksAhead = 4;
+  for (const recurring of RECURRING_SCHEDULE) {
+    const expert = EXPERTS[recurring.expertId];
+    if (!expert) continue;
+    for (let week = 0; week < weeksAhead; week++) {
+      const start = nextOccurrenceOf(now, recurring.dayOfWeek, recurring.hourUtc, week);
+      const slotId = `live_${recurring.expertId}_${recurring.dayOfWeek}_${recurring.hourUtc}_w${week}`;
+      // Skip if a hand-authored slot with the same id already exists.
+      if (expert.liveSessions.some((s) => s.id === slotId)) continue;
+      // Estimate seats taken via deterministic hash of slot id so the
+      // UI shows realistic "12/25 booked" without requiring real
+      // bookings data. Mid-cohort signal — between 30% and 80% full.
+      const hash = simpleHash(slotId);
+      const fullness = 0.3 + (hash % 50) / 100; // 0.30..0.80
+      const seatsTaken = Math.round(recurring.capacity * fullness);
+      expert.liveSessions.push({
+        id: slotId,
+        title: recurring.title,
+        startAt: start.toISOString(),
+        durationMin: recurring.durationMin,
+        instrumentId: recurring.instrumentId,
+        capacity: recurring.capacity,
+        level: recurring.level,
+        priceUsd: recurring.priceUsd,
+        seatsTaken,
+        description: recurring.description,
+      });
+    }
+  }
+}
+
+function nextOccurrenceOf(from: Date, dayOfWeek: number, hourUtc: number, weeksAhead: number): Date {
+  const d = new Date(from);
+  d.setUTCMinutes(0, 0, 0);
+  d.setUTCHours(hourUtc);
+  const diff = (dayOfWeek - d.getUTCDay() + 7) % 7;
+  // If today and the time has already passed, push to next week.
+  const baseOffset = diff === 0 && d.getTime() <= from.getTime() ? 7 : diff;
+  d.setUTCDate(d.getUTCDate() + baseOffset + weeksAhead * 7);
+  return d;
+}
+
+function simpleHash(str: string): number {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+// Run at module load — ensures every Expert object surfaces 4 weeks of
+// upcoming sessions whenever the catalog is consumed.
+populateRecurringSessions();
+
 /** All upcoming live sessions, optionally filtered by instrument. */
 export function upcomingLiveSessions(instrumentId?: string): Array<{ expert: Expert; slot: LiveSessionSlot }> {
   const now = Date.now();

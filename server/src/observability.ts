@@ -158,17 +158,157 @@ export async function sendProctorConfirmationEmail(
   await sendEmail({
     to,
     subject: `Your ${details.tier} certificate exam is confirmed`,
-    html: `
-      <div style="font-family:system-ui,sans-serif;max-width:560px;margin:0 auto">
-        <h1>Exam confirmed 🏆</h1>
-        <p><strong>${details.instrument} · ${details.tier}</strong></p>
-        <p>Scheduled for <strong>${details.scheduledAt}</strong>.</p>
-        <p>Join the proctor room 5 minutes early:</p>
-        <p><a href="${details.meetingUrl}" style="background:#6366f1;color:white;padding:10px 20px;border-radius:8px;text-decoration:none">Join proctor room →</a></p>
-        <p style="color:#666;font-size:12px">Cancel up to 24 hours in advance for a full refund.</p>
-      </div>
-    `,
+    html: shell(
+      `<h1>Exam confirmed 🏆</h1>
+       <p><strong>${escapeHtml(details.instrument)} · ${escapeHtml(details.tier)}</strong></p>
+       <p>Scheduled for <strong>${escapeHtml(details.scheduledAt)}</strong>.</p>
+       <p>Join the proctor room 5 minutes early:</p>
+       <p>${cta(details.meetingUrl, "Join proctor room")}</p>
+       <p style="color:#666;font-size:12px">Cancel up to 24 hours in advance for a full refund.</p>`,
+    ),
   });
+}
+
+/** Cert earned. Triggered on successful tier-cert exam pass. */
+export async function sendCertEarnedEmail(
+  to: string,
+  details: { displayName: string; instrument: string; tier: string; certificateUrl: string; xpAwarded: number },
+): Promise<void> {
+  await sendEmail({
+    to,
+    subject: `🏆 You earned your ${details.tier} certificate on ${details.instrument}`,
+    html: shell(
+      `<h1>Certificate earned, ${escapeHtml(details.displayName)}.</h1>
+       <p>You just passed the <strong>${escapeHtml(details.tier)}</strong> tier on
+          <strong>${escapeHtml(details.instrument)}</strong>. That's not nothing.</p>
+       <p><strong>+${details.xpAwarded} XP</strong> applied to your profile.</p>
+       <p>${cta(details.certificateUrl, "View certificate")}</p>
+       <p style="color:#666;font-size:13px;margin-top:24px">
+         Share it on LinkedIn — recruiters and music schools recognise MusicLuv certs as
+         a real proxy for graded performance.
+       </p>`,
+    ),
+    text: `You earned your ${details.tier} certificate on ${details.instrument}. View: ${details.certificateUrl}`,
+  });
+}
+
+/** Weekly progress digest. Triggered Sunday 9am local for active learners. */
+export async function sendWeeklyProgressEmail(
+  to: string,
+  details: {
+    displayName: string;
+    minutesPracticed: number;
+    lessonsCompleted: number;
+    streakDays: number;
+    topInstrument: string;
+    nextLessonTitle: string;
+    nextLessonUrl: string;
+  },
+): Promise<void> {
+  await sendEmail({
+    to,
+    subject: `Your week in MusicLuv · ${details.minutesPracticed} min · ${details.streakDays}-day streak`,
+    html: shell(
+      `<h1>Hi ${escapeHtml(details.displayName)} — here's your week.</h1>
+       <table style="width:100%;border-collapse:collapse;margin:16px 0">
+         <tr><td style="padding:8px 0;color:#666">Minutes practised</td>
+             <td style="padding:8px 0;text-align:right"><strong>${details.minutesPracticed}</strong></td></tr>
+         <tr><td style="padding:8px 0;color:#666">Lessons completed</td>
+             <td style="padding:8px 0;text-align:right"><strong>${details.lessonsCompleted}</strong></td></tr>
+         <tr><td style="padding:8px 0;color:#666">Current streak</td>
+             <td style="padding:8px 0;text-align:right"><strong>${details.streakDays} days 🔥</strong></td></tr>
+         <tr><td style="padding:8px 0;color:#666">Top instrument</td>
+             <td style="padding:8px 0;text-align:right"><strong>${escapeHtml(details.topInstrument)}</strong></td></tr>
+       </table>
+       <p>Next up: <strong>${escapeHtml(details.nextLessonTitle)}</strong></p>
+       <p>${cta(details.nextLessonUrl, "Start the next lesson")}</p>`,
+    ),
+    text:
+      `Your week: ${details.minutesPracticed} min, ${details.lessonsCompleted} lessons, ` +
+      `${details.streakDays}-day streak. Next: ${details.nextLessonTitle} ${details.nextLessonUrl}`,
+  });
+}
+
+/** Community reply notification. Triggered when someone replies to user's recital comment. */
+export async function sendCommunityReplyEmail(
+  to: string,
+  details: { recipientName: string; replierName: string; recitalTitle: string; replyExcerpt: string; threadUrl: string },
+): Promise<void> {
+  const excerpt = details.replyExcerpt.slice(0, 240);
+  await sendEmail({
+    to,
+    subject: `${details.replierName} replied on ${details.recitalTitle}`,
+    html: shell(
+      `<h1>New reply on your recital comment</h1>
+       <p>${escapeHtml(details.replierName)} replied on
+          <strong>${escapeHtml(details.recitalTitle)}</strong>:</p>
+       <blockquote style="border-left:3px solid #6366f1;padding:8px 16px;margin:16px 0;color:#444;background:#f8f8ff">
+         ${escapeHtml(excerpt)}${details.replyExcerpt.length > 240 ? "…" : ""}
+       </blockquote>
+       <p>${cta(details.threadUrl, "View the thread")}</p>`,
+    ),
+    text: `${details.replierName} replied on "${details.recitalTitle}": ${excerpt}\n\nView: ${details.threadUrl}`,
+  });
+}
+
+/** Billing receipt. Triggered after a successful Stripe payment. */
+export async function sendBillingReceiptEmail(
+  to: string,
+  details: { displayName: string; planName: string; amountUsd: number; nextBillingDate: string; manageBillingUrl: string },
+): Promise<void> {
+  await sendEmail({
+    to,
+    subject: `Receipt · MusicLuv ${details.planName}`,
+    html: shell(
+      `<h1>Thanks, ${escapeHtml(details.displayName)}.</h1>
+       <p>Your <strong>${escapeHtml(details.planName)}</strong> subscription is active.</p>
+       <table style="width:100%;border-collapse:collapse;margin:16px 0">
+         <tr><td style="padding:6px 0;color:#666">Charged</td>
+             <td style="padding:6px 0;text-align:right">$${details.amountUsd.toFixed(2)} USD</td></tr>
+         <tr><td style="padding:6px 0;color:#666">Next billing</td>
+             <td style="padding:6px 0;text-align:right">${escapeHtml(details.nextBillingDate)}</td></tr>
+       </table>
+       <p>${cta(details.manageBillingUrl, "Manage billing")}</p>
+       <p style="color:#666;font-size:12px">Cancel any time. Pro-rated refunds within 14 days of upgrade.</p>`,
+    ),
+  });
+}
+
+/** Password reset link. */
+export async function sendPasswordResetEmail(
+  to: string,
+  details: { resetUrl: string; expiresMinutes: number },
+): Promise<void> {
+  await sendEmail({
+    to,
+    subject: "Reset your MusicLuv password",
+    html: shell(
+      `<h1>Reset your password</h1>
+       <p>Click below to set a new password. Link expires in
+          <strong>${details.expiresMinutes} minutes</strong>.</p>
+       <p>${cta(details.resetUrl, "Reset password")}</p>
+       <p style="color:#666;font-size:12px">Didn't request this? Ignore — your password stays the same.</p>`,
+    ),
+    text: `Reset your password (expires in ${details.expiresMinutes} min): ${details.resetUrl}`,
+  });
+}
+
+/** Common shell — same chrome on every email so they feel like one product. */
+function shell(inner: string): string {
+  return `
+    <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#1a1a1a;line-height:1.55">
+      <div style="font-size:13px;color:#6366f1;letter-spacing:1px;margin-bottom:24px">MUSICLUV</div>
+      ${inner}
+      <hr style="border:none;border-top:1px solid #eee;margin:32px 0 16px" />
+      <p style="color:#999;font-size:11px">
+        You're receiving this because you have an account at musicluv.app.
+        <a href="https://musicluv.app/settings" style="color:#999">Manage email preferences</a>.
+      </p>
+    </div>`;
+}
+
+function cta(url: string, label: string): string {
+  return `<a href="${url}" style="background:#6366f1;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;display:inline-block;font-weight:500">${escapeHtml(label)} →</a>`;
 }
 
 function escapeHtml(s: string): string {

@@ -151,6 +151,7 @@ async def grade(
 class TranscribeOut(BaseModel):
     steps: list[dict]
     confidence: float
+    confidenceTier: str            # "high" | "medium" | "low"
     warning: str | None = None
 
 
@@ -167,15 +168,26 @@ async def transcribe(
 
     notes = polyphonic.transcribe(isolated, sr)
     conf = polyphonic.confidence_summary(notes)
+    tier = polyphonic.confidence_tier(conf)
 
     simplified = simplify_mod.simplify(notes, level=level)
     steps = simplify_mod.render_steps(simplified)
 
+    # Tiered UX: high → no warning, medium → soft hint, low → strong warning.
     warning: str | None = None
-    if conf < 0.55:
-        warning = "Auto-transcription confidence is low. Try a cleaner recording, or tap any step to correct."
+    if tier == "low":
+        warning = (
+            "Auto-transcription confidence is low. The recording may be "
+            "noisy, polyphonic, or in a stem we can't isolate cleanly — "
+            "try a clean monophonic clip, or tap any step to correct."
+        )
+    elif tier == "medium":
+        warning = (
+            "Some notes were uncertain. Listen back and tap any step to "
+            "fix what doesn't sound right before practising."
+        )
 
-    return TranscribeOut(steps=steps, confidence=conf, warning=warning)
+    return TranscribeOut(steps=steps, confidence=conf, confidenceTier=tier, warning=warning)
 
 
 # ---- Reference audio synthesis ----

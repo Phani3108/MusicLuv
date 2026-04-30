@@ -142,8 +142,36 @@ export const recordAttempt = (
   // of truth until the migration is finalized.
   void persistAttemptToPg(userId, instrumentId, lessonId, grade, nextInst, result);
 
+  // Quest engine events. Lazy-imported to avoid a circular dependency
+  // (questEngine imports progressStore via updateProgress to apply
+  // rewards). Each event type only matches quests of the same type, so
+  // firing all three is safe — at most one will advance any given quest.
+  void emitQuestEvents(userId, instrumentId, lessonId, grade);
+
   return result;
 };
+
+async function emitQuestEvents(
+  userId: string,
+  _instrumentId: string,
+  lessonId: string,
+  grade: { composite: number; passed: boolean; dimensions: Record<string, number>; xpAwarded: number },
+): Promise<void> {
+  try {
+    const { recordEvent } = await import("./questEngine.js");
+    if (grade.passed) {
+      recordEvent({ userId, type: "complete_lesson", target: lessonId });
+      recordEvent({ userId, type: "pass_exercise", target: lessonId });
+      // "Perfect run" = composite ≥ 0.95. Generous enough to be reachable
+      // but tight enough that not every pass triggers the reward.
+      if (grade.composite >= 0.95) {
+        recordEvent({ userId, type: "perfect_run", target: lessonId });
+      }
+    }
+  } catch (err) {
+    captureError(err as Error, { where: "progressStore.emitQuestEvents", lessonId });
+  }
+}
 
 async function persistAttemptToPg(
   userId: string,

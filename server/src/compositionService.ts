@@ -1,8 +1,14 @@
 /**
  * Composition review service. Learners (Genius tier) submit original
  * compositions as audio + optional sheet-music image + written notes.
- * The server persists them in a review queue; human reviewers mark them
- * approved / needs_revision / rejected with structured feedback.
+ * The server persists them in a review queue; human reviewers (or the
+ * LLM auto-reviewer in compositionReview.ts) mark them approved /
+ * needs_revision / rejected with structured feedback.
+ *
+ * Storage routes through the kvStore abstraction so PERSISTENCE_DRIVER
+ * controls whether reads + writes go to flatfile JSON or Postgres
+ * (kv_store table). All accessor functions are async because the
+ * Postgres path requires awaiting the pg pool.
  */
 import { kvStore } from "./persistence/driver.js";
 
@@ -31,35 +37,43 @@ export interface Composition {
 
 const store = kvStore<Composition[]>("compositions", []);
 
-function load(): Composition[] {
-  const v = store.get();
+async function load(): Promise<Composition[]> {
+  const v = await store.get();
   return Array.isArray(v) ? v : [];
 }
-function save(list: Composition[]): void { store.set(list); }
 
-export function listCompositionsForUser(userId: string): Composition[] {
-  return load().filter((c) => c.userId === userId);
+async function save(list: Composition[]): Promise<void> {
+  await store.set(list);
 }
 
-export function listReviewQueue(): Composition[] {
-  return load().filter((c) => c.status === "submitted" || c.status === "in_review");
+export async function listCompositionsForUser(userId: string): Promise<Composition[]> {
+  return (await load()).filter((c) => c.userId === userId);
 }
 
-export function submitComposition(c: Composition): Composition {
-  const list = load();
-  list.push({ ...c, status: "submitted", createdAt: c.createdAt || new Date().toISOString() });
-  save(list);
-  return c;
+export async function listReviewQueue(): Promise<Composition[]> {
+  return (await load()).filter((c) => c.status === "submitted" || c.status === "in_review");
 }
 
-export function reviewComposition(
+export async function submitComposition(c: Composition): Promise<Composition> {
+  const list = await load();
+  const record: Composition = {
+    ...c,
+    status: "submitted",
+    createdAt: c.createdAt || new Date().toISOString(),
+  };
+  list.push(record);
+  await save(list);
+  return record;
+}
+
+export async function reviewComposition(
   id: string,
   reviewerId: string,
   status: "approved" | "needs_revision" | "rejected",
   notes: string,
   rubric?: Composition["rubric"],
-): Composition | null {
-  const list = load();
+): Promise<Composition | null> {
+  const list = await load();
   const target = list.find((c) => c.id === id);
   if (!target) return null;
   target.status = status;
@@ -67,6 +81,12 @@ export function reviewComposition(
   target.reviewerId = reviewerId;
   target.reviewerNotes = notes;
   if (rubric) target.rubric = rubric;
-  save(list);
+  await save(list);
   return target;
+}
+
+/** Fetch a single composition by id. Used by the LLM review endpoint. */
+export async function getComposition(id: string): Promise<Composition | null> {
+  const list = await load();
+  return list.find((c) => c.id === id) ?? null;
 }

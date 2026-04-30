@@ -17,6 +17,7 @@ interface TranscribedStep {
 interface TranscribeResponse {
   steps: TranscribedStep[];
   confidence: number;
+  confidenceTier?: "high" | "medium" | "low";
   warning?: string | null;
 }
 
@@ -47,6 +48,7 @@ export function SongUploadPanel() {
   const [result, setResult] = useState<TranscribeResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [progressLabel, setProgressLabel] = useState("Separating stems…");
+  const [elapsedSec, setElapsedSec] = useState(0);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const engineReady = Boolean(AUDIO_ENGINE_URL);
@@ -87,6 +89,7 @@ export function SongUploadPanel() {
     setStep("uploading");
     setError(null);
     setProgressLabel("Uploading audio…");
+    setElapsedSec(0);
 
     try {
       const form = new FormData();
@@ -94,21 +97,40 @@ export function SongUploadPanel() {
       form.append("instrument_id", instrumentId);
       form.append("level", String(level));
 
-      // Roll through labels while the request is in flight so it doesn't
-      // feel like dead air. Steps map roughly to the backend pipeline.
-      const steppers = [
-        { at: 300, label: "Separating stems (Demucs)…" },
-        { at: 2400, label: "Transcribing notes (Basic Pitch)…" },
-        { at: 5500, label: "Simplifying to your level…" },
-      ];
-      const timers = steppers.map((s) => window.setTimeout(() => setProgressLabel(s.label), s.at));
+      // Phased progress narration. The audio-engine request is one HTTP
+      // call (no streaming progress events available) so we can't read
+      // real-time status from the server. Instead we time-anchor labels
+      // to the typical pipeline cadence and surface elapsed seconds so
+      // the user knows it's still working — even when Demucs takes 30s+
+      // on long clips.
+      //
+      // Labels are calibrated empirically:
+      //   0s  → upload
+      //   2s  → stem separation kicks in (Demucs is the long pole)
+      //  ~10s → transcription (Basic Pitch over isolated stem)
+      //  ~14s → level-aware simplification
+      //  >20s → "still working — long clips can take 30-60s"
+      const startedAt = performance.now();
+      const elapsedTimer = window.setInterval(() => {
+        setElapsedSec(Math.floor((performance.now() - startedAt) / 1000));
+      }, 1000);
+      const labelTimers: number[] = [];
+      const setLabelAt = (atMs: number, label: string) => {
+        labelTimers.push(window.setTimeout(() => setProgressLabel(label), atMs));
+      };
+      setLabelAt(2_000, "Separating stems (Demucs)…");
+      setLabelAt(10_000, "Transcribing notes (Basic Pitch)…");
+      setLabelAt(14_000, "Simplifying to your level…");
+      setLabelAt(22_000, "Still working — long clips can take 30-60s.");
+      setLabelAt(45_000, "Heavy processing — almost there. Hang on.");
 
       const res = await fetch(`${AUDIO_ENGINE_URL}/transcribe`, {
         method: "POST",
         body: form,
       });
 
-      timers.forEach(window.clearTimeout);
+      labelTimers.forEach(window.clearTimeout);
+      window.clearInterval(elapsedTimer);
 
       if (!res.ok) {
         throw new Error(`Engine returned HTTP ${res.status}`);
@@ -268,15 +290,35 @@ export function SongUploadPanel() {
           <div className="text-4xl mb-4 animate-pulse">🎼</div>
           <div className="font-semibold mb-1">{progressLabel}</div>
           <div className="text-xs text-white/50 max-w-xs text-center">
-            Demucs + Basic Pitch runs server-side. This can take 30–90 seconds for
+            Demucs + Basic Pitch runs server-side. Typical 30–90 seconds for
             a 3-minute song.
           </div>
-          <div className="mt-6 h-1 w-48 rounded-full bg-white/5 overflow-hidden">
+          <div className="mt-5 text-[11px] font-mono text-white/40 tabular-nums">
+            {String(Math.floor(elapsedSec / 60)).padStart(2, "0")}:{String(elapsedSec % 60).padStart(2, "0")} elapsed
+          </div>
+          {/* Indeterminate progress bar — we don't have real percent
+              from the server, so show a continuously-shifting gradient
+              instead of a fake fixed-percent bar. */}
+          <div className="mt-3 h-1 w-56 rounded-full bg-white/5 overflow-hidden relative">
             <div
-              className="h-full bg-gradient-to-r from-indigo-400 to-violet-500"
-              style={{ width: "65%", transition: "width 12s linear" }}
+              className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-indigo-400 to-transparent animate-[shimmer_2s_linear_infinite]"
+              style={{
+                animation: "stem-shimmer 2.2s linear infinite",
+              }}
             />
           </div>
+          <style>{`
+            @keyframes stem-shimmer {
+              0%   { transform: translateX(-100%); }
+              100% { transform: translateX(300%); }
+            }
+          `}</style>
+          {elapsedSec > 30 && (
+            <div className="mt-4 text-[11px] text-amber-300/70 max-w-xs text-center">
+              Long clip detected. The audio-engine is still working — leaving this
+              tab open is fine; cancelling will lose the upload.
+            </div>
+          )}
         </div>
       )}
 

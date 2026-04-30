@@ -43,6 +43,40 @@ export interface SubscriptionRecord {
 const SUB_FILE = dataPath("subscriptions.json");
 const CUST_FILE = dataPath("stripeCustomers.json"); // userId → stripeCustomerId
 const CONNECT_FILE = dataPath("stripeConnectAccounts.json"); // userId → stripeAccountId
+const WEBHOOK_LEDGER_FILE = dataPath("stripeWebhookLedger.json"); // event.id → ISO timestamp
+
+// Webhook idempotency ledger. Stripe retries failed webhooks with the
+// same event.id; we must process each at most once. The ledger is a
+// time-stamped map; entries older than 30 days are pruned on write so
+// the file doesn't grow unbounded.
+const WEBHOOK_LEDGER_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30d
+
+function loadWebhookLedger(): Record<string, string> {
+  return readJsonSafe<Record<string, string>>(WEBHOOK_LEDGER_FILE, {});
+}
+function saveWebhookLedger(data: Record<string, string>): void {
+  atomicWriteJson(WEBHOOK_LEDGER_FILE, data);
+}
+
+/**
+ * Mark a webhook event as processed. Returns true on first sight,
+ * false on replay (caller should ack with 200 + skip processing).
+ *
+ * Stripe expects 200 within ~30s on duplicates — never reject a replay
+ * with a 4xx, that signals a problem and the event will retry forever.
+ */
+function markWebhookProcessed(eventId: string): boolean {
+  const ledger = loadWebhookLedger();
+  if (ledger[eventId]) return false;
+  // Prune expired entries while we're here.
+  const cutoff = Date.now() - WEBHOOK_LEDGER_TTL_MS;
+  for (const [id, ts] of Object.entries(ledger)) {
+    if (Date.parse(ts) < cutoff) delete ledger[id];
+  }
+  ledger[eventId] = new Date().toISOString();
+  saveWebhookLedger(ledger);
+  return true;
+}
 
 function loadAll(): Record<string, SubscriptionRecord> {
   return readJsonSafe<Record<string, SubscriptionRecord>>(SUB_FILE, {});
@@ -271,6 +305,18 @@ export async function handleStripeWebhook(req: Request, res: Response): Promise<
       res.status(400).json({ error: "invalid_body" });
       return;
     }
+  }
+
+  // Idempotency: ack-and-skip if we've already processed this event.id.
+  // Stripe replays failed webhooks; without dedupe a second
+  // checkout.session.completed could double-grant subscriptions, and a
+  // duplicate invoice.payment_failed could mark a healthy account
+  // past_due. Always 200 on duplicates (never a 4xx — that signals a
+  // problem and Stripe retries indefinitely).
+  if (event?.id && !markWebhookProcessed(event.id)) {
+    console.log("[stripe.webhook]", event.type, "duplicate event.id replayed, skipping:", event.id);
+    res.json({ received: true, deduplicated: true });
+    return;
   }
 
   try {
