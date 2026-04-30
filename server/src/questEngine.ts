@@ -49,6 +49,52 @@ async function ensureQuestsLoaded(): Promise<void> {
 // the catalog ready by the time the first event fires.
 void ensureQuestsLoaded();
 
+/** Events that arrived before the catalog finished loading. Drained
+ *  once `questsLoaded === true`. */
+const pendingEvents: QuestEvent[] = [];
+
+async function drainPendingEvents(): Promise<void> {
+  await ensureQuestsLoaded();
+  // Catalog is now ready. Replay everything queued.
+  while (pendingEvents.length > 0) {
+    const ev = pendingEvents.shift()!;
+    try {
+      // Direct call into the ledger logic — avoid recursive recordEvent
+      // (which would re-queue if questsRef is still empty for some
+      // reason). This is the same path recordEvent takes when the
+      // catalog is loaded.
+      processEvent(ev);
+    } catch (err) {
+      console.error("[questEngine] failed to drain queued event:", (err as Error).message);
+    }
+  }
+}
+
+/** Internal — same logic as recordEvent's hot path, factored out so
+ *  the drain replay can use it without re-queueing. */
+function processEvent(ev: QuestEvent): string[] {
+  const userMap = ensureUser(ev.userId);
+  const justCompleted: string[] = [];
+  const amount = ev.amount ?? 1;
+  for (const quest of Object.values(questsRef)) {
+    const state = userMap[quest.id];
+    if (state.completed) continue;
+    if (quest.goal.type !== ev.type) continue;
+    if (quest.goal.target && ev.target && quest.goal.target !== ev.target) continue;
+    state.progress = Math.min(state.goalCount, state.progress + amount);
+    if (state.progress >= state.goalCount) {
+      state.completed = true;
+      state.completedAt = new Date().toISOString();
+      justCompleted.push(quest.id);
+      applyReward(ev.userId, quest.id, quest.reward);
+      state.rewardClaimed = true;
+      void track(ev.userId, "quest_completed", { questId: quest.id, ...ev.meta });
+    }
+  }
+  if (justCompleted.length > 0) persist();
+  return justCompleted;
+}
+
 export function __setQuestsForTest(quests: Record<string, Quest>): void {
   questsRef = quests;
   questsLoaded = true; // suppress the lazy load
@@ -132,8 +178,23 @@ function ensureUser(userId: string): Record<string, UserQuestState> {
  * Record a quest-relevant event. Returns the list of quests that *just*
  * completed (so callers can show celebration UI). Rewards are auto-
  * applied to user progress (XP, hearts, badges) before this returns.
+ *
+ * If the catalog hasn't loaded yet (only possible in the first ~10ms
+ * after server boot), the event is *queued* and replayed once the
+ * catalog finishes loading. This closes the race where a fast HTTP
+ * request fires recordEvent before the dynamic catalog import resolves.
  */
 export function recordEvent(ev: QuestEvent): string[] {
+  if (!questsLoaded || Object.keys(questsRef).length === 0) {
+    // Catalog not ready yet — queue the event and replay after load.
+    pendingEvents.push(ev);
+    if (pendingEvents.length === 1) {
+      // Only kick off the drain on first queued event.
+      void drainPendingEvents();
+    }
+    return [];
+  }
+
   const userMap = ensureUser(ev.userId);
   const justCompleted: string[] = [];
   const amount = ev.amount ?? 1;

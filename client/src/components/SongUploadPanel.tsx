@@ -301,10 +301,8 @@ export function SongUploadPanel() {
               instead of a fake fixed-percent bar. */}
           <div className="mt-3 h-1 w-56 rounded-full bg-white/5 overflow-hidden relative">
             <div
-              className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-indigo-400 to-transparent animate-[shimmer_2s_linear_infinite]"
-              style={{
-                animation: "stem-shimmer 2.2s linear infinite",
-              }}
+              className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-indigo-400 to-transparent"
+              style={{ animation: "stem-shimmer 2.2s linear infinite" }}
             />
           </div>
           <style>{`

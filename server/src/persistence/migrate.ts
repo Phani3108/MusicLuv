@@ -201,13 +201,30 @@ const MIGRATIONS: Array<{ id: string; sql: string }> = [
         ON live_reservations (student_id);
     `,
   },
+  {
+    id: "0009_user_directory",
+    sql: `
+      -- userDirectory.ts mirrors here. Adds the columns we need that
+      -- 0002_users_index didn't include. Original 0002 used 'id' as
+      -- primary key; this migration adds first_seen_at + last_seen_at
+      -- + an alias view via user_id (which our app code uses).
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS user_id TEXT;
+      UPDATE users SET user_id = id WHERE user_id IS NULL;
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS first_seen_at TIMESTAMPTZ NOT NULL DEFAULT now();
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS last_seen_at TIMESTAMPTZ NOT NULL DEFAULT now();
+      CREATE UNIQUE INDEX IF NOT EXISTS users_user_id_unique ON users (user_id);
+      CREATE INDEX IF NOT EXISTS users_email_lower ON users (LOWER(email));
+    `,
+  },
 ];
 
-async function main() {
+/** Apply all pending migrations. Exported so the server boot path can
+ *  invoke this on startup when PERSISTENCE_DRIVER=postgres. Idempotent
+ *  via the schema_migrations table. */
+export async function applyMigrations(): Promise<{ applied: number; skipped: number }> {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    console.error("DATABASE_URL not set; nothing to migrate.");
-    process.exit(1);
+    throw new Error("DATABASE_URL not set; cannot apply migrations.");
   }
 
   const { Pool } = await import("pg");
@@ -227,8 +244,9 @@ async function main() {
   const appliedSet = new Set<string>(applied);
 
   let count = 0;
+  let skipped = 0;
   for (const m of MIGRATIONS) {
-    if (appliedSet.has(m.id)) continue;
+    if (appliedSet.has(m.id)) { skipped++; continue; }
     console.log(`[migrate] applying ${m.id}…`);
     const client = await pool.connect();
     try {
@@ -246,11 +264,23 @@ async function main() {
     }
   }
 
-  console.log(`[migrate] ${count} migration(s) applied.`);
   await pool.end();
+  return { applied: count, skipped };
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// Standalone CLI mode — `npm run db:migrate` invokes this file directly
+// via tsx. When loaded as a module (via boot's `applyMigrations`
+// import), this block is skipped because import.meta.url won't match
+// the executed file's URL.
+const isMainScript = import.meta.url === `file://${process.argv[1]}`;
+if (isMainScript) {
+  applyMigrations()
+    .then((r) => {
+      console.log(`[migrate] done · applied=${r.applied} skipped=${r.skipped}`);
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error(err);
+      process.exit(1);
+    });
+}

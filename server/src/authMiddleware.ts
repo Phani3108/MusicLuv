@@ -14,6 +14,8 @@
  */
 import type { Request, Response, NextFunction } from "express";
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { identify } from "./userDirectory.js";
+import { sendWelcomeEmail } from "./observability.js";
 
 const SUPABASE_JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
 const STRICT_AUTH = process.env.STRICT_AUTH === "true";
@@ -41,6 +43,9 @@ export function authMiddleware(req: Request, _res: Response, next: NextFunction)
     const payload = verifyJwt(token);
     if (payload?.sub) {
       req.user = { id: payload.sub, email: payload.email };
+      // Populate the user directory + trigger first-time welcome email.
+      // Fire-and-forget so request latency isn't tied to email SMTP.
+      void recordIdentity(payload.sub, payload.email, payload.user_metadata?.display_name ?? payload.name);
       return next();
     }
   }
@@ -61,6 +66,19 @@ export function authMiddleware(req: Request, _res: Response, next: NextFunction)
   // Anonymous users can still hit the app — most routes internally fall
   // back to "anon" already; this just propagates an identifiable request.
   return next();
+}
+
+/** First-seen detection + welcome email. Idempotent across processes
+ *  via the userDirectory's `isNewUser` flag. */
+function recordIdentity(userId: string, email?: string, displayName?: string): void {
+  try {
+    const { isNewUser, record } = identify({ userId, email, displayName });
+    if (isNewUser && record.email) {
+      void sendWelcomeEmail(record.email, record.displayName ?? "there");
+    }
+  } catch {
+    // Identification is best-effort; never block a request on it.
+  }
 }
 
 function isPublic(path: string): boolean {

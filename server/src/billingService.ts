@@ -25,7 +25,8 @@ import type { Request, Response } from "express";
 import { PLANS, type PlanTier } from "@catalogs/planCatalog";
 import { atomicWriteJson, readJsonSafe, dataPath } from "./persistence.js";
 import { isMonetizationActive } from "./monetizationGate.js";
-import { captureError } from "./observability.js";
+import { captureError, sendBillingReceiptEmail } from "./observability.js";
+import { getUser } from "./userDirectory.js";
 
 export interface SubscriptionRecord {
   userId: string;
@@ -47,8 +48,7 @@ const WEBHOOK_LEDGER_FILE = dataPath("stripeWebhookLedger.json"); // event.id �
 
 // Webhook idempotency ledger. Stripe retries failed webhooks with the
 // same event.id; we must process each at most once. The ledger is a
-// time-stamped map; entries older than 30 days are pruned on write so
-// the file doesn't grow unbounded.
+// time-stamped map; entries older than 30 days are pruned periodically.
 const WEBHOOK_LEDGER_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30d
 
 function loadWebhookLedger(): Record<string, string> {
@@ -58,24 +58,55 @@ function saveWebhookLedger(data: Record<string, string>): void {
   atomicWriteJson(WEBHOOK_LEDGER_FILE, data);
 }
 
+// In-flight set — guards against concurrent duplicate webhook deliveries
+// in the same process. Filesystem persistence still backstops across
+// restarts; this set bridges the load → check → save TOCTOU window
+// during which two concurrent webhooks could both pass the file check.
+const inflightEvents = new Set<string>();
+
 /**
- * Mark a webhook event as processed. Returns true on first sight,
- * false on replay (caller should ack with 200 + skip processing).
+ * Atomic-by-design first-seen marker. Returns true ONLY for the very
+ * first call with a given eventId across the lifetime of this process
+ * (since restart) AND the persisted ledger.
  *
- * Stripe expects 200 within ~30s on duplicates — never reject a replay
- * with a 4xx, that signals a problem and the event will retry forever.
+ * Two-layer dedupe:
+ *   1. In-process Set<eventId> — closes the load→save TOCTOU window
+ *      under concurrent duplicate webhook deliveries.
+ *   2. Filesystem ledger — survives process restarts (Stripe can retry
+ *      hours or days later).
+ *
+ * Stripe expects 200 within ~30s on duplicates; never reject a replay
+ * with a 4xx (that signals a problem and triggers indefinite retries).
  */
 function markWebhookProcessed(eventId: string): boolean {
-  const ledger = loadWebhookLedger();
-  if (ledger[eventId]) return false;
-  // Prune expired entries while we're here.
-  const cutoff = Date.now() - WEBHOOK_LEDGER_TTL_MS;
-  for (const [id, ts] of Object.entries(ledger)) {
-    if (Date.parse(ts) < cutoff) delete ledger[id];
+  // In-process gate first — synchronous, no IO, race-free.
+  if (inflightEvents.has(eventId)) return false;
+  inflightEvents.add(eventId);
+
+  try {
+    const ledger = loadWebhookLedger();
+    if (ledger[eventId]) {
+      // Already on disk from a prior process — duplicate.
+      return false;
+    }
+    // Prune expired entries while we're here.
+    const cutoff = Date.now() - WEBHOOK_LEDGER_TTL_MS;
+    for (const [id, ts] of Object.entries(ledger)) {
+      if (Date.parse(ts) < cutoff) delete ledger[id];
+    }
+    ledger[eventId] = new Date().toISOString();
+    saveWebhookLedger(ledger);
+    return true;
+  } catch (err) {
+    // On IO error, lean conservative: treat as duplicate so we don't
+    // double-process. Stripe will retry; next attempt will succeed.
+    inflightEvents.delete(eventId);
+    captureError(err as Error, { where: "stripe.webhook.markProcessed", eventId });
+    return false;
   }
-  ledger[eventId] = new Date().toISOString();
-  saveWebhookLedger(ledger);
-  return true;
+  // Note: we intentionally don't .delete() from inflightEvents on
+  // success — leaving entries there caps the ledger lookups in this
+  // process. They're cleared lazily by the same prune loop above.
 }
 
 function loadAll(): Record<string, SubscriptionRecord> {
@@ -378,6 +409,39 @@ export async function handleStripeWebhook(req: Request, res: Response): Promise<
         if (userId) {
           const cur = getSubscription(userId);
           setSubscription({ ...cur, status: "past_due" });
+        }
+        break;
+      }
+      case "invoice.payment_succeeded": {
+        // Receipt email + status normalization. Stripe emits this on
+        // every successful charge — initial subscription, monthly
+        // renewals, and one-off invoices. We send a MusicLuv-branded
+        // receipt alongside Stripe's own (which can be disabled in
+        // dashboard once we're confident in ours).
+        const invoice = event.data.object;
+        const userId = invoice.metadata?.userId
+          || invoice.subscription_details?.metadata?.userId;
+        if (userId) {
+          const sub = getSubscription(userId);
+          if (sub.status !== "active") {
+            setSubscription({ ...sub, status: "active" });
+          }
+          const user = getUser(userId);
+          if (user?.email) {
+            const planName = PLANS[sub.plan]?.label ?? sub.plan;
+            const amountUsd = (invoice.amount_paid ?? invoice.total ?? 0) / 100;
+            const nextBilling = invoice.lines?.data?.[0]?.period?.end
+              ? new Date(invoice.lines.data[0].period.end * 1000).toLocaleDateString()
+              : "next month";
+            const appUrl = process.env.APP_URL || "https://musicluv.app";
+            void sendBillingReceiptEmail(user.email, {
+              displayName: user.displayName ?? "there",
+              planName,
+              amountUsd,
+              nextBillingDate: nextBilling,
+              manageBillingUrl: `${appUrl}/settings/billing`,
+            });
+          }
         }
         break;
       }

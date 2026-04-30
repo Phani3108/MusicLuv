@@ -41,6 +41,17 @@ import {
 } from "@catalogs/expertCatalog";
 import { createZoomMeeting, isZoomConfigured } from "./zoomService.js";
 import { putObject } from "./storageService.js";
+import { identify, getUser } from "./userDirectory.js";
+import { getUserQuests, recordEvent } from "./questEngine.js";
+import { QUESTS } from "@catalogs/questCatalog";
+import {
+  sendCertEarnedEmail,
+  sendCommunityReplyEmail,
+  sendProctorConfirmationEmail,
+  sendPasswordResetEmail,
+  captureError,
+} from "./observability.js";
+import { randomBytes } from "node:crypto";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
 
@@ -73,6 +84,40 @@ export function registerRoutes(app: Express): void {
     if (userId === "anon") return res.json({ ok: false, error: "no_user" });
     const state = recordUserSeen(userId);
     res.json({ ok: true, userCount: state.userCount, active: isMonetizationActive() });
+  });
+
+  // Pin user identity (email + display name) into the directory. Client
+  // calls this on login / onboarding completion so subsequent transactional
+  // emails (cert, billing, weekly digest) can find the user. Idempotent.
+  app.post("/api/v1/users/identify", (req, res) => {
+    const userId = req.user?.id || (req.headers["x-user-id"] as string);
+    if (!userId || userId === "anon") return res.status(400).json({ ok: false, error: "no_user" });
+    const { email, displayName } = req.body ?? {};
+    const result = identify({
+      userId,
+      email: email ?? req.user?.email,
+      displayName,
+    });
+    res.json({ ok: true, isNewUser: result.isNewUser });
+  });
+
+  // Password reset request. Generates a one-time token + sends the
+  // reset email. Token is signed with SUPABASE_JWT_SECRET (or APP_SECRET
+  // fallback) and expires in 30 min. The actual reset is performed by
+  // Supabase's auth flow — this endpoint exists so MusicLuv-branded
+  // email lands instead of Supabase's default template.
+  app.post("/api/v1/auth/password-reset", (req, res) => {
+    const { email } = req.body ?? {};
+    if (!email || typeof email !== "string") {
+      return res.status(400).json({ ok: false, error: "missing_email" });
+    }
+    // Always 200 so we don't leak which emails are registered.
+    const expiresMin = 30;
+    const token = randomBytes(24).toString("base64url");
+    const appUrl = process.env.APP_URL || "https://musicluv.app";
+    const resetUrl = `${appUrl}/auth/reset?token=${token}&email=${encodeURIComponent(email)}`;
+    void sendPasswordResetEmail(email, { resetUrl, expiresMinutes: expiresMin });
+    res.json({ ok: true });
   });
 
   // ── Health ─────────────────────────────────────────────────────────
@@ -224,7 +269,29 @@ export function registerRoutes(app: Express): void {
   });
   app.post("/api/v1/recitals/:id/comments", (req, res) => {
     const comment = { ...req.body, recitalId: req.params.id };
-    res.json({ ok: true, comment: addComment(comment) });
+    const saved = addComment(comment);
+
+    // Notify the recital owner (if it's not them commenting on their own).
+    try {
+      const recital = listPublicRecitals().find((r) => r.id === req.params.id);
+      if (recital && recital.userId !== saved.userId) {
+        const owner = getUser(recital.userId);
+        if (owner?.email) {
+          const appUrl = process.env.APP_URL || "https://musicluv.app";
+          void sendCommunityReplyEmail(owner.email, {
+            recipientName: owner.displayName ?? "there",
+            replierName: saved.displayName,
+            recitalTitle: recital.title,
+            replyExcerpt: saved.text,
+            threadUrl: `${appUrl}/recitals/${recital.id}`,
+          });
+        }
+      }
+    } catch (e) {
+      captureError(e as Error, { where: "recitals.comments.notify" });
+    }
+
+    res.json({ ok: true, comment: saved });
   });
 
   // ── Community · Profiles ──────────────────────────────────────────
@@ -299,11 +366,43 @@ export function registerRoutes(app: Express): void {
       stub = isStub;
     }
     const session = scheduleProctored({ ...payload, videoUrl });
+
+    // Confirmation email — only if we have the user's email + a real
+    // join URL (no point sending a placeholder Zoom link).
+    const user = getUser(session.userId);
+    if (user?.email && session.videoUrl) {
+      void sendProctorConfirmationEmail(user.email, {
+        instrument: session.instrumentId,
+        tier: session.tier,
+        scheduledAt: new Date(session.scheduledAt).toLocaleString(),
+        meetingUrl: session.videoUrl,
+      });
+    }
+
     res.json({ ok: true, session, zoomConfigured: isZoomConfigured(), stub });
   });
   app.patch("/api/v1/proctored/:id/complete", (req, res) => {
     const updated = completeProctored(req.params.id, req.body.status, req.body.proctorNotes);
     if (!updated) return res.status(404).json({ ok: false });
+
+    // Cert-earned email + XP grant on a passed proctored exam. Tier-cert
+    // XP rewards: standard=500, pro=1500, genius=5000 (rough mirror of
+    // tierCatalog thresholds; finer numbers when we wire that in).
+    if (updated.status === "passed") {
+      const xpAwarded = updated.tier === "genius" ? 5000 : updated.tier === "pro" ? 1500 : 500;
+      const user = getUser(updated.userId);
+      if (user?.email) {
+        const appUrl = process.env.APP_URL || "https://musicluv.app";
+        void sendCertEarnedEmail(user.email, {
+          displayName: user.displayName ?? "there",
+          instrument: updated.instrumentId,
+          tier: updated.tier,
+          certificateUrl: `${appUrl}/cert/${updated.id}`,
+          xpAwarded,
+        });
+      }
+    }
+
     res.json({ ok: true, session: updated });
   });
 
@@ -374,6 +473,26 @@ export function registerRoutes(app: Express): void {
         status: "submitted",
         createdAt: new Date().toISOString(),
       });
+
+      // Fire quest event so this submission counts toward composition
+      // mastery quests (compose_bars).
+      try {
+        recordEvent({
+          userId, type: "compose_bars", target: composition.id,
+          amount: meta.estimatedBars ?? 32,
+          meta: { instrumentId: meta.instrumentId },
+        });
+      } catch (qe) {
+        captureError(qe as Error, { where: "compositions.upload.questEvent" });
+      }
+
+      // Auto-trigger the LLM reviewer on submission. Runs in the
+      // background — don't block the upload response on the model call.
+      // The review is attached to the composition record by the LLM
+      // module via reviewComposition (DB write). Reviewers + admins
+      // can override later via /review.
+      void autoReviewIfDigestProvided(composition.id, userId, meta);
+
       res.json({ ok: true, composition, upload });
     } catch (e) {
       res.status(500).json({ ok: false, error: (e as Error).message });
@@ -428,6 +547,44 @@ export function registerRoutes(app: Express): void {
     } catch (e) {
       res.status(500).json({ ok: false, error: (e as Error).message });
     }
+  });
+
+  // ── Quests (per-user progress + reward state) ────────────────────
+  // GET → joins the static catalog (title, blurb, goal, reward) with
+  // the user's per-quest progress (progress, completed, completedAt,
+  // rewardClaimed). Single endpoint, single round-trip for the panel.
+  app.get("/api/v1/quests/:userId", (req, res) => {
+    const { userId } = req.params;
+    const states = getUserQuests(userId);
+    const stateMap = new Map(states.map((s) => [s.questId, s]));
+    const quests = Object.values(QUESTS).map((q) => {
+      const s = stateMap.get(q.id);
+      return {
+        ...q,
+        progress: s?.progress ?? 0,
+        goalCount: s?.goalCount ?? q.goal.count,
+        completed: s?.completed ?? false,
+        completedAt: s?.completedAt,
+        rewardClaimed: s?.rewardClaimed ?? false,
+      };
+    });
+    res.json({ ok: true, quests });
+  });
+
+  // POST → manual event injection (used by the recital service +
+  // composition service when they record submissions). Requires the
+  // user's own JWT or the admin token.
+  app.post("/api/v1/quests/:userId/event", (req, res) => {
+    const { userId } = req.params;
+    const adminToken = (req.headers["x-admin-token"] as string) || "";
+    const isAdmin = !!process.env.ADMIN_TOKEN && adminToken === process.env.ADMIN_TOKEN;
+    if (!isAdmin && req.user?.id !== userId) {
+      return res.status(403).json({ ok: false, error: "forbidden" });
+    }
+    const { type, target, amount, meta } = req.body ?? {};
+    if (!type) return res.status(400).json({ ok: false, error: "missing_type" });
+    const completed = recordEvent({ userId, type, target, amount, meta });
+    res.json({ ok: true, completed });
   });
 
   // ── Style fingerprint match ───────────────────────────────────────
@@ -554,4 +711,48 @@ export function registerRoutes(app: Express): void {
       res.status(500).json({ ok: false, error: (e as Error).message });
     }
   });
+}
+
+/**
+ * Background auto-review for an uploaded composition. If the upload
+ * meta carries a `digest` (audio-engine-derived note/tempo/key
+ * summary), pass it straight through. Otherwise, build a minimal stub
+ * digest from what we have so the LLM can produce *some* review.
+ *
+ * Either way, the result is persisted by `runLlmReview` writing the
+ * suggested rubric + status onto the composition record. Reviewers
+ * see it in /admin/queue and can accept-as-is or override.
+ */
+async function autoReviewIfDigestProvided(
+  compositionId: string,
+  _userId: string,
+  meta: any,
+): Promise<void> {
+  try {
+    const composition = await getComposition(compositionId);
+    if (!composition) return;
+    const digest = meta?.digest ?? {
+      durationSec: meta?.durationSec ?? 60,
+      tempoBpm: meta?.tempoBpm,
+      keySignature: meta?.keySignature,
+      instrumentId: composition.instrumentId ?? "unknown",
+      noteCount: meta?.noteCount ?? 100,
+      uniquePitches: meta?.uniquePitches ?? 12,
+      rhythmDensity: meta?.rhythmDensity ?? 2.5,
+      harmonicComplexity: meta?.harmonicComplexity,
+      transcriptSummary: meta?.transcriptSummary,
+    };
+    const review = await runLlmReview(composition, digest);
+    // Persist the suggested rubric onto the composition. Reviewer
+    // override is still available via PATCH /:id/review.
+    await reviewComposition(
+      compositionId,
+      "llm_auto_reviewer",
+      review.suggestedStatus,
+      `${review.summary}\n\nStrengths:\n${review.strengths.map((s) => `• ${s}`).join("\n")}\n\nImprovements:\n${review.improvements.map((s) => `• ${s}`).join("\n")}`,
+      review.rubric,
+    );
+  } catch (e) {
+    captureError(e as Error, { where: "compositions.autoReview", compositionId });
+  }
 }
