@@ -74,5 +74,5 @@ def render_steps(notes: list[dict]) -> list[dict]:
 
 
 def _midi_of(pitch: str) -> int:
-    from .pitch import _NOTE_TO_MIDI  # type: ignore
-    return _NOTE_TO_MIDI[pitch]
+    from .pitch import parse_note
+    return parse_note(pitch)

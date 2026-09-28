@@ -5,24 +5,42 @@ Endpoints
 GET  /health       — report which backends are live
 POST /grade        — multipart: audio + meta JSON (target + rubric). Returns GradeResult.
 POST /transcribe   — multipart: audio + instrument_id + level. Returns step timeline.
+POST /render       — JSON notes[] → deterministic reference WAV.
+
+The heavy endpoints are plain `def` so FastAPI runs them in its threadpool;
+as `async def` they ran pYIN on the event loop and serialized every request.
 """
 from __future__ import annotations
 
 import io
-import json
 import os
-from typing import Any
+from contextlib import asynccontextmanager
+from typing import Any, Literal
 
 import numpy as np
 import soundfile as sf
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 
 from pipelines import pitch, onsets, dtw, scoring, simplify as simplify_mod, polyphonic, stems, synth
 
+MAX_UPLOAD_BYTES = int(float(os.getenv("AUDIO_ENGINE_MAX_UPLOAD_MB", "20")) * 1024 * 1024)
+MAX_AUDIO_SECONDS = float(os.getenv("AUDIO_ENGINE_MAX_SECONDS", "180"))
+ENGINE_SR = 22050
 
-app = FastAPI(title="MusicLuv audio-engine", version="0.1.0")
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    # pYIN's Viterbi is numba-compiled on first use (several seconds). Pay that
+    # at boot instead of on some learner's first graded take.
+    if os.getenv("AUDIO_ENGINE_WARMUP", "1") != "0":
+        tone = synth.render_notes([{"pitch": "A4", "startMs": 0, "durationMs": 400}], sr=ENGINE_SR)
+        pitch.extract_pitch(tone, ENGINE_SR)
+    yield
+
+
+app = FastAPI(title="MusicLuv audio-engine", version="0.2.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -51,6 +69,7 @@ class RubricIn(BaseModel):
     passThreshold: float = 0.75
     pitchToleranceCents: float = 40.0
     rhythmToleranceMs: float = 120.0
+    tuningMode: Literal["absolute", "relative"] = "absolute"
     feedbackBank: dict[str, Any] | None = None
 
 
@@ -58,22 +77,47 @@ class GradeMeta(BaseModel):
     exerciseId: str
     userId: str | None = None
     attemptId: str | None = None
-    target: list[TargetNote]
+    lessonId: str | None = None
+    instrumentId: str | None = None
+    # "notes": pitched events (pitch + timing). "onsets": timing only — claps,
+    # drums, tabla, anything without a stable pitch.
+    mode: Literal["notes", "onsets"] = "notes"
+    target: list[TargetNote] = Field(default_factory=list)
+    targetOnsets: list[int] | None = None
+    # Take tempo the client asked for (0.5 = half speed). Target times are
+    # expected to be already scaled by the client; this is echoed back.
+    tempoFactor: float = 1.0
     rubric: RubricIn = Field(default_factory=RubricIn)
 
 
 # ---- Helpers ----
 
-def _read_audio(upload: UploadFile, target_sr: int = 22050) -> tuple[np.ndarray, int]:
-    data, sr = sf.read(io.BytesIO(upload.file.read()), always_2d=False)
+def _read_audio(upload: UploadFile, target_sr: int = ENGINE_SR) -> tuple[np.ndarray, int]:
+    raw = upload.file.read(MAX_UPLOAD_BYTES + 1)
+    if len(raw) > MAX_UPLOAD_BYTES:
+        raise HTTPException(413, f"audio_too_large: limit is {MAX_UPLOAD_BYTES // (1024 * 1024)} MB")
+    try:
+        data, sr = sf.read(io.BytesIO(raw), always_2d=False)
+    except Exception as e:  # libsndfile can't decode (e.g. WebM/Opus, AAC)
+        raise HTTPException(415, f"unsupported_audio: send WAV/FLAC/OGG ({e})")
     if data.ndim > 1:
         data = data.mean(axis=1)
+    if len(data) / float(sr) > MAX_AUDIO_SECONDS:
+        raise HTTPException(413, f"audio_too_long: limit is {int(MAX_AUDIO_SECONDS)} s")
     data = data.astype(np.float32)
     if sr != target_sr:
         import librosa
         data = librosa.resample(y=data, orig_sr=sr, target_sr=target_sr)
         sr = target_sr
     return data, sr
+
+
+def _validate_pitches(names: list[str]) -> None:
+    for name in names:
+        try:
+            pitch.parse_note(name)
+        except ValueError:
+            raise HTTPException(422, f"unknown_pitch: {name!r}")
 
 
 # ---- Endpoints ----
@@ -83,17 +127,18 @@ def health() -> dict:
     return {
         "ok": True,
         "service": "musicluv-audio-engine",
-        "version": "0.1.0",
+        "version": app.version,
         "backends": {
             "pitch":       os.getenv("PITCH_BACKEND", "pyin"),
             "polyphonic":  os.getenv("POLYPHONIC_BACKEND", "none"),
             "stems":       os.getenv("STEMS_BACKEND", "none"),
         },
+        "limits": {"maxUploadMb": MAX_UPLOAD_BYTES // (1024 * 1024), "maxSeconds": MAX_AUDIO_SECONDS},
     }
 
 
 @app.post("/grade")
-async def grade(
+def grade(
     audio: UploadFile = File(...),
     meta: str = Form(...),
 ) -> dict:
@@ -104,47 +149,74 @@ async def grade(
     """
     try:
         meta_obj = GradeMeta.model_validate_json(meta)
-    except Exception as e:  # pydantic validation
+    except ValidationError as e:
         raise HTTPException(400, f"bad meta: {e}")
+
+    target = [t.model_dump() for t in meta_obj.target]
+    if meta_obj.mode == "notes":
+        if not target:
+            raise HTTPException(422, "empty_target")
+        _validate_pitches([t["pitch"] for t in target])
+    else:
+        onset_ms = meta_obj.targetOnsets or [t["startMs"] for t in target]
+        if not onset_ms:
+            raise HTTPException(422, "empty_target")
+        target = [{"startMs": int(ms)} for ms in sorted(onset_ms)]
 
     y, sr = _read_audio(audio)
     if len(y) < sr * 0.2:
         raise HTTPException(400, "audio too short (<200ms)")
 
-    # Extract and segment the user's performance
-    track = pitch.extract_pitch(y, sr)
-    user_notes = pitch.segment_notes(track, min_note_s=0.08)
+    rub = meta_obj.rubric
+    if meta_obj.mode == "notes":
+        fmin, fmax = pitch.search_range_for([t["pitch"] for t in target])
+        track = pitch.extract_pitch(y, sr, fmin=fmin, fmax=fmax)
+        onset_track = onsets.detect_onsets(y, sr, backtrack=False)
+        user_events = pitch.segment_notes(
+            track,
+            min_note_s=0.08,
+            onset_times_s=[ms / 1000.0 for ms in onset_track.onset_ms],
+            rms=onset_track.rms,
+            rms_times_s=onset_track.rms_times_s,
+        )
+    else:
+        onset_track = onsets.detect_onsets(y, sr, backtrack=False)
+        user_events = [{"startMs": ms} for ms in onset_track.onset_ms]
 
-    onset_track = onsets.detect_onsets(y, sr)
-
-    # Alignment & scoring
-    target = [t.model_dump() for t in meta_obj.target]
     alignment = dtw.align(
-        target, user_notes,
-        pitch_tolerance_cents=meta_obj.rubric.pitchToleranceCents,
-        rhythm_tolerance_ms=meta_obj.rubric.rhythmToleranceMs,
-    )
-
-    rubric = scoring.Rubric(
-        id=meta_obj.rubric.id,
-        weights=meta_obj.rubric.weights,
-        pass_threshold=meta_obj.rubric.passThreshold,
-        pitch_tolerance_cents=meta_obj.rubric.pitchToleranceCents,
-        rhythm_tolerance_ms=meta_obj.rubric.rhythmToleranceMs,
+        target, user_events,
+        pitch_tolerance_cents=rub.pitchToleranceCents,
+        rhythm_tolerance_ms=rub.rhythmToleranceMs,
+        mode=meta_obj.mode,
+        tuning_mode=rub.tuningMode,
     )
 
     result = scoring.score(
         target=target,
-        user=user_notes,
+        user=user_events,
         alignment=alignment,
-        rubric=rubric,
-        user_rms_env=onset_track.rms.tolist()[:400],
+        rubric=scoring.Rubric(
+            id=rub.id,
+            weights=rub.weights,
+            pass_threshold=rub.passThreshold,
+            pitch_tolerance_cents=rub.pitchToleranceCents,
+            rhythm_tolerance_ms=rub.rhythmToleranceMs,
+            tuning_mode=rub.tuningMode,
+        ),
+        mode=meta_obj.mode,
     )
 
-    fb = scoring.build_feedback(result, meta_obj.rubric.feedbackBank)
+    fb = scoring.build_feedback(result, rub.feedbackBank)
     result["feedback"] = {"canned": fb["canned"]}
     result["attemptId"] = meta_obj.attemptId
-    result["userNotesDetected"] = user_notes[:40]
+    result["mode"] = meta_obj.mode
+    result["tempoFactor"] = meta_obj.tempoFactor
+    if meta_obj.mode == "notes":
+        result["userNotesDetected"] = user_events[:200]
+    else:
+        result["userOnsetsMs"] = [e["startMs"] for e in user_events[:400]]
+    if not user_events:
+        result["warning"] = "no_notes_detected"
     return result
 
 
@@ -156,7 +228,7 @@ class TranscribeOut(BaseModel):
 
 
 @app.post("/transcribe", response_model=TranscribeOut)
-async def transcribe(
+def transcribe(
     audio: UploadFile = File(...),
     instrument_id: str = Form(...),
     level: int = Form(2),
@@ -201,14 +273,14 @@ async def transcribe(
 
 class RenderIn(BaseModel):
     notes: list[dict]           # [{pitch, startMs, durationMs}]
-    sr: int = 22050
+    sr: int = ENGINE_SR
     detune_cents: float = 0.0
     noise_level: float = 0.0
     harmonics: int = 3
 
 
 @app.post("/render")
-async def render(req: RenderIn) -> Any:
+def render(req: RenderIn) -> Any:
     """Synthesize a target-pattern preview. Returns WAV bytes with
     Content-Type: audio/wav. Caches via Cache-Control; a given pattern
     always produces the same audio, so CDN caching is safe.
@@ -216,6 +288,7 @@ async def render(req: RenderIn) -> Any:
     from fastapi.responses import Response
     if not req.notes:
         raise HTTPException(400, "empty_notes")
+    _validate_pitches([str(n.get("pitch", "")) for n in req.notes])
 
     wave = synth.render_notes(
         req.notes,

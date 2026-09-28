@@ -35,3 +35,14 @@ audio-engine/models/
 
 # package locks — keep these
 # (do NOT ignore package-lock.json / uv.lock)
+
+# real-audio grading corpus: learner/teacher recordings are personal data —
+# keep them in the private bucket, not in git (see docs/recording-guide.md)
+audio-engine/tests/fixtures/real/**/*.wav
+audio-engine/tests/fixtures/real/**/*.flac
+audio-engine/tests/fixtures/real/**/*.ogg
+audio-engine/tests/fixtures/real/**/*.m4a
+audio-engine/tests/fixtures/real/exercises.json
+
+# TypeScript incremental build info
+*.tsbuildinfo

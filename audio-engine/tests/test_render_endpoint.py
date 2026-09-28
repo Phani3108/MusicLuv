@@ -76,3 +76,11 @@ def test_render_pitch_matches_request():
     mask = freqs < 2000
     peak_freq = freqs[mask][np.argmax(spectrum[mask])]
     assert 430 < peak_freq < 450, f"expected ~440Hz, got {peak_freq:.1f}Hz"
+
+
+def test_render_accepts_flats_and_rejects_unknown_pitch():
+    ok = client.post("/render", json={"notes": [{"pitch": "Bb4", "startMs": 0, "durationMs": 300}]})
+    assert ok.status_code == 200
+    bad = client.post("/render", json={"notes": [{"pitch": "H4", "startMs": 0, "durationMs": 300}]})
+    assert bad.status_code == 422
+    assert "unknown_pitch" in bad.text

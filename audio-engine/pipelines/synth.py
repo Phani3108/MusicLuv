@@ -17,11 +17,16 @@ def render_notes(
     detune_cents: float = 0.0,
     noise_level: float = 0.01,
     onset_jitter_ms: float = 0.0,
+    legato: bool = False,
+    vibrato_cents: float = 0.0,
+    vibrato_hz: float = 5.5,
 ) -> np.ndarray:
     """Render a list of {'pitch','startMs','durationMs'} as a mono waveform.
 
     Parameters let tests synthesize 'detuned', 'rushed', or 'noisy' variants
-    to prove the grader reacts.
+    to prove the grader reacts. `legato=True` only dips each note's release to
+    half level, the way a quickly re-struck note sounds, instead of fading to
+    silence. `vibrato_cents` adds sinusoidal pitch vibrato (singers, strings).
     """
     if not notes:
         return np.zeros(1, dtype=np.float32)
@@ -38,10 +43,15 @@ def render_notes(
         dur_s = n["durationMs"] / 1000.0
         base_hz = note_to_hz(pitch) * (2 ** (detune_cents / 1200.0))
         t = np.arange(int(sr * dur_s)) / sr
+        if vibrato_cents:
+            inst_hz = base_hz * 2 ** ((vibrato_cents / 1200.0) * np.sin(2 * np.pi * vibrato_hz * t))
+            phase = 2 * np.pi * np.cumsum(inst_hz) / sr
+        else:
+            phase = 2 * np.pi * base_hz * t
         wave = np.zeros_like(t)
         for h in range(1, harmonics + 1):
-            wave += (1.0 / h) * np.sin(2 * np.pi * base_hz * h * t)
-        env = _adsr(len(t), sr)
+            wave += (1.0 / h) * np.sin(h * phase)
+        env = _adsr(len(t), sr, legato=legato)
         wave = wave * env * 0.4
         i0 = int(start_s * sr)
         i1 = i0 + len(wave)
@@ -59,15 +69,15 @@ def render_notes(
     return out.astype(np.float32)
 
 
-def _adsr(n: int, sr: int) -> np.ndarray:
+def _adsr(n: int, sr: int, legato: bool = False) -> np.ndarray:
     """Simple envelope so notes don't click at the boundaries."""
     attack = int(0.005 * sr)
-    release = int(0.04 * sr)
+    release = int((0.015 if legato else 0.04) * sr)
     env = np.ones(n)
     if attack * 2 > n:
         attack = max(1, n // 4)
     if release * 2 > n:
         release = max(1, n // 4)
     env[:attack] = np.linspace(0, 1, attack)
-    env[-release:] = np.linspace(1, 0, release)
+    env[-release:] = np.linspace(1, 0.5 if legato else 0, release)
     return env

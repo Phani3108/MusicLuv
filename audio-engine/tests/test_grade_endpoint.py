@@ -51,11 +51,17 @@ def test_grade_endpoint_round_trip(c_scale_target):
     )
     assert r.status_code == 200, r.text
     body = r.json()
-    assert "composite" in body
-    assert "dimensions" in body
-    assert set(body["dimensions"].keys()) == {"pitch", "rhythm", "tone", "dynamics", "consistency"}
-    assert "issues" in body
+    assert body["composite"] >= 0.85 and body["passed"] is True
+    # Only measured dimensions are graded; tone/dynamics are reported as not graded.
+    assert set(body["dimensions"].keys()) == {"pitch", "rhythm", "consistency"}
+    assert body["gradedDimensions"] == ["pitch", "rhythm", "consistency"]
+    assert set(body["notGraded"]) == {"tone", "dynamics"}
+    assert body["issues"] == []
     assert body["attemptId"] == "a_1"
+    align = body["alignment"]
+    assert align["matched"] == len(c_scale_target) and align["missed"] == 0
+    assert [p for p in align["path"] if p[0] >= 0 and p[1] >= 0] == [[i, i] for i in range(len(c_scale_target))]
+    assert len(body["userNotesDetected"]) == len(c_scale_target)
 
 
 def test_grade_rejects_short_audio(c_scale_target):

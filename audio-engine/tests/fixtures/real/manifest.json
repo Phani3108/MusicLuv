@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "description": "Teacher-labelled real recordings. See docs/recording-guide.md. Audio files live next to this manifest (git-ignored if large).",
+  "takes": []
+}

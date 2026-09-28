@@ -1,11 +1,24 @@
-"""Composite grading — matches the client's GradeResult shape exactly."""
+"""Composite grading from an alignment.
+
+Only dimensions the engine actually measures are graded and weighted into the
+composite. Tone and dynamics are reported as `notGraded` until there is a
+reference recording to compare against — returning a constant for them made
+25% of every grade (and all tone/dynamics feedback) fiction.
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 import random
 
+import numpy as np
+
 from .dtw import Alignment
+
+ALL_DIMENSIONS = ("pitch", "rhythm", "tone", "dynamics", "consistency")
+NOT_MEASURED = ("tone", "dynamics")
+TEMPO_FREE_BAND = 0.10     # ±10% tempo is not penalized
+TEMPO_MAX_PENALTY = 0.30   # rhythm loses at most 30% for tempo alone
+EXTRA_NOTE_PENALTY = 0.5   # per interior extra note, as a fraction of one target note
 
 
 @dataclass
@@ -15,10 +28,18 @@ class Rubric:
     pass_threshold: float
     pitch_tolerance_cents: float
     rhythm_tolerance_ms: float
+    tuning_mode: str = "absolute"   # "absolute" (A440) | "relative" (forgive a global offset)
 
 
 def _clamp01(x: float) -> float:
-    return max(0.0, min(1.0, x))
+    return max(0.0, min(1.0, float(x)))
+
+
+def graded_dimensions(mode: str, n_target: int) -> list[str]:
+    dims = ["pitch", "rhythm"] if mode == "notes" else ["rhythm"]
+    if n_target >= 3:
+        dims.append("consistency")
+    return dims
 
 
 def score(
@@ -27,121 +48,129 @@ def score(
     user: list[dict],
     alignment: Alignment,
     rubric: Rubric,
-    target_rms_env: Optional[list[float]] = None,
-    user_rms_env: Optional[list[float]] = None,
-    target_mfcc_mean: Optional[list[float]] = None,
-    user_mfcc_mean: Optional[list[float]] = None,
+    mode: str = "notes",
 ) -> dict:
-    """Compute per-dimension + composite and return the client-shaped dict."""
+    """Per-dimension + composite, in the client's GradeResult shape."""
     n_target = len(target)
-    n_user = len(user)
+    pairs = alignment.pairs
+    tol_c = max(1.0, rubric.pitch_tolerance_cents)
+    tol_ms = max(1.0, rubric.rhythm_tolerance_ms)
+    extra_pen = EXTRA_NOTE_PENALTY * len(alignment.extra_user_interior) / max(1, n_target)
+    coverage = len(pairs) / max(1, n_target)
 
-    # --- Pitch: fraction of aligned pairs within tolerance
-    if not alignment.pairs:
-        pitch_score = 0.0
+    dims: dict[str, float] = {}
+
+    # Pitch: per target note, full credit inside tolerance, linear to 0 at 2x.
+    if mode == "notes":
+        per_note = np.zeros(max(1, n_target))
+        for p in pairs:
+            err = abs(p.cents_diff)
+            per_note[p.target_idx] = _clamp01(1.0 - max(0.0, err - tol_c) / tol_c)
+        dims["pitch"] = _clamp01(float(per_note.mean()) - extra_pen)
+
+    # Rhythm: median timing residual on the learner's own clock, scaled by how
+    # many target events were actually played; mild penalty for wrong tempo.
+    residuals = np.array([p.onset_ms_diff for p in pairs], dtype=float)
+    tempo_dev = abs(alignment.tempo_ratio - 1.0)
+    tempo_pen = TEMPO_MAX_PENALTY * _clamp01((tempo_dev - TEMPO_FREE_BAND) / 0.40)
+    if len(residuals):
+        accuracy = _clamp01(1.0 - float(np.median(np.abs(residuals))) / (2.0 * tol_ms))
+        dims["rhythm"] = _clamp01(accuracy * coverage * (1.0 - tempo_pen) - extra_pen)
     else:
-        within = sum(1 for p in alignment.pairs if p.cents_diff <= rubric.pitch_tolerance_cents)
-        # Penalty for missing / extra notes
-        recovered = len(alignment.pairs) / max(1, max(n_target, n_user))
-        pitch_score = _clamp01((within / len(alignment.pairs)) * recovered)
+        dims["rhythm"] = 0.0
 
-    # --- Rhythm: inverse median onset error (cap normalized to tolerance)
-    if alignment.pairs:
-        errs = [p.onset_ms_diff for p in alignment.pairs]
-        median_err = sorted(errs)[len(errs) // 2]
-        rhythm_score = _clamp01(1.0 - (median_err / (rubric.rhythm_tolerance_ms * 2.0)))
-    else:
-        rhythm_score = 0.0
-
-    # --- Tone: MFCC cosine similarity if provided, else neutral 0.75
-    if target_mfcc_mean and user_mfcc_mean and len(target_mfcc_mean) == len(user_mfcc_mean):
-        import numpy as np
-        t = np.array(target_mfcc_mean, dtype=float)
-        u = np.array(user_mfcc_mean, dtype=float)
-        cos = float((t @ u) / (np.linalg.norm(t) * np.linalg.norm(u) + 1e-9))
-        tone_score = _clamp01((cos + 1.0) / 2.0)
-    else:
-        tone_score = 0.75
-
-    # --- Dynamics: correlation of RMS envelopes if provided, else neutral
-    if target_rms_env and user_rms_env and len(user_rms_env) > 4:
-        import numpy as np
-        tl = np.array(target_rms_env, dtype=float)
-        ul = np.array(user_rms_env, dtype=float)
-        n = min(len(tl), len(ul))
-        if n > 4 and tl[:n].std() > 1e-6 and ul[:n].std() > 1e-6:
-            corr = float(np.corrcoef(tl[:n], ul[:n])[0, 1])
-            dynamics_score = _clamp01((corr + 1.0) / 2.0)
+    graded = graded_dimensions(mode, n_target)
+    if "consistency" in graded:
+        if len(residuals) >= 3:
+            dims["consistency"] = _clamp01(1.0 - float(residuals.std()) / (3.0 * tol_ms)) * coverage
         else:
-            dynamics_score = 0.5
-    else:
-        dynamics_score = 0.7
+            dims["consistency"] = 0.0
 
-    # --- Consistency: 1 - stdev of onset diffs (normalized)
-    if len(alignment.pairs) > 2:
-        import numpy as np
-        diffs = np.array([p.onset_ms_diff for p in alignment.pairs], dtype=float)
-        consistency_score = _clamp01(1.0 - diffs.std() / (rubric.rhythm_tolerance_ms * 3.0))
-    else:
-        consistency_score = 0.85
-
-    dims = {
-        "pitch": pitch_score,
-        "rhythm": rhythm_score,
-        "tone": tone_score,
-        "dynamics": dynamics_score,
-        "consistency": consistency_score,
-    }
-    w = rubric.weights
-    composite = _clamp01(
-        dims["pitch"] * w["pitch"] + dims["rhythm"] * w["rhythm"]
-        + dims["tone"] * w["tone"] + dims["dynamics"] * w["dynamics"]
-        + dims["consistency"] * w["consistency"]
-    )
+    weights = {d: float(rubric.weights.get(d, 0.0)) for d in graded}
+    total_w = sum(weights.values())
+    if total_w <= 0:
+        weights = {d: 1.0 for d in graded}
+        total_w = float(len(graded))
+    composite = _clamp01(sum(dims[d] * weights[d] for d in graded) / total_w)
     passed = bool(composite >= rubric.pass_threshold)
 
-    # Build issues from worst aligned pairs
-    issues: list[dict] = []
-    for p in alignment.pairs:
-        if p.cents_diff > rubric.pitch_tolerance_cents:
-            issues.append({
-                "at": int(target[p.target_idx]["startMs"]),
-                "expected": target[p.target_idx]["pitch"],
-                "detected": user[p.user_idx]["pitch"],
-                "centsOff": int(round(p.cents_diff)),
-                "severity": "major" if p.cents_diff > rubric.pitch_tolerance_cents * 2 else "minor",
-            })
-        if p.onset_ms_diff > rubric.rhythm_tolerance_ms:
-            user_onset = user[p.user_idx]["startMs"]
-            target_onset = target[p.target_idx]["startMs"]
-            kind = "late" if user_onset > target_onset else "early"
-            issues.append({
-                "at": int(target_onset),
-                "kind": kind,
-                "msOff": int(round(p.onset_ms_diff)),
-                "severity": "major" if p.onset_ms_diff > rubric.rhythm_tolerance_ms * 2 else "minor",
-            })
-    issues.sort(key=lambda i: i["at"])
-    issues = issues[:8]
+    issues = _issues(target, user, alignment, tol_c, tol_ms, mode)
 
     return {
         "composite": float(composite),
         "passed": passed,
-        "dimensions": {k: float(round(v, 4)) for k, v in dims.items()},
+        "dimensions": {d: float(round(dims[d], 4)) for d in graded},
+        "gradedDimensions": graded,
+        "notGraded": [d for d in ALL_DIMENSIONS if d not in graded],
         "issues": issues,
         "xpAwarded": 12 if passed else 3,
+        "alignment": {
+            "path": [[ti, ui] for ti, ui in alignment.path],
+            "startOffsetMs": int(round(alignment.start_offset_ms)),
+            "tempoRatio": round(alignment.tempo_ratio, 3),
+            "tuningOffsetCents": int(round(alignment.tuning_offset_cents)),
+            "matched": len(pairs),
+            "missed": len(alignment.missed_targets),
+            "extra": len(alignment.extra_user_interior),
+        },
     }
 
 
+def _issues(target, user, alignment: Alignment, tol_c: float, tol_ms: float, mode: str) -> list[dict]:
+    issues: list[dict] = []
+    for p in alignment.pairs:
+        t = target[p.target_idx]
+        if mode == "notes" and abs(p.cents_diff) > tol_c:
+            issues.append({
+                "at": int(t["startMs"]),
+                "expected": t.get("pitch"),
+                "detected": user[p.user_idx].get("pitch"),
+                "centsOff": int(round(p.cents_diff)),
+                "severity": "major" if abs(p.cents_diff) > 2 * tol_c else "minor",
+            })
+        if abs(p.onset_ms_diff) > tol_ms:
+            issues.append({
+                "at": int(t["startMs"]),
+                "kind": "late" if p.onset_ms_diff > 0 else "early",
+                "msOff": int(round(abs(p.onset_ms_diff))),
+                "severity": "major" if abs(p.onset_ms_diff) > 2 * tol_ms else "minor",
+            })
+    for ti in alignment.missed_targets:
+        t = target[ti]
+        issues.append({"at": int(t["startMs"]), "expected": t.get("pitch"), "kind": "missed", "severity": "major"})
+    a, b = alignment.tempo_ratio, alignment.start_offset_ms
+    for ui in alignment.extra_user_interior:
+        u = user[ui]
+        issues.append({
+            "at": int(round((u["startMs"] - b) / a)),
+            "detected": u.get("pitch"),
+            "kind": "extra",
+            "severity": "minor",
+        })
+    issues.sort(key=lambda i: i["at"])
+    tempo_dev = abs(a - 1.0)
+    if alignment.pairs and tempo_dev > TEMPO_FREE_BAND:
+        issues.insert(0, {
+            "at": 0,
+            "kind": "tempo",
+            "tempoRatio": round(a, 2),
+            "severity": "major" if tempo_dev > 0.25 else "minor",
+        })
+    return issues[:12]
+
+
 def build_feedback(result: dict, rubric_feedback_bank: dict | None) -> dict:
-    """Pick a canned line from the rubric bank based on the weakest dimension."""
+    """Pick a canned line from the rubric bank based on the weakest graded dimension."""
     dims = result["dimensions"]
+    if not dims:
+        return {"canned": "We couldn't hear the exercise — check your mic and try again.",
+                "worstDim": None, "severity": "major"}
     worst_dim = min(dims, key=lambda k: dims[k])
     severity = "major" if dims[worst_dim] < 0.7 else "minor"
     canned = "Nice work. Let's go again."
     if rubric_feedback_bank:
         bucket = rubric_feedback_bank.get(worst_dim, {})
-        lines = bucket.get(severity) or bucket.get("minor") or []
+        lines = [l for l in (bucket.get(severity) or bucket.get("minor") or []) if l]
         if lines:
             canned = random.choice(lines)
     return {"canned": canned, "worstDim": worst_dim, "severity": severity}
