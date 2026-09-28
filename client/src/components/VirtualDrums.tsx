@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { playDrum, unlockAudio, type DrumPart } from "@/audio/drumSynth";
 
 interface Zone {
@@ -23,10 +23,17 @@ const ZONES: Zone[] = [
   { id: "kick",         label: "Kick",    x: 60,  y: 72, size: 110, color: "#a855f7", key: " " },
 ];
 
-export function VirtualDrums({ showHints = true }: { showHints?: boolean }) {
+export function VirtualDrums({ showHints = true, onNote }: {
+  showHints?: boolean;
+  /** Called with the pad id (e.g. "snare") the moment a pad is hit. */
+  onNote?: (pad: string) => void;
+}) {
   const [hit, setHit] = useState<DrumPart | null>(null);
+  const onNoteRef = useRef(onNote);
+  onNoteRef.current = onNote;
 
   const triggerDrum = async (part: DrumPart) => {
+    onNoteRef.current?.(part);
     await unlockAudio();
     playDrum(part);
     setHit(part);
@@ -66,14 +73,13 @@ export function VirtualDrums({ showHints = true }: { showHints?: boolean }) {
             return (
               <button
                 key={z.id}
-                onMouseDown={() => triggerDrum(z.id)}
-                onTouchStart={(e) => { e.preventDefault(); triggerDrum(z.id); }}
+                onPointerDown={(e) => { e.preventDefault(); triggerDrum(z.id); }}
                 style={{
                   left: `${z.x}%`, top: `${z.y}%`,
                   width: `${z.size}px`, height: `${z.size}px`,
                   transform: "translate(-50%, -50%)",
                 }}
-                className="absolute rounded-full flex items-center justify-center transition-transform duration-100 shadow-2xl"
+                className="absolute touch-none rounded-full flex items-center justify-center transition-transform duration-100 shadow-2xl"
               >
                 <span
                   className="absolute inset-0 rounded-full transition-all"

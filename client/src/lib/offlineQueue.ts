@@ -21,6 +21,7 @@ export interface OfflineAttempt {
   createdAt: number;
   lessonId: string;
   exerciseId: string;
+  instrumentId?: string;    // absent on records queued before reconciliation existed
   audio: Blob;
   meta: string;             // JSON for /grade
   status: OfflineAttemptStatus;
@@ -117,12 +118,15 @@ export async function pendingCount(): Promise<number> {
 }
 
 /**
- * Drain the pending queue by POSTing each attempt to /grade.
- * Caller provides the grade function so this module doesn't depend on network details.
+ * Drain the pending queue by POSTing each attempt to /grade. `onEach` receives
+ * the engine's grade body so the caller can apply it to progress. Server
+ * errors and network failures stay pending (retried next drain); a 4xx means
+ * the take itself can't be graded and is marked failed.
  */
 export async function drainQueue(
   graderUrl: string,
-  onEach?: (attempt: OfflineAttempt, result: "graded" | "failed") => void
+  onEach?: (attempt: OfflineAttempt, result: "graded" | "failed", body?: unknown) => void,
+  timeoutMs = 30_000,
 ): Promise<{ graded: number; failed: number }> {
   const pending = await listAttempts("pending");
   let graded = 0;
@@ -130,18 +134,21 @@ export async function drainQueue(
 
   for (const att of pending) {
     await updateAttempt(att.id, { status: "uploading" });
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
     try {
       const form = new FormData();
       form.append("audio", att.audio, "attempt.wav");
       form.append("meta", att.meta);
-      const r = await fetch(`${graderUrl}/grade`, { method: "POST", body: form });
+      const r = await fetch(`${graderUrl}/grade`, { method: "POST", body: form, signal: ctrl.signal });
       if (r.ok) {
         const body = await r.json();
         await updateAttempt(att.id, { status: "graded", grade: body });
         graded++;
-        onEach?.(att, "graded");
+        onEach?.(att, "graded", body);
       } else {
-        await updateAttempt(att.id, { status: "failed", lastError: `HTTP ${r.status}` });
+        const permanent = r.status >= 400 && r.status < 500;
+        await updateAttempt(att.id, { status: permanent ? "failed" : "pending", lastError: `HTTP ${r.status}` });
         failed++;
         onEach?.(att, "failed");
       }
@@ -149,6 +156,8 @@ export async function drainQueue(
       await updateAttempt(att.id, { status: "pending", lastError: (e as Error).message });
       failed++;
       onEach?.(att, "failed");
+    } finally {
+      clearTimeout(timer);
     }
   }
   return { graded, failed };

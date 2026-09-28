@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ensureGuitarReady, playGuitarNote, strumChord, unlockAudio } from "@/audio/guitarSampler";
 
 /** Standard guitar tuning, low-to-high (scientific pitch). */
@@ -29,7 +29,13 @@ function noteAtFret(openNote: string, fret: number): string {
   return `${targetN}${targetO}`;
 }
 
-export function VirtualGuitar({ showNoodleHints = true }: { showNoodleHints?: boolean }) {
+export function VirtualGuitar({ showNoodleHints = true, onNote }: {
+  showNoodleHints?: boolean;
+  /** Called the moment a fret (or every string of a strummed chord) is played. */
+  onNote?: (note: string) => void;
+}) {
+  const onNoteRef = useRef(onNote);
+  onNoteRef.current = onNote;
   const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(true);
   const [pressed, setPressed] = useState<string | null>(null); // stringIdx:fret
@@ -44,6 +50,7 @@ export function VirtualGuitar({ showNoodleHints = true }: { showNoodleHints?: bo
 
   const handleFretClick = async (stringIdx: number, fret: number) => {
     const note = noteAtFret(STRINGS[stringIdx], fret);
+    onNoteRef.current?.(note);
     await unlockAudio();
     await playGuitarNote(note);
     const key = `${stringIdx}:${fret}`;
@@ -52,6 +59,7 @@ export function VirtualGuitar({ showNoodleHints = true }: { showNoodleHints?: bo
   };
 
   const handleChord = (chord: (typeof CHORDS)[number]) => {
+    chord.notes.forEach((n) => onNoteRef.current?.(n));
     strumChord(chord.notes);
   };
 
@@ -87,9 +95,8 @@ export function VirtualGuitar({ showNoodleHints = true }: { showNoodleHints?: bo
                     <button
                       key={fret}
                       data-piano-note={noteAtFret(STRINGS[stringIdx], fret)}
-                      onMouseDown={() => handleFretClick(stringIdx, fret)}
-                      onTouchStart={(e) => { e.preventDefault(); handleFretClick(stringIdx, fret); }}
-                      className={`relative h-9 border-r border-amber-600/30 transition-colors
+                      onPointerDown={(e) => { e.preventDefault(); handleFretClick(stringIdx, fret); }}
+                      className={`relative h-9 touch-none border-r border-amber-600/30 transition-colors
                         ${isPressed
                           ? "bg-emerald-400/30"
                           : "bg-gradient-to-b from-amber-900/40 to-amber-950/40 hover:bg-amber-700/30"}

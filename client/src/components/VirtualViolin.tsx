@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ensureViolinReady, playViolinNote, unlockAudio } from "@/audio/violinSampler";
 
 /** Standard violin tuning low → high. */
@@ -24,7 +24,13 @@ function up(note: string, semitones: number): string {
 
 const FINGER_OFFSETS = [0, 2, 4, 5, 7]; // open, 1st (whole tone), 2nd, 3rd (½), 4th
 
-export function VirtualViolin({ showHints = true }: { showHints?: boolean }) {
+export function VirtualViolin({ showHints = true, onNote }: {
+  showHints?: boolean;
+  /** Called the moment a position is played. */
+  onNote?: (note: string) => void;
+}) {
+  const onNoteRef = useRef(onNote);
+  onNoteRef.current = onNote;
   const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(true);
   const [bowPressure, setBowPressure] = useState(0.7);
@@ -41,6 +47,7 @@ export function VirtualViolin({ showHints = true }: { showHints?: boolean }) {
 
   const handlePositionClick = async (stringIdx: number, fingerIdx: number) => {
     const note = up(STRINGS[stringIdx], FINGER_OFFSETS[fingerIdx]);
+    onNoteRef.current?.(note);
     await unlockAudio();
     await playViolinNote(note, 1.4, bowPressure, contactPoint);
     const key = `${stringIdx}:${fingerIdx}`;
@@ -89,9 +96,8 @@ export function VirtualViolin({ showHints = true }: { showHints?: boolean }) {
                     <button
                       key={fingerIdx}
                       data-piano-note={note}
-                      onMouseDown={() => handlePositionClick(stringIdx, fingerIdx)}
-                      onTouchStart={(e) => { e.preventDefault(); handlePositionClick(stringIdx, fingerIdx); }}
-                      className={`relative h-11 rounded border border-rose-700/30 transition-all
+                      onPointerDown={(e) => { e.preventDefault(); handlePositionClick(stringIdx, fingerIdx); }}
+                      className={`relative h-11 touch-none rounded border border-rose-700/30 transition-all
                         ${isPressed
                           ? "bg-emerald-400/30 border-emerald-400/50"
                           : fingerIdx === 0

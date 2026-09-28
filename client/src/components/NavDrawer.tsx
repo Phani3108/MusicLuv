@@ -16,6 +16,7 @@ import { expertLibraryPanelAtom } from "@/atoms/experts";
 import { getInstrument } from "@catalogs/instrumentCatalog";
 import { tierForXp } from "@catalogs/tierCatalog";
 import { getPlan } from "@catalogs/planCatalog";
+import { isEnabled } from "@/lib/features";
 
 /**
  * Grouped drawer navigation — replaces the 7-button TopBar clutter.
@@ -58,6 +59,9 @@ export function NavDrawer() {
   const launch = useAtomValue(launchStatusAtom);
   const plan = getPlan(sub.plan);
   const promoActive = !launch.active;
+
+  const showCommunityGroup = (["community", "proctored", "liveLessons", "compositions", "teacher", "creator"] as const)
+    .some((f) => isEnabled(f));
 
   const openPanel = (setter: (v: boolean) => void) => {
     setter(true);
@@ -128,15 +132,17 @@ export function NavDrawer() {
               />
             </NavGroup>
 
-            <NavGroup label="Community">
-              <NavItem glyph="🎼" title="Recital feed" subtitle="Learners sharing best takes" onClick={() => { setRecitalFeed(true); setOpen(false); }} />
-              <NavItem glyph="👥" title="My profile" subtitle="Your public page" onClick={() => { if (authUser) { setProfile(authUser.id); setOpen(false); } else { setAuthPanel(true); setOpen(false); } }} />
-              <NavItem glyph="🏆" title="Proctored exams" subtitle="Official certificate testing" onClick={() => { setProctoredExam(true); setOpen(false); }} />
-              <NavItem glyph="🎤" title="Live 1-on-1 lessons" subtitle="Book a private session with a teacher" onClick={() => { setLiveLessons(true); setOpen(false); }} />
-              <NavItem glyph="🎼" title="Composition review" subtitle="Submit an original for human review" onClick={() => { setCompositionReview(true); setOpen(false); }} />
-              {authUser && <NavItem glyph="🎓" title="Teach" subtitle="Dashboard for teachers" onClick={() => { setTeacherDash(true); setOpen(false); }} />}
-              {authUser && sub.plan === "genius" && <NavItem glyph="✍️" title="Creator portal" subtitle="Author lessons + earn" onClick={() => { setCreatorPortal(true); setOpen(false); }} />}
-            </NavGroup>
+            {showCommunityGroup && (
+              <NavGroup label="Community">
+                {isEnabled("community") && <NavItem glyph="🎼" title="Recital feed" subtitle="Learners sharing best takes" onClick={() => { setRecitalFeed(true); setOpen(false); }} />}
+                {isEnabled("community") && <NavItem glyph="👥" title="My profile" subtitle="Your public page" onClick={() => { if (authUser) { setProfile(authUser.id); setOpen(false); } else { setAuthPanel(true); setOpen(false); } }} />}
+                {isEnabled("proctored") && <NavItem glyph="🏆" title="Proctored exams" subtitle="Official certificate testing" onClick={() => { setProctoredExam(true); setOpen(false); }} />}
+                {isEnabled("liveLessons") && <NavItem glyph="🎤" title="Live 1-on-1 lessons" subtitle="Book a private session with a teacher" onClick={() => { setLiveLessons(true); setOpen(false); }} />}
+                {isEnabled("compositions") && <NavItem glyph="🎼" title="Composition review" subtitle="Submit an original for human review" onClick={() => { setCompositionReview(true); setOpen(false); }} />}
+                {isEnabled("teacher") && authUser && <NavItem glyph="🎓" title="Teach" subtitle="Dashboard for teachers" onClick={() => { setTeacherDash(true); setOpen(false); }} />}
+                {isEnabled("creator") && authUser && sub.plan === "genius" && <NavItem glyph="✍️" title="Creator portal" subtitle="Author lessons + earn" onClick={() => { setCreatorPortal(true); setOpen(false); }} />}
+              </NavGroup>
+            )}
 
             <NavGroup label="Preferences">
               <NavItem glyph="⚙️" title="Settings" subtitle="Sargam mode, mic, accessibility…" onClick={() => openPanel(setSettings)} />

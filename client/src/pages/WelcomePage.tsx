@@ -1,6 +1,8 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import { screenAtom, userAtom } from "@/atoms/session";
 import { launchStatusAtom } from "@/atoms/billing";
+import { listInstruments } from "@catalogs/instrumentCatalog";
+import { isInstrumentVisible } from "@/lib/features";
 
 export function WelcomePage() {
   const setScreen = useSetAtom(screenAtom);
@@ -69,7 +71,7 @@ export function WelcomePage() {
           </span>
         </h1>
         <p className="text-lg md:text-xl text-white/70 max-w-xl mx-auto mb-10 leading-relaxed">
-          Learn 22 instruments, step by step. Watch. Play. Get graded.
+          Learn {listInstruments().filter((i) => isInstrumentVisible(i.id)).length} instruments, step by step. Watch. Play. Get graded.
           From Middle C to raga Yaman — nine levels, one beautiful arc.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">

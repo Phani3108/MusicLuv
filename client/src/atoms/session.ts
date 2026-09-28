@@ -21,15 +21,21 @@ export interface InstrumentProgress {
   xp: number;
   level: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
   lessonsCompleted: string[];
-  lastGrade?: { lessonId: string; composite: number; dimensions: DimScores; at: string };
+  lastGrade?: { lessonId: string; composite: number; dimensions: Partial<DimScores>; at: string };
 }
 
-export const userAtom = atomWithStorage<UserProfile | null>("musicluv:user", null);
+export const userAtom = atomWithStorage<UserProfile | null>("musicluv:user", null, undefined, { getOnInit: true });
 
 export const progressAtom = atomWithStorage<Record<string, InstrumentProgress>>("musicluv:progress", {});
 
-export const currentInstrumentAtom = atom<string | null>(null);
-export const currentLessonIdAtom = atom<string | null>(null);
+// Persisted so a reload lands back in the studio on the same lesson instead of
+// a blank page. getOnInit reads storage on first render (no null flash).
+export const currentInstrumentAtom = atomWithStorage<string | null>(
+  "musicluv:currentInstrument", null, undefined, { getOnInit: true },
+);
+export const currentLessonIdAtom = atomWithStorage<string | null>(
+  "musicluv:currentLesson", null, undefined, { getOnInit: true },
+);
 
 export type Screen = "welcome" | "mic_check" | "picker" | "studio";
 export const screenAtom = atom<Screen>("welcome");

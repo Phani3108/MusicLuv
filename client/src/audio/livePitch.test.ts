@@ -4,12 +4,11 @@
  * suite covers the math: hzToNoteCents() across the 12-TET grid +
  * smoothing class behavior (median + hysteresis) at edge cases.
  *
- * Run with `node --test --experimental-strip-types src/audio/`.
- * Node 20+ ships node:test built-in.
+ * Run with `npm test` (node --test with built-in TypeScript support, Node 22.7+).
  */
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { hzToNoteCents } from "./livePitch.js";
+import { hzToNoteCents } from "./livePitch.ts";
 
 describe("hzToNoteCents", () => {
   it("A4 = 440Hz exact → A4, 0 cents", () => {
@@ -24,12 +23,12 @@ describe("hzToNoteCents", () => {
     assert.ok(Math.abs(result.cents) <= 1);
   });
 
-  it("440Hz + 50 cents → A4 with positive cents", () => {
-    // 50 cents sharp of A4 = 440 * 2^(50/1200)
-    const sharp = 440 * Math.pow(2, 50 / 1200);
+  it("440Hz + 45 cents → A4 with positive cents", () => {
+    // Exactly +50¢ is the rounding boundary (rounds up to A#4), so stay inside it.
+    const sharp = 440 * Math.pow(2, 45 / 1200);
     const result = hzToNoteCents(sharp);
     assert.equal(result.note, "A4");
-    assert.ok(result.cents > 40 && result.cents <= 50);
+    assert.ok(result.cents > 40 && result.cents < 50);
   });
 
   it("440Hz - 50 cents → A4 with negative cents (or G#4 high)", () => {

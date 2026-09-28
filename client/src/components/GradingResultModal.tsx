@@ -2,10 +2,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { gradingModalAtom } from "@/atoms/panels";
 import { lastGradeAtom, practiceStatusAtom, playheadMsAtom } from "@/atoms/practice";
 import { useSetAtom } from "jotai";
-
-const DIM_LABELS: Record<string, string> = {
-  pitch: "Pitch", rhythm: "Rhythm", tone: "Tone", dynamics: "Dynamics", consistency: "Consistency",
-};
+import { GradeDimensionBars, GradeIssueList, SimulatedBanner } from "./GradeBreakdown";
 
 export function GradingResultModal() {
   const [open, setOpen] = useAtom(gradingModalAtom);
@@ -47,52 +44,26 @@ export function GradingResultModal() {
             </div>
           </div>
 
-          <div className="chip bg-amber-400/20 text-amber-100 border border-amber-400/30 mb-2">
-            +{grade.xpAwarded} XP earned
-          </div>
+          {grade.source === "engine" && (
+            <div className="chip bg-amber-400/20 text-amber-100 border border-amber-400/30 mb-2">
+              +{grade.xpAwarded} XP earned
+            </div>
+          )}
+          <SimulatedBanner grade={grade} />
         </div>
 
         {/* Dimensions */}
         <div className="p-6 pt-4">
           <div className="text-[11px] uppercase tracking-widest text-white/40 mb-3">Breakdown</div>
-          <div className="space-y-2.5 mb-5">
-            {Object.entries(grade.dimensions).map(([dim, v]) => (
-              <div key={dim}>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-white/70">{DIM_LABELS[dim]}</span>
-                  <span className="font-mono text-white/50">{Math.round(v * 100)}%</span>
-                </div>
-                <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${v * 100}%`,
-                      background: v >= 0.85 ? "#34d399" : v >= 0.7 ? "#fbbf24" : "#fb7185",
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+          <div className="mb-5">
+            <GradeDimensionBars grade={grade} />
           </div>
 
           {/* Issues */}
-          {grade.issues.length > 0 && (
+          {(grade.issues.length > 0 || grade.warning) && (
             <div className="mb-5">
               <div className="text-[11px] uppercase tracking-widest text-white/40 mb-2">What to fix</div>
-              <div className="space-y-1.5">
-                {grade.issues.map((iss, i) => (
-                  <div key={i} className="panel p-2.5 text-xs flex items-start gap-2">
-                    <span className={iss.severity === "major" ? "text-rose-400" : "text-amber-300"}>●</span>
-                    <div className="flex-1">
-                      {iss.centsOff != null ? (
-                        <span>Note at <span className="font-mono">{iss.at}ms</span> — expected {iss.expected}, {iss.centsOff > 0 ? "+" : ""}{iss.centsOff}¢ off</span>
-                      ) : iss.msOff != null ? (
-                        <span>Beat at <span className="font-mono">{iss.at}ms</span> — {iss.kind} by {iss.msOff}ms</span>
-                      ) : null}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <GradeIssueList grade={grade} boxed />
             </div>
           )}
 

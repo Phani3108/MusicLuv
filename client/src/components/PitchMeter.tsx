@@ -6,7 +6,7 @@ export function PitchMeter() {
   const note = useAtomValue(livePitchNoteAtom);
   const status = useAtomValue(practiceStatusAtom);
 
-  const active = status === "recording";
+  const active = status === "armed" || status === "counting_in" || status === "recording";
   const clamped = Math.max(-60, Math.min(60, cents));
   const pct = 50 + (clamped / 60) * 50;
 

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { normalizeNote } from "@/lib/notes";
 import type { Instrument } from "@catalogs/types";
 import { playNote, playOnset, unlockAudio } from "@/audio/instrumentSampler";
 
@@ -37,8 +38,16 @@ const KEYS_INDIAN = [
   { label: "Sa'", note: "C5" },
 ];
 
-export function GenericHero({ instrument, target }: { instrument: Instrument; target?: string | null }) {
+export function GenericHero({ instrument, target, onNote }: {
+  instrument: Instrument;
+  target?: string | null;
+  /** Called the moment a key is played ("hit" for the percussion pad). */
+  onNote?: (note: string) => void;
+}) {
   const [pressed, setPressed] = useState<string | null>(null);
+  const onNoteRef = useRef(onNote);
+  onNoteRef.current = onNote;
+  const targetN = normalizeNote(target ?? null);
 
   const isIndian = instrument.origin === "indian_classical";
   const isPercussion =
@@ -46,6 +55,7 @@ export function GenericHero({ instrument, target }: { instrument: Instrument; ta
   const keys = isIndian ? KEYS_INDIAN : KEYS_WESTERN;
 
   const press = async (note: string) => {
+    onNoteRef.current?.(note);
     await unlockAudio();
     await playNote(instrument.id, note, 1.0);
     setPressed(note);
@@ -53,6 +63,7 @@ export function GenericHero({ instrument, target }: { instrument: Instrument; ta
   };
 
   const strike = async () => {
+    onNoteRef.current?.("hit");
     await unlockAudio();
     await playOnset(instrument.id);
     setPressed("hit");
@@ -89,9 +100,8 @@ export function GenericHero({ instrument, target }: { instrument: Instrument; ta
         {isPercussion ? (
           <div className="py-8 flex flex-col items-center">
             <button
-              onMouseDown={strike}
-              onTouchStart={(e) => { e.preventDefault(); strike(); }}
-              className={`w-32 h-32 rounded-full border-2 transition-all font-semibold font-mono
+              onPointerDown={(e) => { e.preventDefault(); strike(); }}
+              className={`w-32 h-32 touch-none rounded-full border-2 transition-all font-semibold font-mono
                 ${pressed === "hit"
                   ? "bg-emerald-500/40 border-emerald-300 scale-95"
                   : "bg-white/5 border-white/30 hover:bg-white/10"}`}
@@ -105,14 +115,13 @@ export function GenericHero({ instrument, target }: { instrument: Instrument; ta
           <div className="flex gap-1 h-40">
             {keys.map((k) => {
               const isPressed = pressed === k.note;
-              const isTarget = target === k.note;
+              const isTarget = targetN === k.note;
               return (
                 <button
                   key={k.note}
                   data-piano-note={k.note}
-                  onMouseDown={() => press(k.note)}
-                  onTouchStart={(e) => { e.preventDefault(); press(k.note); }}
-                  className={`flex-1 rounded-xl border transition-all flex flex-col items-center justify-end pb-3 font-mono text-sm
+                  onPointerDown={(e) => { e.preventDefault(); press(k.note); }}
+                  className={`flex-1 touch-none rounded-xl border transition-all flex flex-col items-center justify-end pb-3 font-mono text-sm
                     ${isPressed
                       ? "bg-emerald-400/30 border-emerald-300 scale-[0.98]"
                       : isTarget

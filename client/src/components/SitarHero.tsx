@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { normalizeNote } from "@/lib/notes";
 import { playNote, unlockAudio } from "@/audio/instrumentSampler";
 
 /**
@@ -24,10 +25,20 @@ const SVARAS: Array<{ label: string; note: string }> = [
   { label: "Re'", note: "D5" },
 ];
 
-export function SitarHero({ highlight, target }: { highlight?: string | null; target?: string | null }) {
+export function SitarHero({ highlight, target, onNote }: {
+  highlight?: string | null;
+  target?: string | null;
+  /** Called the moment a svara is played. */
+  onNote?: (note: string) => void;
+}) {
   const [pressed, setPressed] = useState<string | null>(null);
+  const onNoteRef = useRef(onNote);
+  onNoteRef.current = onNote;
+  const highlightN = normalizeNote(highlight ?? null);
+  const targetN = normalizeNote(target ?? null);
 
   const press = async (note: string) => {
+    onNoteRef.current?.(note);
     await unlockAudio();
     await playNote("sitar", note, 1.4);
     setPressed(note);
@@ -60,15 +71,14 @@ export function SitarHero({ highlight, target }: { highlight?: string | null; ta
           {/* Frets as buttons */}
           {SVARAS.map((s, i) => {
             const isPressed = pressed === s.note;
-            const isHighlight = highlight === s.note;
-            const isTarget = target === s.note;
+            const isHighlight = highlightN === s.note;
+            const isTarget = targetN === s.note;
             return (
               <button
                 key={s.note}
                 data-piano-note={s.note}
-                onMouseDown={() => press(s.note)}
-                onTouchStart={(e) => { e.preventDefault(); press(s.note); }}
-                className={`absolute top-0 bottom-0 flex flex-col items-center justify-between py-2 border-r border-amber-400/20 transition-colors focus:outline-none
+                onPointerDown={(e) => { e.preventDefault(); press(s.note); }}
+                className={`absolute top-0 bottom-0 touch-none flex flex-col items-center justify-between py-2 border-r border-amber-400/20 transition-colors focus:outline-none
                   ${isPressed ? "bg-emerald-400/30"
                     : isHighlight ? "bg-indigo-400/25"
                     : isTarget ? "bg-amber-300/25"

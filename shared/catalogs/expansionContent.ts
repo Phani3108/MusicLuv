@@ -213,3 +213,6 @@ export function buildExpansionContent(): { lessons: Record<string, Lesson>; exer
 
 /** Pre-built constants the catalog files spread into their main maps. */
 export const EXPANSION_CONTENT = buildExpansionContent();
+
+/** Instruments whose L2–L9 curriculum is generator scaffolding (see header). */
+export const EXPANSION_INSTRUMENT_IDS: readonly string[] = PLANS.map((p) => p.id);

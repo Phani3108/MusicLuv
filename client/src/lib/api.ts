@@ -1,14 +1,23 @@
 /** Real audio-engine / MusicLuv server client. */
+import { useEffect, useState } from "react";
 import type { Exercise, Mentor } from "@catalogs/types";
 import type { GradeResult } from "@/atoms/practice";
 import { getRubric } from "@catalogs/gradingRubricCatalog";
 import { getAccessToken } from "./supabase";
+import { gradingModeFor } from "./exercise";
+
+export { gradingModeFor, scaleExercise, type GradingMode } from "./exercise";
 
 export const AUDIO_ENGINE_URL = (import.meta as any).env.VITE_AUDIO_ENGINE_URL as string | undefined;
 export const MUSICLUV_SERVER_URL = (import.meta as any).env.VITE_SERVER_URL as string | undefined;
 
-export const isRealBackend = () => Boolean(AUDIO_ENGINE_URL);
+/** True when an audio engine is configured. Without one the app runs in demo
+ *  mode: grades are simulated, clearly labelled, and never touch progress. */
+export const isEngineConfigured = () => Boolean(AUDIO_ENGINE_URL);
 export const isServerConnected = () => Boolean(MUSICLUV_SERVER_URL);
+
+const GRADE_TIMEOUT_MS = 30_000;
+const HEALTH_TIMEOUT_MS = 4_000;
 
 /** Local device user id — persists across page loads. No auth, just a nanoid. */
 export function getDeviceUserId(): string {
@@ -36,27 +45,68 @@ export function serverAuthHeaders(): HeadersInit {
   return headers;
 }
 
-export async function checkHealth(): Promise<{ ok: boolean; backends?: Record<string, string> }> {
-  if (!AUDIO_ENGINE_URL) return { ok: false };
-  const r = await fetch(`${AUDIO_ENGINE_URL}/health`);
-  return r.json();
+async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs: number): Promise<Response> {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...init, signal: ctrl.signal });
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
-export async function realGrade(
-  exercise: Exercise,
-  audio: Blob,
-  attemptId: string,
-): Promise<GradeResult> {
-  if (!AUDIO_ENGINE_URL) throw new Error("AUDIO_ENGINE_URL not set");
-  const rubric = getRubric(exercise.gradingRubricId);
+export async function checkHealth(): Promise<{ ok: boolean; backends?: Record<string, string> }> {
+  if (!AUDIO_ENGINE_URL) return { ok: false };
+  try {
+    const r = await fetchWithTimeout(`${AUDIO_ENGINE_URL}/health`, {}, HEALTH_TIMEOUT_MS);
+    return r.ok ? await r.json() : { ok: false };
+  } catch {
+    return { ok: false };
+  }
+}
 
-  const meta = {
+export type EngineHealth = "demo" | "checking" | "live" | "down";
+
+/** Live engine status for the studio chip: re-checks on mount and when the
+ *  browser comes back online. "demo" = no engine configured. */
+export function useEngineHealth(): EngineHealth {
+  const [state, setState] = useState<EngineHealth>(AUDIO_ENGINE_URL ? "checking" : "demo");
+  useEffect(() => {
+    if (!AUDIO_ENGINE_URL) return;
+    let cancelled = false;
+    const check = () => {
+      checkHealth().then((h) => { if (!cancelled) setState(h.ok ? "live" : "down"); });
+    };
+    check();
+    window.addEventListener("online", check);
+    return () => { cancelled = true; window.removeEventListener("online", check); };
+  }, []);
+  return state;
+}
+
+export interface GradeContext {
+  lessonId?: string;
+  instrumentId?: string;
+  /** Tempo of this take relative to the exercise (target times already scaled). */
+  tempoFactor?: number;
+}
+
+/** The /grade `meta` payload. `exercise` must already be tempo-scaled. */
+export function buildGradeMeta(exercise: Exercise, attemptId: string, ctx: GradeContext = {}) {
+  const rubric = getRubric(exercise.gradingRubricId);
+  const mode = gradingModeFor(exercise);
+  const notes = exercise.targetPattern.notes ?? [];
+  return {
     exerciseId: exercise.id,
-    userId: "local",
     attemptId,
-    target: (exercise.targetPattern.notes ?? []).map((n) => ({
-      pitch: n.pitch, startMs: n.startMs, durationMs: n.durationMs,
-    })),
+    lessonId: ctx.lessonId,
+    instrumentId: ctx.instrumentId,
+    mode,
+    target: notes.map((n) => ({ pitch: n.pitch, startMs: n.startMs, durationMs: n.durationMs })),
+    targetOnsets: mode === "onsets"
+      ? (exercise.targetPattern.onsets?.length ? exercise.targetPattern.onsets : notes.map((n) => n.startMs))
+      : undefined,
+    tempoFactor: ctx.tempoFactor ?? 1,
     rubric: {
       id: rubric.id,
       weights: rubric.weights,
@@ -66,24 +116,67 @@ export async function realGrade(
       feedbackBank: rubric.feedbackBank,
     },
   };
+}
 
-  const form = new FormData();
-  form.append("audio", audio, "attempt.wav");
-  form.append("meta", JSON.stringify(meta));
-
-  const r = await fetch(`${AUDIO_ENGINE_URL}/grade`, { method: "POST", body: form });
-  if (!r.ok) throw new Error(`grade failed: HTTP ${r.status}`);
-  const body = await r.json();
-
+/** Map an engine /grade body to the client's GradeResult. */
+export function toGradeResult(body: any): GradeResult {
   return {
     composite: body.composite,
     passed: body.passed,
-    dimensions: body.dimensions,
+    dimensions: body.dimensions ?? {},
+    gradedDimensions: body.gradedDimensions,
+    notGraded: body.notGraded,
     issues: body.issues ?? [],
     feedback: { canned: body.feedback?.canned ?? "Nice work." },
     xpAwarded: body.xpAwarded ?? 0,
     userNotesDetected: body.userNotesDetected ?? [],
+    alignment: body.alignment,
+    warning: body.warning,
+    tempoFactor: body.tempoFactor ?? 1,
+    source: "engine",
   };
+}
+
+/** Grading failed — `message` is safe to show the learner. */
+export class GradeError extends Error {
+  constructor(message: string, readonly status?: number) {
+    super(message);
+  }
+}
+
+function gradeErrorMessage(status: number, detail: string): string {
+  if (status === 413) return "That take is too long or too large to grade. Keep takes under 3 minutes.";
+  if (status === 415) return "Your browser recorded audio in a format the grader can't read.";
+  if (status === 422) return `This exercise has a problem in its target notes (${detail}). It's been logged.`;
+  if (status === 429) return "Too many takes in a row — wait a moment and retry.";
+  return `The grader returned an error (HTTP ${status}).`;
+}
+
+export async function realGrade(
+  exercise: Exercise,
+  audio: Blob,
+  attemptId: string,
+  ctx: GradeContext = {},
+): Promise<GradeResult> {
+  if (!AUDIO_ENGINE_URL) throw new GradeError("No audio engine is configured.");
+  const form = new FormData();
+  form.append("audio", audio, "attempt.wav");
+  form.append("meta", JSON.stringify(buildGradeMeta(exercise, attemptId, ctx)));
+
+  let r: Response;
+  try {
+    r = await fetchWithTimeout(`${AUDIO_ENGINE_URL}/grade`, { method: "POST", body: form }, GRADE_TIMEOUT_MS);
+  } catch (e) {
+    const timedOut = (e as Error)?.name === "AbortError";
+    throw new GradeError(timedOut
+      ? "The grader took too long to answer. Your take is kept — retry or save it for later."
+      : "Couldn't reach the grader. Your take is kept — retry or save it for later.");
+  }
+  if (!r.ok) {
+    const detail = (await r.text().catch(() => "")).slice(0, 120);
+    throw new GradeError(gradeErrorMessage(r.status, detail), r.status);
+  }
+  return toGradeResult(await r.json());
 }
 
 // ---- Mentor chat against the MusicLuv server ----

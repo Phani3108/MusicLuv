@@ -103,7 +103,7 @@ export function PhaseAttempt({ onEngage }: { onEngage?: () => void }) {
               <button
                 key={t.id}
                 onClick={() => { setIndex(i); setStatus("idle"); }}
-                disabled={status === "recording" || status === "scoring"}
+                disabled={status === "armed" || status === "counting_in" || status === "recording" || status === "scoring"}
                 className={`shrink-0 px-3 py-1.5 rounded-full text-[11px] border transition-colors
                   ${active
                     ? "bg-indigo-500/20 border-indigo-400/40 text-white"
@@ -146,8 +146,8 @@ export function PhaseAttempt({ onEngage }: { onEngage?: () => void }) {
         )}
       </div>
 
-      {/* Delegates to real mic capture + grading */}
-      <PracticeStudio />
+      {/* Delegates to real mic capture + grading, at this take's tempo */}
+      <PracticeStudio tempoFactor={cur.tempoFactor ?? 1} />
     </div>
   );
 }

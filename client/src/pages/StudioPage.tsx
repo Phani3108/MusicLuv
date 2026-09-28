@@ -1,5 +1,6 @@
-import { useAtomValue } from "jotai";
-import { currentInstrumentAtom } from "@/atoms/session";
+import { useEffect } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
+import { currentInstrumentAtom, screenAtom } from "@/atoms/session";
 import { TopBar } from "@/components/TopBar";
 import { NavDrawer } from "@/components/NavDrawer";
 import { LessonPhaseRunner } from "@/components/LessonPhaseRunner";
@@ -26,9 +27,17 @@ import { LiveLessonsPanel } from "@/components/LiveLessonsPanel";
 import { CompositionReviewPanel } from "@/components/CompositionReviewPanel";
 import { Toaster } from "@/components/Toaster";
 import { ExpertLibraryPanel } from "@/components/ExpertLibraryPanel";
+import { isEnabled } from "@/lib/features";
 
 export function StudioPage() {
   const instrumentId = useAtomValue(currentInstrumentAtom);
+  const setScreen = useSetAtom(screenAtom);
+
+  // No instrument chosen (first run, cleared storage): pick one instead of
+  // rendering a blank page.
+  useEffect(() => {
+    if (!instrumentId) setScreen("picker");
+  }, [instrumentId, setScreen]);
   if (!instrumentId) return null;
 
   return (
@@ -50,15 +59,15 @@ export function StudioPage() {
         <PlanPickerPanel />
         <AuthPanel />
         <PaywallModal />
-        <RecitalFeedPanel />
-        <ProfilePanel />
-        <TeacherDashboardPanel />
-        <CreatorPortalPanel />
-        <ProctoredExamPanel />
+        {isEnabled("community") && <RecitalFeedPanel />}
+        {isEnabled("community") && <ProfilePanel />}
+        {isEnabled("teacher") && <TeacherDashboardPanel />}
+        {isEnabled("creator") && <CreatorPortalPanel />}
+        {isEnabled("proctored") && <ProctoredExamPanel />}
         <OnboardingTour />
         <SettingsPanel />
-        <LiveLessonsPanel />
-        <CompositionReviewPanel />
+        {isEnabled("liveLessons") && <LiveLessonsPanel />}
+        {isEnabled("compositions") && <CompositionReviewPanel />}
         <ExpertLibraryPanel />
         <NavDrawer />
         <Toaster />

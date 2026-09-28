@@ -3,6 +3,7 @@ import { listInstruments } from "@catalogs/instrumentCatalog";
 import { listLessonsForInstrument } from "@catalogs/lessonCatalog";
 import { currentInstrumentAtom, currentLessonIdAtom, screenAtom, userAtom } from "@/atoms/session";
 import type { Instrument } from "@catalogs/types";
+import { isInstrumentVisible } from "@/lib/features";
 
 const ACCENT_BG: Record<string, string> = {
   keyboard: "from-indigo-500/30 to-violet-500/20 border-indigo-400/30",
@@ -30,7 +31,7 @@ export function InstrumentPickerPage() {
     setScreen("studio");
   };
 
-  const instruments = listInstruments();
+  const instruments = listInstruments().filter((i) => isInstrumentVisible(i.id));
 
   return (
     <div className="min-h-screen p-6 md:p-12">

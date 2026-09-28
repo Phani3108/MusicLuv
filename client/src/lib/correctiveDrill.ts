@@ -74,7 +74,9 @@ function worstWindow(
 
 export function generateDrill(exercise: Exercise, grade: GradeResult): CorrectiveDrill | null {
   const dims = grade.dimensions;
-  const entries = Object.entries(dims) as Array<[WeakDim, number]>;
+  const entries = (Object.entries(dims) as Array<[WeakDim, number | undefined]>)
+    .filter((e): e is [WeakDim, number] => e[1] != null);
+  if (entries.length === 0) return null;
   const sorted = entries.sort(([, a], [, b]) => a - b);
   const [weakestDim, weakestScore] = sorted[0];
   if (weakestScore >= 0.85) return null; // no drill needed — close to perfect

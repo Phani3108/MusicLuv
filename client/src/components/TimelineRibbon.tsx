@@ -1,11 +1,8 @@
 import { useAtomValue } from "jotai";
 import { playheadMsAtom, practiceStatusAtom } from "@/atoms/practice";
 import type { Exercise } from "@catalogs/types";
+import { noteToMidi } from "@/lib/notes";
 
-const NOTE_TO_SEMITONE: Record<string, number> = {
-  "C4": 0, "C#4": 1, "D4": 2, "D#4": 3, "E4": 4, "F4": 5, "F#4": 6,
-  "G4": 7, "G#4": 8, "A4": 9, "A#4": 10, "B4": 11, "C5": 12, "D5": 14, "E5": 16,
-};
 
 export function TimelineRibbon({ exercise }: { exercise: Exercise }) {
   const playhead = useAtomValue(playheadMsAtom);
@@ -20,8 +17,10 @@ export function TimelineRibbon({ exercise }: { exercise: Exercise }) {
   const pxPerMs = 0.18; // 180 px/sec — comfortable reading speed
   const width = maxMs * pxPerMs;
 
-  const highNote = 18;
-  const lowNote = -2;
+  // Vertical span follows the exercise's own register (any octave, flats too).
+  const midis = notes.map((n) => noteToMidi(n.pitch)).filter((m): m is number => m != null);
+  const lowNote = (midis.length ? Math.min(...midis) : 60) - 2;
+  const highNote = Math.max((midis.length ? Math.max(...midis) : 72) + 2, lowNote + 12);
 
   return (
     <div className="panel p-3">
@@ -49,7 +48,7 @@ export function TimelineRibbon({ exercise }: { exercise: Exercise }) {
           }}
         >
           {notes.map((n, i) => {
-            const semi = NOTE_TO_SEMITONE[n.pitch] ?? 7;
+            const semi = noteToMidi(n.pitch) ?? lowNote;
             const yPct = 1 - (semi - lowNote) / (highNote - lowNote);
             const left = n.startMs * pxPerMs;
             const w = n.durationMs * pxPerMs;

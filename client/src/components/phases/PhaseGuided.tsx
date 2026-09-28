@@ -10,6 +10,7 @@ import { VirtualViolin } from "../VirtualViolin";
 import { VirtualDrums } from "../VirtualDrums";
 import { SitarHero } from "../SitarHero";
 import { GenericHero } from "../GenericHero";
+import { keyboardRangeFor } from "@/lib/notes";
 
 type Pass = "listen" | "shadow" | "together" | "alone";
 
@@ -232,7 +233,10 @@ export function PhaseGuided({
       {instrument && (
         <>
           {instrument.id === "piano" && (
-            <PianoHero highlight={null} target={currentNote} upcoming={upcomingFromNow} showNoodleHints={false} />
+            <PianoHero
+              range={keyboardRangeFor(notes.map((n) => n.pitch))}
+              highlight={null} target={currentNote} upcoming={upcomingFromNow} showNoodleHints={false}
+            />
           )}
           {instrument.id === "guitar" && <VirtualGuitar showNoodleHints={false} />}
           {instrument.id === "violin" && <VirtualViolin showHints={false} />}

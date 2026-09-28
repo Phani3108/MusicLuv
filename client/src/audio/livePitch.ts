@@ -197,10 +197,17 @@ class NoteHysteresis {
 export async function startLivePitch(
   micStream: MediaStream,
   onFrame: (frame: PitchFrame) => void,
-  opts: { bufferSize?: number; medianWindow?: number; hysteresisFrames?: number } = {},
+  opts: {
+    bufferSize?: number; medianWindow?: number; hysteresisFrames?: number;
+    /** Reuse an existing context (e.g. the recorder's) instead of opening a
+     *  second one — iOS limits concurrent AudioContexts. Not closed on stop. */
+    context?: AudioContext;
+  } = {},
 ): Promise<PitchHandle> {
   const AudioCtxCtor = (window.AudioContext || (window as any).webkitAudioContext) as typeof AudioContext;
-  const ctx = new AudioCtxCtor();
+  const ownsContext = !opts.context;
+  const ctx = opts.context ?? new AudioCtxCtor();
+  if (ctx.state === "suspended") await ctx.resume().catch(() => {});
   const source = ctx.createMediaStreamSource(micStream);
   const bufferSize = opts.bufferSize ?? 2048;
 
@@ -248,7 +255,9 @@ export async function startLivePitch(
       try { processor.disconnect(); } catch { /* ignore */ }
       try { source.disconnect(); } catch { /* ignore */ }
       try { silent.disconnect(); } catch { /* ignore */ }
-      try { void ctx.close(); } catch { /* ignore */ }
+      if (ownsContext) {
+        try { void ctx.close(); } catch { /* ignore */ }
+      }
     },
   };
 }

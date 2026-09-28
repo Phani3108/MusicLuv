@@ -5,11 +5,8 @@ import { getExercise } from "@catalogs/exerciseCatalog";
 import { playPianoNote, unlockAudio, ensurePianoReady } from "@/audio/pianoSampler";
 import type { TargetNote } from "@catalogs/types";
 import type { DetectedNote } from "@/atoms/practice";
+import { noteToMidi } from "@/lib/notes";
 
-const NOTE_TO_SEMITONE: Record<string, number> = {
-  "C4": 0, "C#4": 1, "D4": 2, "D#4": 3, "E4": 4, "F4": 5, "F#4": 6,
-  "G4": 7, "G#4": 8, "A4": 9, "A#4": 10, "B4": 11, "C5": 12, "D5": 14, "E5": 16, "F5": 17, "G5": 19,
-};
 
 /**
  * Student-vs-target comparison view.
@@ -25,8 +22,42 @@ export function OverlayPlayback() {
   const audioUrl = useAtomValue(lastAttemptAudioUrlAtom);
 
   const exercise = exerciseId ? getExercise(exerciseId) : null;
-  const target: TargetNote[] = exercise?.targetPattern.notes ?? [];
-  const detected: DetectedNote[] = grade?.userNotesDetected ?? [];
+  const detectedRaw: DetectedNote[] = grade?.userNotesDetected ?? [];
+  const alignment = grade?.alignment;
+
+  // Everything is drawn on the (tempo-scaled) target clock: target times are
+  // stretched for slow/fast takes, and the learner's notes are mapped through
+  // the engine's fitted start offset + tempo so a late start doesn't look late.
+  const k = 1 / (grade?.tempoFactor || 1);
+  const target: TargetNote[] = useMemo(
+    () => (exercise?.targetPattern.notes ?? []).map((n) => ({ ...n, startMs: n.startMs * k, durationMs: n.durationMs * k })),
+    [exercise, k],
+  );
+  const detected: DetectedNote[] = useMemo(() => {
+    if (!alignment) return detectedRaw;
+    const a = alignment.tempoRatio || 1;
+    const b = alignment.startOffsetMs || 0;
+    return detectedRaw.map((n) => ({ ...n, startMs: (n.startMs - b) / a, durationMs: n.durationMs / a }));
+  }, [detectedRaw, alignment]);
+
+  // Target ↔ detected pairs: the engine's alignment path when we have one
+  // (index pairing drifts after a single missed or extra note).
+  const pairs: Array<[number, number]> = useMemo(() => {
+    if (alignment?.path) return alignment.path.filter(([ti, ui]) => ti >= 0 && ui >= 0);
+    return target.map((_, i) => [i, i] as [number, number]).filter(([, ui]) => ui < detected.length);
+  }, [alignment, target, detected.length]);
+
+  /** Signed cents of detected[ui] against the target note it was paired with. */
+  const pairedCents = useMemo(() => {
+    const out = new Map<number, number>();
+    for (const [ti, ui] of pairs) {
+      const t = noteToMidi(target[ti]?.pitch);
+      const d = detected[ui];
+      const u = d?.hz ? 69 + 12 * Math.log2(d.hz / 440) : (noteToMidi(d?.pitch) ?? NaN) + (d?.centsOff ?? 0) / 100;
+      if (t != null && Number.isFinite(u)) out.set(ui, Math.round((u - t) * 100));
+    }
+    return out;
+  }, [pairs, target, detected]);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -41,12 +72,18 @@ export function OverlayPlayback() {
   const pxPerMs = 0.18; // same tempo-read rate as the timeline ribbon
   const width = Math.max(800, maxMs * pxPerMs + 40);
 
+  // Recording time ↔ target-clock time, via the engine's offset + tempo fit.
+  const toTargetMs = (takeMs: number) =>
+    alignment ? (takeMs - (alignment.startOffsetMs || 0)) / (alignment.tempoRatio || 1) : takeMs;
+  const toTakeMs = (targetMs: number) =>
+    alignment ? targetMs * (alignment.tempoRatio || 1) + (alignment.startOffsetMs || 0) : targetMs;
+
+  const semiOf = (pitch: string) => noteToMidi(pitch) ?? 67;
   const semitones = useMemo(() => {
-    const all = [...target.map((n) => n.pitch), ...detected.map((n) => n.pitch)];
-    const semis = all.map((p) => NOTE_TO_SEMITONE[p] ?? 7);
+    const semis = [...target.map((n) => n.pitch), ...detected.map((n) => n.pitch)].map(semiOf);
     return {
-      min: Math.min(...semis, 0) - 2,
-      max: Math.max(...semis, 12) + 2,
+      min: Math.min(...semis, 60) - 2,
+      max: Math.max(...semis, 72) + 2,
     };
   }, [target, detected]);
 
@@ -61,7 +98,7 @@ export function OverlayPlayback() {
       audioRef.current = new Audio(audioUrl);
       audioRef.current.onended = () => { setPlaying(false); setPlayheadMs(0); };
       audioRef.current.ontimeupdate = () => {
-        if (audioRef.current) setPlayheadMs(Math.round(audioRef.current.currentTime * 1000));
+        if (audioRef.current) setPlayheadMs(Math.round(toTargetMs(audioRef.current.currentTime * 1000)));
       };
     }
     if (playing) {
@@ -128,7 +165,7 @@ export function OverlayPlayback() {
               const ms = Math.max(0, Math.round(x / pxPerMs));
               setPlayheadMs(ms);
               if (audioRef.current) {
-                audioRef.current.currentTime = ms / 1000;
+                audioRef.current.currentTime = Math.max(0, toTakeMs(ms) / 1000);
               }
             }}
           >
@@ -152,7 +189,7 @@ export function OverlayPlayback() {
             {/* Target notes — top lane */}
             <g transform="translate(20, 20)">
               {target.map((n, i) => {
-                const semi = NOTE_TO_SEMITONE[n.pitch] ?? 7;
+                const semi = semiOf(n.pitch);
                 const x = n.startMs * pxPerMs;
                 const w = Math.max(n.durationMs * pxPerMs, 4);
                 const y = semiToY(semi, laneH);
@@ -170,12 +207,14 @@ export function OverlayPlayback() {
             {/* Student notes — bottom lane */}
             <g transform={`translate(20, ${laneH + 36})`}>
               {detected.map((n, i) => {
-                const semi = NOTE_TO_SEMITONE[n.pitch] ?? 7;
+                const semi = semiOf(n.pitch);
                 const x = n.startMs * pxPerMs;
                 const w = Math.max(n.durationMs * pxPerMs, 4);
                 const y = semiToY(semi, laneH);
-                const cents = Math.abs(n.centsOff ?? 0);
-                const fill = cents < 15 ? "rgba(52,211,153,0.85)"
+                const paired = pairedCents.get(i);
+                const cents = Math.abs(paired ?? n.centsOff ?? 0);
+                const fill = paired == null && alignment ? "rgba(255,255,255,0.3)"   // extra note
+                           : cents < 15 ? "rgba(52,211,153,0.85)"
                            : cents < 35 ? "rgba(251,191,36,0.85)"
                            : "rgba(251,113,133,0.85)";
                 return (
@@ -191,16 +230,17 @@ export function OverlayPlayback() {
 
             {/* Diff lines connecting target[i] → detected[i] when indices align */}
             <g transform="translate(20, 0)">
-              {target.map((t, i) => {
-                const s = detected[i];
-                if (!s) return null;
-                const semiT = NOTE_TO_SEMITONE[t.pitch] ?? 7;
-                const semiS = NOTE_TO_SEMITONE[s.pitch] ?? 7;
+              {pairs.map(([ti, ui], i) => {
+                const t = target[ti];
+                const s = detected[ui];
+                if (!t || !s) return null;
+                const semiT = semiOf(t.pitch);
+                const semiS = semiOf(s.pitch);
                 const x1 = t.startMs * pxPerMs;
                 const x2 = s.startMs * pxPerMs;
                 const y1 = 20 + semiToY(semiT, laneH);
                 const y2 = laneH + 36 + semiToY(semiS, laneH);
-                const drift = Math.abs((s.startMs - t.startMs)) + Math.abs(s.centsOff ?? 0);
+                const drift = Math.abs((s.startMs - t.startMs)) + Math.abs(pairedCents.get(ui) ?? 0);
                 const stroke = drift < 30 ? "rgba(52,211,153,0.35)" : drift < 80 ? "rgba(251,191,36,0.45)" : "rgba(251,113,133,0.55)";
                 return <line key={`d${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} strokeWidth={1} strokeDasharray="2 2" />;
               })}

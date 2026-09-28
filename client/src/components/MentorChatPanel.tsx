@@ -38,11 +38,14 @@ export function MentorChatPanel() {
 
     // Try real backend first
     if (serverOn) {
-      const recent = lastGrade
+      const weakest = Object.entries(lastGrade?.dimensions ?? {})
+        .filter((e): e is [string, number] => e[1] != null)
+        .sort(([, a], [, b]) => a - b)[0]?.[0];
+      const recent = lastGrade && weakest
         ? [{
             lessonTitle: lesson?.title,
             composite: lastGrade.composite,
-            weakestDim: Object.entries(lastGrade.dimensions).sort(([, a], [, b]) => a - b)[0][0],
+            weakestDim: weakest,
             at: new Date().toISOString(),
           }]
         : undefined;
