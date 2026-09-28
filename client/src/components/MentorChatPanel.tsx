@@ -53,6 +53,7 @@ export function MentorChatPanel() {
         const reply = await sendMentorMessage({
           mentor,
           userName: user?.displayName,
+          lessonId: lesson?.id,
           lesson: lesson
             ? { title: lesson.title, level: lesson.level, tier: lesson.tier, objectives: lesson.objectives }
             : undefined,

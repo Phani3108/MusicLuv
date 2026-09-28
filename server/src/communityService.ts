@@ -104,6 +104,9 @@ export function createAssignment(a: TeacherAssignment): TeacherAssignment {
   saveAssignments(all);
   return a;
 }
+export function getAssignment(id: string): TeacherAssignment | null {
+  return loadAssignments().find((a) => a.id === id) ?? null;
+}
 export function updateAssignmentStatus(id: string, status: TeacherAssignment["status"]): TeacherAssignment | null {
   const all = loadAssignments();
   const target = all.find((a) => a.id === id);

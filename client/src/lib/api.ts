@@ -184,6 +184,8 @@ export async function realGrade(
 export interface MentorMessageOpts {
   mentor: Mentor;
   userName?: string;
+  /** The server looks the lesson up itself; client-supplied lesson text is not trusted. */
+  lessonId?: string;
   lesson?: { title: string; level: number; tier: "standard" | "pro" | "genius"; objectives: string[] };
   recent?: Array<{ lessonTitle?: string; composite: number; weakestDim: string; at: string }>;
   message: string;
@@ -210,6 +212,7 @@ export async function sendMentorMessage(opts: MentorMessageOpts): Promise<Mentor
       registerPrompt: opts.mentor.registerPrompt,
     },
     userName: opts.userName,
+    lessonId: opts.lessonId,
     lesson: opts.lesson,
     recent: opts.recent,
     message: opts.message,

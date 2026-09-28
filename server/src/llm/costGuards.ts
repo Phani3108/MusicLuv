@@ -1,10 +1,15 @@
 /**
- * LLM cost guards — per-user tokens/day + per-user reqs/min + per-mentor concurrency.
- * Ported from 3DWorld/server/llm/costGuards.js. In-memory; restart resets.
+ * LLM cost guards — global tokens/day + per-user tokens/day + per-user
+ * reqs/min + per-mentor concurrency. Ported from 3DWorld/server/llm/costGuards.js.
+ * In-memory; restart resets. The global cap is what bounds the bill: per-user
+ * limits alone are only as strong as the identity behind them.
  */
 const PER_USER_TOKENS_PER_DAY = 50_000;
 const PER_USER_REQS_PER_MIN = 20;
 const PER_MENTOR_CONCURRENT = 2;
+const GLOBAL_TOKENS_PER_DAY = () => Number(process.env.LLM_GLOBAL_TOKENS_PER_DAY || 2_000_000);
+
+let globalUsage = { day: "", tokens: 0 };
 
 interface UserEntry {
   day: string;
@@ -36,8 +41,18 @@ export type SpendCheck =
   | { ok: true }
   | { ok: false; reason: string; retryAfterMs?: number };
 
+const globalEntry = () => {
+  const day = todayKey();
+  if (globalUsage.day !== day) globalUsage = { day, tokens: 0 };
+  return globalUsage;
+};
+
 export const canSpend = (userId: string, mentorId: string): SpendCheck => {
   if (!userId) return { ok: false, reason: "no_user" };
+  if (globalEntry().tokens >= GLOBAL_TOKENS_PER_DAY()) {
+    const msToMidnight = 24 * 3600 * 1000 - (Date.now() % (24 * 3600 * 1000));
+    return { ok: false, reason: "global_daily_tokens", retryAfterMs: msToMidnight };
+  }
   const s = getUserEntry(userId);
 
   if (s.tokens >= PER_USER_TOKENS_PER_DAY) {
@@ -69,11 +84,14 @@ export const beginRequest = (userId: string, mentorId: string) => {
     else mentorInflight.set(mentorId, n - 1);
     if (typeof tokensSpent === "number" && tokensSpent > 0) {
       s.tokens += tokensSpent;
+      globalEntry().tokens += tokensSpent;
     }
   };
 };
 
 export const guardStats = () => ({
+  globalTokensDaily: GLOBAL_TOKENS_PER_DAY(),
+  globalTokensUsedToday: globalEntry().tokens,
   perUserTokensDaily: PER_USER_TOKENS_PER_DAY,
   perUserReqsPerMin: PER_USER_REQS_PER_MIN,
   perMentorConcurrent: PER_MENTOR_CONCURRENT,

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { registerRoutes } from "./httpRoutes.js";
-import { authMiddleware } from "./authMiddleware.js";
+import { assertAuthConfig, authMiddleware } from "./authMiddleware.js";
 import { captureError } from "./observability.js";
 import { applyMigrations } from "./persistence/migrate.js";
 import { startDigestScheduler } from "./digestScheduler.js";
@@ -50,6 +50,9 @@ const PORT = Number(process.env.PORT || 8000);
 // forget — it won't block boot if Resend or the in-memory user
 // directory aren't ready yet.
 async function boot(): Promise<void> {
+  // Throws (and the process exits) if production can't verify identities.
+  assertAuthConfig();
+
   if ((process.env.PERSISTENCE_DRIVER || "").toLowerCase() === "postgres") {
     try {
       const result = await applyMigrations();
@@ -69,4 +72,7 @@ async function boot(): Promise<void> {
   });
 }
 
-void boot();
+boot().catch((err) => {
+  console.error("[musicluv-server] refusing to start:", (err as Error).message);
+  process.exit(1);
+});

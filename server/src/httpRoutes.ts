@@ -1,16 +1,19 @@
 import type { Express, Request, Response } from "express";
+import fs from "node:fs";
+import path from "node:path";
 import multer from "multer";
 import { proxyGrade, audioEngineHealth, renderReferenceAudio } from "./gradingClient.js";
 import { LESSONS } from "@catalogs/lessonCatalog";
 import { EXERCISES } from "@catalogs/exerciseCatalog";
-import { answerAsMentor, cannedMentorLine } from "./llm/mentorService.js";
+import { getMentor } from "@catalogs/mentorCatalog";
+import { answerAsMentor, cannedMentorLine, type MentorPersona, type RecentAttemptSummary } from "./llm/mentorService.js";
 import { getProgress, recordAttempt, updateProgress } from "./progressStore.js";
-import { listProviders } from "./llm/providerCatalog.js";
+import { getActiveProvider, listProviders } from "./llm/providerCatalog.js";
 import { guardStats } from "./llm/costGuards.js";
 import { memoryStats } from "./llm/memoryStore.js";
 import { createRateLimiter } from "./rateLimiter.js";
 import {
-  getSubscription, setSubscription, createCheckoutSession,
+  getSubscription, createCheckoutSession,
   handleStripeWebhook, verifyIapReceipt, cancelSubscription,
   createConnectAccountLink,
 } from "./billingService.js";
@@ -18,7 +21,7 @@ import type { PlanTier } from "@catalogs/planCatalog";
 import {
   listPublicRecitals, listRecitalsForUser, createRecital, likeRecital,
   listComments, addComment, getProfile, upsertProfile,
-  listAssignmentsForTeacher, listAssignmentsForStudent, createAssignment, updateAssignmentStatus,
+  listAssignmentsForTeacher, listAssignmentsForStudent, createAssignment, getAssignment, updateAssignmentStatus,
   listCreatorLessonsFor, submitCreatorLesson, reviewCreatorLesson,
   listProctoredForUser, scheduleProctored, completeProctored,
   listAvailableLiveSlots, listLiveSlotsForTeacher, bookLiveSlot,
@@ -48,16 +51,20 @@ import {
   sendCertEarnedEmail,
   sendCommunityReplyEmail,
   sendProctorConfirmationEmail,
-  sendPasswordResetEmail,
   captureError,
 } from "./observability.js";
-import { randomBytes } from "node:crypto";
+import { dataPath } from "./persistence.js";
+import { isAdmin, requireAdmin, requireSelfOrAdmin, requireUser } from "./authz.js";
+import { isFeatureEnabled } from "./features.js";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
 
 // Generous rate limits for dev; tighten in prod.
-const gradeLimiter = createRateLimiter(60, 60_000);    // 60/min/user
+const gradeLimiter = createRateLimiter(60, 60_000);    // 60/min/caller
 const mentorLimiter = createRateLimiter(30, 60_000);   // 30/min/user
+
+const MAX_MENTOR_MESSAGE_CHARS = 2_000;
+const GRADED_DIMENSIONS = new Set(["pitch", "rhythm", "tone", "dynamics", "consistency"]);
 
 export function registerRoutes(app: Express): void {
   // ── Monetization gate ──────────────────────────────────────────────
@@ -68,20 +75,16 @@ export function registerRoutes(app: Express): void {
   });
 
   app.post("/api/v1/monetization/admin/activate", (req, res) => {
-    const adminToken = (req.headers["x-admin-token"] as string) || "";
-    if (!process.env.ADMIN_TOKEN || adminToken !== process.env.ADMIN_TOKEN) {
-      return res.status(403).json({ ok: false, error: "forbidden" });
-    }
+    if (!requireAdmin(req, res)) return;
     const state = manuallyActivateMonetization();
     res.json({ ok: true, state });
   });
 
-  // Convenience: every authenticated request can register the user via this
-  // POST (called by the client on login / onboarding completion). Safe to
-  // call multiple times — idempotent.
+  // Count an identified user toward the launch cap. Anonymous callers can't
+  // register, so the cap can't be exhausted with made-up ids. Idempotent.
   app.post("/api/v1/monetization/seen", (req, res) => {
-    const userId = (req.headers["x-user-id"] as string) || "anon";
-    if (userId === "anon") return res.json({ ok: false, error: "no_user" });
+    const userId = requireUser(req, res);
+    if (!userId) return;
     const state = recordUserSeen(userId);
     res.json({ ok: true, userCount: state.userCount, active: isMonetizationActive() });
   });
@@ -90,39 +93,22 @@ export function registerRoutes(app: Express): void {
   // calls this on login / onboarding completion so subsequent transactional
   // emails (cert, billing, weekly digest) can find the user. Idempotent.
   app.post("/api/v1/users/identify", (req, res) => {
-    const userId = req.user?.id || (req.headers["x-user-id"] as string);
-    if (!userId || userId === "anon") return res.status(400).json({ ok: false, error: "no_user" });
+    const userId = requireUser(req, res);
+    if (!userId) return;
     const { email, displayName } = req.body ?? {};
     const result = identify({
       userId,
-      email: email ?? req.user?.email,
+      // A verified token's email wins; the body can't redirect someone's mail.
+      email: req.user?.verified ? req.user.email : (email ?? req.user?.email),
       displayName,
     });
     res.json({ ok: true, isNewUser: result.isNewUser });
   });
 
-  // Password reset request. Generates a one-time token + sends the
-  // reset email. Token is signed with SUPABASE_JWT_SECRET (or APP_SECRET
-  // fallback) and expires in 30 min. The actual reset is performed by
-  // Supabase's auth flow — this endpoint exists so MusicLuv-branded
-  // email lands instead of Supabase's default template.
-  app.post("/api/v1/auth/password-reset", (req, res) => {
-    const { email } = req.body ?? {};
-    if (!email || typeof email !== "string") {
-      return res.status(400).json({ ok: false, error: "missing_email" });
-    }
-    // Always 200 so we don't leak which emails are registered.
-    const expiresMin = 30;
-    const token = randomBytes(24).toString("base64url");
-    const appUrl = process.env.APP_URL || "https://musicluv.app";
-    const resetUrl = `${appUrl}/auth/reset?token=${token}&email=${encodeURIComponent(email)}`;
-    void sendPasswordResetEmail(email, { resetUrl, expiresMinutes: expiresMin });
-    res.json({ ok: true });
-  });
-
   // ── Health ─────────────────────────────────────────────────────────
   app.get("/api/v1/health", async (_req, res) => {
     const engine = await audioEngineHealth();
+    const active = getActiveProvider();
     res.json({
       ok: true,
       service: "musicluv-server",
@@ -130,7 +116,7 @@ export function registerRoutes(app: Express): void {
       audioEngine: engine,
       llm: {
         providers: listProviders(),
-        active: listProviders().find((p) => p.id === (process.env.LLM_PROVIDER || "auto")) || listProviders()[0],
+        active: { id: active.id, model: active.model },
       },
       guards: guardStats(),
       memory: memoryStats(),
@@ -138,10 +124,12 @@ export function registerRoutes(app: Express): void {
   });
 
   // ── Grade proxy ────────────────────────────────────────────────────
+  // Anonymous grading is allowed (demo lessons); attempts are only recorded
+  // against an identified user.
   app.post("/api/v1/grade", upload.single("audio"), async (req: Request, res: Response) => {
-    const userId = (req.headers["x-user-id"] as string) || "anon";
-    if (gradeLimiter(userId)) return res.status(429).json({ ok: false, error: "rate_limited" });
-    if (userId !== "anon") recordUserSeen(userId);
+    const userId = req.user?.id;
+    if (gradeLimiter(userId ?? `ip:${req.ip}`)) return res.status(429).json({ ok: false, error: "rate_limited" });
+    if (userId) recordUserSeen(userId);
     if (!req.file) return res.status(400).json({ ok: false, error: "no_audio" });
     if (!req.body?.meta) return res.status(400).json({ ok: false, error: "no_meta" });
 
@@ -149,7 +137,7 @@ export function registerRoutes(app: Express): void {
       const { status, body } = await proxyGrade(req.file.buffer, req.file.originalname || "attempt.wav", req.body.meta);
 
       // Side-effect: persist the attempt against the user + instrument.
-      if (status === 200 && body.composite != null && body.dimensions && body.passed != null) {
+      if (userId && status === 200 && body.composite != null && body.dimensions && body.passed != null) {
         try {
           const meta = JSON.parse(req.body.meta);
           const instrumentId = meta.instrumentId || "piano";
@@ -173,17 +161,46 @@ export function registerRoutes(app: Express): void {
   });
 
   // ── Mentor chat ────────────────────────────────────────────────────
-  // Client sends the mentor persona + optional lesson context; we wrap LLM
-  // calls with cost guards + per-(mentor,user) memory.
+  // The persona and lesson context come from the server's own catalogs —
+  // never from the request body, which would let any caller rewrite the
+  // system prompt and use the endpoint as a free general-purpose LLM.
   app.post("/api/v1/mentor/message", async (req: Request, res: Response) => {
-    const userId = (req.headers["x-user-id"] as string) || "anon";
+    const userId = requireUser(req, res);
+    if (!userId) return;
     if (mentorLimiter(userId)) return res.status(429).json({ ok: false, error: "rate_limited" });
-    if (userId !== "anon") recordUserSeen(userId);
+    recordUserSeen(userId);
 
-    const { mentor, userName, lesson, recent, message } = req.body ?? {};
-    if (!mentor?.id || !message) return res.status(400).json({ ok: false, error: "missing_fields" });
+    const { mentor: mentorRef, lessonId, recent, message, userName } = req.body ?? {};
+    const catalogMentor = typeof mentorRef?.id === "string" ? getMentor(mentorRef.id) : undefined;
+    if (!catalogMentor) return res.status(400).json({ ok: false, error: "unknown_mentor" });
+    if (typeof message !== "string" || !message.trim()) return res.status(400).json({ ok: false, error: "missing_message" });
+    if (message.length > MAX_MENTOR_MESSAGE_CHARS) return res.status(413).json({ ok: false, error: "message_too_long" });
 
-    const reply = await answerAsMentor({ mentor, userId, userName, lesson, recent, message });
+    const mentor: MentorPersona = {
+      id: catalogMentor.id,
+      name: catalogMentor.name,
+      bio: catalogMentor.bio,
+      expertise: [...catalogMentor.instrumentExpertise, ...catalogMentor.styleExpertise],
+      defaultLines: catalogMentor.defaultLines,
+      registerPrompt: catalogMentor.registerPrompt,
+    };
+    const lessonDoc = typeof lessonId === "string" ? LESSONS[lessonId] : undefined;
+    const lesson = lessonDoc
+      ? { title: lessonDoc.title, level: lessonDoc.level, tier: lessonDoc.tier, objectives: lessonDoc.objectives }
+      : undefined;
+    const recentSafe: RecentAttemptSummary[] | undefined = Array.isArray(recent)
+      ? recent.slice(0, 3).map((r: any) => ({
+          composite: Math.max(0, Math.min(1, Number(r?.composite) || 0)),
+          weakestDim: GRADED_DIMENSIONS.has(r?.weakestDim) ? r.weakestDim : "pitch",
+          at: new Date().toISOString(),
+        }))
+      : undefined;
+
+    const reply = await answerAsMentor({
+      mentor, userId,
+      userName: typeof userName === "string" ? userName.slice(0, 60) : undefined,
+      lesson, recent: recentSafe, message,
+    });
     if (reply.ok) {
       res.json(reply);
     } else {
@@ -198,24 +215,31 @@ export function registerRoutes(app: Express): void {
 
   // ── Progress ───────────────────────────────────────────────────────
   app.get("/api/v1/progress", (req: Request, res: Response) => {
-    const userId = (req.headers["x-user-id"] as string) || "anon";
+    const userId = requireUser(req, res);
+    if (!userId) return;
     res.json({ ok: true, progress: getProgress(userId) });
   });
 
+  // Progress is derived from graded attempts; direct writes are an operator
+  // tool (support fixes, migrations), not something a client can do to itself.
   app.post("/api/v1/progress", (req: Request, res: Response) => {
-    const userId = (req.headers["x-user-id"] as string) || "anon";
+    if (!requireAdmin(req, res)) return;
+    const userId = String(req.query.userId ?? "");
+    if (!userId) return res.status(400).json({ ok: false, error: "missing_userId" });
     const next = updateProgress(userId, req.body ?? {});
     res.json({ ok: true, progress: next });
   });
 
   // ── Billing ────────────────────────────────────────────────────────
   app.get("/api/v1/billing/subscription", (req, res) => {
-    const userId = (req.headers["x-user-id"] as string) || "anon";
+    const userId = requireUser(req, res);
+    if (!userId) return;
     res.json({ ok: true, subscription: getSubscription(userId) });
   });
 
   app.post("/api/v1/billing/checkout", async (req, res) => {
-    const userId = (req.headers["x-user-id"] as string) || "anon";
+    const userId = requireUser(req, res);
+    if (!userId) return;
     const { planId, cycle } = req.body as { planId: PlanTier; cycle: "monthly" | "yearly" };
     try {
       const session = await createCheckoutSession(userId, planId, cycle);
@@ -226,7 +250,8 @@ export function registerRoutes(app: Express): void {
   });
 
   app.post("/api/v1/billing/iap/verify", async (req, res) => {
-    const userId = (req.headers["x-user-id"] as string) || "anon";
+    const userId = requireUser(req, res);
+    if (!userId) return;
     const { provider, receipt, planId } = req.body as { provider: "appstore" | "playstore"; receipt: string; planId: PlanTier };
     try {
       const record = await verifyIapReceipt(userId, provider, receipt, planId);
@@ -237,7 +262,8 @@ export function registerRoutes(app: Express): void {
   });
 
   app.post("/api/v1/billing/cancel", async (req, res) => {
-    const userId = (req.headers["x-user-id"] as string) || "anon";
+    const userId = requireUser(req, res);
+    if (!userId) return;
     const record = await cancelSubscription(userId);
     res.json({ ok: true, subscription: record });
   });
@@ -250,303 +276,340 @@ export function registerRoutes(app: Express): void {
     void handleStripeWebhook(req, res);
   });
 
-  // ── Community · Recitals + comments ───────────────────────────────
-  app.get("/api/v1/recitals", (req, res) => {
-    const { userId } = req.query as { userId?: string };
-    res.json({ ok: true, recitals: userId ? listRecitalsForUser(userId) : listPublicRecitals() });
-  });
-  app.post("/api/v1/recitals", (req, res) => {
-    const record = req.body;
-    res.json({ ok: true, recital: createRecital(record) });
-  });
-  app.post("/api/v1/recitals/:id/like", (req, res) => {
-    const r = likeRecital(req.params.id);
-    if (!r) return res.status(404).json({ ok: false });
-    res.json({ ok: true, recital: r });
-  });
-  app.get("/api/v1/recitals/:id/comments", (req, res) => {
-    res.json({ ok: true, comments: listComments(req.params.id) });
-  });
-  app.post("/api/v1/recitals/:id/comments", (req, res) => {
-    const comment = { ...req.body, recitalId: req.params.id };
-    const saved = addComment(comment);
+  // ── Community · Recitals, comments, profiles ──────────────────────
+  if (isFeatureEnabled("community")) {
+    app.get("/api/v1/recitals", (req, res) => {
+      const { userId } = req.query as { userId?: string };
+      res.json({ ok: true, recitals: userId ? listRecitalsForUser(userId) : listPublicRecitals() });
+    });
+    app.post("/api/v1/recitals", (req, res) => {
+      const userId = requireUser(req, res);
+      if (!userId) return;
+      res.json({ ok: true, recital: createRecital({ ...req.body, userId }) });
+    });
+    app.post("/api/v1/recitals/:id/like", (req, res) => {
+      if (!requireUser(req, res)) return;
+      const r = likeRecital(req.params.id);
+      if (!r) return res.status(404).json({ ok: false });
+      res.json({ ok: true, recital: r });
+    });
+    app.get("/api/v1/recitals/:id/comments", (req, res) => {
+      res.json({ ok: true, comments: listComments(req.params.id) });
+    });
+    app.post("/api/v1/recitals/:id/comments", (req, res) => {
+      const userId = requireUser(req, res);
+      if (!userId) return;
+      const comment = { ...req.body, userId, recitalId: req.params.id };
+      const saved = addComment(comment);
 
-    // Notify the recital owner (if it's not them commenting on their own).
-    try {
-      const recital = listPublicRecitals().find((r) => r.id === req.params.id);
-      if (recital && recital.userId !== saved.userId) {
-        const owner = getUser(recital.userId);
-        if (owner?.email) {
+      // Notify the recital owner (if it's not them commenting on their own).
+      try {
+        const recital = listPublicRecitals().find((r) => r.id === req.params.id);
+        if (recital && recital.userId !== saved.userId) {
+          const owner = getUser(recital.userId);
+          if (owner?.email) {
+            const appUrl = process.env.APP_URL || "https://musicluv.app";
+            void sendCommunityReplyEmail(owner.email, {
+              recipientName: owner.displayName ?? "there",
+              replierName: saved.displayName,
+              recitalTitle: recital.title,
+              replyExcerpt: saved.text,
+              threadUrl: `${appUrl}/recitals/${recital.id}`,
+            });
+          }
+        }
+      } catch (e) {
+        captureError(e as Error, { where: "recitals.comments.notify" });
+      }
+
+      res.json({ ok: true, comment: saved });
+    });
+
+    app.get("/api/v1/profiles/:userId", (req, res) => {
+      const p = getProfile(req.params.userId);
+      if (!p) return res.status(404).json({ ok: false });
+      res.json({ ok: true, profile: p });
+    });
+    app.put("/api/v1/profiles/:userId", (req, res) => {
+      if (!requireSelfOrAdmin(req, res, req.params.userId)) return;
+      res.json({ ok: true, profile: upsertProfile({ ...req.body, userId: req.params.userId }) });
+    });
+  }
+
+  // ── Community · Teacher assignments ───────────────────────────────
+  if (isFeatureEnabled("teacher")) {
+    app.get("/api/v1/teacher/:teacherId/assignments", (req, res) => {
+      if (!requireSelfOrAdmin(req, res, req.params.teacherId)) return;
+      res.json({ ok: true, assignments: listAssignmentsForTeacher(req.params.teacherId) });
+    });
+    app.get("/api/v1/student/:studentId/assignments", (req, res) => {
+      if (!requireSelfOrAdmin(req, res, req.params.studentId)) return;
+      res.json({ ok: true, assignments: listAssignmentsForStudent(req.params.studentId) });
+    });
+    app.post("/api/v1/teacher/assignments", (req, res) => {
+      const teacherId = requireUser(req, res);
+      if (!teacherId) return;
+      res.json({ ok: true, assignment: createAssignment({ ...req.body, teacherId }) });
+    });
+    app.patch("/api/v1/teacher/assignments/:id", (req, res) => {
+      const userId = requireUser(req, res);
+      if (!userId) return;
+      const existing = getAssignment(req.params.id);
+      if (!existing) return res.status(404).json({ ok: false });
+      if (!isAdmin(req) && userId !== existing.teacherId && userId !== existing.studentId) {
+        return res.status(403).json({ ok: false, error: "forbidden" });
+      }
+      const updated = updateAssignmentStatus(req.params.id, req.body.status);
+      if (!updated) return res.status(404).json({ ok: false });
+      res.json({ ok: true, assignment: updated });
+    });
+  }
+
+  // ── Community · Creator portal ────────────────────────────────────
+  if (isFeatureEnabled("creator")) {
+    app.get("/api/v1/creator/:creatorId/lessons", (req, res) => {
+      if (!requireSelfOrAdmin(req, res, req.params.creatorId)) return;
+      res.json({ ok: true, lessons: listCreatorLessonsFor(req.params.creatorId) });
+    });
+    app.post("/api/v1/creator/lessons", (req, res) => {
+      const creatorId = requireUser(req, res);
+      if (!creatorId) return;
+      res.json({ ok: true, lesson: submitCreatorLesson({ ...req.body, creatorId }) });
+    });
+    // Publishing is an editorial decision — reviewers only.
+    app.patch("/api/v1/creator/lessons/:id/review", (req, res) => {
+      if (!requireAdmin(req, res)) return;
+      const updated = reviewCreatorLesson(req.params.id, req.body.status);
+      if (!updated) return res.status(404).json({ ok: false });
+      res.json({ ok: true, lesson: updated });
+    });
+    app.post("/api/v1/creator/stripe-connect", async (req, res) => {
+      const userId = requireUser(req, res);
+      if (!userId) return;
+      const email = req.user?.email || (req.body?.email as string);
+      try {
+        const result = await createConnectAccountLink(userId, email);
+        res.json({ ok: true, ...result });
+      } catch (e) {
+        res.status(500).json({ ok: false, error: (e as Error).message });
+      }
+    });
+  }
+
+  // ── Community · Proctored exams ───────────────────────────────────
+  if (isFeatureEnabled("proctored")) {
+    app.get("/api/v1/proctored/:userId", (req, res) => {
+      if (!requireSelfOrAdmin(req, res, req.params.userId)) return;
+      res.json({ ok: true, sessions: listProctoredForUser(req.params.userId) });
+    });
+    app.post("/api/v1/proctored/schedule", async (req, res) => {
+      const userId = requireUser(req, res);
+      if (!userId) return;
+      // Create the Zoom meeting automatically so the learner has a real
+      // join URL in their confirmation. Falls back to pending placeholder
+      // when Zoom isn't configured — the honest state is surfaced as
+      // stub:true in the response so the client toast can be accurate.
+      const payload = { ...(req.body ?? {}), userId };
+      let videoUrl: string | undefined = payload.videoUrl;
+      let stub = false;
+      if (!videoUrl && payload.scheduledAt) {
+        const { meeting, stub: isStub } = await createZoomMeeting({
+          topic: `Proctored exam · ${payload.instrumentId} · ${payload.tier}`,
+          startAt: payload.scheduledAt,
+          durationMin: payload.tier === "genius" ? 90 : payload.tier === "pro" ? 45 : 20,
+          agenda: `MusicLuv proctored ${payload.tier} certificate exam for ${payload.instrumentId}.`,
+        });
+        videoUrl = meeting?.joinUrl;
+        stub = isStub;
+      }
+      const session = scheduleProctored({ ...payload, videoUrl });
+
+      // Confirmation email — only if we have the user's email + a real
+      // join URL (no point sending a placeholder Zoom link).
+      const user = getUser(session.userId);
+      if (user?.email && session.videoUrl) {
+        void sendProctorConfirmationEmail(user.email, {
+          instrument: session.instrumentId,
+          tier: session.tier,
+          scheduledAt: new Date(session.scheduledAt).toLocaleString(),
+          meetingUrl: session.videoUrl,
+        });
+      }
+
+      res.json({ ok: true, session, zoomConfigured: isZoomConfigured(), stub });
+    });
+    // Marking an exam passed issues a certificate — proctors (admin) only.
+    app.patch("/api/v1/proctored/:id/complete", (req, res) => {
+      if (!requireAdmin(req, res)) return;
+      const updated = completeProctored(req.params.id, req.body.status, req.body.proctorNotes);
+      if (!updated) return res.status(404).json({ ok: false });
+
+      // Cert-earned email + XP grant on a passed proctored exam. Tier-cert
+      // XP rewards: standard=500, pro=1500, genius=5000 (rough mirror of
+      // tierCatalog thresholds; finer numbers when we wire that in).
+      if (updated.status === "passed") {
+        const xpAwarded = updated.tier === "genius" ? 5000 : updated.tier === "pro" ? 1500 : 500;
+        const user = getUser(updated.userId);
+        if (user?.email) {
           const appUrl = process.env.APP_URL || "https://musicluv.app";
-          void sendCommunityReplyEmail(owner.email, {
-            recipientName: owner.displayName ?? "there",
-            replierName: saved.displayName,
-            recitalTitle: recital.title,
-            replyExcerpt: saved.text,
-            threadUrl: `${appUrl}/recitals/${recital.id}`,
+          void sendCertEarnedEmail(user.email, {
+            displayName: user.displayName ?? "there",
+            instrument: updated.instrumentId,
+            tier: updated.tier,
+            certificateUrl: `${appUrl}/cert/${updated.id}`,
+            xpAwarded,
           });
         }
       }
-    } catch (e) {
-      captureError(e as Error, { where: "recitals.comments.notify" });
-    }
 
-    res.json({ ok: true, comment: saved });
-  });
-
-  // ── Community · Profiles ──────────────────────────────────────────
-  app.get("/api/v1/profiles/:userId", (req, res) => {
-    const p = getProfile(req.params.userId);
-    if (!p) return res.status(404).json({ ok: false });
-    res.json({ ok: true, profile: p });
-  });
-  app.put("/api/v1/profiles/:userId", (req, res) => {
-    res.json({ ok: true, profile: upsertProfile({ ...req.body, userId: req.params.userId }) });
-  });
-
-  // ── Community · Teacher assignments ───────────────────────────────
-  app.get("/api/v1/teacher/:teacherId/assignments", (req, res) => {
-    res.json({ ok: true, assignments: listAssignmentsForTeacher(req.params.teacherId) });
-  });
-  app.get("/api/v1/student/:studentId/assignments", (req, res) => {
-    res.json({ ok: true, assignments: listAssignmentsForStudent(req.params.studentId) });
-  });
-  app.post("/api/v1/teacher/assignments", (req, res) => {
-    res.json({ ok: true, assignment: createAssignment(req.body) });
-  });
-  app.patch("/api/v1/teacher/assignments/:id", (req, res) => {
-    const updated = updateAssignmentStatus(req.params.id, req.body.status);
-    if (!updated) return res.status(404).json({ ok: false });
-    res.json({ ok: true, assignment: updated });
-  });
-
-  // ── Community · Creator portal ────────────────────────────────────
-  app.get("/api/v1/creator/:creatorId/lessons", (req, res) => {
-    res.json({ ok: true, lessons: listCreatorLessonsFor(req.params.creatorId) });
-  });
-  app.post("/api/v1/creator/lessons", (req, res) => {
-    res.json({ ok: true, lesson: submitCreatorLesson(req.body) });
-  });
-  app.patch("/api/v1/creator/lessons/:id/review", (req, res) => {
-    const updated = reviewCreatorLesson(req.params.id, req.body.status);
-    if (!updated) return res.status(404).json({ ok: false });
-    res.json({ ok: true, lesson: updated });
-  });
-  app.post("/api/v1/creator/stripe-connect", async (req, res) => {
-    const userId = req.user?.id ?? (req.headers["x-user-id"] as string) ?? "anon";
-    const email = (req.body?.email as string) || req.user?.email;
-    try {
-      const result = await createConnectAccountLink(userId, email);
-      res.json({ ok: true, ...result });
-    } catch (e) {
-      res.status(500).json({ ok: false, error: (e as Error).message });
-    }
-  });
-
-  // ── Community · Proctored exams ───────────────────────────────────
-  app.get("/api/v1/proctored/:userId", (req, res) => {
-    res.json({ ok: true, sessions: listProctoredForUser(req.params.userId) });
-  });
-  app.post("/api/v1/proctored/schedule", async (req, res) => {
-    // Create the Zoom meeting automatically so the learner has a real
-    // join URL in their confirmation. Falls back to pending placeholder
-    // when Zoom isn't configured — the honest state is surfaced as
-    // stub:true in the response so the client toast can be accurate.
-    const payload = req.body ?? {};
-    let videoUrl: string | undefined = payload.videoUrl;
-    let stub = false;
-    if (!videoUrl && payload.scheduledAt) {
-      const { meeting, stub: isStub } = await createZoomMeeting({
-        topic: `Proctored exam · ${payload.instrumentId} · ${payload.tier}`,
-        startAt: payload.scheduledAt,
-        durationMin: payload.tier === "genius" ? 90 : payload.tier === "pro" ? 45 : 20,
-        agenda: `MusicLuv proctored ${payload.tier} certificate exam for ${payload.instrumentId}.`,
-      });
-      videoUrl = meeting?.joinUrl;
-      stub = isStub;
-    }
-    const session = scheduleProctored({ ...payload, videoUrl });
-
-    // Confirmation email — only if we have the user's email + a real
-    // join URL (no point sending a placeholder Zoom link).
-    const user = getUser(session.userId);
-    if (user?.email && session.videoUrl) {
-      void sendProctorConfirmationEmail(user.email, {
-        instrument: session.instrumentId,
-        tier: session.tier,
-        scheduledAt: new Date(session.scheduledAt).toLocaleString(),
-        meetingUrl: session.videoUrl,
-      });
-    }
-
-    res.json({ ok: true, session, zoomConfigured: isZoomConfigured(), stub });
-  });
-  app.patch("/api/v1/proctored/:id/complete", (req, res) => {
-    const updated = completeProctored(req.params.id, req.body.status, req.body.proctorNotes);
-    if (!updated) return res.status(404).json({ ok: false });
-
-    // Cert-earned email + XP grant on a passed proctored exam. Tier-cert
-    // XP rewards: standard=500, pro=1500, genius=5000 (rough mirror of
-    // tierCatalog thresholds; finer numbers when we wire that in).
-    if (updated.status === "passed") {
-      const xpAwarded = updated.tier === "genius" ? 5000 : updated.tier === "pro" ? 1500 : 500;
-      const user = getUser(updated.userId);
-      if (user?.email) {
-        const appUrl = process.env.APP_URL || "https://musicluv.app";
-        void sendCertEarnedEmail(user.email, {
-          displayName: user.displayName ?? "there",
-          instrument: updated.instrumentId,
-          tier: updated.tier,
-          certificateUrl: `${appUrl}/cert/${updated.id}`,
-          xpAwarded,
-        });
-      }
-    }
-
-    res.json({ ok: true, session: updated });
-  });
+      res.json({ ok: true, session: updated });
+    });
+  }
 
   // ── Community · Live lessons marketplace ──────────────────────────
-  app.get("/api/v1/live/available", (_req, res) => {
-    res.json({ ok: true, slots: listAvailableLiveSlots() });
-  });
-  app.get("/api/v1/live/teacher/:teacherId", (req, res) => {
-    res.json({ ok: true, slots: listLiveSlotsForTeacher(req.params.teacherId) });
-  });
-  app.post("/api/v1/live/:slotId/book", async (req, res) => {
-    const { studentId, meetingUrl: providedUrl } = req.body as { studentId: string; meetingUrl?: string };
+  if (isFeatureEnabled("liveLessons")) {
+    app.get("/api/v1/live/available", (_req, res) => {
+      res.json({ ok: true, slots: listAvailableLiveSlots() });
+    });
+    app.get("/api/v1/live/teacher/:teacherId", (req, res) => {
+      if (!requireSelfOrAdmin(req, res, req.params.teacherId)) return;
+      res.json({ ok: true, slots: listLiveSlotsForTeacher(req.params.teacherId) });
+    });
+    app.post("/api/v1/live/:slotId/book", async (req, res) => {
+      const studentId = requireUser(req, res);
+      if (!studentId) return;
+      const { meetingUrl: providedUrl } = req.body as { meetingUrl?: string };
 
-    // Best-effort mint a real Zoom meeting if we don't already have one.
-    // The live slot may or may not carry a preset meetingUrl (teacher
-    // could've provided theirs); only mint when absent.
-    let meetingUrl = providedUrl;
-    let stub = false;
-    if (!meetingUrl) {
-      const { meeting, stub: isStub } = await createZoomMeeting({
-        topic: `MusicLuv live 1:1 · slot ${req.params.slotId}`,
-        startAt: new Date().toISOString(),
-        durationMin: 45,
-        agenda: "Live 1-on-1 lesson booked via MusicLuv.",
-      });
-      meetingUrl = meeting?.joinUrl;
-      stub = isStub;
-    }
-
-    const slot = bookLiveSlot(req.params.slotId, studentId, meetingUrl ?? "");
-    if (!slot) return res.status(409).json({ ok: false, error: "unavailable" });
-    res.json({ ok: true, slot, zoomConfigured: isZoomConfigured(), stub });
-  });
-
-  // ── Compositions (Genius tier human review) ───────────────────────
-  app.get("/api/v1/compositions/:userId", async (req, res) => {
-    res.json({ ok: true, compositions: await listCompositionsForUser(req.params.userId) });
-  });
-  app.post("/api/v1/compositions", async (req, res) => {
-    res.json({ ok: true, composition: await submitComposition(req.body) });
-  });
-
-  // Composition audio upload. Multipart body: audio (file) + meta (JSON
-  // with { userId, title, description?, instrumentId? }). Returns the
-  // saved composition with its audioUrl populated.
-  app.post("/api/v1/compositions/upload", upload.single("audio"), async (req, res) => {
-    if (!req.file) return res.status(400).json({ ok: false, error: "no_audio" });
-    if (!req.body?.meta) return res.status(400).json({ ok: false, error: "no_meta" });
-
-    let meta: any;
-    try { meta = JSON.parse(req.body.meta); }
-    catch { return res.status(400).json({ ok: false, error: "invalid_meta" }); }
-
-    const userId = meta.userId || (req.headers["x-user-id"] as string) || "anon";
-    try {
-      const upload = await putObject({
-        body: req.file.buffer,
-        contentType: req.file.mimetype || "audio/mpeg",
-        keyPrefix: `compositions/${userId}`,
-      });
-      const composition = await submitComposition({
-        id: `comp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
-        userId,
-        title: meta.title ?? "Untitled composition",
-        description: meta.description,
-        instrumentId: meta.instrumentId,
-        audioUrl: upload.url,
-        status: "submitted",
-        createdAt: new Date().toISOString(),
-      });
-
-      // Fire quest event so this submission counts toward composition
-      // mastery quests (compose_bars).
-      try {
-        recordEvent({
-          userId, type: "compose_bars", target: composition.id,
-          amount: meta.estimatedBars ?? 32,
-          meta: { instrumentId: meta.instrumentId },
+      // Best-effort mint a real Zoom meeting if we don't already have one.
+      // The live slot may or may not carry a preset meetingUrl (teacher
+      // could've provided theirs); only mint when absent.
+      let meetingUrl = providedUrl;
+      let stub = false;
+      if (!meetingUrl) {
+        const { meeting, stub: isStub } = await createZoomMeeting({
+          topic: `MusicLuv live 1:1 · slot ${req.params.slotId}`,
+          startAt: new Date().toISOString(),
+          durationMin: 45,
+          agenda: "Live 1-on-1 lesson booked via MusicLuv.",
         });
-      } catch (qe) {
-        captureError(qe as Error, { where: "compositions.upload.questEvent" });
+        meetingUrl = meeting?.joinUrl;
+        stub = isStub;
       }
 
-      // Auto-trigger the LLM reviewer on submission. Runs in the
-      // background — don't block the upload response on the model call.
-      // The review is attached to the composition record by the LLM
-      // module via reviewComposition (DB write). Reviewers + admins
-      // can override later via /review.
-      void autoReviewIfDigestProvided(composition.id, userId, meta);
+      const slot = bookLiveSlot(req.params.slotId, studentId, meetingUrl ?? "");
+      if (!slot) return res.status(409).json({ ok: false, error: "unavailable" });
+      res.json({ ok: true, slot, zoomConfigured: isZoomConfigured(), stub });
+    });
+  }
 
-      res.json({ ok: true, composition, upload });
-    } catch (e) {
-      res.status(500).json({ ok: false, error: (e as Error).message });
-    }
-  });
+  // ── Compositions (Genius tier human review) ───────────────────────
+  if (isFeatureEnabled("compositions")) {
+    app.get("/api/v1/compositions/:userId", async (req, res) => {
+      if (!requireSelfOrAdmin(req, res, req.params.userId)) return;
+      res.json({ ok: true, compositions: await listCompositionsForUser(req.params.userId) });
+    });
+    app.post("/api/v1/compositions", async (req, res) => {
+      const userId = requireUser(req, res);
+      if (!userId) return;
+      res.json({ ok: true, composition: await submitComposition({ ...req.body, userId }) });
+    });
+
+    // Composition audio upload. Multipart body: audio (file) + meta (JSON
+    // with { title, description?, instrumentId? }). Returns the saved
+    // composition with its audioUrl populated.
+    app.post("/api/v1/compositions/upload", upload.single("audio"), async (req, res) => {
+      const userId = requireUser(req, res);
+      if (!userId) return;
+      if (!req.file) return res.status(400).json({ ok: false, error: "no_audio" });
+      if (!req.body?.meta) return res.status(400).json({ ok: false, error: "no_meta" });
+
+      let meta: any;
+      try { meta = JSON.parse(req.body.meta); }
+      catch { return res.status(400).json({ ok: false, error: "invalid_meta" }); }
+
+      try {
+        const stored = await putObject({
+          body: req.file.buffer,
+          contentType: req.file.mimetype || "audio/mpeg",
+          keyPrefix: `compositions/${userId}`,
+        });
+        const composition = await submitComposition({
+          id: `comp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+          userId,
+          title: meta.title ?? "Untitled composition",
+          description: meta.description,
+          instrumentId: meta.instrumentId,
+          audioUrl: stored.url,
+          status: "submitted",
+          createdAt: new Date().toISOString(),
+        });
+
+        // Fire quest event so this submission counts toward composition
+        // mastery quests (compose_bars).
+        try {
+          recordEvent({
+            userId, type: "compose_bars", target: composition.id,
+            amount: meta.estimatedBars ?? 32,
+            meta: { instrumentId: meta.instrumentId },
+          });
+        } catch (qe) {
+          captureError(qe as Error, { where: "compositions.upload.questEvent" });
+        }
+
+        // Auto-trigger the LLM reviewer on submission. Runs in the
+        // background — don't block the upload response on the model call.
+        // The review is attached to the composition record by the LLM
+        // module via reviewComposition (DB write). Reviewers + admins
+        // can override later via /review.
+        void autoReviewIfDigestProvided(composition.id, userId, meta);
+
+        res.json({ ok: true, composition, upload: stored });
+      } catch (e) {
+        res.status(500).json({ ok: false, error: (e as Error).message });
+      }
+    });
+    app.get("/api/v1/compositions/admin/queue", async (req, res) => {
+      if (!requireAdmin(req, res)) return;
+      res.json({ ok: true, compositions: await listReviewQueue() });
+    });
+    app.patch("/api/v1/compositions/:id/review", async (req, res) => {
+      if (!requireAdmin(req, res)) return;
+      const { reviewerId, status, notes, rubric } = req.body ?? {};
+      const updated = await reviewComposition(req.params.id, reviewerId, status, notes, rubric);
+      if (!updated) return res.status(404).json({ ok: false });
+      res.json({ ok: true, composition: updated });
+    });
+
+    // LLM-powered auto-review. POST { digest } — body carries the
+    // audio-engine's structured digest (notes/tempo/key); the model
+    // returns rubric scores + strengths + improvements. Reviewer can
+    // accept the suggestion via the regular /review endpoint.
+    app.post("/api/v1/compositions/:id/auto-review", async (req, res) => {
+      if (!requireAdmin(req, res)) return;
+      const composition = await getComposition(req.params.id);
+      if (!composition) return res.status(404).json({ ok: false, error: "not_found" });
+      const digest = req.body?.digest;
+      if (!digest || typeof digest !== "object") {
+        return res.status(400).json({ ok: false, error: "missing_digest" });
+      }
+      try {
+        const result = await runLlmReview(composition, digest);
+        res.json({ ok: true, review: result });
+      } catch (e) {
+        res.status(500).json({ ok: false, error: (e as Error).message });
+      }
+    });
+  }
 
   // Serve locally-stored uploaded files (dev backend / STORAGE_DRIVER=local).
   // In production with STORAGE_DRIVER=s3, this route is unused because
   // putObject returns a CDN URL directly.
   app.get("/data/uploads/*", (req, res) => {
-    const rel = req.path.replace(/^\/data\/uploads\//, "");
-    const { dataPath } = require("./persistence.js") as typeof import("./persistence.js");
-    const fs = require("node:fs") as typeof import("node:fs");
-    const path = require("node:path") as typeof import("node:path");
-    const full = path.join(dataPath("uploads"), rel);
-    if (!full.startsWith(dataPath("uploads"))) return res.status(403).end();
+    const root = dataPath("uploads");
+    const full = path.join(root, req.path.replace(/^\/data\/uploads\//, ""));
+    if (!full.startsWith(root + path.sep)) return res.status(403).end();
     if (!fs.existsSync(full)) return res.status(404).end();
     res.sendFile(full);
-  });
-  app.get("/api/v1/compositions/admin/queue", async (req, res) => {
-    const adminToken = (req.headers["x-admin-token"] as string) || "";
-    if (!process.env.ADMIN_TOKEN || adminToken !== process.env.ADMIN_TOKEN) {
-      return res.status(403).json({ ok: false, error: "forbidden" });
-    }
-    res.json({ ok: true, compositions: await listReviewQueue() });
-  });
-  app.patch("/api/v1/compositions/:id/review", async (req, res) => {
-    const { reviewerId, status, notes, rubric } = req.body ?? {};
-    const updated = await reviewComposition(req.params.id, reviewerId, status, notes, rubric);
-    if (!updated) return res.status(404).json({ ok: false });
-    res.json({ ok: true, composition: updated });
-  });
-
-  // LLM-powered auto-review. POST { digest } — body carries the
-  // audio-engine's structured digest (notes/tempo/key); the model
-  // returns rubric scores + strengths + improvements. Reviewer can
-  // accept the suggestion via the regular /review endpoint.
-  app.post("/api/v1/compositions/:id/auto-review", async (req, res) => {
-    const adminToken = (req.headers["x-admin-token"] as string) || "";
-    if (!process.env.ADMIN_TOKEN || adminToken !== process.env.ADMIN_TOKEN) {
-      return res.status(403).json({ ok: false, error: "forbidden" });
-    }
-    const composition = await getComposition(req.params.id);
-    if (!composition) return res.status(404).json({ ok: false, error: "not_found" });
-    const digest = req.body?.digest;
-    if (!digest || typeof digest !== "object") {
-      return res.status(400).json({ ok: false, error: "missing_digest" });
-    }
-    try {
-      const result = await runLlmReview(composition, digest);
-      res.json({ ok: true, review: result });
-    } catch (e) {
-      res.status(500).json({ ok: false, error: (e as Error).message });
-    }
   });
 
   // ── Quests (per-user progress + reward state) ────────────────────
@@ -555,6 +618,7 @@ export function registerRoutes(app: Express): void {
   // rewardClaimed). Single endpoint, single round-trip for the panel.
   app.get("/api/v1/quests/:userId", (req, res) => {
     const { userId } = req.params;
+    if (!requireSelfOrAdmin(req, res, userId)) return;
     const states = getUserQuests(userId);
     const stateMap = new Map(states.map((s) => [s.questId, s]));
     const quests = Object.values(QUESTS).map((q) => {
@@ -573,14 +637,10 @@ export function registerRoutes(app: Express): void {
 
   // POST → manual event injection (used by the recital service +
   // composition service when they record submissions). Requires the
-  // user's own JWT or the admin token.
+  // user's own identity or the admin token.
   app.post("/api/v1/quests/:userId/event", (req, res) => {
     const { userId } = req.params;
-    const adminToken = (req.headers["x-admin-token"] as string) || "";
-    const isAdmin = !!process.env.ADMIN_TOKEN && adminToken === process.env.ADMIN_TOKEN;
-    if (!isAdmin && req.user?.id !== userId) {
-      return res.status(403).json({ ok: false, error: "forbidden" });
-    }
+    if (!requireSelfOrAdmin(req, res, userId)) return;
     const { type, target, amount, meta } = req.body ?? {};
     if (!type) return res.status(400).json({ ok: false, error: "missing_type" });
     const completed = recordEvent({ userId, type, target, amount, meta });
@@ -588,13 +648,15 @@ export function registerRoutes(app: Express): void {
   });
 
   // ── Style fingerprint match ───────────────────────────────────────
-  app.post("/api/v1/style/match", (req, res) => {
-    const { artistId, features } = req.body as { artistId: string; features: AttemptFeatures };
-    const artist = ARTISTS[artistId];
-    if (!artist) return res.status(404).json({ ok: false, error: "unknown_artist" });
-    const result = scoreStyleMatch(artist, features);
-    res.json({ ok: true, artistId, ...result });
-  });
+  if (isFeatureEnabled("styleMatch")) {
+    app.post("/api/v1/style/match", (req, res) => {
+      const { artistId, features } = req.body as { artistId: string; features: AttemptFeatures };
+      const artist = ARTISTS[artistId];
+      if (!artist) return res.status(404).json({ ok: false, error: "unknown_artist" });
+      const result = scoreStyleMatch(artist, features);
+      res.json({ ok: true, artistId, ...result });
+    });
+  }
 
   // ── Reference audio (synthesized from lesson target pattern) ──────
   // Deterministic — same lesson always produces the same WAV.
@@ -686,6 +748,7 @@ export function registerRoutes(app: Express): void {
 
   // ── URL ingest (yt-dlp stub) ──────────────────────────────────────
   app.post("/api/v1/uploads/from-url", async (req, res) => {
+    if (!requireUser(req, res)) return;
     const { url, instrumentId, level } = req.body as { url: string; instrumentId: string; level: number };
     if (!url || !instrumentId) return res.status(400).json({ ok: false, error: "missing_fields" });
 

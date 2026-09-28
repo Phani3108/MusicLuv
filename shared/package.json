@@ -1,0 +1,6 @@
+{
+  "name": "@musicluv/shared",
+  "private": true,
+  "type": "module",
+  "description": "Catalogs shared by client, server and tooling. ESM so the Node server can import named exports."
+}

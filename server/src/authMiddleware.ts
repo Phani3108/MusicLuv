@@ -1,70 +1,69 @@
 /**
- * Auth middleware. When SUPABASE_JWT_SECRET is configured, every request
- * to a gated route must carry a valid Supabase JWT in the Authorization
- * header. The middleware verifies the signature using the shared secret
- * and attaches `req.user = { id, email }` for downstream handlers.
+ * Authentication middleware — establishes *who* is calling. It never decides
+ * what they may do; routes do that with the helpers in authz.ts.
  *
- * Public routes (health, monetization status, auth callback etc.) must
- * be registered via `markPublic()` or listed in the PUBLIC_PATHS array.
- *
- * During the launch promo window we keep x-user-id fallback so beta
- * testers can use the app without wiring Supabase first. Once
- * SUPABASE_JWT_SECRET is set in prod, the x-user-id path is rejected
- * and every client must sign in.
+ * - SUPABASE_JWT_SECRET set: identity comes only from a verified Supabase JWT
+ *   (HS256). The `x-user-id` header is ignored — it is trivially spoofable.
+ * - No secret (local dev only): an unverified JWT or `x-user-id` is accepted
+ *   so the app works without Supabase; req.user.verified is false.
+ * - NODE_ENV=production without a secret refuses to boot (assertAuthConfig).
+ * - STRICT_AUTH=true additionally rejects every non-public request without a
+ *   verified identity (for deployments with no anonymous use at all).
  */
 import type { Request, Response, NextFunction } from "express";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { identify } from "./userDirectory.js";
 import { sendWelcomeEmail } from "./observability.js";
 
-const SUPABASE_JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
-const STRICT_AUTH = process.env.STRICT_AUTH === "true";
-
 /** Paths that skip auth entirely. Prefix-matched. */
 const PUBLIC_PATHS = [
   "/api/v1/health",
   "/api/v1/monetization/status",
-  "/api/v1/monetization/seen",
   "/api/v1/billing/webhook/stripe",
   "/auth/callback",
 ];
 
 declare module "express-serve-static-core" {
   interface Request {
-    user?: { id: string; email?: string };
+    user?: { id: string; email?: string; verified: boolean };
   }
 }
 
-export function authMiddleware(req: Request, _res: Response, next: NextFunction) {
+/** Refuse to serve production traffic without a way to verify identity. */
+export function assertAuthConfig(): void {
+  if (process.env.NODE_ENV === "production" && !process.env.SUPABASE_JWT_SECRET) {
+    throw new Error(
+      "SUPABASE_JWT_SECRET must be set when NODE_ENV=production — without it the server cannot verify who is calling.",
+    );
+  }
+}
+
+export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   if (isPublic(req.path)) return next();
+  const secret = process.env.SUPABASE_JWT_SECRET;
+  const strict = process.env.STRICT_AUTH === "true";
 
   const token = extractBearer(req);
   if (token) {
-    const payload = verifyJwt(token);
+    const payload = secret ? verifyJwt(token, secret) : decodePayload(token);
     if (payload?.sub) {
-      req.user = { id: payload.sub, email: payload.email };
+      req.user = { id: payload.sub, email: payload.email, verified: Boolean(secret) };
       // Populate the user directory + trigger first-time welcome email.
       // Fire-and-forget so request latency isn't tied to email SMTP.
-      void recordIdentity(payload.sub, payload.email, payload.user_metadata?.display_name ?? payload.name);
+      if (secret) void recordIdentity(payload.sub, payload.email, payload.user_metadata?.display_name ?? payload.name);
       return next();
     }
   }
 
-  if (STRICT_AUTH) {
-    // Production: reject missing or invalid tokens outright.
-    return _res.status(401).json({ ok: false, error: "unauthorized" });
+  if (strict) return res.status(401).json({ ok: false, error: "unauthorized" });
+
+  // Local dev without Supabase: trust the device id the client sends.
+  if (!secret) {
+    const uid = (req.headers["x-user-id"] as string) || "";
+    if (uid && uid !== "anon") req.user = { id: uid, verified: false };
   }
 
-  // Dev / launch-promo window: allow x-user-id fallback so learners
-  // can use the app before we force sign-in.
-  const uid = (req.headers["x-user-id"] as string) || "";
-  if (uid && uid !== "anon") {
-    req.user = { id: uid };
-    return next();
-  }
-
-  // Anonymous users can still hit the app — most routes internally fall
-  // back to "anon" already; this just propagates an identifiable request.
+  // Anonymous callers continue; routes that need a user return 401.
   return next();
 }
 
@@ -93,22 +92,16 @@ function extractBearer(req: Request): string | null {
 
 /**
  * Verify a Supabase JWT signed with HS256 using the shared JWT secret.
- * Supabase JWTs are signed with the project's JWT secret, so we can
- * verify them without a round-trip to the auth server.
+ * (Projects on asymmetric signing keys need JWKS verification — Phase 3.)
  */
-function verifyJwt(token: string): { sub: string; email?: string; exp?: number; [k: string]: any } | null {
-  if (!SUPABASE_JWT_SECRET) {
-    // No secret configured — accept the token's user claim without
-    // verification (dev mode). In prod set STRICT_AUTH=true + the secret.
-    return decodePayload(token);
-  }
+function verifyJwt(token: string, secret: string): { sub: string; email?: string; exp?: number; [k: string]: any } | null {
   try {
     const [headerB64, payloadB64, sigB64] = token.split(".");
     if (!headerB64 || !payloadB64 || !sigB64) return null;
     const header = JSON.parse(b64urlDecode(headerB64));
     if (header.alg !== "HS256") return null;
 
-    const expected = createHmac("sha256", SUPABASE_JWT_SECRET)
+    const expected = createHmac("sha256", secret)
       .update(`${headerB64}.${payloadB64}`)
       .digest();
     const got = Buffer.from(sigB64.replace(/-/g, "+").replace(/_/g, "/"), "base64");
